@@ -1,0 +1,20 @@
+{
+	"schemaVersion": 1,
+	"id": "movrand",
+	"version": "${version}",
+	"name": "Movement & Randomisation",
+	"description": "Client-side randomised auto-walk with go-to-coordinates, stuck detection with custom sound alerts, auto-jump and container-density safety stops.",
+	"authors": ["damia"],
+	"license": "MIT",
+	"icon": "assets/movrand/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": ["com.damia.movrand.MovRand"]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.3",
+		"minecraft": "~26.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}
