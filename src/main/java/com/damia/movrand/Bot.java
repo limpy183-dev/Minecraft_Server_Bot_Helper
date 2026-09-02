@@ -51,6 +51,18 @@ public final class Bot {
 		public boolean forward, back, left, right;
 		public boolean jump, sneak, sprint;
 		public boolean attack, use;
+		/**
+		 * Aiming at one specific block rather than walking somewhere.
+		 *
+		 * <p>Two things follow from it, and they are two halves of one point. The camera gets
+		 * the tighter filter, because a crosshair that takes half a second to settle is fine
+		 * when the destination is a chunk and useless when it is one face of one block. And
+		 * the crosshair is re-cast from the rotation this steer actually produced, rather than
+		 * from wherever the last rendered frame happened to be looking — without which the
+		 * decision to press the mouse is made against a view that no longer exists, which is
+		 * the difference between mining a wall and standing in front of one.
+		 */
+		public boolean precise;
 		/** Shown on the HUD and in the status line. */
 		public String status = "";
 
@@ -69,6 +81,7 @@ public final class Bot {
 		public void clear() {
 			hasLook = false;
 			hasMove = false;
+			precise = false;
 			forward = back = left = right = jump = sneak = sprint = attack = use = false;
 		}
 	}
@@ -86,14 +99,48 @@ public final class Bot {
 	 * @return forward, back, left, right
 	 */
 	public static boolean[] keysFor(double facingYaw, double moveYaw) {
+		return keysFor(facingYaw, moveYaw, null);
+	}
+
+	/**
+	 * The same, with the keys held last tick, so a heading sitting on a boundary does not
+	 * chatter.
+	 *
+	 * <p>The camera has a deliberate wobble on it of a degree or two. A heading that happens
+	 * to land near where one of the eight keyboard directions gives way to the next then flips
+	 * between them every single tick — strafe on, strafe off, on, off — and what comes out is
+	 * a bot that jitters down a corridor at half speed instead of walking down it. Baritone
+	 * never meets this because it snaps the camera exactly where it wants it; a mod whose
+	 * whole point is that it does not snap has to hold the choice steady itself.
+	 *
+	 * @param previous the last answer, in the same order, or null for no opinion
+	 */
+	public static boolean[] keysFor(double facingYaw, double moveYaw, boolean[] previous) {
 		double d = Math.toRadians(Human.wrap(facingYaw - moveYaw));
 		double forward = Math.cos(d);
 		double left = Math.sin(d);
-		return new boolean[]{forward > OCTANT, forward < -OCTANT, left > OCTANT, left < -OCTANT};
+		return new boolean[]{
+				latch(forward, previous != null && previous[0]),
+				latch(-forward, previous != null && previous[1]),
+				latch(left, previous != null && previous[2]),
+				latch(-left, previous != null && previous[3])};
+	}
+
+	/**
+	 * A key already down stays down a little past where it would have come on.
+	 *
+	 * <p>One-sided on purpose. Raising the threshold as well would widen the worst case the
+	 * eight directions can be wrong by, which is the one thing this must not cost: a key comes
+	 * on exactly where it always did, and only lets go late.
+	 */
+	private static boolean latch(double value, boolean wasDown) {
+		return value > (wasDown ? OCTANT - SLACK : OCTANT);
 	}
 
 	/** sin 22.5°, which is where one of the eight keyboard directions gives way to the next. */
 	private static final double OCTANT = 0.3827;
+	/** About three and a half degrees of boundary, which is wider than the wobble ever is. */
+	private static final double SLACK = 0.06;
 
 	private Bot() {
 	}
@@ -325,6 +372,36 @@ public final class Bot {
 	 * anyway. A slot the user has protected is still usable — protection is about what gets
 	 * sold or thrown away, not about what may be held.
 	 */
+	/**
+	 * Roughly how many ticks this block takes to break with the best thing on the hotbar.
+	 *
+	 * <p>Vanilla's own arithmetic, minus the enchantments, potions and standing-in-water
+	 * penalties: it is a number the route search compares against walking, not a countdown
+	 * shown to anyone, and being out by a fifth on a block nobody is going to break anyway
+	 * costs nothing. What it has to get right is the ratio - obsidian against cobblestone is
+	 * fifty to one, and a search told they cost the same digs through the obsidian.
+	 *
+	 * @return ticks, or {@link Double#MAX_VALUE} for a block that cannot be broken at all
+	 */
+	public static double breakTicks(LocalPlayer player, net.minecraft.world.level.BlockGetter level,
+	                                BlockPos pos, BlockState state) {
+		float hardness;
+		try {
+			hardness = state.getDestroySpeed(level, pos);
+		} catch (Exception | LinkageError e) {
+			return Double.MAX_VALUE;
+		}
+		if (hardness < 0) return Double.MAX_VALUE;
+		if (hardness == 0) return 1;
+		ItemStack stack = player.getInventory().getItem(bestToolSlot(player, state));
+		float speed = stack.isEmpty() ? 1 : stack.getDestroySpeed(state);
+		boolean correct = !stack.isEmpty() && stack.isCorrectToolForDrops(state);
+		// the same shape as BlockState#getDestroyProgress: 30 ticks' worth with the right
+		// tool, 100 without, scaled by how fast the tool is against how hard the block is
+		double perTick = speed / hardness / (correct ? 30.0 : 100.0);
+		return perTick <= 0 ? Double.MAX_VALUE : Math.max(1, 1 / perTick);
+	}
+
 	public static int bestToolSlot(LocalPlayer player, BlockState state) {
 		Inventory inv = player.getInventory();
 		int best = inv.getSelectedSlot();
@@ -403,6 +480,10 @@ public final class Bot {
 		double bestDist = Double.MAX_VALUE;
 		Vec3 eyes = player.getEyePosition();
 		for (Direction face : Direction.values()) {
+			// Never the block above. Clicking a ceiling to fill the square underneath it is a
+			// real placement and it is nobody's first idea; Baritone leaves UP out of its
+			// candidate list for the same reason.
+			if (face == Direction.UP) continue;
 			if (!supports(mc, player, target, face)) continue;
 			double d = placePoint(mc, target, face).distanceToSqr(eyes);
 			if (d < bestDist) {
@@ -413,13 +494,61 @@ public final class Bot {
 		return best;
 	}
 
+	/**
+	 * Whether a block can actually be put into {@code target} from here by clicking the
+	 * neighbour in this direction.
+	 *
+	 * <p>The last two checks are the whole of it, and the second one used to be missing. The
+	 * game puts a placed block at {@code hit.getBlockPos().relative(hit.getDirection())}, so
+	 * reaching the support block is not enough: the ray has to enter it <em>through the face
+	 * that points at the target</em>. Without that this returns a direction whose placement
+	 * can never happen. The bot then aims at the block beside the lava for as long as you let
+	 * it, the check that decides whether to press use is never once true, and nothing is
+	 * placed - which is exactly what it looks like from the outside.
+	 *
+	 * <p>It was reliably the wrong face, too, because the caller takes the nearest support.
+	 * For lava at your feet that is the block you are standing on, and the side of it facing
+	 * the lava is the one side you cannot see from up there: the ray goes in through the top.
+	 */
 	private static boolean supports(Minecraft mc, LocalPlayer player, BlockPos target, Direction face) {
 		BlockPos against = target.relative(face);
 		BlockState state = mc.level.getBlockState(against);
 		if (state.isAir() || !state.getFluidState().isEmpty()) return false;
 		if (state.getCollisionShape(mc.level, against).isEmpty()) return false;
 		if (!inReach(mc, player, against)) return false;
-		return clearLine(mc, player, player.getEyePosition(), placePoint(mc, target, face), against);
+		// cheap and exact: a face you are behind is a face you cannot click, no ray needed
+		if (!facesTheEye(blockBox(mc, against), face.getOpposite(), player.getEyePosition())) {
+			return false;
+		}
+		return placesInto(mc, player, target, against, placePoint(mc, target, face));
+	}
+
+	/**
+	 * Whether the eye is on the outside of this face of this box.
+	 *
+	 * <p>Geometry rather than a raycast, so it costs nothing - and, unlike everything else on
+	 * this path, it can be checked without a running game.
+	 *
+	 * @param towardTarget which way the face points: from the support block towards the
+	 *                     square being filled
+	 */
+	static boolean facesTheEye(AABB supportBox, Direction towardTarget, Vec3 eyes) {
+		Vec3 n = towardTarget.getUnitVec3();
+		double span = Math.abs(n.x) * supportBox.getXsize()
+				+ Math.abs(n.y) * supportBox.getYsize()
+				+ Math.abs(n.z) * supportBox.getZsize();
+		Vec3 surface = supportBox.getCenter().add(n.scale(span * 0.5));
+		return eyes.subtract(surface).dot(n) > 0;
+	}
+
+	/** Whether a ray to this point lands on the support, on the face that fills the target. */
+	private static boolean placesInto(Minecraft mc, LocalPlayer player, BlockPos target,
+	                                  BlockPos against, Vec3 aim) {
+		BlockHitResult hit = mc.level.clip(new ClipContext(player.getEyePosition(), aim,
+				ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
+		return hit.getType() == HitResult.Type.BLOCK
+				&& hit.getBlockPos().equals(against)
+				&& hit.getBlockPos().relative(hit.getDirection()).equals(target);
 	}
 
 	/** The point on the support block that is clicked to put a block into {@code target}. */
@@ -428,17 +557,24 @@ public final class Bot {
 	}
 
 	/**
-	 * Aim at a face that a block can be placed against, filling {@code target}.
+	 * A shut door or gate that a hand would open.
 	 *
-	 * @return true when the steer was pointed at something placeable; the caller decides
-	 * whether to actually press use, because a tick spent aiming is not a tick spent placing
+	 * <p>A base has doors in it, and a route that treats one as a wall either mines it or
+	 * gives up on the room behind it. Neither is what a person does, and mining it is worse
+	 * than giving up: it is a hole in somebody's house to get at a block that was never
+	 * behind a locked anything. Iron is left out because a hand does nothing to iron - that
+	 * one really is a wall until the route goes round it.
 	 */
-	public static boolean aimToPlace(Minecraft mc, LocalPlayer player, BlockPos target, Steer steer) {
-		Direction face = placeAgainst(mc, player, target, null);
-		if (face == null) return false;
-		double[] look = aimAt(player, placePoint(mc, target, face));
-		steer.lookAt(look[0], look[1]);
-		return true;
+	public static boolean opensByHand(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+		if (!(state.getBlock() instanceof net.minecraft.world.level.block.DoorBlock
+				|| state.getBlock() instanceof net.minecraft.world.level.block.FenceGateBlock)) {
+			return false;
+		}
+		var open = net.minecraft.world.level.block.state.properties.BlockStateProperties.OPEN;
+		if (!state.hasProperty(open) || state.getValue(open)) return false;
+		var id = net.minecraft.core.registries.BuiltInRegistries.BLOCK.getKey(state.getBlock());
+		return id != null && !id.getPath().startsWith("iron_");
 	}
 
 	/** Whether a block put here would stay: air, or a fluid a placement simply replaces. */
@@ -606,6 +742,62 @@ public final class Bot {
 		s.forward = true;
 		s.clear();
 		assert !s.forward && !s.hasLook : "clear left a key held";
+
+		// The wobble is a degree or two, and a heading sitting near a boundary between two of
+		// the eight keyboard directions would otherwise flip between them every tick - which is
+		// a bot jittering down a corridor rather than walking down it.
+		boolean[] holding = keysFor(23, 0, null);
+		assert holding[2] : "23 degrees off the heading should be walking with a strafe key";
+		for (double wobble = -2; wobble <= 2; wobble += 0.25) {
+			boolean[] next = keysFor(23 + wobble, 0, holding);
+			assert next[2] : "the strafe key let go on a " + wobble + " degree wobble";
+		}
+		// and the test is not vacuous: cold, the same heading really does drop the key
+		assert !keysFor(21, 0, null)[2] : "21 degrees is below the boundary and should be forward only";
+		// nor is it a lock - a real turn still changes the answer
+		assert !keysFor(0, 0, holding)[2] : "a held key outlived the heading that wanted it";
+
+		// and widening the threshold the other way would cost accuracy, so it never happens:
+		// every heading has at least one key, whatever was held last tick
+		for (double facing = -180; facing < 180; facing += 3) {
+			for (boolean[] was : new boolean[][]{null, {true, false, false, false}, holding}) {
+				boolean[] k = keysFor(facing, 0, was);
+				assert k[0] || k[1] || k[2] || k[3]
+						: "no key at all for facing " + facing + ", which is a bot standing still";
+			}
+		}
+
+		// Putting a block into a square means clicking the face of a neighbour that points at
+		// that square - the game places it at hit position plus hit direction. So it has to be a
+		// face you are outside of, and this is the check that says so. Getting it wrong is not
+		// subtle: the bot aims at the block next to the lava for ever and never presses the
+		// button, because the placement it is lining up cannot happen.
+		AABB solidCube = new AABB(0, 0, 0, 1, 1, 1);
+		Vec3 overhead = new Vec3(0.5, 4, 0.5);
+		Vec3 underneath = new Vec3(0.5, -4, 0.5);
+		assert facesTheEye(solidCube, Direction.UP, overhead) : "a top face is clickable from above it";
+		assert !facesTheEye(solidCube, Direction.UP, underneath) : "a top face is not clickable from below";
+		assert facesTheEye(solidCube, Direction.DOWN, underneath) : "an underside is clickable from below";
+		assert !facesTheEye(solidCube, Direction.DOWN, overhead) : "an underside is not clickable from above";
+		assert facesTheEye(solidCube, Direction.NORTH, new Vec3(0.5, 0.5, -4))
+				: "a north face is clickable from the north";
+		assert !facesTheEye(solidCube, Direction.NORTH, new Vec3(0.5, 0.5, 4))
+				: "a north face is not clickable from the south";
+
+		// and the one that was actually happening: standing on a block, wanting to fill the
+		// square beside it. The face that would do it is under your feet pointing sideways, and
+		// from on top of the block you cannot see it - the ray goes in through the top instead.
+		assert !facesTheEye(solidCube, Direction.NORTH, new Vec3(0.5, 1 + 1.62, 0.5))
+				: "the side of the block underfoot was called clickable from on top of it";
+		// which is what sneaking to the very edge is for: past the face, and it is clickable
+		assert facesTheEye(solidCube, Direction.NORTH, new Vec3(0.5, 1 + 1.62, -0.2))
+				: "at the edge and past the face, the side should be clickable";
+
+		// a shape that does not fill its own block is measured from the surface it really has
+		assert facesTheEye(dust, Direction.UP, new Vec3(0.5, 1, 0.5))
+				: "the top of a redstone dust is a sixteenth up, and clickable from above that";
+		assert !facesTheEye(dust, Direction.UP, new Vec3(0.5, 0.01, 0.5))
+				: "under the surface of a dust is not over it";
 
 		System.out.println("Bot self-check passed");
 	}

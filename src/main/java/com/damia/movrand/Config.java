@@ -404,6 +404,21 @@ public final class Config {
 	/** How long a target may refuse to be reached or seen before it is written off. */
 	public double destroyGiveUpSec = 6;
 	public boolean destroySprint = true;
+	/**
+	 * Whether the job carries on through the interruptions the job itself causes.
+	 *
+	 * <p>The guards above were written for a bot that wanders quietly and wants to be told
+	 * when anything happens. A base destroyer sets every one of them off by doing its job:
+	 * it walks into rooms full of chests, it gets hit, it wades, and it stalls in doorways.
+	 * With all of them stopping the mod outright, turning the destroyer on is a way of
+	 * switching the mod off a few seconds later - and from the outside that looks exactly
+	 * like a bot that cannot do anything.
+	 *
+	 * <p>They still alert and still go in the journal. What they stop doing is stopping.
+	 * Low health, hunger, another player and the runtime limit are untouched: none of those
+	 * are things the job causes, and all of them are worth stopping for.
+	 */
+	public boolean destroyerKeepWorking = true;
 	public boolean destroyLogTargets = true;
 	public boolean destroyStopWhenDone = true;
 	public Reaction destroyDoneReaction = Reaction.ALERT;
@@ -417,6 +432,14 @@ public final class Config {
 	// ------------------------------------------------------------- pathing
 
 	public boolean pathMine = true;
+	/**
+	 * Whether the route may only break blocks that are selected targets.
+	 *
+	 * <p>On, because "mine redstone and containers" is not a request to punch a hole through
+	 * the obsidian wall in front of them. Off lets the bot tunnel through anything breakable
+	 * to reach a target, which is the only way into a room with no door.
+	 */
+	public boolean pathMineOnlySelected = true;
 	public boolean pathBridge = true;
 	public boolean pathDiagonal = true;
 	public int pathMaxFall = 3;

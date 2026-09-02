@@ -911,6 +911,11 @@ public final class ConfigScreen extends Screen {
 		add(new Toggle("Mine through walls", () -> cfg.pathMine, v -> cfg.pathMine = v)
 				.tip("Lets the route go through a block rather than round it. Without this the "
 						+ "bot can only reach places it could already walk to."));
+		add(new Toggle("Only break what I picked", () -> cfg.pathMineOnlySelected,
+				v -> cfg.pathMineOnlySelected = v)
+				.tip("The route digs through your selected blocks and nothing else. Turn this off "
+						+ "to let it tunnel through anything breakable, which is the only way into "
+						+ "a sealed room - and the way walls end up with holes in them."));
 		add(new Toggle("Bridge across gaps", () -> cfg.pathBridge, v -> cfg.pathBridge = v)
 				.tip("Places a block to stand on. Only uses the blocks listed below, and never "
 						+ "from a protected slot."));
@@ -1017,6 +1022,13 @@ public final class ConfigScreen extends Screen {
 						+ "a rotation stream with no noise at all is the one genuinely easy "
 						+ "thing to pick out of a log."));
 		add(new Toggle("Sprint between blocks", () -> cfg.destroySprint, v -> cfg.destroySprint = v));
+		add(new Toggle("Work through interruptions", () -> cfg.destroyerKeepWorking,
+				v -> cfg.destroyerKeepWorking = v)
+				.tip("The safety stops above were written for a bot that wanders quietly. A base "
+						+ "destroyer trips them by doing its job - rooms full of chests, getting "
+						+ "hit, wading, stalling in a doorway - so while it is working they alert "
+						+ "and log instead of stopping. Low health, hunger, another player and the "
+						+ "runtime limit still stop it."));
 	}
 
 	// ------------------------------------------------------- blocks to mine

@@ -68,6 +68,8 @@ public final class MovementController {
 	private double walkYaw;
 	/** Whether forward was actually asked for, so the input-blocked check knows what to expect. */
 	private boolean askedForward;
+	/** Last tick's movement keys, so a heading on a boundary does not flip between two. */
+	private boolean[] lastKeys;
 	private double targetPitch;
 	/** The pitch before the wobble is added, so the wobble never feeds back into itself. */
 	// a turn is spent along an eased curve rather than at a constant rate
@@ -570,10 +572,10 @@ public final class MovementController {
 	 * snapping back to whatever it was pointing at when the job started.
 	 */
 	private void applySteer(Minecraft mc, LocalPlayer player, Bot.Steer steer) {
-		boolean precise = destroyer.phase == BaseDestroyer.Phase.MINING
-				|| destroyer.phase == BaseDestroyer.Phase.CLEARING
-				|| destroyer.phase == BaseDestroyer.Phase.BRIDGING
-				|| destroyer.phase == BaseDestroyer.Phase.COVERING;
+		// Asked for by whatever filled the steer in, rather than guessed from the phase. Only
+		// the code aiming at a block knows it is aiming at a block: a walking phase can be
+		// placing a bridge block, and a mining phase can be walking up to the wall.
+		boolean precise = steer.precise;
 
 		boolean sprint = steer.sprint;
 		boolean stopped = false;
@@ -585,10 +587,14 @@ public final class MovementController {
 		// still worth asking every tick is whether the ground has changed under the plan,
 		// because this is a job that changes it.
 		avoid.reset();
-		if (!precise && steer.hasMove && mc.level != null
-				&& Avoidance.stepIsDeadly(mc.level, player, steer.moveYaw, cfg, cfg.pathMaxFall)) {
-			stopped = true;
-			destroyer.blocked("something that hurts, straight ahead");
+		if (!precise && steer.hasMove && mc.level != null) {
+			net.minecraft.core.BlockPos hurt =
+					Avoidance.deadlyStepAt(mc.level, player, steer.moveYaw, cfg, cfg.pathMaxFall);
+			if (hurt != null) {
+				stopped = true;
+				// where, not just that: a block can be put on a square and cannot be put on a yes
+				destroyer.blocked("something that hurts, straight ahead", hurt);
+			}
 		}
 
 		if (steer.hasLook) {
@@ -608,6 +614,7 @@ public final class MovementController {
 			else human.syncCamera(finalYaw, player.getXRot());
 			baseYaw = steer.yaw;
 			wanderOffset = 0;
+			if (precise) refreshCrosshair(mc, player);
 		}
 
 		Options o = mc.options;
@@ -617,7 +624,8 @@ public final class MovementController {
 		// the whole reason the camera is allowed to be slow: the walking does not wait for it.
 		boolean forward = steer.forward, back = steer.back, left = steer.left, right = steer.right;
 		if (steer.hasMove && !stopped) {
-			boolean[] keys = Bot.keysFor(player.getYRot(), steer.moveYaw);
+			boolean[] keys = Bot.keysFor(player.getYRot(), steer.moveYaw, lastKeys);
+			lastKeys = keys;
 			forward = keys[0];
 			back = keys[1];
 			left = keys[2];
@@ -642,6 +650,37 @@ public final class MovementController {
 		setKey(o.keyAttack, steer.attack && !eating);
 		setKey(o.keyUse, steer.use && !eating);
 		keysHeld = true;
+	}
+
+	/**
+	 * Re-aim the crosshair from the rotation this tick actually produced.
+	 *
+	 * <p>Vanilla works the crosshair out once a frame, while rendering, from the interpolated
+	 * camera — so on the tick the bot decides whether to hold the mouse button, the only
+	 * answer available is one computed from where the camera was a frame ago, before this
+	 * tick's rotation was written. That gap is small and it is fatal: the camera here is
+	 * filtered and wobbled on purpose, so the block under the old crosshair is regularly not
+	 * the block being aimed at, the attack key is released, and vanilla throws away every bit
+	 * of mining progress the moment that happens. It does not mine slowly. It mines never.
+	 *
+	 * <p>One raycast fixes it, and note what it does <em>not</em> do: the rotation is left
+	 * exactly as the humanising filter produced it. Baritone solves the same problem the other
+	 * way round, by predicting its own aim and verifying the ray before committing — but its
+	 * camera exists to be snapped, and this one exists not to be. Asking the world what the
+	 * real rotation is pointing at keeps the wobble, the easing and the mouse-shaped rotation
+	 * stream on the wire completely intact, which is the entire point of this mod.
+	 *
+	 * <p>Only while aiming at a block. Overwriting the crosshair during a fight would hand
+	 * the combat code a block where it is expecting the mob it is swinging at.
+	 */
+	private static void refreshCrosshair(Minecraft mc, LocalPlayer player) {
+		if (mc.level == null) return;
+		double range = player.blockInteractionRange();
+		net.minecraft.world.phys.Vec3 eyes = player.getEyePosition();
+		net.minecraft.world.phys.Vec3 end = eyes.add(player.getViewVector(1.0F).scale(range));
+		mc.hitResult = mc.level.clip(new net.minecraft.world.level.ClipContext(eyes, end,
+				net.minecraft.world.level.ClipContext.Block.OUTLINE,
+				net.minecraft.world.level.ClipContext.Fluid.NONE, player));
 	}
 
 	/** @return true if the job ending also ended the walk. */
@@ -689,7 +728,8 @@ public final class MovementController {
 		// zombie that only takes effect after that is a correction that arrives too late.
 		boolean back = false, left = false, right = false;
 		if (forward && (navActive || fleeing() || avoid.steering())) {
-			boolean[] keys = Bot.keysFor(player.getYRot(), walkYaw);
+			boolean[] keys = Bot.keysFor(player.getYRot(), walkYaw, lastKeys);
+			lastKeys = keys;
 			forward = keys[0];
 			back = keys[1];
 			left = keys[2];
@@ -822,8 +862,23 @@ public final class MovementController {
 
 	private void runSafeStop(Minecraft mc, LocalPlayer player, ClientLevel level) {
 		if (!cfg.safeStopEnabled) return;
-		boolean wantsForward = mc.options.keyUp.isDown() && state != State.PAUSED && !eating;
-		String failure = safeStop.check(mc, player, wantsForward, mc.options.keySprint.isDown(), cfg.holdSneak);
+		// Two things were wrong here and both of them stopped the job for doing its job.
+		//
+		// The sneak flag was the *setting* rather than the key: while bridging, capping, or
+		// creeping along an edge the bot sneaks at a third of walking pace, the prediction was
+		// told to expect a full walk, and two seconds of that reads as "something is slowing
+		// you down" - which is a stop.
+		//
+		// And the prediction itself only means anything for a bot crossing open ground. A job
+		// walks into things deliberately: up to a wall it is about to mine, into a doorway with
+		// a mob in it, against the block it is lining up on. Over any two-second window it is
+		// honestly slow, and answering "you are being held up, stop" to that is answering its
+		// own work. Every hard fault below - a teleport, a dimension change, a hijacked camera -
+		// still applies, because none of those are things the job does.
+		boolean wantsForward = mc.options.keyUp.isDown() && state != State.PAUSED && !eating
+				&& !(cfg.destroyerKeepWorking && working());
+		String failure = safeStop.check(mc, player, wantsForward,
+				mc.options.keySprint.isDown(), mc.options.keyShift.isDown());
 		if (failure == null) return;
 		journal.log(Journal.Kind.SAFE_STOP, level, player.blockPosition(), failure);
 		react(mc, cfg.safeStopReaction, "Safe stop — " + failure);
@@ -868,6 +923,16 @@ public final class MovementController {
 		String why = inputEaten ? "Movement input is being blocked" : "Stuck — no progress for %.1fs".formatted(cfg.stuckWindowSec);
 		resetProgress(player);
 
+		// A route that has stopped working is replanned, not turned 90 degrees and hoped at.
+		// The random turn is the wandering bot's answer, and it is the wrong one here: it
+		// points the bot away from where it was going and the follower spends the next second
+		// undoing it.
+		if (working()) {
+			destroyer.blocked(why, null);
+			if (cfg.verboseLogging) say(mc, "§e" + why + " — replanning");
+			return;
+		}
+
 		if (cfg.stuckAutoUnstick && unstickTried < cfg.stuckUnstickAttempts) {
 			unstickTried++;
 			state = State.UNSTICKING;
@@ -880,7 +945,7 @@ public final class MovementController {
 		}
 		unstickTried = 0;
 		journal.log(Journal.Kind.STUCK, mc.level, player.blockPosition(), why);
-		react(mc, cfg.stuckReaction, why);
+		react(mc, jobGuard(cfg.stuckReaction), why);
 	}
 
 	// -------------------------------------------------------------- guards
@@ -951,7 +1016,7 @@ public final class MovementController {
 		float lost = lastDamage; // worked out in tick(), which samples whether walking or not
 		if (cfg.stopOnDamage && lost >= cfg.damageThreshold && !fightingBack() && !walkingAway()) {
 			journal.log(Journal.Kind.DAMAGE, level, player.blockPosition(), "Took %.1f damage".formatted(lost));
-			return react(mc, cfg.damageReaction, "Took %.1f damage".formatted(lost));
+			return react(mc, jobGuard(cfg.damageReaction), "Took %.1f damage".formatted(lost));
 		}
 
 		if (cfg.stopOnLowHealth && health <= cfg.lowHealthThreshold) {
@@ -969,7 +1034,7 @@ public final class MovementController {
 			return react(mc, cfg.hungerReaction, "Hunger down to " + player.getFoodData().getFoodLevel());
 		}
 		if (cfg.stopInLiquid && (player.isInWater() || player.isInLava())) {
-			return react(mc, cfg.liquidReaction, "Standing in liquid", false);
+			return react(mc, jobGuard(cfg.liquidReaction), "Standing in liquid", false);
 		}
 		if (cfg.stopAfterMaxRuntime && runtimeSeconds() >= cfg.maxRuntimeMinutes * 60) {
 			return react(mc, cfg.maxRuntimeReaction, "Ran for %.0f minutes".formatted(cfg.maxRuntimeMinutes));
@@ -1013,7 +1078,7 @@ public final class MovementController {
 				// recorded there is no "already found" to consult, so it behaves as it did.
 				boolean fresh = journal.log(Journal.Kind.CONTAINER_CLUSTER, level, where, note);
 				if (fresh || !journal.records(Journal.Kind.CONTAINER_CLUSTER)) {
-					return react(mc, cfg.containerReaction, note);
+					return react(mc, jobGuard(cfg.containerReaction), note);
 				}
 			}
 		}
@@ -1222,6 +1287,21 @@ public final class MovementController {
 		// a threat never seen has no reference to measure against
 		assert !charging(1, -1) : "an unmeasured threat counted as charging";
 
+		// The guards above the job were written for a bot that wanders quietly and wants to be
+		// told when anything happens. A base destroyer trips every one of them by working, and
+		// with all of them set to stop, switching the destroyer on was a way of switching the
+		// mod off a few seconds later. They keep the alert; they lose the stop.
+		for (Config.Reaction r : Config.Reaction.values()) {
+			Config.Reaction idle = jobGuard(r, true, false);
+			assert idle == r : "a guard was softened while nothing was working: " + r;
+			Config.Reaction off = jobGuard(r, false, true);
+			assert off == r : "the setting was off and the guard was softened anyway: " + r;
+
+			Config.Reaction busy = jobGuard(r, true, true);
+			assert !busy.stops() : r + " still stopped the job it was tripped by";
+			assert busy.alerts() == r.alerts() : r + " lost its alert as well as its stop";
+		}
+
 		System.out.println("MovementController self-check passed");
 	}
 
@@ -1295,6 +1375,34 @@ public final class MovementController {
 	 * exactly what someone in vanish is checking for. So the sound still plays and the
 	 * coordinate is still logged - only the part anyone else could see is withheld.
 	 */
+	/**
+	 * Whether the job is what is about to be interrupted.
+	 *
+	 * <p>Not just "is the destroyer switched on": a job that has run out of blocks and handed
+	 * the tick back is not working, and the guards should behave normally again.
+	 */
+	private boolean working() {
+		return cfg.destroyerEnabled && destroyer.phase != BaseDestroyer.Phase.OFF
+				&& destroyer.phase != BaseDestroyer.Phase.DONE;
+	}
+
+	/**
+	 * A guard the job sets off by doing its job, downgraded to an alert while it is running.
+	 *
+	 * <p>Every one of these was a stop, and every one of them fires in the first minute of
+	 * taking a base apart: a room has twelve chests in it, something hits you, you step in
+	 * water, a doorway takes three seconds. Reused rather than rewritten - {@link #gate} has
+	 * always known how to turn a stop into an alert, this just decides when to ask it to.
+	 */
+	private Config.Reaction jobGuard(Config.Reaction reaction) {
+		return jobGuard(reaction, cfg.destroyerKeepWorking, working());
+	}
+
+	/** The decision on its own, so the one thing that must never regress has a check. */
+	static Config.Reaction jobGuard(Config.Reaction reaction, boolean keepWorking, boolean working) {
+		return keepWorking && working ? gate(reaction, false) : reaction;
+	}
+
 	private static Config.Reaction gate(Config.Reaction reaction, boolean visible) {
 		if (visible) return reaction;
 		return reaction.alerts() ? Config.Reaction.ALERT : Config.Reaction.NOTHING;

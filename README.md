@@ -561,6 +561,34 @@ priced against each other in walked blocks. **A broken block is worth** and **A 
 is worth** are those prices — raise the first and it goes round anything it can, lower it and
 it digs straight there.
 
+A swing is then priced for the block it actually is, from the block's hardness and the best
+tool on your bar. This matters more than it sounds: at one flat price per broken block, a
+wall is always cheaper than a corridor, so the route through obsidian beats walking ten
+blocks round it and the bot spends its afternoon tunnelling. Cobblestone is a second and
+obsidian is most of a minute, and once the search knows that it goes round on its own.
+
+**Only break what I picked** keeps the route inside your selection. On, because picking
+redstone and containers is not a request for a hole through the wall in front of them; off
+lets it tunnel through anything breakable, which is the only way into a room with no door.
+
+**Work through interruptions** is on, and it matters more than it sounds. The safety stops
+in the sections above were written for a bot that wanders quietly and wants to be told when
+anything happens — and a base destroyer trips nearly all of them by doing its job. A room
+with twelve chests in it is a container cluster. Taking a heart of damage is damage. Sneaking
+along the edge of a bridge is moving at a third of walking speed, which reads as being held
+up. A doorway with a mob in it is being stuck. Every one of those was **Alert + stop**, and a
+stop switches the whole mod off — so turning the destroyer on was a way of turning the mod
+off a few seconds later. While it is working they now alert and log instead. Low health,
+hunger, another player and the runtime limit still stop it: none of those are things the job
+causes.
+
+A shut wooden door or gate is opened rather than mined. Iron is not — a hand does nothing to
+iron, so that one really is a wall until the route goes round it.
+
+Lava is crossed by putting a block on it, as part of the route, at twice the price of an
+ordinary placement: worth doing, never the first idea, and never at all when there is dry
+ground going the same way.
+
 Running out of **Search budget** is not a failure. The best partial route is walked anyway
 and replanned from further along, which is why a low budget makes the bot wander toward
 things rather than stand still thinking about them.

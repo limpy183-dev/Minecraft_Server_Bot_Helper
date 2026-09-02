@@ -274,6 +274,17 @@ public final class Avoidance {
 	 */
 	public static boolean stepIsDeadly(ClientLevel level, LocalPlayer player, double yawDeg,
 	                                   Config cfg, int maxFall) {
+		return deadlyStepAt(level, player, yawDeg, cfg, maxFall) != null;
+	}
+
+	/**
+	 * The same question, answered with the block rather than with a yes.
+	 *
+	 * <p>Knowing there is lava ahead and not knowing where means the only thing that can be
+	 * done about it is to stop. Knowing which square it is means it can be covered.
+	 */
+	public static BlockPos deadlyStepAt(ClientLevel level, LocalPlayer player, double yawDeg,
+	                                    Config cfg, int maxFall) {
 		double rad = Math.toRadians(yawDeg);
 		double fx = -Math.sin(rad), fz = Math.cos(rad);
 		double px = -fz, pz = fx;                 // perpendicular, for the shoulders
@@ -287,12 +298,12 @@ public final class Avoidance {
 				double x = player.getX() + fx * d + px * 0.31 * s;
 				double z = player.getZ() + fz * d + pz * 0.31 * s;
 				BlockPos feet = BlockPos.containing(x, player.getY() + 0.1, z);
-				if (deadly(level.getBlockState(feet), cfg)) return true;
-				if (deadly(level.getBlockState(feet.above()), cfg)) return true;
+				if (deadly(level.getBlockState(feet), cfg)) return feet;
+				if (deadly(level.getBlockState(feet.above()), cfg)) return feet.above();
 				if (holdsWeight(level, feet)) continue;   // standing on it, so nothing below matters
 				for (int down = 1; down <= depth; down++) {
 					BlockPos below = feet.below(down);
-					if (deadly(level.getBlockState(below), cfg)) return true;
+					if (deadly(level.getBlockState(below), cfg)) return below;
 					if (holdsWeight(level, below)) break;
 				}
 				// something solid at chest height is a wall, and whatever is behind it is
@@ -300,7 +311,7 @@ public final class Avoidance {
 				if (solid(level, feet) && solid(level, feet.above())) break;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	/**

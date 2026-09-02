@@ -3,9 +3,11 @@ package com.damia.movrand;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 /**
  * A* over block positions, so the bot can get to a block instead of walking at it.
@@ -15,6 +17,20 @@ import java.util.PriorityQueue;
  * and ceilings, and the difference between the two is a search: this one walks, steps up,
  * drops, and — when it is allowed to — mines through and bridges across, which is the whole
  * reason a route through a building exists at all.
+ *
+ * <p>Two things about the output matter more than the search itself.
+ *
+ * <p>The first is that a step says <em>what kind of move it is</em>, not just where it ends.
+ * A list of positions makes the follower guess at execution time what the search already
+ * knew — was this a step up or a block to break, a drop or a gap to bridge — and every
+ * guess is a fresh chance to disagree with the plan. {@link Kind} is the search handing its
+ * reasoning over instead of throwing it away, and {@link PathMove} is what reads it.
+ *
+ * <p>The second is that the search is resumable. A full expansion is several milliseconds,
+ * which is most of a client tick, and a bot that changes the world for a living replans
+ * often. {@link Search} runs for a slice of a tick and picks up where it left off, so a
+ * route that takes twenty milliseconds to find costs five quiet ticks rather than one
+ * visible stutter.
  *
  * <p>The world is an interface rather than a {@code ClientLevel} for one reason: a search
  * this fiddly needs a test, and a test needs a world you can draw by hand. {@link Level}
@@ -46,8 +62,36 @@ public final class PathFinder {
 		/** Hurts, traps, or teleports on contact. Never entered and never landed on. */
 		boolean hazard(int x, int y, int z);
 
+		/**
+		 * A shut door or gate, which is a way through rather than a wall.
+		 *
+		 * <p>Without this a base is a set of sealed rooms: the route either mines the door or
+		 * decides the room behind it cannot be reached. Baritone has the same special case for
+		 * the same reason — a door is the one solid block that stops being solid if you ask.
+		 */
+		default boolean openable(int x, int y, int z) {
+			return false;
+		}
+
 		/** May be mined through, if mining is allowed at all. */
 		boolean breakable(int x, int y, int z);
+
+		/**
+		 * What breaking this block actually costs, as a multiple of walking one block.
+		 *
+		 * <p>A flat price per broken block is the whole reason a bot tunnels through obsidian
+		 * rather than walking ten blocks round it: at four-blocks-a-swing the wall is cheaper
+		 * than the corridor, and the search is right about that and wrong about everything
+		 * else. Baritone prices a swing in ticks, from the block's hardness and the best tool
+		 * on the bar, so obsidian costs what obsidian costs - hundreds of blocks of walking,
+		 * which is exactly how far it is worth going to avoid one.
+		 *
+		 * <p>The default is 1, so a world with no opinion prices every block the same and the
+		 * search behaves as it always did.
+		 */
+		default double breakCost(int x, int y, int z) {
+			return 1;
+		}
 
 		/**
 		 * Whether breaking this block would let lava out.
@@ -64,6 +108,57 @@ public final class PathFinder {
 		int minY();
 
 		int maxY();
+
+		/**
+		 * Called at the top of every slice of a search.
+		 *
+		 * <p>A search now spans several ticks, and the bot spends those ticks changing the
+		 * world it is searching. Anything remembered by position rather than by block state has
+		 * to be let go of here, or a plan can be built partly on a wall that came down while it
+		 * was being planned.
+		 */
+		default void beginSlice() {
+		}
+	}
+
+	/**
+	 * What one step of a route actually is.
+	 *
+	 * <p>This is the difference between a plan and a list of coordinates. The search knows
+	 * whether a step is a walk, a jump onto a ledge, a block to swing at or a gap to floor —
+	 * it decided that when it priced the move — and the follower has to know the same thing
+	 * to execute it. Handing over only the position means working it out again from the
+	 * world, at a different moment, with different code: two answers to one question, and
+	 * the disagreements between them are exactly what "the bot walked into a hole" is.
+	 */
+	public enum Kind {
+		/** Where the route begins. Never executed. */
+		START,
+		/** Level ground, one block, north/south/east/west. */
+		WALK,
+		/** Level ground, one block, corner-on. */
+		DIAGONAL,
+		/** Up onto a ledge: a jump, then forward. */
+		ASCEND,
+		/** Down off a ledge, one block or several. */
+		DESCEND,
+		/** Forward through something that has to be broken first. */
+		MINE,
+		/** Forward over a gap that has to be floored first. */
+		BRIDGE,
+		/** Straight up, standing on a block placed underfoot. */
+		PILLAR,
+		/** Straight down through a floor that has to be broken first. */
+		DIG_DOWN
+	}
+
+	/**
+	 * One node of a finished route.
+	 *
+	 * @param kind what the move <em>into</em> this position is
+	 * @param cost what that move was priced at, in blocks-walked
+	 */
+	public record Step(int x, int y, int z, Kind kind, double cost) {
 	}
 
 	/** What the search is allowed to do, and what each of those things is worth. */
@@ -100,14 +195,31 @@ public final class PathFinder {
 	}
 
 	/**
-	 * @param steps    feet positions, packed; the first is where the search started
+	 * @param steps    feet positions, in order; the first is where the search started
 	 * @param complete false when the budget ran out and this is only the best partial route
 	 * @param searched how many nodes were expanded, for the status line
 	 */
-	public record Path(List<long[]> steps, boolean complete, int searched, double cost) {
+	public record Path(List<Step> steps, boolean complete, int searched, double cost) {
 
 		public boolean isEmpty() {
 			return steps.size() <= 1;
+		}
+
+		/**
+		 * Already standing somewhere the goal accepts.
+		 *
+		 * <p>Told apart from "no route" on purpose, and it is the single most important
+		 * distinction this class makes. A goal that tests the <em>start</em> position hands
+		 * back one step and calls itself complete — which reads as an empty route to anything
+		 * only counting steps, so the caller replans, gets the same one-step answer, and
+		 * stands perfectly still doing that forever. It is arrival, not failure.
+		 */
+		public boolean atGoal() {
+			return complete && steps.size() <= 1;
+		}
+
+		public Step last() {
+			return steps.getLast();
 		}
 	}
 
@@ -121,10 +233,16 @@ public final class PathFinder {
 	 * shortest route in exchange for expanding far fewer nodes. On a client tick budget that
 	 * is the right trade — a route two blocks longer, found in a tenth of the time.
 	 */
+	// ponytail: weighted A* with a closed set is ε-admissible, so a route can be up to 15%
+	// longer than optimal. Drop the weight to 1.0 if a route ever looks visibly silly; the
+	// search is time-sliced now, so the extra expansions are affordable.
 	private static final double HEURISTIC_WEIGHT = 1.15;
 
 	private static final int[][] SIDES = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 	private static final int[][] CORNERS = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+
+	/** Ticks to walk one block at the vanilla 4.317 m/s, so a swing and a step compare. */
+	public static final double TICKS_PER_BLOCK = 20 / 4.317;
 
 	private PathFinder() {
 	}
@@ -136,6 +254,8 @@ public final class PathFinder {
 		double g;
 		double f;
 		Node from;
+		Kind kind = Kind.START;
+		double edge;
 		/**
 		 * Whether the floor under this position is one the route puts there. Every other node
 		 * stands on the world as it is; a pillar and a bridge stand on their own placed block,
@@ -157,6 +277,109 @@ public final class PathFinder {
 	}
 
 	/**
+	 * A search in progress.
+	 *
+	 * <p>Split out of {@code find} so it can be run a slice at a time. A full expansion of a
+	 * route across a base is several milliseconds and a tick is fifty; doing it in one go is
+	 * a visible stutter every time the bot changes its mind, and it changes its mind whenever
+	 * it breaks something, which is constantly. Run in slices it is invisible, and the budget
+	 * can be far larger than anything that would fit in a single tick.
+	 */
+	public static final class Search {
+		private final World world;
+		private final Goal goal;
+		private final Rules rules;
+		private final int gx, gy, gz;
+		private final Map<Long, Node> seen = new HashMap<>();
+		private final PriorityQueue<Node> open = new PriorityQueue<>();
+		private final Set<Long> closed = new HashSet<>();
+		private final Node start;
+		private Node best;
+		private double bestScore;
+		private Node arrived;
+		private int expanded;
+		private boolean finished;
+
+		Search(World world, int sx, int sy, int sz, int gx, int gy, int gz, Goal goal, Rules rules) {
+			this.world = world;
+			this.goal = goal;
+			this.rules = rules;
+			this.gx = gx;
+			this.gy = gy;
+			this.gz = gz;
+			this.start = new Node(sx, sy, sz);
+			start.g = 0;
+			start.f = heuristic(sx, sy, sz, gx, gy, gz);
+			seen.put(key(sx, sy, sz), start);
+			open.add(start);
+			this.best = start;
+			this.bestScore = Math.sqrt(dist2(sx, sy, sz, gx, gy, gz));
+		}
+
+		/**
+		 * Expand for up to {@code nanoBudget} nanoseconds.
+		 *
+		 * @return true when there is nothing left to do — found, exhausted, or out of nodes
+		 */
+		public boolean advance(long nanoBudget) {
+			if (finished) return true;
+			world.beginSlice();
+			boolean timed = nanoBudget != Long.MAX_VALUE;
+			long deadline = timed ? System.nanoTime() + nanoBudget : 0;
+			int sinceCheck = 0;
+			while (!open.isEmpty() && expanded < rules.maxNodes()) {
+				// the clock is not free either: once every sixty-four nodes is about half a
+				// millisecond of resolution, which is finer than anything here needs
+				if (timed && (++sinceCheck & 63) == 0 && System.nanoTime() >= deadline) return false;
+
+				Node current = open.poll();
+				// A position reached twice is not searched twice. Without this the queue
+				// re-expands everything it has already been through, and a budget meant for a
+				// route across a base is spent several times over on the room it started in.
+				if (!closed.add(key(current.x, current.y, current.z))) continue;
+				expanded++;
+
+				if (goal.reached(current.x, current.y, current.z)) {
+					arrived = current;
+					finished = true;
+					return true;
+				}
+
+				// keep the closest approach, so running out of budget still gets us moving
+				double score = Math.sqrt(dist2(current.x, current.y, current.z, gx, gy, gz));
+				if (score < bestScore) {
+					bestScore = score;
+					best = current;
+				}
+
+				for (Node next : neighbours(world, current, rules)) {
+					long k = key(next.x, next.y, next.z);
+					Node existing = seen.get(k);
+					if (existing != null && existing.g <= next.g) continue;
+					next.f = next.g + heuristic(next.x, next.y, next.z, gx, gy, gz);
+					seen.put(k, next);
+					open.add(next);
+				}
+			}
+			finished = true;
+			return true;
+		}
+
+		public boolean done() {
+			return finished;
+		}
+
+		public int expandedNodes() {
+			return expanded;
+		}
+
+		/** The route as it stands: the real one if it was found, the best partial otherwise. */
+		public Path result() {
+			return arrived != null ? build(arrived, true, expanded) : build(best, false, expanded);
+		}
+	}
+
+	/**
 	 * @param goalRadius how close to the goal counts as arriving — a block being mined is
 	 *                   reached by standing next to it, not inside it
 	 */
@@ -166,47 +389,22 @@ public final class PathFinder {
 	}
 
 	/**
+	 * Run a search to completion. Kept for callers with no tick to spread the work over, and
+	 * for the self-check; the bot itself uses {@link Search} so a plan never costs a frame.
+	 *
 	 * @param goal what counts as arriving; the target coordinates still steer the search,
 	 *             because the heuristic has to point somewhere even when the goal is a test
 	 */
 	public static Path find(World world, int sx, int sy, int sz, int gx, int gy, int gz,
 	                        Goal goal, Rules rules) {
-		Map<Long, Node> seen = new HashMap<>();
-		PriorityQueue<Node> open = new PriorityQueue<>();
+		Search search = begin(world, sx, sy, sz, gx, gy, gz, goal, rules);
+		search.advance(Long.MAX_VALUE);   // no deadline at all, so it runs to the end
+		return search.result();
+	}
 
-		Node start = new Node(sx, sy, sz);
-		start.g = 0;
-		start.f = heuristic(sx, sy, sz, gx, gy, gz);
-		seen.put(key(sx, sy, sz), start);
-		open.add(start);
-
-		Node best = start;
-		double bestScore = heuristic(sx, sy, sz, gx, gy, gz);
-		int expanded = 0;
-
-		while (!open.isEmpty() && expanded < rules.maxNodes()) {
-			Node current = open.poll();
-			expanded++;
-
-			if (goal.reached(current.x, current.y, current.z)) return build(current, true, expanded);
-
-			// keep the closest approach, so running out of budget still gets us moving
-			double score = Math.sqrt(dist2(current.x, current.y, current.z, gx, gy, gz));
-			if (score < bestScore) {
-				bestScore = score;
-				best = current;
-			}
-
-			for (Node next : neighbours(world, current, rules)) {
-				long k = key(next.x, next.y, next.z);
-				Node existing = seen.get(k);
-				if (existing != null && existing.g <= next.g) continue;
-				next.f = next.g + heuristic(next.x, next.y, next.z, gx, gy, gz);
-				seen.put(k, next);
-				open.add(next);
-			}
-		}
-		return build(best, false, expanded);
+	public static Search begin(World world, int sx, int sy, int sz, int gx, int gy, int gz,
+	                           Goal goal, Rules rules) {
+		return new Search(world, sx, sy, sz, gx, gy, gz, goal, rules);
 	}
 
 	private static List<Node> neighbours(World world, Node from, Rules rules) {
@@ -244,11 +442,12 @@ public final class PathFinder {
 			int broken = from.y - 1;
 			if (world.solid(x, broken, z) && world.breakable(x, broken, z)
 					&& !world.leaksLava(x, broken, z)) {
+				double dig = mineCost(world, rules, x, broken, z);
 				for (int y = broken; y >= broken - rules.maxFall(); y--) {
 					if (y - 1 < world.minY()) break;
 					if (world.hazard(x, y, z) || world.hazard(x, y - 1, z)) break;
 					if (world.solid(x, y - 1, z)) {
-						add(out, from, x, y, z, rules.mineCost() + (broken - y) * FALL);
+						add(out, from, x, y, z, dig + (broken - y) * FALL, Kind.DIG_DOWN, false);
 						break;
 					}
 					// the shaft has to be a shaft; the top of it is the block being broken
@@ -269,15 +468,16 @@ public final class PathFinder {
 						|| world.hazard(x, y, z)) {
 					return;
 				}
-				extra += rules.mineCost();
+				extra += mineCost(world, rules, x, y, z);
 			}
-			add(out, from, x, from.y + 1, z, rules.placeCost() + STEP_UP + extra, true);
+			add(out, from, x, from.y + 1, z, rules.placeCost() + STEP_UP + extra, Kind.PILLAR, true);
 		}
 	}
 
 	/** One horizontal move, resolved into whichever of walk / step up / drop / mine it is. */
 	private static void step(World world, Node from, int dx, int dz, double base, Rules rules, List<Node> out) {
 		int x = from.x + dx, z = from.z + dz;
+		Kind level = base == WALK ? Kind.WALK : Kind.DIAGONAL;
 
 		// level ground, or a step up we can jump
 		for (int up = 0; up <= rules.maxStepUp(); up++) {
@@ -285,7 +485,7 @@ public final class PathFinder {
 			if (up > 0 && !clear(world, from.x, from.y + up + 1, from.z, rules)) break; // no headroom to jump
 			if (!standable(world, x, y, z, rules)) continue;
 			if (up > 0 && !passable(world, x, y + 1, z, rules)) continue;
-			add(out, from, x, y, z, base + up * STEP_UP);
+			add(out, from, x, y, z, base + up * STEP_UP, up > 0 ? Kind.ASCEND : level, false);
 			return;
 		}
 
@@ -298,7 +498,7 @@ public final class PathFinder {
 				if (world.solid(x, y, z)) {
 					// solid at the feet means the floor is the block above it
 					if (standable(world, x, y + 1, z, rules)) {
-						add(out, from, x, y + 1, z, base + (down - 1) * FALL);
+						add(out, from, x, y + 1, z, base + (down - 1) * FALL, Kind.DESCEND, false);
 					}
 					break;
 				}
@@ -311,15 +511,17 @@ public final class PathFinder {
 			boolean blockedFeet = !passable(world, x, y, z, rules);
 			boolean blockedHead = !passable(world, x, y + 1, z, rules);
 			if ((blockedFeet || blockedHead) && standableFloor(world, x, y, z, rules)) {
-				int toBreak = (blockedFeet && world.breakable(x, y, z) ? 1 : 0)
-						+ (blockedHead && world.breakable(x, y + 1, z) ? 1 : 0);
+				// each swing priced for the block it actually is, so a route through granite and
+				// a route through obsidian stop being the same route at the same price
+				double dig = (blockedFeet ? mineCost(world, rules, x, y, z) : 0)
+						+ (blockedHead ? mineCost(world, rules, x, y + 1, z) : 0);
 				boolean allBreakable = (!blockedFeet || world.breakable(x, y, z))
 						&& (!blockedHead || world.breakable(x, y + 1, z));
 				// a wall with a lake behind it is not a door, whatever it costs to break
 				boolean floods = (blockedFeet && world.leaksLava(x, y, z))
 						|| (blockedHead && world.leaksLava(x, y + 1, z));
-				if (allBreakable && toBreak > 0 && !floods) {
-					add(out, from, x, y, z, base + toBreak * rules.mineCost());
+				if (allBreakable && dig > 0 && !floods) {
+					add(out, from, x, y, z, base + dig, Kind.MINE, false);
 				}
 			}
 		}
@@ -329,19 +531,30 @@ public final class PathFinder {
 		// against, so a diagonal bridge move is a route the bot walks up to, cannot build,
 		// replans, and walks up to again — which is what "it could not bridge" looks like.
 		if (rules.bridge() && base == WALK && clear(world, x, from.y, z, rules)
-				&& !world.solid(x, from.y - 1, z) && !world.hazard(x, from.y - 1, z)) {
-			add(out, from, x, from.y, z, base + rules.placeCost(), true);
+				&& !world.solid(x, from.y - 1, z)) {
+			// A hazard underneath is allowed on purpose, and it is the whole of how lava gets
+			// covered. Capping it used to be an opportunistic behaviour bolted on beside the
+			// job, which fired when the bot happened to be standing next to some and never when
+			// lava was the thing in the way. A block dropped into lava is a floor, so it belongs
+			// here, where the search decides whether it is worth the placement - and pays double
+			// for it, so dry ground going the same way always wins.
+			double risk = world.hazard(x, from.y - 1, z) ? rules.placeCost() : 0;
+			add(out, from, x, from.y, z, base + rules.placeCost() + risk, Kind.BRIDGE, true);
 		}
 	}
 
-	private static void add(List<Node> out, Node from, int x, int y, int z, double cost) {
-		add(out, from, x, y, z, cost, false);
+	/** What one swing at this block is worth, in blocks walked. */
+	private static double mineCost(World world, Rules rules, int x, int y, int z) {
+		return rules.mineCost() * world.breakCost(x, y, z);
 	}
 
-	private static void add(List<Node> out, Node from, int x, int y, int z, double cost, boolean placed) {
+	private static void add(List<Node> out, Node from, int x, int y, int z, double cost,
+	                        Kind kind, boolean placed) {
 		Node n = new Node(x, y, z);
 		n.from = from;
 		n.g = from.g + cost;
+		n.edge = cost;
+		n.kind = kind;
 		n.standsOnPlaced = placed;
 		out.add(n);
 	}
@@ -357,7 +570,8 @@ public final class PathFinder {
 	 */
 	private static boolean passable(World world, int x, int y, int z, Rules rules) {
 		if (y < world.minY() || y > world.maxY()) return false;
-		return world.topOf(x, y, z) <= STEPPABLE && !world.hazard(x, y, z);
+		if (world.hazard(x, y, z)) return false;
+		return world.topOf(x, y, z) <= STEPPABLE || world.openable(x, y, z);
 	}
 
 	/** How much of a block can be under your feet and still be walked onto without jumping. */
@@ -379,9 +593,11 @@ public final class PathFinder {
 	}
 
 	private static Path build(Node end, boolean complete, int searched) {
-		List<long[]> steps = new ArrayList<>();
+		List<Step> steps = new ArrayList<>();
 		double cost = end.g;
-		for (Node n = end; n != null; n = n.from) steps.add(new long[]{n.x, n.y, n.z});
+		for (Node n = end; n != null; n = n.from) {
+			steps.add(new Step(n.x, n.y, n.z, n.from == null ? Kind.START : n.kind, n.edge));
+		}
 		Collections.reverse(steps);
 		return new Path(steps, complete, searched, cost);
 	}
@@ -396,7 +612,8 @@ public final class PathFinder {
 	 */
 	public static int groundY(World world, int x, int y, int z, int maxDrop) {
 		for (int d = 0; d <= maxDrop; d++) {
-			if (world.solid(x, y - d - 1, z)) return y - d;
+			// anything that holds weight is a floor, slab and carpet included
+			if (world.topOf(x, y - d - 1, z) > 0) return y - d;
 		}
 		return y;
 	}
@@ -417,46 +634,160 @@ public final class PathFinder {
 
 	// -------------------------------------------------------------- adapter
 
-	/** The real world, seen through the four questions the search actually asks. */
+	/**
+	 * The real world, seen through the questions the search actually asks.
+	 *
+	 * <p>Everything here is cached, and that is not a micro-optimisation. A search expands
+	 * thousands of positions and asks four or five questions about each, so the honest
+	 * version is a quarter of a million chunk lookups and voxel-shape resolutions to plan one
+	 * route. Two things make that nearly free. The first is that a base is built out of a few
+	 * dozen distinct block states, and every question except "is there lava next door" is
+	 * answered by the state alone — so they are worked out once per state and then read from
+	 * a map. The second is that consecutive questions are nearly always about the same
+	 * position, so one remembered lookup removes most of the rest. Baritone does both, for
+	 * the same reason, in {@code PrecomputedData} and {@code BlockStateInterface}.
+	 */
 	public static final class Level implements World {
 		private final net.minecraft.client.multiplayer.ClientLevel level;
 		private final Config cfg;
+		/** For pricing a swing with the tools actually on the bar. Null means "no opinion". */
+		private final net.minecraft.client.player.LocalPlayer player;
+		/** What the route is allowed to break, or null for anything breakable. */
+		private final java.util.Set<net.minecraft.world.level.block.Block> mayBreak;
+
+		/** Reused rather than allocated: a quarter million BlockPos a plan is a quarter million too many. */
+		private final net.minecraft.core.BlockPos.MutableBlockPos cursor =
+				new net.minecraft.core.BlockPos.MutableBlockPos();
+		private int lastX = Integer.MIN_VALUE, lastY, lastZ;
+		private net.minecraft.world.level.block.state.BlockState lastState;
+
+		// Per-state answers. Block states are interned, so these are identity lookups in all
+		// but name, and every one of them replaces a chunk fetch and a shape resolution.
+		private final java.util.HashMap<net.minecraft.world.level.block.state.BlockState, Double>
+				tops = new java.util.HashMap<>();
+		private final java.util.HashMap<net.minecraft.world.level.block.state.BlockState, Boolean>
+				hazards = new java.util.HashMap<>();
+		private final java.util.HashMap<net.minecraft.world.level.block.state.BlockState, Boolean>
+				breakables = new java.util.HashMap<>();
+		private final java.util.HashMap<net.minecraft.world.level.block.state.BlockState, Boolean>
+				doors = new java.util.HashMap<>();
+		private final java.util.HashMap<net.minecraft.world.level.block.state.BlockState, Double>
+				costs = new java.util.HashMap<>();
 
 		public Level(net.minecraft.client.multiplayer.ClientLevel level, Config cfg) {
+			this(level, cfg, null, null);
+		}
+
+		/**
+		 * @param player   whose hotbar decides what a swing costs; null prices every block alike
+		 * @param mayBreak the only blocks the route may break through, or null for anything
+		 */
+		public Level(net.minecraft.client.multiplayer.ClientLevel level, Config cfg,
+		             net.minecraft.client.player.LocalPlayer player,
+		             java.util.Set<net.minecraft.world.level.block.Block> mayBreak) {
 			this.level = level;
 			this.cfg = cfg;
+			this.player = player;
+			this.mayBreak = mayBreak;
+		}
+
+		/**
+		 * The state at a position, remembering the last one asked for.
+		 *
+		 * <p>The search asks four questions about a position in a row and then moves on, so a
+		 * single remembered answer removes three quarters of the chunk lookups on its own.
+		 */
+		private net.minecraft.world.level.block.state.BlockState at(int x, int y, int z) {
+			if (x == lastX && y == lastY && z == lastZ && lastState != null) return lastState;
+			cursor.set(x, y, z);
+			lastState = level.getBlockState(cursor);
+			lastX = x;
+			lastY = y;
+			lastZ = z;
+			return lastState;
+		}
+
+		@Override
+		public void beginSlice() {
+			// Only the position memo. What is cached per block state stays true however much
+			// the world moves: a slab is half a block tall whenever anybody asks.
+			lastX = Integer.MIN_VALUE;
+			lastState = null;
 		}
 
 		@Override
 		public boolean solid(int x, int y, int z) {
-			net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(x, y, z);
-			return !level.getBlockState(pos).getCollisionShape(level, pos).isEmpty();
+			return topOf(x, y, z) > 0;
+		}
+
+		@Override
+		public double topOf(int x, int y, int z) {
+			var state = at(x, y, z);
+			Double cached = tops.get(state);
+			if (cached != null) return cached;
+			var shape = state.getCollisionShape(level, cursor);
+			double top = shape.isEmpty() ? 0 : shape.max(net.minecraft.core.Direction.Axis.Y);
+			tops.put(state, top);
+			return top;
 		}
 
 		@Override
 		public boolean hazard(int x, int y, int z) {
 			// the same definition the steering uses, so a route never leads somewhere the
 			// dodge would immediately refuse to walk into
-			return Avoidance.hazardAt(level, new net.minecraft.core.BlockPos(x, y, z), cfg);
+			var state = at(x, y, z);
+			Boolean cached = hazards.get(state);
+			if (cached != null) return cached;
+			boolean bad = Avoidance.hazardAt(level, cursor, cfg);
+			hazards.put(state, bad);
+			return bad;
 		}
 
 		@Override
 		public boolean breakable(int x, int y, int z) {
-			net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(x, y, z);
-			return BlockTargets.breakable(level.getBlockState(pos), level, pos);
+			var state = at(x, y, z);
+			Boolean cached = breakables.get(state);
+			if (cached != null) return cached;
+			boolean can = BlockTargets.breakable(state, level, cursor)
+					// "Only break what I picked" is a route restriction, not a target one.
+					// Somebody who ticked redstone and containers did not ask for a hole through
+					// the obsidian wall on the way to them, and the search will happily take one
+					// if nothing says otherwise.
+					&& (mayBreak == null || mayBreak.contains(state.getBlock()));
+			breakables.put(state, can);
+			return can;
 		}
 
 		@Override
-		public double topOf(int x, int y, int z) {
-			net.minecraft.core.BlockPos pos = new net.minecraft.core.BlockPos(x, y, z);
-			net.minecraft.world.phys.shapes.VoxelShape shape =
-					level.getBlockState(pos).getCollisionShape(level, pos);
-			return shape.isEmpty() ? 0 : shape.max(net.minecraft.core.Direction.Axis.Y);
+		public double breakCost(int x, int y, int z) {
+			if (player == null) return 1;
+			var state = at(x, y, z);
+			Double cached = costs.get(state);
+			if (cached != null) return cached;
+			double ticks = Bot.breakTicks(player, level, cursor, state);
+			// in blocks walked, so it is comparable with everything else the search adds up
+			double cost = Math.max(0.5, Math.min(80, ticks / TICKS_PER_BLOCK));
+			costs.put(state, cost);
+			return cost;
+		}
+
+		@Override
+		public boolean openable(int x, int y, int z) {
+			var state = at(x, y, z);
+			Boolean cached = doors.get(state);
+			if (cached != null) return cached;
+			boolean door = Bot.opensByHand(level, cursor);
+			doors.put(state, door);
+			return door;
 		}
 
 		@Override
 		public boolean leaksLava(int x, int y, int z) {
-			return Avoidance.floodsWhenBroken(level, new net.minecraft.core.BlockPos(x, y, z));
+			// The one question that genuinely depends on the neighbours rather than the state,
+			// so the one that cannot be cached by state. It is also asked only about blocks the
+			// route is considering breaking, which is a small fraction of what it looks at.
+			at(x, y, z);
+			return Avoidance.floodsWhenBroken(level, cursor);
 		}
 
 		@Override
@@ -476,32 +807,56 @@ public final class PathFinder {
 	static class Sketch implements World {
 		private final String[][] layers;
 		private final int baseY;
+		/**
+		 * Whether everything outside the drawing is solid rock rather than open sky.
+		 *
+		 * <p>Open by default, which is usually what a test means and occasionally the opposite:
+		 * a room drawn as sealed is only sealed if the search cannot walk off the edge of the
+		 * paper, drop onto the implied floor underneath, and stroll round the outside of it.
+		 */
+		private final boolean bounded;
 
-		/** '#' solid, '~' hazard, '.' air, 'o' solid but unbreakable, '_' a bottom slab. */
+		/**
+		 * '#' solid, '~' hazard, '.' air, 'o' solid but unbreakable, '_' a bottom slab,
+		 * 'X' solid and breakable but forty times the price (obsidian, in other words),
+		 * 'D' a shut door: solid, unbreakable, and a way through all the same.
+		 */
 		Sketch(int baseY, String[]... layers) {
+			this(false, baseY, layers);
+		}
+
+		Sketch(boolean bounded, int baseY, String[]... layers) {
 			this.baseY = baseY;
 			this.layers = layers;
+			this.bounded = bounded;
 		}
 
 		private char at(int x, int y, int z) {
 			int ly = y - baseY;
-			if (ly < 0 || ly >= layers.length) return ly < 0 ? '#' : '.';
+			if (ly < 0) return '#';
+			char outside = bounded ? 'o' : '.';
+			if (ly >= layers.length) return outside;
 			String[] rows = layers[ly];
-			if (z < 0 || z >= rows.length) return '.';
+			if (z < 0 || z >= rows.length) return outside;
 			String row = rows[z];
-			if (x < 0 || x >= row.length()) return '.';
+			if (x < 0 || x >= row.length()) return outside;
 			return row.charAt(x);
 		}
 
 		@Override
 		public boolean solid(int x, int y, int z) {
 			char c = at(x, y, z);
-			return c == '#' || c == 'o';
+			return c == '#' || c == 'o' || c == 'X' || c == 'D';
 		}
 
 		@Override
 		public boolean hazard(int x, int y, int z) {
 			return at(x, y, z) == '~';
+		}
+
+		@Override
+		public boolean openable(int x, int y, int z) {
+			return at(x, y, z) == 'D';
 		}
 
 		@Override
@@ -511,7 +866,14 @@ public final class PathFinder {
 
 		@Override
 		public boolean breakable(int x, int y, int z) {
-			return at(x, y, z) == '#';
+			char c = at(x, y, z);
+			return c == '#' || c == 'X';
+		}
+
+		/** 'X' is the expensive one: breakable, and forty blocks of walking to do it. */
+		@Override
+		public double breakCost(int x, int y, int z) {
+			return at(x, y, z) == 'X' ? 40 : 1;
 		}
 
 		@Override
@@ -523,6 +885,16 @@ public final class PathFinder {
 		public int maxY() {
 			return baseY + layers.length;
 		}
+	}
+
+	private static boolean visits(Path p, int x, int y, int z) {
+		for (Step s : p.steps()) if (s.x() == x && s.y() == y && s.z() == z) return true;
+		return false;
+	}
+
+	private static boolean has(Path p, Kind kind) {
+		for (Step s : p.steps()) if (s.kind() == kind) return true;
+		return false;
 	}
 
 	/**
@@ -540,12 +912,18 @@ public final class PathFinder {
 		Path p = find(room, 1, 1, 1, 3, 1, 3, 0.5, walk);
 		assert p.complete() : "a walk round one pillar should have been found";
 		assert !p.isEmpty() : "the path is empty";
-		assert p.steps().getFirst()[0] == 1 && p.steps().getFirst()[2] == 1 : "the path must start where we are";
-		long[] last = p.steps().getLast();
-		assert last[0] == 3 && last[1] == 1 && last[2] == 3 : "the path must end at the goal";
+		assert p.steps().getFirst().x() == 1 && p.steps().getFirst().z() == 1
+				: "the path must start where we are";
+		assert p.steps().getFirst().kind() == Kind.START : "the first step is not a move";
+		Step last = p.last();
+		assert last.x() == 3 && last.y() == 1 && last.z() == 3 : "the path must end at the goal";
 		// and it must actually go round the pillar at (2,2) rather than through it
-		for (long[] s : p.steps()) {
-			assert !(s[0] == 2 && s[2] == 2) : "the route walked through a solid pillar";
+		assert !visits(p, 2, 1, 2) : "the route walked through a solid pillar";
+		// every step after the first says what it is, and on open floor that is a walk
+		for (int i = 1; i < p.steps().size(); i++) {
+			assert p.steps().get(i).kind() == Kind.WALK
+					: "a level step on open floor came back as " + p.steps().get(i).kind();
+			assert p.steps().get(i).cost() > 0 : "a step was priced at nothing";
 		}
 
 		// Two sealed cells with a wall between them. Floor everywhere, so the only thing
@@ -559,9 +937,9 @@ public final class PathFinder {
 		Path dug = find(sealed, 1, 1, 1, 3, 1, 1, 0.5, mining);
 		assert dug.complete() : "mining should have found a way through the wall";
 		assert dug.cost() >= 2 * mining.mineCost() : "digging through two blocks cost " + dug.cost();
-		boolean wentThroughTheWall = false;
-		for (long[] s : dug.steps()) if (s[0] == 2 && s[2] == 1) wentThroughTheWall = true;
-		assert wentThroughTheWall : "the route claimed to mine out without entering the wall";
+		assert visits(dug, 2, 1, 1) : "the route claimed to mine out without entering the wall";
+		// and it says so: the follower has to know this step is a swing, not a stroll
+		assert has(dug, Kind.MINE) : "a route through a wall reported no mining step";
 
 		// A hazard is never crossed, even when it is the only straight line.
 		String[] lavaFloor = {"#####", "#####", "##~##", "#####", "#####"};
@@ -569,9 +947,7 @@ public final class PathFinder {
 		Sketch lava = new Sketch(0, lavaFloor, open, open);
 		Path round = find(lava, 2, 1, 1, 2, 1, 3, 0.5, walk);
 		assert round.complete() : "there is a way round the lava";
-		for (long[] s : round.steps()) {
-			assert !(s[0] == 2 && s[2] == 2 && s[1] == 1) : "the route stepped into lava";
-		}
+		assert !visits(round, 2, 1, 2) : "the route stepped into lava";
 
 		// A drop is a move; a cliff taller than the limit is not.
 		Rules shortFall = new Rules(false, false, false, 2, 1, 4, 3, 20000);
@@ -592,16 +968,30 @@ public final class PathFinder {
 		Rules bridging = new Rules(false, true, true, 3, 1, 4, 3, 20000);
 		Path across = find(chasm, 2, 1, 1, 2, 1, 3, 0.5, bridging);
 		assert across.complete() : "a one block gap with a bridge allowed should be crossable";
-		long[] previous = null;
-		for (long[] s : across.steps()) {
+		Step previous = null;
+		for (Step s : across.steps()) {
 			if (previous != null) {
-				boolean floored = chasm.solid((int) s[0], (int) s[1] - 1, (int) s[2]);
-				boolean diagonal = s[0] != previous[0] && s[2] != previous[2];
+				boolean floored = chasm.solid(s.x(), s.y() - 1, s.z());
+				boolean diagonal = s.x() != previous.x() && s.z() != previous.z();
 				assert floored || !diagonal
 						: "a diagonal step onto empty air is a bridge that cannot be built";
 			}
 			previous = s;
 		}
+
+		// A trench too wide to walk round and too deep to hop into is bridged, and the route
+		// says so — the follower has to know to stop at the edge and put a block down, and
+		// working that out again from the world is how a bot walks into the hole it planned
+		// to build over.
+		String[] trench = {"#####", "#####", ".....", "#####", "#####"};
+		Rules noFalling = new Rules(false, true, false, 0, 1, 4, 3, 20000);
+		Path built = find(new Sketch(0, trench, air, air), 2, 1, 1, 2, 1, 3, 0.5, noFalling);
+		assert built.complete() : "a trench with a bridge allowed should be crossable";
+		assert has(built, Kind.BRIDGE) : "a route over a trench reported no bridging step";
+		// and it is the placing that made it possible, not the walking
+		assert find(new Sketch(0, trench, air, air), 2, 1, 1, 2, 1, 3, 0.5,
+				new Rules(false, false, false, 0, 1, 4, 3, 20000)).isEmpty()
+				: "a trench was crossed with nothing to place in it";
 
 		// A wall with lava behind it is not a door, however cheap breaking it looks. The same
 		// two cells as above, and the only difference is that every wall is now holding
@@ -623,22 +1013,78 @@ public final class PathFinder {
 		Sketch paved = new Sketch(0, floor, slabRow, headroom, headroom);
 		Path paved2 = find(paved, 1, 1, 1, 3, 1, 3, 0.5, walk);
 		assert paved2.complete() : "a slab floor should be walkable";
-		for (long[] s : paved2.steps()) {
-			assert s[1] == 1 : "the route left the slab floor for y" + s[1] + ", which is mid-air";
+		for (Step s : paved2.steps()) {
+			assert s.y() == 1 : "the route left the slab floor for y" + s.y() + ", which is mid-air";
 		}
 		// and the search still refuses to walk into something that genuinely fills the space
 		Sketch cubes = new Sketch(0, floor, walls, walls);
-		assert find(cubes, 1, 1, 1, 2, 1, 2, 0.5, walk).steps().stream()
-				.noneMatch(n -> n[0] == 2 && n[2] == 2) : "a full cube stopped being a wall";
+		assert !visits(find(cubes, 1, 1, 1, 2, 1, 2, 0.5, walk), 2, 1, 2)
+				: "a full cube stopped being a wall";
+
+		// What a broken block costs has to be what breaking THAT block costs. A flat price is
+		// how a bot ends up with a tunnel through the obsidian wall it was asked to walk round:
+		// at four-blocks-a-swing the wall is cheaper than the corridor, and the search is not
+		// wrong about that, it is badly informed. Here the direct line is one 'X' and the way
+		// round is a handful of steps, so the price is the only thing deciding it.
+		String[] yard = {"#######", "#######", "#######"};
+		String[] gappyWall = {".......", "..XXX..", "......."};
+		String[] solidWall = {".......", "ooXXXoo", "......."};
+		String[] openAir = {".......", ".......", "......."};
+		Path detour = find(new Sketch(0, yard, gappyWall, openAir), 3, 1, 0, 3, 1, 2, 0.5, mining);
+		assert detour.complete() : "there is a way round the expensive wall and it was not found";
+		for (Step n : detour.steps()) {
+			assert !(n.y() == 1 && n.z() == 1 && n.x() >= 2 && n.x() <= 4)
+					: "the route went through the expensive wall at " + n.x() + "," + n.y() + "," + n.z();
+		}
+		// and it is a price, not a ban: seal the way round and the wall is the route again
+		assert find(new Sketch(0, yard, solidWall, openAir), 3, 1, 0, 3, 1, 2, 0.5, mining).complete()
+				: "with no way round, an expensive wall is still a way through";
+
+		// Lava is a hole that happens to kill, so a route across it is a placed block like the
+		// route across any other gap. This is the whole of how liquid gets covered: it used to
+		// be a behaviour standing beside the job, and the two things it needed to fire were so
+		// nearly incompatible that it almost never did.
+		Rules onlyPlacing = new Rules(false, true, false, 3, 1, 4, 3, 5000);
+		String[] moatFloor = {"###", "~~~", "###"};
+		String[] moatAir = {"...", "...", "..."};
+		Sketch moat = new Sketch(true, 0, moatFloor, moatAir, moatAir);
+		Path over = find(moat, 1, 1, 0, 1, 1, 2, 0.5, onlyPlacing);
+		assert over.complete() : "a one-block lava moat should be bridged, not stared at";
+		assert has(over, Kind.BRIDGE) : "the block over the lava was not reported as a placement";
+		for (Step n : over.steps()) {
+			assert !moat.hazard(n.x(), n.y(), n.z())
+					: "the route stands inside the lava at " + n.x() + "," + n.y() + "," + n.z();
+		}
+		// and never waded into: the block goes on top of it, the feet never go in it
+		assert find(moat, 1, 1, 0, 1, 1, 2, 0.5, walk).isEmpty()
+				: "with nothing to place, lava is not a route";
+
+		// A shut door is the one solid block that stops being solid if you ask. Read as a wall
+		// it is worse than an obstacle: with the route only allowed to break what was selected,
+		// every room in a base with its door shut is a room the bot decides it cannot reach.
+		String[] doorway = {".......", "ooDDDoo", "......."};
+		Path through = find(new Sketch(true, 0, yard, doorway, openAir), 3, 1, 0, 3, 1, 2, 0.5, walk);
+		assert through.complete() : "a shut door should be a way through, not a wall";
+		// and a wall really is one: same room, same search, no handle
+		assert find(new Sketch(true, 0, yard, solidWall, openAir), 3, 1, 0, 3, 1, 2, 0.5, walk).isEmpty()
+				: "without mining or a door there is no way out of a sealed room";
 
 		// A goal is a test, not a radius, and the test is what stops a search declaring
 		// victory four blocks from the target with a wall in between.
 		Path fussy = find(room, 1, 1, 1, 3, 1, 3, (x, y, z) -> x == 3 && y == 1 && z == 3, walk);
 		assert fussy.complete() : "an exact goal in an open room should have been reached";
-		long[] end = fussy.steps().getLast();
-		assert end[0] == 3 && end[1] == 1 && end[2] == 3 : "the exact goal was not where it stopped";
+		assert fussy.last().x() == 3 && fussy.last().y() == 1 && fussy.last().z() == 3
+				: "the exact goal was not where it stopped";
 		Path never = find(room, 1, 1, 1, 3, 1, 3, (x, y, z) -> false, walk);
 		assert !never.complete() : "a goal nothing satisfies was somehow satisfied";
+
+		// Standing on the goal already. This is one step, and it is complete, and telling it
+		// apart from "no route" is the whole difference between a bot that gets on with the
+		// job and one that replans the same empty answer twenty times a second forever.
+		Path here = find(room, 1, 1, 1, 1, 1, 1, 0.5, walk);
+		assert here.complete() && here.isEmpty() : "a search from the goal should be a complete non-move";
+		assert here.atGoal() : "already standing on the goal did not report as arrival";
+		assert !never.atGoal() : "a failed search reported as arrival";
 
 		// One storey is not a base. Digging down through a floor and pillaring up through a
 		// ceiling are the two moves that make the rest of a building reachable at all, so the
@@ -661,19 +1107,31 @@ public final class PathFinder {
 		Path sunk = find(storeys, 1, 3, 1, 1, 1, 1, 0.5, storeyRules);
 		assert sunk.complete() : "digging down through the floor was never found";
 		assert sunk.cost() >= storeyRules.mineCost() : "going down cost less than the block it breaks";
+		assert has(sunk, Kind.DIG_DOWN) : "the route down did not report digging down";
 
 		Path climbed = find(storeys, 1, 1, 1, 1, 3, 1, 0.5, storeyRules);
 		assert climbed.complete() : "pillaring up through the ceiling was never found";
 		assert climbed.cost() >= storeyRules.placeCost() + storeyRules.mineCost()
 				: "going up cost less than the block it places and the one it breaks";
-		for (long[] s : climbed.steps()) {
-			assert s[0] == 1 && s[2] == 1 : "the only column there is, and the route left it";
+		assert has(climbed, Kind.PILLAR) : "the route up did not report pillaring";
+		for (Step s : climbed.steps()) {
+			assert s.x() == 1 && s.z() == 1 : "the only column there is, and the route left it";
 		}
 		// and every step of it is one block at a time, which is what a pillar is
 		for (int i = 1; i < climbed.steps().size(); i++) {
-			assert climbed.steps().get(i)[1] - climbed.steps().get(i - 1)[1] == 1
+			assert climbed.steps().get(i).y() - climbed.steps().get(i - 1).y() == 1
 					: "a pillar went up more than one block in a step";
 		}
+
+		// A step up onto a ledge says so, because the follower has to jump for it and the
+		// world at execution time cannot tell a ledge apart from a wall it should mine.
+		Sketch ledge = new Sketch(0,
+				new String[]{"###", "###", "###"},
+				new String[]{"...", ".#.", "..."},
+				new String[]{"...", "...", "..."},
+				new String[]{"...", "...", "..."});
+		Path up = find(ledge, 1, 1, 0, 1, 2, 1, (x, y, z) -> x == 1 && y == 2 && z == 1, walk);
+		assert up.complete() && has(up, Kind.ASCEND) : "stepping onto a ledge was not an ascend";
 
 		// Feet in the air: the start is snapped down to whatever is under it, or a plan made
 		// mid-step expands nothing and reads as "that block is unreachable".
@@ -687,6 +1145,19 @@ public final class PathFinder {
 		Path partial = find(room, 1, 1, 1, 400, 1, 400, 0.5, tiny);
 		assert !partial.complete() : "that goal is not reachable";
 		assert partial.searched() <= 500 : "the node budget was ignored: " + partial.searched();
+
+		// Resuming. A search run a slice at a time has to arrive at the same answer as one run
+		// in a single go, or a plan means something different depending on how busy the client
+		// was when it was made.
+		Search sliced = begin(room, 1, 1, 1, 3, 1, 3, within(0.5, 3, 1, 3), walk);
+		int slices = 0;
+		while (!sliced.advance(1) && slices++ < 100_000) {
+			// one nanosecond at a time, which is as adversarial as slicing gets
+		}
+		assert sliced.done() : "a sliced search never finished";
+		Path resumed = sliced.result();
+		assert resumed.complete() : "slicing lost the route";
+		assert resumed.steps().equals(p.steps()) : "a sliced search found a different route";
 
 		// packing must round-trip the coordinates a real world uses
 		assert key(0, 0, 0) != key(1, 0, 0) && key(0, 0, 0) != key(0, 1, 0) && key(0, 0, 0) != key(0, 0, 1)
