@@ -58,7 +58,7 @@ Several pieces carry runnable self-checks. They run on the real classpath, with 
 | --- | --- |
 | `Rng` | the randomisation distributions have the shapes they claim |
 | `Human` | the view wobble hits the amplitude you asked for, can never snap, an eased turn respects its rate limit, and the camera filter never overshoots, stalls or takes the long way round zero |
-| `AreaCoverage` | every route finishes N chunks in exactly N targets |
+| `AreaCoverage` | every route finishes N chunks in exactly N targets, and scout finishes them in N/(2r+1)² stops |
 | `Journal` | dedupe, CSV quoting, search, dimension listing, log-once, and that a stop right after a start is not swallowed |
 | `WorldBounds` | a border's span and chunk count, including one smaller than the smallest map |
 | `Deaths` | the cause ladder, and that lava outranks a fall outranks fire outranks a nearby mob |
@@ -309,7 +309,7 @@ needed:
 Coverage is also only written to disk when it has actually changed, since a swept area of
 that size serialises to megabytes and that was happening on every menu close.
 
-Five routes. **Organic** (the default) picks randomly among the nearest few unvisited
+Six routes. **Organic** (the default) picks randomly among the nearest few unvisited
 chunks and aims at a random point inside the one it chose, so the path wanders the way a
 person searching a region wanders while still converging on full coverage — every route is
 self-checked to finish in exactly one target per chunk. **Serpentine** is the fastest and
@@ -318,6 +318,17 @@ looks the most like a machine. All of the ordinary randomisation keeps running o
 Chunks the container scan has already read count as covered without walking into them, so
 a sweep set up for finding bases finishes far quicker than one that has to visit every
 chunk centre. Progress survives a restart, and is discarded if you move the area.
+
+**Scout** is that idea taken to its conclusion. If a scan reads every chunk within eight of
+you, walking the ninth is the only thing that finds anything new — so the route visits only
+the points whose scan squares tile the area, spread evenly so the last row lands inside it
+rather than hanging off the edge. A 512-chunk area is 262,144 chunks and 961 stops. The
+randomisation is the organic route's: a weighted pick among the nearest few stops rather
+than always the closest, a random point inside the chosen chunk, and everything the walk
+itself is already doing over the several hundred blocks between them. Whatever the squares
+miss — the corners of a circular area, chunks an obstacle kept it out of — is mopped up
+organically at the end. With the scan credit turned off there is nothing to space the stops
+by, and it falls back to the organic route rather than stalling.
 
 ### Go to
 Type an X and Z (or press **Use my position** to capture where you stand). The mod steers

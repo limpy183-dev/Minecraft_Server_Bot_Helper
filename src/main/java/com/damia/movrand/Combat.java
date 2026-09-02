@@ -5,6 +5,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.monster.Creeper;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -76,26 +77,47 @@ public final class Combat {
 		double distance = Math.sqrt(target.distanceToSqr(player));
 		String name = target.getName().getString();
 
-		// Losing badly is not a fight, it is a death. Back off and let the guards decide.
+		double[] look = Bot.aimAt(player, aimPointOn(target));
+		Vec3 away = player.position().subtract(target.position());
+		double awayYaw = away.x * away.x + away.z * away.z > 1e-6
+				? Math.toDegrees(Math.atan2(-away.x, away.z)) : player.getYRot();
+
+		// Losing badly is not a fight, it is a death. Back off and let the guards decide -
+		// facing it the whole way, because turning your back on something is how you stop
+		// seeing whether it is still following, and because a shield only works forwards.
 		if (cfg.combatRetreat && player.getHealth() <= cfg.combatRetreatHealth) {
-			Vec3 away = player.position().subtract(target.position());
-			double yaw = Math.toDegrees(Math.atan2(-away.x, away.z));
-			steer.lookAt(yaw, 0);
-			steer.forward = true;
+			steer.lookAt(look[0], 0);
+			steer.moveTowards(awayYaw);
 			steer.sprint = true;
+			if (cfg.combatUseShield && hasShield(player)) steer.use = true;
 			status = "backing away from " + name;
 			return true;
 		}
 
-		double[] look = Bot.aimAt(player, aimPointOn(target));
 		steer.lookAt(look[0], look[1]);
 
 		// a shield is worth raising while closing the distance, not while swinging
 		if (cfg.combatUseShield && hasShield(player) && distance > 2.5) steer.use = true;
 
+		// A creeper is not a thing to stand next to between swings. Hit it, back out past the
+		// blast while the cooldown runs, come back in - which is also how a person fights one.
+		if (target instanceof Creeper && distance < CREEPER_BLAST && swingCooldown > 0) {
+			steer.moveTowards(awayYaw);
+			status = "backing off %s".formatted(name);
+			return true;
+		}
+
 		if (distance > player.entityInteractionRange()) {
-			steer.forward = cfg.combatChase;
-			steer.sprint = cfg.combatChase;
+			if (!cfg.combatChase) {
+				// Not going to walk to it, so there is nothing to do about it. Standing in the
+				// open staring at a skeleton until it wanders off is not a fight, it is a stall
+				// - and every tick spent here is a tick the job does not get.
+				steer.clear();
+				status = "%s is %.1f blocks off".formatted(name, distance);
+				return false;
+			}
+			steer.moveTowards(look[0]);
+			steer.sprint = true;
 			status = "closing on %s (%.1f blocks)".formatted(name, distance);
 			return true;
 		}
@@ -151,6 +173,12 @@ public final class Combat {
 	}
 
 	private boolean counts(LocalPlayer player, Entity e) {
+		// Swinging at something through a wall is not a fight. The server refuses the hit, the
+		// swing lands on nothing, and because a fight outranks the job the bot stands in the
+		// corridor doing that until the mob wanders off. Whatever cannot be seen cannot be
+		// fought, and the retreat and the damage guard are what answer it instead.
+		if (!player.hasLineOfSight(e)) return false;
+
 		boolean recentlyHurt = sinceHurt <= cfg.combatMemorySec * 20;
 		if (e instanceof Player) {
 			if (!cfg.combatFightPlayers) return false;
@@ -167,6 +195,22 @@ public final class Combat {
 
 	private static boolean hasShield(LocalPlayer player) {
 		return player.getOffhandItem().is(Items.SHIELD);
+	}
+
+	/** Blast radius plus a step. Inside this, a creeper going off takes most of a health bar. */
+	static final double CREEPER_BLAST = 4.0;
+
+	/**
+	 * The best weapon on the hotbar, scored. Zero means there is nothing here to fight with,
+	 * which is one of the few honest reasons to walk away from a fight rather than have it.
+	 */
+	public static double bestWeaponScore(LocalPlayer player) {
+		Inventory inv = player.getInventory();
+		double best = 0;
+		for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
+			best = Math.max(best, weaponScore(inv.getItem(slot)));
+		}
+		return best;
 	}
 
 	/** The hotbar slot that hits hardest, judged by what it does to a zombie's worth of health. */

@@ -677,17 +677,31 @@ public final class ConfigScreen extends Screen {
 
 		add(new Section("How it walks"));
 		add(new Cycle<>("Route", Arrays.asList(AreaCoverage.Route.values()), r -> r.label,
-				() -> cfg.areaRoute, v -> cfg.areaRoute = v)
-				.tip("Organic picks randomly among the nearest few chunks — covers efficiently without a straight line in sight."));
+				() -> cfg.areaRoute, v -> {
+			cfg.areaRoute = v;
+			build();
+		})
+				.tip("Organic picks randomly among the nearest few chunks — covers efficiently without a straight line in sight. "
+						+ "Scout walks only far enough apart for the container scans to touch, which finds the same "
+						+ "storage for a fraction of the walking."));
 		flag("Serpentine route");
+		add(new Note(cfg.areaRoute == AreaCoverage.Route.SCOUT && !(cfg.areaUseScanRadius && cfg.containerScanEnabled)
+						? "Scout needs the scan credit below — without it there is nothing to space the stops by."
+						: AreaCoverage.Route.values()[Math.max(0,
+						Arrays.asList(AreaCoverage.Route.values()).indexOf(cfg.areaRoute))].tip,
+				cfg.areaRoute == AreaCoverage.Route.SCOUT && !(cfg.areaUseScanRadius && cfg.containerScanEnabled)
+						? Ui.WARN : Ui.TEXT_FAINT));
 		add(Slider.ints("Chunks to choose between", 1, 32,
 				() -> cfg.areaRouteLookahead, v -> cfg.areaRouteLookahead = v)
-				.tip("Organic route only. Higher wanders more."));
+				.tip("Organic and scout routes only. Higher wanders more."));
 		add(new Slider("Scatter inside a chunk", 0, 7.5, 0.5, 1, " blocks",
 				() -> cfg.areaTargetJitter, v -> cfg.areaTargetJitter = v)
 				.tip("Aims at a random point in the chunk instead of dead centre."));
-		add(new Toggle("Count scanned chunks as covered", () -> cfg.areaUseScanRadius, v -> cfg.areaUseScanRadius = v)
-				.tip("If the container scan already read a chunk, there is no reason to walk into it."));
+		add(new Toggle("Count scanned chunks as covered", () -> cfg.areaUseScanRadius, v -> {
+			cfg.areaUseScanRadius = v;
+			build();
+		}).tip("If the container scan already read a chunk, there is no reason to walk into it. "
+				+ "This is also what the scout route spaces its stops by."));
 		add(new Slider("Steer back when this far outside", 8, 256, 4, 0, " blocks",
 				() -> cfg.areaLeashBlocks, v -> cfg.areaLeashBlocks = v));
 
@@ -1540,6 +1554,11 @@ public final class ConfigScreen extends Screen {
 						+ "way — that loop is closed where the message is printed."));
 		add(new Toggle("Also match my own name", () -> cfg.chatKeywordMatchOwnName, v -> cfg.chatKeywordMatchOwnName = v)
 				.tip("Matches both the in-game name and the account name."));
+		add(new Toggle("Ignore my own messages and advancements", () -> cfg.chatIgnoreSelfAndAdvancements,
+				v -> cfg.chatIgnoreSelfAndAdvancements = v)
+				.tip("Your name is in every advancement you earn and every line you type, and "
+						+ "neither is somebody talking about you. Only the name match is dropped "
+						+ "for those - a keyword in them still counts."));
 		add(reaction("Reaction", () -> cfg.chatKeywordReaction, v -> cfg.chatKeywordReaction = v));
 		add(new Action("Test the chat trigger", false, () -> ctl.onChatMessage("test keyword"))
 				.tip("Fires the reaction as if a message had matched."));

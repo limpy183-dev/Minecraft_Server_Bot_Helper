@@ -3,6 +3,7 @@ package com.damia.movrand;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.CactusBlock;
@@ -231,12 +232,14 @@ public final class Avoidance {
 			return Ground.STEP_UP;
 		}
 
+		// the block we are in can hold us up on its own: that is what standing on a slab is
+		if (holdsWeight(level, feet)) return Ground.WALKABLE;
 		for (int d = 1; d <= Math.max(1, cfg.ledgeDropBlocks) + 1; d++) {
 			BlockPos below = feet.below(d);
 			// the hazard test comes first because some of them are solid: magma is a floor,
 			// and walking onto it is exactly what this is here to refuse
 			if (hazardAt(level, below, cfg)) return Ground.DROP;
-			if (solid(level, below)) return Ground.WALKABLE;
+			if (holdsWeight(level, below)) return Ground.WALKABLE;
 		}
 		return Ground.DROP;
 	}
@@ -255,6 +258,85 @@ public final class Avoidance {
 		if (cfg.avoidWater && isWater(state)) return true;
 		if (cfg.avoidPortals && isPortal(state)) return true;
 		return cfg.avoidHazards && isHurtful(state);
+	}
+
+	/**
+	 * Whether a step this way ends somewhere that hurts.
+	 *
+	 * <p>{@link #update} answers "is there a wall in front of me", and that is a different
+	 * question. Lava is not a wall. Neither is ground that was solid when a route was planned
+	 * three seconds ago and has since been mined out — by us. This is the check a bot
+	 * following a plan still has to make every tick, and it is deliberately about damage
+	 * rather than obstruction: a hole is something the search plans on purpose, and only what
+	 * is at the bottom of one is worth refusing.
+	 *
+	 * @param maxFall how far down to look for whatever a step off this edge would land in
+	 */
+	public static boolean stepIsDeadly(ClientLevel level, LocalPlayer player, double yawDeg,
+	                                   Config cfg, int maxFall) {
+		double rad = Math.toRadians(yawDeg);
+		double fx = -Math.sin(rad), fz = Math.cos(rad);
+		double px = -fz, pz = fx;                 // perpendicular, for the shoulders
+		int depth = Math.max(1, maxFall) + 2;
+
+		// One ray per shoulder, outwards, stopping at the first wall. Sampling a fixed box
+		// instead would refuse to walk down a corridor with a lava room on the other side of
+		// it, and a bot that will not walk past a wall cannot work in a base.
+		for (int s = -1; s <= 1; s++) {
+			for (double d = 0.5; d <= 1.8; d += 0.6) {
+				double x = player.getX() + fx * d + px * 0.31 * s;
+				double z = player.getZ() + fz * d + pz * 0.31 * s;
+				BlockPos feet = BlockPos.containing(x, player.getY() + 0.1, z);
+				if (deadly(level.getBlockState(feet), cfg)) return true;
+				if (deadly(level.getBlockState(feet.above()), cfg)) return true;
+				if (holdsWeight(level, feet)) continue;   // standing on it, so nothing below matters
+				for (int down = 1; down <= depth; down++) {
+					BlockPos below = feet.below(down);
+					if (deadly(level.getBlockState(below), cfg)) return true;
+					if (holdsWeight(level, below)) break;
+				}
+				// something solid at chest height is a wall, and whatever is behind it is
+				// behind it - carry on into the next shoulder rather than through the stone
+				if (solid(level, feet) && solid(level, feet.above())) break;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * The half of {@link #hazardAt} that actually costs health.
+	 *
+	 * <p>Water is left out on purpose. It is on the avoid list because getting wet is slow
+	 * and inconvenient, not because it kills, and a bot that will not put a foot in a puddle
+	 * cannot finish a job on any base with a moat. Lava is in whatever the settings say,
+	 * because walking into lava is not a preference.
+	 */
+	private static boolean deadly(BlockState state, Config cfg) {
+		if (isLava(state)) return true;
+		if (cfg.avoidPortals && isPortal(state)) return true;
+		return cfg.avoidHazards && isHurtful(state);
+	}
+
+	/**
+	 * Whether breaking this block would let lava into the space it leaves behind.
+	 *
+	 * <p>The search refuses to walk into lava, and that is not the same as refusing to let it
+	 * out: a wall with a lake behind it reads as ordinary stone right up until it is gone.
+	 *
+	 * <p>But "there is lava next to it" is too blunt a reading, and in a base built around
+	 * lava channels it writes off every target there is. Two things narrow it. A block with
+	 * no collision was never holding anything back — a redstone dust lying beside a lava
+	 * channel is not a dam, and breaking it changes nothing about the lava. And lava strictly
+	 * below does not flow upwards into the hole, so only what is level with the block, or
+	 * sitting on top of it, can come in.
+	 */
+	public static boolean floodsWhenBroken(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		if (level.getBlockState(pos).getCollisionShape(level, pos).isEmpty()) return false;
+		if (isLavaAt(level, pos.above())) return true;
+		for (Direction face : Direction.Plane.HORIZONTAL) {
+			if (isLavaAt(level, pos.relative(face))) return true;
+		}
+		return false;
 	}
 
 	/** Everything that damages, traps or freezes on contact. */
@@ -277,8 +359,40 @@ public final class Avoidance {
 		return b instanceof NetherPortalBlock || b instanceof EndPortalBlock || b instanceof EndGatewayBlock;
 	}
 
+	/**
+	 * How tall the collision in this block is, measured from its own floor: 0 for air, 1 for
+	 * a cube, 0.5 for a bottom slab, and whatever a stair, a carpet or a snow layer is.
+	 *
+	 * <p>One boolean cannot answer the two questions everything here actually asks. "Does it
+	 * fill the space" and "will it hold me up" are the same question only for full cubes, and
+	 * a base is not built out of full cubes. Reading a slab floor as a wall makes the bot try
+	 * to mine the floor it is standing on.
+	 */
+	public static double topOf(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		var shape = level.getBlockState(pos).getCollisionShape(level, pos);
+		return shape.isEmpty() ? 0 : shape.max(Direction.Axis.Y);
+	}
+
+	/** In the way: too tall to simply walk onto, so it has to be gone round or broken. */
+	public static boolean fillsSpace(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		return topOf(level, pos) > STEPPABLE;
+	}
+
+	/** Something here holds a player up, whether it is a full block or half of one. */
+	public static boolean holdsWeight(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		return topOf(level, pos) > 0;
+	}
+
+	/** How much of a block can be underfoot and still be walked onto without a jump. */
+	public static final double STEPPABLE = 0.5;
+
 	private static boolean solid(ClientLevel level, BlockPos pos) {
-		return !level.getBlockState(pos).getCollisionShape(level, pos).isEmpty();
+		return fillsSpace(level, pos);
+	}
+
+	/** Lava at a position, by the same test everything else in the mod uses. */
+	public static boolean isLavaAt(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		return isLava(level.getBlockState(pos));
 	}
 
 	private static boolean isLava(BlockState state) {

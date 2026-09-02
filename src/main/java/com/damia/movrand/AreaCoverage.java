@@ -24,6 +24,7 @@ public final class AreaCoverage {
 
 	public enum Route {
 		ORGANIC("Organic", "Random pick among the nearest few chunks. Efficient but never straight."),
+		SCOUT("Scout", "Hops between viewpoints one scan apart. Least walking per container found."),
 		NEAREST("Nearest", "Always the closest unvisited chunk. Tight, slightly robotic."),
 		SERPENTINE("Serpentine", "Row by row, alternating direction. Fastest, most obviously a bot."),
 		SPIRAL("Spiral", "Works outward from the centre."),
@@ -266,14 +267,20 @@ public final class AreaCoverage {
 
 	// ----------------------------------------------------------- the route
 
-	/** The point to walk to next, or null when the area is finished. */
-	public Target nextTarget(int fromCx, int fromCz) {
+	/**
+	 * The point to walk to next, or null when the area is finished.
+	 *
+	 * @param scanRadius chunks the container scan ticks off around wherever the player stands.
+	 *                   Only {@link Route#SCOUT} reads it — that is the whole shape of its route.
+	 */
+	public Target nextTarget(int fromCx, int fromCz, int scanRadius) {
 		if (target != null && !isVisited(target.chunkX(), target.chunkZ()) && contains(target.chunkX(), target.chunkZ())) {
 			return target;
 		}
 		long[] pick = switch (cfg.areaRoute) {
 			case NEAREST -> first(nearbyUnvisited(fromCx, fromCz, 1));
 			case ORGANIC -> weightedNear(nearbyUnvisited(fromCx, fromCz, cfg.areaRouteLookahead));
+			case SCOUT -> scoutNext(fromCx, fromCz, scanRadius);
 			case RANDOM -> randomNext(fromCx, fromCz);
 			case SERPENTINE -> serpentineNext(fromCx, fromCz);
 			case SPIRAL -> spiralNext(fromCx, fromCz);
@@ -344,6 +351,58 @@ public final class AreaCoverage {
 			if (free(cx - r, cz + dz)) out.add(cell(cx - r, cz + dz, cx, cz));
 			if (free(cx + r, cz + dz)) out.add(cell(cx + r, cz + dz, cx, cz));
 		}
+	}
+
+	/**
+	 * Walks between viewpoints rather than through every chunk.
+	 *
+	 * <p>The container scan already reads a square of chunks around wherever the player is
+	 * standing, and those count as covered without being walked. So the shortest walk that
+	 * finds everything is not a sweep at all: it is the few points whose scan squares tile the
+	 * area, visited nearest-first. A 512-chunk area with a scan radius of 8 is 262,144 chunks
+	 * but only 961 stops — three orders of magnitude less walking for the same containers.
+	 *
+	 * <p>The stops are spread evenly rather than laid on a fixed grid from one corner, so the
+	 * last row and column land inside the area instead of hanging off the edge and leaving a
+	 * strip to be walked chunk by chunk.
+	 *
+	 * <p>Randomness comes from the same two places the organic route uses — a weighted pick
+	 * among the nearest few stops rather than always the closest, and a random point inside the
+	 * chosen chunk — on top of everything the movement itself is already doing between them.
+	 *
+	 * <p>Once every stop is seen, whatever the squares missed (the edges of a circular area,
+	 * chunks a leash or an obstacle kept it out of) is mopped up organically.
+	 */
+	private long[] scoutNext(int fromCx, int fromCz, int scanRadius) {
+		int step = 2 * Math.max(0, scanRadius) + 1;
+		if (step > 1) {
+			long[] stop = weightedNear(stops(fromCx, fromCz, step));
+			if (stop != null) return stop;
+		}
+		return weightedNear(nearbyUnvisited(fromCx, fromCz, cfg.areaRouteLookahead));
+	}
+
+	/**
+	 * The outstanding viewpoints, nearest first.
+	 *
+	 * <p>Enumerated rather than ring-searched: there are only {@code area / step²} of them, so
+	 * listing the lot is cheaper than hunting for the nearest one through a mostly empty grid,
+	 * and it costs the same on the last stop as on the first.
+	 */
+	private List<long[]> stops(int fromCx, int fromCz, int step) {
+		int w = widthChunks(), d = depthChunks();
+		int nx = Math.max(1, (w + step - 1) / step);
+		int nz = Math.max(1, (d + step - 1) / step);
+		List<long[]> out = new ArrayList<>();
+		for (int i = 0; i < nx; i++) {
+			int cx = minChunkX() + (int) ((i + 0.5) * w / nx);
+			for (int j = 0; j < nz; j++) {
+				int cz = minChunkZ() + (int) ((j + 0.5) * d / nz);
+				if (free(cx, cz)) out.add(cell(cx, cz, fromCx, fromCz));
+			}
+		}
+		out.sort((a, b) -> Long.compare(a[2], b[2]));
+		return out;
 	}
 
 	/** Row by row, alternating direction, taking the first chunk still outstanding. */
@@ -538,7 +597,7 @@ public final class AreaCoverage {
 			sweep.reset();
 			int steps = 0;
 			while (!sweep.isComplete()) {
-				Target t = sweep.nextTarget(0, 0);
+				Target t = sweep.nextTarget(0, 0, 0);
 				assert t != null : route + " ran out of targets with " + sweep.remaining() + " chunks left";
 				assert sweep.contains(t.chunkX(), t.chunkZ()) : route + " aimed outside the area";
 				assert !sweep.isVisited(t.chunkX(), t.chunkZ()) : route + " re-targeted a finished chunk";
@@ -551,6 +610,65 @@ public final class AreaCoverage {
 			assert sweep.progress() == 1.0 : route + " finished at " + sweep.progress();
 			System.out.printf("%-11s covered 16 chunks in %d targets%n", route, steps);
 		}
+
+		// --- scout: the same ground for a fraction of the walking ---
+		// 16x16 chunks, a scan radius of 2, so nine chunks of coverage per step
+		Config scoutCfg = new Config();
+		scoutCfg.areaX1 = 0;
+		scoutCfg.areaZ1 = 0;
+		scoutCfg.areaX2 = 16 * 16 - 1;
+		scoutCfg.areaZ2 = 16 * 16 - 1;
+		scoutCfg.areaRoute = Route.SCOUT;
+		scoutCfg.clampAll();
+		AreaCoverage scout = new AreaCoverage(scoutCfg);
+		scout.reset();
+		assert scout.totalChunks() == 256 : "scout area held " + scout.totalChunks();
+		int scoutSteps = 0, sx = 0, sz = 0;
+		while (!scout.isComplete()) {
+			Target t = scout.nextTarget(sx, sz, 2);
+			assert t != null : "scout ran out of targets with " + scout.remaining() + " left";
+			assert scout.contains(t.chunkX(), t.chunkZ()) : "scout aimed outside the area";
+			assert !scout.isVisited(t.chunkX(), t.chunkZ()) : "scout re-targeted a finished chunk";
+			sx = t.chunkX();
+			sz = t.chunkZ();
+			scout.markCovered(sx, sz, 2);
+			assert ++scoutSteps <= 256 : "scout took " + scoutSteps + " steps for 256 chunks";
+		}
+		// the stops have to tile: four across each axis, and no strip left to walk by hand
+		assert scoutSteps == 16 : "scout covered 256 chunks in " + scoutSteps + " stops, expected 16";
+		System.out.printf("scout       covered 256 chunks in %d stops%n", scoutSteps);
+
+		// with nothing to credit, it must degrade to the organic route rather than stall
+		AreaCoverage blind = new AreaCoverage(scoutCfg);
+		blind.reset();
+		int blindSteps = 0, bx = 0, bz = 0;
+		while (!blind.isComplete()) {
+			Target t = blind.nextTarget(bx, bz, 0);
+			assert t != null : "scout with no scan radius ran out of targets";
+			bx = t.chunkX();
+			bz = t.chunkZ();
+			blind.markCovered(bx, bz, 0);
+			assert ++blindSteps <= 256 : "scout with no scan radius took " + blindSteps + " steps";
+		}
+		assert blindSteps == 256 : "one target per chunk expected, got " + blindSteps;
+
+		// a circle has no stop in its corners, so the mop-up has to finish what is left
+		scoutCfg.areaCircular = true;
+		AreaCoverage disc2 = new AreaCoverage(scoutCfg);
+		disc2.reset();
+		int discSteps = 0, dx2 = 0, dz2 = 0;
+		while (!disc2.isComplete()) {
+			Target t = disc2.nextTarget(dx2, dz2, 2);
+			assert t != null : "scout stalled on a circle with " + disc2.remaining() + " left";
+			assert disc2.contains(t.chunkX(), t.chunkZ()) : "scout left the circle";
+			dx2 = t.chunkX();
+			dz2 = t.chunkZ();
+			disc2.markCovered(dx2, dz2, 2);
+			assert ++discSteps <= disc2.totalChunks() : "scout looped on a circle";
+		}
+		System.out.printf("scout       covered a %d chunk circle in %d stops%n",
+				disc2.totalChunks(), discSteps);
+		scoutCfg.areaCircular = false;
 
 		// a scan radius should tick off more than one chunk at a time
 		AreaCoverage wide = new AreaCoverage(cfg);
@@ -593,7 +711,7 @@ public final class AreaCoverage {
 		long startNanos = System.nanoTime();
 		int atX = 0, atZ = 0;
 		for (int i = 0; i < 3000; i++) {
-			Target t = huge.nextTarget(atX, atZ);
+			Target t = huge.nextTarget(atX, atZ, 0);
 			assert t != null : "ran out of targets after " + i + " on a 262144 chunk area";
 			atX = t.chunkX();
 			atZ = t.chunkZ();
@@ -614,7 +732,7 @@ public final class AreaCoverage {
 			long routeStart = System.nanoTime();
 			int rx = 0, rz = 0;
 			for (int i = 0; i < 200; i++) {
-				Target t = sweep.nextTarget(rx, rz);
+				Target t = sweep.nextTarget(rx, rz, 8);
 				assert t != null : route + " ran out of targets on a big area";
 				rx = t.chunkX();
 				rz = t.chunkZ();

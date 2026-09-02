@@ -64,6 +64,10 @@ public final class MovementController {
 	// aiming
 	private double baseYaw;
 	private double wanderOffset;
+	/** The heading being walked, dodge included, as opposed to where the camera has got to. */
+	private double walkYaw;
+	/** Whether forward was actually asked for, so the input-blocked check knows what to expect. */
+	private boolean askedForward;
 	private double targetPitch;
 	/** The pitch before the wobble is added, so the wobble never feeds back into itself. */
 	// a turn is spent along an eased curve rather than at a constant rate
@@ -94,6 +98,8 @@ public final class MovementController {
 	// threats — one scan a tick, read by the hostile guard, the camera and the retreat
 	private Entity nearestHostile;
 	private double nearestHostileDistance = -1;
+	/** How many hostiles are inside the retreat radius. Counted in the one sweep, not a second. */
+	private int hostilesNear;
 	private boolean endermanNear;
 	/** The mob the retreat is watching, so the closure below compares like with like. */
 	private int threatId = -1;
@@ -283,9 +289,13 @@ public final class MovementController {
 		// the handbrake - is the same code a wandering bot runs.
 		// Getting clear outranks the job: a retreat that stops to mine is not a retreat.
 		Bot.Steer steer = fleeing() ? null : destroyer.tick(mc, player, level, lastDamage);
-		if (steer != null) {
+		// Outside the branch: the job hands the tick back when it has run out of blocks, and
+		// that is exactly the moment the count and the reaction have to happen.
+		if (cfg.destroyerEnabled) {
 			countMined(level);
 			if (destroyer.takeFinished() && destroyerFinished(mc, player, level)) return;
+		}
+		if (steer != null) {
 			eating = autoEat.tick(mc, player);
 			if (eating) state = State.EATING;
 			else state = State.WORKING;
@@ -418,15 +428,19 @@ public final class MovementController {
 		if (cfg.areaEnabled) {
 			int cx = player.blockPosition().getX() >> 4;
 			int cz = player.blockPosition().getZ() >> 4;
-			// walking through a chunk counts; so does the ring the container scan already read
-			int covered = cfg.areaUseScanRadius && cfg.containerScanEnabled ? cfg.containerChunkRadius : 0;
+			// walking through a chunk counts; so does the ring the container scan already read.
+			// The scan's own radius, not the manual slider: with the automatic radius on — which
+			// is the default — the slider is not what it read, and the scout route spaces its
+			// stops by exactly this number.
+			int covered = cfg.areaUseScanRadius && cfg.containerScanEnabled
+					? ContainerScanner.effectiveRadius(cfg) : 0;
 			area.markCovered(cx, cz, covered);
 
 			if (area.isComplete()) {
 				areaFinished(mc, player, level);
 				return;
 			}
-			AreaCoverage.Target t = area.nextTarget(cx, cz);
+			AreaCoverage.Target t = area.nextTarget(cx, cz, covered);
 			if (t != null) {
 				navActive = true;
 				navX = t.x();
@@ -511,6 +525,7 @@ public final class MovementController {
 		double intended = baseYaw + wanderOffset;
 		double dodge = mc.level == null ? 0
 				: avoid.update(cfg, intended, Avoidance.worldProbe(mc.level, player, cfg));
+		walkYaw = intended + dodge;
 
 		// The camera is filtered towards the heading rather than snapped onto it, so a turn
 		// arriving in eased steps, a dodge appearing the instant a wall does, and the leash
@@ -555,11 +570,30 @@ public final class MovementController {
 	 * snapping back to whatever it was pointing at when the job started.
 	 */
 	private void applySteer(Minecraft mc, LocalPlayer player, Bot.Steer steer) {
+		boolean precise = destroyer.phase == BaseDestroyer.Phase.MINING
+				|| destroyer.phase == BaseDestroyer.Phase.CLEARING
+				|| destroyer.phase == BaseDestroyer.Phase.BRIDGING
+				|| destroyer.phase == BaseDestroyer.Phase.COVERING;
+
+		boolean sprint = steer.sprint;
+		boolean stopped = false;
+		// The local steering does not run on top of a plan, and putting it there was a
+		// mistake. It answers "is there a wall within three blocks" — which inside a building
+		// is always yes — so it spent every corridor deflecting the bot off a route that had
+		// already been searched round the wall it was objecting to, and pulling the camera
+		// off whatever the job was looking at. A route is the obstacle avoidance. What is
+		// still worth asking every tick is whether the ground has changed under the plan,
+		// because this is a job that changes it.
+		avoid.reset();
+		if (!precise && steer.hasMove && mc.level != null
+				&& Avoidance.stepIsDeadly(mc.level, player, steer.moveYaw, cfg, cfg.pathMaxFall)) {
+			stopped = true;
+			destroyer.blocked("something that hurts, straight ahead");
+		}
+
 		if (steer.hasLook) {
-			boolean precise = destroyer.phase == BaseDestroyer.Phase.MINING
-					|| destroyer.phase == BaseDestroyer.Phase.CLEARING
-					|| destroyer.phase == BaseDestroyer.Phase.BRIDGING
-					|| destroyer.phase == BaseDestroyer.Phase.COVERING;
+			// Whatever the job asked to look at, it gets. Overwriting this with the walking
+			// heading is how the bot ended up facing away from the item it was walking to.
 			double smoothYaw = precise ? cfg.taskAimSmoothing : cfg.cameraSmoothYaw;
 			double smoothPitch = precise ? cfg.taskAimSmoothing : cfg.cameraSmoothPitch;
 			double wobble = precise ? cfg.taskAimWobbleScale : 1;
@@ -578,14 +612,30 @@ public final class MovementController {
 
 		Options o = mc.options;
 		boolean still = eating && cfg.autoEatHoldStill;
+
+		// Which keys carry us along that heading from wherever the camera has got to. This is
+		// the whole reason the camera is allowed to be slow: the walking does not wait for it.
+		boolean forward = steer.forward, back = steer.back, left = steer.left, right = steer.right;
+		if (steer.hasMove && !stopped) {
+			boolean[] keys = Bot.keysFor(player.getYRot(), steer.moveYaw);
+			forward = keys[0];
+			back = keys[1];
+			left = keys[2];
+			right = keys[3];
+		} else if (stopped) {
+			forward = back = left = right = false;
+		}
+
 		// using an item cancels a sprint, so never ask for both at once
-		boolean sprint = steer.sprint && steer.forward && !eating && !steer.use;
+		sprint = sprint && forward && !eating && !steer.use;
 		// only on the walk between jobs: hopping on the spot at a wall mines nothing
 		if (destroyer.phase == BaseDestroyer.Phase.WALKING) updateJumpSprint(player, sprint && !still);
-		setKey(o.keyUp, steer.forward && !still);
-		setKey(o.keyDown, steer.back && !still);
-		setKey(o.keyLeft, steer.left && !still);
-		setKey(o.keyRight, steer.right && !still);
+		if (forward && !still && !precise && mc.level != null) autoJump(player, mc.level, steer.moveYaw);
+		askedForward = forward && !still;
+		setKey(o.keyUp, askedForward);
+		setKey(o.keyDown, back && !still);
+		setKey(o.keyLeft, left && !still);
+		setKey(o.keyRight, right && !still);
 		setKey(o.keyJump, (steer.jump || jumpTicks > 0) && !still);
 		setKey(o.keyShift, steer.sneak || cfg.holdSneak);
 		setKey(o.keySprint, sprint);
@@ -630,10 +680,25 @@ public final class MovementController {
 		// a retreat sprints whether or not the walk normally does
 		// using an item cancels a sprint, so never ask for both at once
 		boolean sprint = (cfg.holdSprint || fleeing()) && forward && !eating;
+		askedForward = forward;
 		updateJumpSprint(player, sprint);
+
+		// Free wandering walks where it is looking, which is both what it means and what looks
+		// right. Travelling somewhere does not: the camera takes the better part of half a
+		// second to come round, and a leash correction, a dodge round a tree or a run from a
+		// zombie that only takes effect after that is a correction that arrives too late.
+		boolean back = false, left = false, right = false;
+		if (forward && (navActive || fleeing() || avoid.steering())) {
+			boolean[] keys = Bot.keysFor(player.getYRot(), walkYaw);
+			forward = keys[0];
+			back = keys[1];
+			left = keys[2];
+			right = keys[3];
+		}
 		setKey(o.keyUp, forward);
-		setKey(o.keyLeft, !holdingStillToEat && state == State.STRAFING && strafeDir < 0);
-		setKey(o.keyRight, !holdingStillToEat && state == State.STRAFING && strafeDir > 0);
+		setKey(o.keyDown, back);
+		setKey(o.keyLeft, left || (!holdingStillToEat && state == State.STRAFING && strafeDir < 0));
+		setKey(o.keyRight, right || (!holdingStillToEat && state == State.STRAFING && strafeDir > 0));
 		setKey(o.keySprint, sprint);
 		setKey(o.keyShift, cfg.holdSneak);
 		setKey(o.keyJump, jumpTicks > 0);
@@ -692,11 +757,6 @@ public final class MovementController {
 		double probe = Math.max(0.1, cfg.autoJumpProbeDistance);
 		BlockPos feet = BlockPos.containing(player.getX() + fx * probe, player.getY() + 0.1, player.getZ() + fz * probe);
 
-		if (cfg.autoJumpSwimUp && player.isInWater()) {
-			if (solid(level, feet)) jumpTicks = 2;
-			return;
-		}
-
 		// A ledge the steering has already found a way round is not worth stopping for -
 		// that is the whole point of it. Only a drop with nowhere to go still counts.
 		boolean handled = cfg.avoidEnabled && avoid.steering() && !avoid.trapped();
@@ -706,7 +766,32 @@ public final class MovementController {
 			if (react(mc, cfg.ledgeReaction, why, false)) return;
 		}
 
-		if (!cfg.autoJumpEnabled || !player.onGround() || jumpCooldown > 0) return;
+		autoJump(player, level, walkYaw);
+	}
+
+	/**
+	 * A hop over whatever is one block high in front of us, and a kick off the bottom when
+	 * that turns out to be water.
+	 *
+	 * <p>Shared with the job rather than left to the wandering, which is where it used to
+	 * live. A route is a list of blocks to stand on; it says nothing about the stair, the
+	 * fence post or the half-mined lip between two of them, and walking into one of those is
+	 * the commonest way a bot stops moving without anything obviously being wrong.
+	 */
+	private void autoJump(LocalPlayer player, ClientLevel level, double heading) {
+		if (!cfg.autoJumpEnabled || jumpCooldown > 0) return;
+		// The heading walked, not the one looked at. Since the two came apart, probing along
+		// the camera checks for a step in front of whatever the bot happens to be watching.
+		double yawRad = Math.toRadians(heading);
+		double probe = Math.max(0.1, cfg.autoJumpProbeDistance);
+		BlockPos feet = BlockPos.containing(player.getX() - Math.sin(yawRad) * probe,
+				player.getY() + 0.1, player.getZ() + Math.cos(yawRad) * probe);
+
+		if (cfg.autoJumpSwimUp && player.isInWater()) {
+			if (solid(level, feet)) jumpTicks = 2;
+			return;
+		}
+		if (!player.onGround()) return;
 
 		int height = 0;
 		while (height < 4 && solid(level, feet.above(height))) height++;
@@ -720,14 +805,17 @@ public final class MovementController {
 	}
 
 	private boolean checkLedge(ClientLevel level, BlockPos ahead) {
+		if (Avoidance.holdsWeight(level, ahead)) return false;
 		for (int d = 1; d <= cfg.ledgeDropBlocks + 1; d++) {
-			if (solid(level, ahead.below(d))) return false;
+			// anything that holds weight is a floor, whether or not it fills its block
+			if (Avoidance.holdsWeight(level, ahead.below(d))) return false;
 		}
 		return true;
 	}
 
+	/** In the way rather than underfoot: a slab is something to walk onto, not to jump over. */
 	private boolean solid(ClientLevel level, BlockPos pos) {
-		return !level.getBlockState(pos).getCollisionShape(level, pos).isEmpty();
+		return Avoidance.fillsSpace(level, pos);
 	}
 
 	// -------------------------------------------------------- the handbrake
@@ -767,8 +855,10 @@ public final class MovementController {
 		}
 
 		if (cfg.detectInputBlocked && state != State.UNSTICKING) {
+			// Only when forward was asked for. Strafing round a corner is a tick with the key
+			// legitimately up, and counting those reports the mod's own steering as sabotage.
 			boolean actual = player.input != null && player.input.keyPresses != null && player.input.keyPresses.forward();
-			inputBlockedTicks = actual ? 0 : inputBlockedTicks + 1;
+			inputBlockedTicks = actual || !askedForward ? 0 : inputBlockedTicks + 1;
 		}
 
 		boolean noProgress = ticksSinceProgress > cfg.stuckWindowSec * 20;
@@ -975,13 +1065,16 @@ public final class MovementController {
 	 */
 	private void scanThreats(ClientLevel level, LocalPlayer self) {
 		endermanNear = false;
+		hostilesNear = 0;
 		Entity nearest = null;
 		double best = Double.MAX_VALUE;
 		double stare = cfg.endermanLookRadius * cfg.endermanLookRadius;
+		double crowd = cfg.fleeRadius * cfg.fleeRadius;
 		for (Entity e : level.entitiesForRendering()) {
 			double d = e.distanceToSqr(self);
 			if (cfg.endermanAvoidLook && d <= stare && e instanceof EnderMan) endermanNear = true;
 			if (!(e instanceof Enemy)) continue;
+			if (e.isAlive() && d <= crowd) hostilesNear++;
 			if (d < best) {
 				best = d;
 				nearest = e;
@@ -1004,7 +1097,7 @@ public final class MovementController {
 	 * safe" means exactly that rather than "for four seconds".
 	 */
 	private void updateFlee(ClientLevel level, LocalPlayer player, Entity mob) {
-		if (!cfg.fleeFromHostiles) {
+		if (!cfg.fleeFromHostiles || !outmatched(player)) {
 			fleeTicks = 0;
 			threatId = -1;
 			threatMaxDistance = -1;
@@ -1037,6 +1130,26 @@ public final class MovementController {
 	public boolean fleeing() {
 		return fleeTicks > 0;
 	}
+
+	/**
+	 * Whether this is a fight worth leaving rather than having.
+	 *
+	 * <p>Running from one zombie while holding a diamond sword is not caution. It is a bot
+	 * that finishes nothing, because the retreat outranks the job and every wandering mob on
+	 * the server gets to cancel the work — and it is not what a person does either. So the
+	 * retreat asks first whether the odds are actually bad: hurt, outnumbered, or with
+	 * nothing on the bar to fight with. Fighting back being switched off makes every fight a
+	 * bad one, which is the honest reading of that setting.
+	 */
+	private boolean outmatched(LocalPlayer player) {
+		if (!cfg.combatEnabled || !cfg.combatFightMobs) return true;
+		if (player.getHealth() <= Math.max(cfg.combatRetreatHealth, cfg.lowHealthThreshold)) return true;
+		if (Combat.bestWeaponScore(player) <= 0) return true;
+		return hostilesNear >= CROWD;
+	}
+
+	/** More hostiles than one person swinging one weapon can hold off. */
+	static final int CROWD = 3;
 
 	/** Net ground a threat has to make up before it counts as coming at us. */
 	static final double CLOSING_BLOCKS = 2.0;

@@ -352,6 +352,11 @@ public final class Config {
 	public List<String> chatKeywords = new ArrayList<>(List.of("staff", "admin", "afk", "bot"));
 	public boolean chatKeywordMatchOwnName = true;
 	/**
+	 * Your own name is in every advancement broadcast you earn and in every line you type,
+	 * and neither is somebody talking about you. On drops the name match for those two.
+	 */
+	public boolean chatIgnoreSelfAndAdvancements = true;
+	/**
 	 * Whether server and system messages count, or only what other players type. On keeps
 	 * broadcasts like "[Staff] watching you" in scope; off narrows it to real chat.
 	 */

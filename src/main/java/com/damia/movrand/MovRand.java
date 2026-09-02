@@ -2,6 +2,7 @@ package com.damia.movrand;
 
 import com.damia.movrand.gui.ConfigScreen;
 import com.damia.movrand.gui.Ui;
+import com.mojang.authlib.GameProfile;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
@@ -11,9 +12,11 @@ import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.User;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphicsExtractor;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.contents.TranslatableContents;
 import net.minecraft.resources.Identifier;
 import org.lwjgl.glfw.GLFW;
 import org.slf4j.Logger;
@@ -98,10 +101,10 @@ public final class MovRand implements ClientModInitializer {
 		// CHAT is what another player typed, and is always worth reading. GAME is everything
 		// else the client prints - including this mod's own output, which is why it is filtered.
 		ClientReceiveMessageEvents.CHAT.register((message, signed, sender, params, timestamp) ->
-				onChat(message.getString()));
+				onChat(message.getString(), isSelf(sender)));
 		ClientReceiveMessageEvents.GAME.register((message, overlay) -> {
 			if (printing || !config.chatWatchSystemMessages) return;
-			onChat(message.getString());
+			onChat(message.getString(), isAdvancement(message));
 		});
 
 		HudElementRegistry.addLast(Identifier.fromNamespaceAndPath(MOD_ID, "status"), new StatusHud());
@@ -131,13 +134,14 @@ public final class MovRand implements ClientModInitializer {
 	 * Deliberately not gated on movement being on: a message with your name in it is worth
 	 * an alert precisely when the bot has already stopped and you are away from the keyboard.
 	 */
-	private void onChat(String raw) {
+	private void onChat(String raw, boolean selfOrAdvancement) {
 		if (!config.stopOnChatKeyword) return;
 		if (raw.startsWith(CHAT_PREFIX)) return; // our own output, do not trigger on it
 		String text = raw.toLowerCase(Locale.ROOT);
 
 		List<String> needles = new ArrayList<>(config.chatKeywords);
-		if (config.chatKeywordMatchOwnName) {
+		if (config.chatKeywordMatchOwnName
+				&& !(selfOrAdvancement && config.chatIgnoreSelfAndAdvancements)) {
 			Minecraft mc = Minecraft.getInstance();
 			if (mc.player != null) needles.add(mc.player.getName().getString());
 			if (mc.getUser() != null) needles.add(mc.getUser().getName());
@@ -149,6 +153,18 @@ public final class MovRand implements ClientModInitializer {
 				return;
 			}
 		}
+	}
+
+	/** A message this account sent. The keywords still apply to it; only the name match drops. */
+	private static boolean isSelf(GameProfile sender) {
+		User user = Minecraft.getInstance().getUser();
+		return sender != null && user != null && sender.id().equals(user.getProfileId());
+	}
+
+	/** "Name has made the advancement [Thing]", and its goal and challenge variants. */
+	private static boolean isAdvancement(Component message) {
+		return message.getContents() instanceof TranslatableContents t
+				&& t.getKey().startsWith("chat.type.advancement");
 	}
 
 	/**
@@ -199,6 +215,8 @@ public final class MovRand implements ClientModInitializer {
 			if (config.destroyerEnabled) {
 				lines.add("Mined " + controller.destroyer.mined
 						+ " · " + controller.destroyer.remaining() + " left");
+				// what the job thinks it is doing, for when that and what it does disagree
+				lines.add(controller.destroyer.diagnose(mc, mc.player));
 			}
 			if (config.hudShowContainers && config.containerScanEnabled) {
 				lines.add("Storage " + controller.lastScan.grouped() + "/" + config.containerThreshold);
