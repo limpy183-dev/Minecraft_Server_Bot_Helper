@@ -2004,9 +2004,6 @@ public final class ConfigScreen extends Screen {
 				.tip("Rotten flesh, spider eyes, pufferfish, raw chicken, poisonous potatoes, chorus fruit."));
 		add(new Toggle("Save golden apples", () -> cfg.autoEatSaveGoldenApples, v -> cfg.autoEatSaveGoldenApples = v));
 		add(new Toggle("Put the old item back in hand", () -> cfg.autoEatRestoreSlot, v -> cfg.autoEatRestoreSlot = v));
-		add(new Slider("Look this far up while eating", -90, 0, 1, 0, "°",
-				() -> cfg.autoEatLookPitch, v -> cfg.autoEatLookPitch = v)
-				.tip("Pointing at the sky stops right-click from opening a chest instead of eating."));
 		add(Slider.ints("Give up after", 20, 200, () -> cfg.autoEatMaxTicks, v -> cfg.autoEatMaxTicks = v)
 				.tip("Ticks. Stops it holding right-click forever if something goes wrong."));
 

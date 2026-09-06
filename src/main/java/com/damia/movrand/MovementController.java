@@ -44,6 +44,14 @@ public final class MovementController {
 	public final BaseDestroyer destroyer;
 	/** The camera's hand: the wobble and the easing that keep rotation off a fixed curve. */
 	private final Human human = new Human();
+	private LocalPlayer cameraOwner;
+	private double renderYawSmoothing, renderPitchSmoothing;
+
+	public boolean controlsCamera() { return cfg.movementEnabled || storage.previewing(); }
+	public double cameraSmoothing(boolean horizontal) {
+		return NativeNavigation.controlling() ? cfg.baritoneTurnSmoothing
+				: horizontal ? renderYawSmoothing : renderPitchSmoothing;
+	}
 	/** Looks a few blocks ahead and steers round whatever is there. */
 	public final Avoidance avoid = new Avoidance();
 
@@ -267,6 +275,11 @@ public final class MovementController {
 
 		LocalPlayer player = mc.player;
 		ClientLevel level = mc.level;
+		if (!controlsCamera() || player == null) cameraOwner = null;
+		else if (cameraOwner != player) {
+			human.syncCamera(player.getYRot(), player.getXRot());
+			cameraOwner = player;
+		}
 
 		// Chat and death matter whether or not we are currently walking — an alert about
 		// someone saying your name is useful precisely when the bot has already stopped.
@@ -287,7 +300,10 @@ public final class MovementController {
 				Bot.Steer inspection = storage.tick(mc);
 				eating = false;
 				if (mc.player != null && inspection != null) {
-					if (inspection.externalNavigation) releaseKeys(mc);
+					if (inspection.externalNavigation) {
+						releaseKeys(mc);
+						human.syncCamera(player.getYRot(), player.getXRot());
+					}
 					else applySteer(mc, mc.player, inspection);
 				}
 				return;
@@ -391,10 +407,10 @@ public final class MovementController {
 		updateSchedule();
 		updateNavigation(mc, player, level);
 		if (!cfg.movementEnabled) return;
-		updateHeading(mc, player);
-
 		eating = autoEat.tick(mc, player);
 		if (eating) state = State.EATING;
+		updateHeading(mc, player);
+		if (eating) autoEat.useFood(mc, player);
 
 		handleObstacles(mc, player, level);
 		applyKeys(mc, player);
@@ -546,6 +562,10 @@ public final class MovementController {
 	// --------------------------------------------------------------- aiming
 
 	private void updateHeading(Minecraft mc, LocalPlayer player) {
+		if (eating) {
+			applyEatingLook(player);
+			return;
+		}
 		if (fleeing()) {
 			baseYaw = fleeYaw;
 			wanderOffset = 0;
@@ -606,14 +626,20 @@ public final class MovementController {
 		// arriving in eased steps, a dodge appearing the instant a wall does, and the leash
 		// correction snapping on at a boundary all come out as one continuous movement.
 		float finalYaw = (float) Mth.wrapDegrees(human.yawFor(cfg, intended + dodge));
+		renderYawSmoothing = cfg.cameraSmoothYaw;
 		player.setYRot(finalYaw);
 		safeStop.expectYaw(finalYaw);
 
-		if (!eating) {
-			player.setXRot((float) human.pitchFor(cfg, aimPitch(targetPitch)));
-		} else {
-			human.syncCamera(finalYaw, player.getXRot());
-		}
+		renderPitchSmoothing = cfg.cameraSmoothPitch;
+		player.setXRot((float) human.pitchFor(cfg, aimPitch(targetPitch)));
+	}
+
+	private void applyEatingLook(LocalPlayer player) {
+		renderYawSmoothing = renderPitchSmoothing = 0.85;
+		player.setYRot((float) Human.limitedSmooth(player.getYRot(), autoEat.lookYaw, 0.85, 0.3));
+		player.setXRot((float) Human.limitedPitch(player.getXRot(), autoEat.lookPitch, 0.85, 0.2));
+		human.syncCamera(player.getYRot(), player.getXRot());
+		safeStop.expectYaw(player.getYRot());
 	}
 
 	private boolean outsideArea(LocalPlayer player) {
@@ -829,10 +855,11 @@ public final class MovementController {
 	 * snapping back to whatever it was pointing at when the job started.
 	 */
 	private BlockPos applySteer(Minecraft mc, LocalPlayer player, Bot.Steer steer) {
+		if (eating) applyEatingLook(player);
 		// Asked for by whatever filled the steer in, rather than guessed from the phase. Only
 		// the code aiming at a block knows it is aiming at a block: a walking phase can be
 		// placing a bridge block, and a mining phase can be walking up to the wall.
-		boolean precise = steer.precise;
+		boolean precise = steer.precise || eating;
 
 		boolean sprint = steer.sprint;
 		boolean stopped = false;
@@ -850,33 +877,25 @@ public final class MovementController {
 			if (refused != null) stopped = true;
 		}
 
-		if (steer.hasLook) {
+		if (steer.hasLook && !eating) {
 			double previousYaw = player.getYRot(), previousPitch = player.getXRot();
 			// Whatever the job asked to look at, it gets. Overwriting this with the walking
 			// heading is how the bot ended up facing away from the item it was walking to.
-			double smoothYaw = precise ? cfg.taskAimSmoothing : cfg.cameraSmoothYaw;
-			double smoothPitch = precise ? cfg.taskAimSmoothing : cfg.cameraSmoothPitch;
-			boolean smoothWork = precise || cfg.destroyerEnabled;
-			if (cfg.destroyerEnabled) {
-				// Navigation smoothness is the minimum for the entire job, including handoffs.
-				smoothYaw = Math.max(smoothYaw, cfg.baritoneTurnSmoothing);
-				smoothPitch = Math.max(smoothPitch, cfg.baritoneTurnSmoothing);
-			}
+			// Every job uses the same minimum, including standalone storage and inspection.
+			double smoothYaw = Math.max(cfg.baritoneTurnSmoothing, precise ? cfg.taskAimSmoothing : cfg.cameraSmoothYaw);
+			double smoothPitch = Math.max(cfg.baritoneTurnSmoothing, precise ? cfg.taskAimSmoothing : cfg.cameraSmoothPitch);
+			renderYawSmoothing = smoothYaw;
+			renderPitchSmoothing = smoothPitch;
 			double wobble = precise ? cfg.taskAimWobbleScale : 1;
 
-			double maxTurn = precise ? cfg.taskAimMaxTurnDeg : cfg.destroyerEnabled ? cfg.baritoneTurnRate : 180;
-			float finalYaw = (float) Mth.wrapDegrees(smoothWork
-					? human.workingYawFor(cfg, steer.yaw, smoothYaw, wobble, maxTurn)
-					: human.yawFor(cfg, steer.yaw, smoothYaw, wobble, maxTurn));
+			double maxTurn = precise ? cfg.taskAimMaxTurnDeg : cfg.baritoneTurnRate;
+			float finalYaw = (float) Mth.wrapDegrees(human.workingYawFor(cfg, steer.yaw, smoothYaw, wobble, maxTurn));
 			player.setYRot(finalYaw);
 			safeStop.expectYaw(finalYaw);
 			// A precise phase is already aiming at a specific block; overriding that would not
 			// avoid an enderman, it would just stop the mining.
 			double pitch = precise ? steer.pitch : aimPitch(steer.pitch);
-			if (!eating) player.setXRot((float) (smoothWork
-					? human.workingPitchFor(cfg, pitch, smoothPitch, wobble, maxTurn)
-					: human.pitchFor(cfg, pitch, smoothPitch, wobble, maxTurn)));
-			else human.syncCamera(finalYaw, player.getXRot());
+			player.setXRot((float) human.workingPitchFor(cfg, pitch, smoothPitch, eating ? 0 : wobble, maxTurn));
 			baseYaw = steer.yaw;
 			wanderOffset = 0;
 			if (precise) {
@@ -899,13 +918,11 @@ public final class MovementController {
 					safeStop.expectYaw(player.getYRot());
 				}
 			}
-			if (smoothWork) {
-				// Humanisation and thin-shape noise correction share the same final turn cap.
-				player.setYRot((float) Human.limitedSmooth(previousYaw, player.getYRot(), 0, maxTurn));
-				if (!eating) player.setXRot((float) Human.limitedPitch(previousPitch, player.getXRot(), 0, maxTurn));
-				safeStop.expectYaw(player.getYRot());
-			}
-			if (precise) {
+			// Humanisation and thin-shape noise correction share the same final turn cap.
+			player.setYRot((float) Human.limitedSmooth(previousYaw, player.getYRot(), 0, maxTurn));
+			player.setXRot((float) Human.limitedPitch(previousPitch, player.getXRot(), 0, maxTurn));
+			safeStop.expectYaw(player.getYRot());
+			if (precise && !eating) {
 				refreshCrosshair(mc, player);
 				if (steer.attackTarget != null) steer.attack = Bot.lookingAt(mc, steer.attackTarget);
 				if (steer.useTarget != null) steer.use = Bot.lookingAt(mc, steer.useTarget);
@@ -942,7 +959,8 @@ public final class MovementController {
 		setKey(o.keyShift, steer.sneak || (cfg.holdSneak && !storage.busy()));
 		setKey(o.keySprint, sprint);
 		setKey(o.keyAttack, steer.attack && !eating);
-		setKey(o.keyUse, steer.use && !eating);
+		if (eating) autoEat.useFood(mc, player);
+		else setKey(o.keyUse, steer.use);
 		keysHeld = true;
 		return refused;
 	}

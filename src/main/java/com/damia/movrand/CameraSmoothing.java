@@ -11,9 +11,7 @@ public final class CameraSmoothing {
 	private CameraSmoothing() {}
 
 	public static void beginTick(Minecraft mc) {
-		Config cfg = MovRand.config();
-		if (mc.player == null || !cfg.movementEnabled || mc.player.isDeadOrDying()
-				|| (!cfg.destroyerEnabled && !NativeNavigation.controlling())) {
+		if (mc.player == null || !MovRand.controller().controlsCamera() || mc.player.isDeadOrDying()) {
 			tracked = null;
 		} else if (tracked != mc.player) {
 			tracked = mc.player;
@@ -30,11 +28,10 @@ public final class CameraSmoothing {
 	}
 
 	public static float view(Entity entity, float partialTick, boolean horizontal) {
-		Config cfg = MovRand.config();
-		if (entity != tracked || cfg == null || !cfg.movementEnabled)
+		MovementController controller = MovRand.controller();
+		if (entity != tracked || controller == null || !controller.controlsCamera())
 			return horizontal ? entity.getViewYRot(partialTick) : entity.getViewXRot(partialTick);
-		double strength = cfg.baritoneTurnSmoothing;
-		if (!NativeNavigation.controlling()) strength = Math.max(strength, cfg.taskAimSmoothing);
+		double strength = controller.cameraSmoothing(horizontal);
 		if (strength <= 0) return horizontal ? entity.getViewYRot(partialTick) : entity.getViewXRot(partialTick);
 		return (float) (horizontal ? yaw : pitch).at(partialTick, strength);
 	}

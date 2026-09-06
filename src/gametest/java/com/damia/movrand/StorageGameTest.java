@@ -16,7 +16,10 @@ import java.util.List;
 
 /** Server-backed regressions for exact-slot deposits and portable-container recovery. */
 final class StorageGameTest {
+    private static final java.util.Set<String> smoothedPhases = new java.util.HashSet<>();
+
     static void run(ClientGameTestContext test, TestSingleplayerContext world) {
+        smoothedPhases.clear();
         setup(test, world);
         world.getServer().runCommand("setblock 2 1 0 chest");
         world.getServer().runOnServer(server -> {
@@ -216,7 +219,9 @@ final class StorageGameTest {
         });
         test.takeScreenshot("storage-settings");
         test.runOnClient(mc -> mc.gui.screen().onClose());
-        MovRand.LOG.info("Storage server-backed checks passed");
+        require(smoothedPhases.containsAll(List.of("place ender", "place box", "open ender", "open dest", "break box", "break ender")),
+                "Storage actions did not render smooth turns: " + smoothedPhases);
+        MovRand.LOG.info("Storage server-backed checks passed; interpolated phases {}", smoothedPhases);
     }
 
     private static void setup(ClientGameTestContext test, TestSingleplayerContext world) {
@@ -227,6 +232,9 @@ final class StorageGameTest {
             c.alertEnabled = false; c.safeStopEnabled = false; c.autoEatEnabled = false;
             c.stopOnNearbyPlayer = false; c.stopOnHostileMob = false;
             c.fastDestroyerTuning();
+            // Navigation smoothing must cover storage even with Destroyer off and task smoothing zero.
+            c.baritoneTurnSmoothing = 1; c.taskAimSmoothing = 0;
+            c.yawJitterEnabled = true; c.taskAimWobbleScale = 0.3;
             MovRand.replaceConfig(c);
         });
         var server = world.getServer();
@@ -239,12 +247,38 @@ final class StorageGameTest {
     private static void finish(ClientGameTestContext test, String name, int max) {
         try {
             java.util.concurrent.atomic.AtomicInteger trace = new java.util.concurrent.atomic.AtomicInteger();
-            test.waitFor(mc -> {
+            double[] previous = {0, 0, Double.NaN, Double.NaN};
+            test.runOnClient(mc -> { previous[0] = mc.player.getYRot(); previous[1] = mc.player.getXRot(); });
+            int[] movingFrames = {0};
+            int ticks = test.waitFor(mc -> {
+                if (MovRand.controller().storage.busy()) {
+                    double rate = Math.max(MovRand.config().taskAimMaxTurnDeg, MovRand.config().baritoneTurnRate);
+                    require(Math.abs(Human.wrap(mc.player.getYRot() - previous[0])) <= rate + 0.01
+                            && Math.abs(mc.player.getXRot() - previous[1]) <= rate + 0.01, name + ": physical aim snapped");
+                    previous[0] = mc.player.getYRot(); previous[1] = mc.player.getXRot();
+                    for (int axis = 0; axis < 2; axis++) {
+                        double start = CameraSmoothing.view(mc.player, 0, axis == 0);
+                        double middle = CameraSmoothing.view(mc.player, 0.5f, axis == 0);
+                        double end = CameraSmoothing.view(mc.player, 1, axis == 0);
+                        require(Double.isNaN(previous[axis + 2]) || Math.abs(Human.wrap(start - previous[axis + 2])) < 0.002,
+                                name + ": rendered aim snapped at a tick boundary");
+                        previous[axis + 2] = end;
+                        if (Math.abs(Human.wrap(end - start)) > 0.001) {
+                            require(Math.abs(Human.wrap(middle - start)) > 0.0001 && Math.abs(Human.wrap(end - middle)) > 0.0001,
+                                    name + ": aim did not move between frames");
+                            movingFrames[0]++;
+                            String status = MovRand.controller().storage.status;
+                            smoothedPhases.add(status.substring(status.lastIndexOf(" · ") + 3));
+                        }
+                    }
+                }
                 if (trace.incrementAndGet() % 100 == 0) MovRand.LOG.info("STORAGE TRACE {} {} attack {} hit {} screen {} destroying {} grabbed {}", name,
                         MovRand.controller().storage.status, mc.options.keyAttack.isDown(), Bot.hitBlock(mc), mc.gui.screen(), mc.gameMode.isDestroying(), mc.mouseHandler.isMouseGrabbed());
                 require(!MovRand.controller().storage.failed(), name + ": " + MovRand.controller().storage.status);
                 return !MovRand.controller().storage.busy();
             }, max);
+            require(movingFrames[0] > 0, name + ": storage bypassed frame smoothing");
+            MovRand.LOG.info("Storage smoothing {} completed in {} ticks with {} moving frame intervals", name, ticks, movingFrames[0]);
             test.runOnClient(mc -> MovRand.controller().stop(mc, "Storage check passed: " + name));
         } catch (Throwable e) {
             test.runOnClient(mc -> MovRand.LOG.error("Storage test {} at {}: {} menu {}", name,

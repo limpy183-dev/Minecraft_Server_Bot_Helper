@@ -7,7 +7,7 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.InteractionHand;
 
 import java.util.Set;
 
@@ -29,6 +29,9 @@ public final class AutoEat {
 	private int restoreSlot = -1;
 	private int eatingTicks;
 	private boolean eating;
+	private double startYaw, startPitch;
+	double lookYaw, lookPitch;
+	private int wobbleTicks;
 	public String status = "idle";
 
 	public AutoEat(Config cfg) {
@@ -70,6 +73,9 @@ public final class AutoEat {
 			player.getInventory().setSelectedSlot(slot);
 			eating = true;
 			eatingTicks = 0;
+			startYaw = lookYaw = player.getYRot();
+			startPitch = lookPitch = player.getXRot();
+			wobbleTicks = 0;
 			status = "eating " + player.getInventory().getItem(slot).getHoverName().getString();
 		}
 
@@ -84,11 +90,21 @@ public final class AutoEat {
 			return false;
 		}
 
-		// look up so the use key cannot open a chest or place a block instead of eating
-		player.setXRot((float) cfg.autoEatLookPitch);
-		boolean aimingAtNothing = mc.hitResult == null || mc.hitResult.getType() == HitResult.Type.MISS;
-		mc.options.keyUse.setDown(aimingAtNothing);
+		if (--wobbleTicks <= 0) {
+			lookYaw = startYaw + Rng.range(-1.5, 1.5);
+			lookPitch = Math.max(-90, Math.min(90, startPitch + Rng.range(-1, 1)));
+			wobbleTicks = 8 + Rng.nextInt(9);
+		}
 		return true;
+	}
+
+	void useFood(Minecraft mc, LocalPlayer player) {
+		player.setSprinting(false);
+		// Use the held food directly, bypassing block/entity right-click interactions.
+		if (!player.isUsingItem() && mc.gameMode != null) {
+			mc.gameMode.useItem(player, InteractionHand.MAIN_HAND);
+		}
+		mc.options.keyUse.setDown(player.isUsingItem());
 	}
 
 	private void finish(Minecraft mc, LocalPlayer player) {

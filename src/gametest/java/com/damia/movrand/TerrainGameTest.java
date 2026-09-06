@@ -13,6 +13,7 @@ public final class TerrainGameTest implements FabricClientGameTest {
 		try (var world = test.worldBuilder().create()) {
 			if (!Boolean.parseBoolean(System.getenv("MOVRAND_TERRAIN_ONLY"))) {
 				smoothingMatrix(test, world);
+				smoothEating(test, world);
 				StorageGameTest.run(test, world);
 			}
 			stalledRoute(test, world);
@@ -127,6 +128,44 @@ public final class TerrainGameTest implements FabricClientGameTest {
 				});
 			} catch (Throwable failure) { diagnose(test, "smoothing-" + scenario); throw failure; }
 		}
+	}
+
+	/** Eating shares job aim and must finish, restore the tool and resume mining without a snap. */
+	private static void smoothEating(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		world.getServer().runCommand("setblock 2 1 0 chest");
+		world.getServer().runCommand("setblock 2 1 2 redstone_block");
+		world.getServer().runCommand("tp @p 0.5 1 0.5 -90 35");
+		world.getServer().runOnServer(server -> {
+			var player = server.getPlayerList().getPlayers().getFirst();
+			player.getFoodData().setFoodLevel(12);
+			player.getInventory().setItem(8, new net.minecraft.world.item.ItemStack(Items.COOKED_BEEF, 2));
+			player.inventoryMenu.broadcastChanges();
+		});
+		world.getConnection().waitForClientboundPackets(); test.waitTicks(10);
+		test.runOnClient(mc -> {
+			if (!new BlockPos(2, 1, 0).equals(Bot.hitBlock(mc))) throw new AssertionError("eating fixture must initially aim at the chest");
+			Config cfg = MovRand.config();
+			cfg.autoEatEnabled = true; cfg.taskReactionChance = 0; cfg.yawJitterEnabled = false;
+			cfg.destroyBlocks.add("redstone_block");
+			MovRand.controller().start(mc);
+		});
+		double[] previous = {35};
+		boolean[] ate = {false};
+		int ticks = test.waitFor(mc -> {
+			if (mc.player.containerMenu != mc.player.inventoryMenu) throw new AssertionError("eating opened the chest while turning");
+			if (Math.abs(mc.player.getXRot() - previous[0]) > MovRand.config().taskAimMaxTurnDeg + 0.01)
+				throw new AssertionError("eating bypassed the pitch turn limit");
+			previous[0] = mc.player.getXRot();
+			ate[0] |= mc.player.isUsingItem();
+			return mc.player.getFoodData().getFoodLevel() == 20
+					&& mc.level.getBlockState(new BlockPos(2, 1, 2)).isAir();
+		}, 240);
+		if (!ate[0]) throw new AssertionError("eating fixture never used food");
+		test.runOnClient(mc -> {
+			if (!mc.player.getMainHandItem().is(Items.DIAMOND_PICKAXE)) throw new AssertionError("eating did not restore the tool");
+			MovRand.controller().stop(mc, "smooth eating passed in " + ticks + " ticks");
+		});
 	}
 
 	/** Real Baritone paths must time out even while the executor keeps reporting a path. */

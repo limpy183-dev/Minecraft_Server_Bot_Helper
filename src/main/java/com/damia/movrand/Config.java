@@ -745,7 +745,7 @@ public final class Config {
 	public boolean autoEatAvoidHarmful = true;
 	public boolean autoEatSaveGoldenApples = true;
 	public boolean autoEatRestoreSlot = true;
-	/** Look this far up while eating so the use key cannot open a chest instead. */
+	/** Legacy setting retained for saved configs; eating now preserves the camera angle. */
 	public double autoEatLookPitch = -50;
 	public int autoEatMaxTicks = 80;
 	/** Stand still while eating. */

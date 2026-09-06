@@ -349,7 +349,8 @@ There is a watchdog for making no progress, and a configurable reaction on arriv
 ### Food
 Eats when the hunger bar drops to a threshold you set, picking the highest-nutrition item
 on the hotbar, skipping the things that poison you, and optionally saving golden apples. It
-looks at the sky while eating so right-click cannot open a chest instead, drops sprint
+keeps the camera near its starting angle with a gentle randomized wobble, uses food directly
+without opening the block under the crosshair, drops sprint
 (which would cancel the meal), and puts the previous item back in hand afterwards.
 
 Hotbar only — moving a stack up from the backpack means faking container clicks, which is a
@@ -790,9 +791,12 @@ optional priority and is off in the new tuning.
 A random aim point is chosen inside a visible face and held for the whole swing. Concave
 outlines also try their component shapes. **Aim point variation** controls the offset;
 **Aim smoothing while working** and **Maximum working turn per tick** control the camera.
-Base destroyer uses the navigation smoothing as a minimum for all its local actions, so setting
-navigation smoothing to 1 also gives mining and target changes full smoothing. Working smoothing
-also supports 1 and uses the same finite filter. Both turn-rate limits include the final wobble
+Jobs use navigation smoothing as a minimum for all local actions, so setting
+navigation smoothing to 1 also gives mining, target changes, and chest/shulker placement,
+opening and recovery full smoothing. This includes standalone storage and contents inspection
+with movement switched off. Eating keeps its starting camera angle with a small, smoothly randomized wobble while using
+food, then resumes the job. Frame interpolation follows whichever action owns the camera.
+Working smoothing also supports 1 and uses the same finite filter. Both turn-rate limits include the final wobble
 and any correction needed for a thin target.
 Working wobble is retained wherever possible and reduced when it would move the crosshair
 off a small target. The attack check uses the final camera rotation. Reducing noise never
