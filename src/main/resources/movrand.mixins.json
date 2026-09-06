@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "com.damia.movrand.mixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": ["BaritoneLookMixin", "CameraMixin", "BaritoneMiningMixin", "BaritoneInventoryMixin", "BaritoneBuilderInventoryMixin", "MiningSafetyMixin"],
+  "injectors": {"defaultRequire": 1}
+}

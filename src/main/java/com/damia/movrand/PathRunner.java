@@ -2,8 +2,10 @@ package com.damia.movrand;
 
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Walks a route that has already been found.
@@ -39,19 +41,35 @@ public final class PathRunner {
 		FAILED
 	}
 
-	/** How many moves ahead the camera cruises, so it is not chasing the block under its feet. */
-	private static final int LOOKAHEAD = 5;
-	/** Further than this from every square of the route and it is not the route being walked. */
-	private static final double OFF_ROUTE = 4.0;
-	/** How many moves ahead to revalidate, so a dead end is seen before it is walked into. */
-	private static final int VERIFY_AHEAD = 3;
+	/**
+	 * How many moves may be finished inside one tick.
+	 *
+	 * <p>A cap rather than a preference: after a skip forward several moves can already be
+	 * behind us, and running them costs nothing — but a move that reports success without the
+	 * player having gone anywhere would otherwise walk the whole route in one tick.
+	 */
+	private static final int CATCH_UP = 8;
 
 	private final List<PathMove> moves;
 	/** Whether the route actually reaches what it was planned for, or just gets closer. */
 	public final boolean complete;
 	public final BlockPos goal;
+	private final Set<Block> mayBreak;
 
 	private int index;
+	private int progressIndex = -1;
+	private double bestStepDistance = Double.POSITIVE_INFINITY;
+	private int stalledTicks;
+	private PathFinder.Edge failedEdge;
+	public PathFinder.Edge failedEdge() { return failedEdge; }
+	public BlockPos breakingBlock() {
+		return index < moves.size() ? moves.get(index).breakingBlock() : null;
+	}
+	public PathFinder.Edge currentEdge() {
+		if (index >= moves.size()) return null;
+		PathMove move = moves.get(index);
+		return new PathFinder.Edge(move.src.asLong(), move.dest.asLong());
+	}
 	public String reason = "";
 	public int placed;
 
@@ -64,9 +82,19 @@ public final class PathRunner {
 	public String justMinedName = "";
 
 	public PathRunner(List<PathMove> moves, boolean complete, BlockPos goal) {
+		this(moves, complete, goal, null);
+	}
+
+	public PathRunner(List<PathMove> moves, boolean complete, BlockPos goal, Set<Block> mayBreak) {
 		this.moves = moves;
 		this.complete = complete;
 		this.goal = goal;
+		this.mayBreak = mayBreak;
+		for (int i = 0; i + 1 < moves.size(); i++) {
+			if (plain(moves.get(i)) && !sameDirection(moves.get(i), moves.get(i + 1))) {
+				moves.get(i).arrivalRadius = 0.2;
+			}
+		}
 	}
 
 	public boolean isEmpty() {
@@ -116,7 +144,7 @@ public final class PathRunner {
 
 		countMined(ctx);
 
-		if (!resync(ctx.player())) {
+		if (!resync(ctx)) {
 			reason = "off the route";
 			return Result.FAILED;
 		}
@@ -124,13 +152,15 @@ public final class PathRunner {
 		PathMove move = moves.get(index);
 		// This move and the next couple. Checking ahead is what stops the bot walking three
 		// blocks up a corridor to find the doorway it was routed through has been filled in.
-		for (int i = index; i < Math.min(moves.size(), index + VERIFY_AHEAD); i++) {
-			if (!moves.get(i).stillPossible(ctx)) {
+		int ahead = Math.max(1, ctx.cfg().pathVerifyAhead);
+		for (int i = index; i < Math.min(moves.size(), index + ahead); i++) {
+			if (!moves.get(i).stillPossible(ctx, mayBreak)) {
 				reason = i == index ? "the way is not what it was" : "the way ahead has changed";
 				return Result.FAILED;
 			}
 		}
 		if (move.timedOut(ctx)) {
+			failedEdge = currentEdge();
 			reason = move.detail.isEmpty() ? "stuck on a step" : move.detail + " is taking too long";
 			return Result.FAILED;
 		}
@@ -139,6 +169,7 @@ public final class PathRunner {
 		if (move.placedOne) placed++;
 
 		if (status == PathMove.Status.FAILED) {
+			failedEdge = currentEdge();
 			reason = move.detail;
 			return Result.FAILED;
 		}
@@ -146,20 +177,52 @@ public final class PathRunner {
 		// steer, exactly as if it had been the current one all along. Looped rather than done
 		// once, because after a skip forward several moves can already be behind us — and every
 		// one of those that is not run is a tick handed back with no keys in it.
-		for (int guard = 0; status == PathMove.Status.SUCCESS && guard < 8; guard++) {
+		for (int guard = 0; status == PathMove.Status.SUCCESS && guard < CATCH_UP; guard++) {
 			index++;
 			if (index >= moves.size()) return Result.DONE;
-			PathMove ahead = moves.get(index);
-			status = ahead.update(ctx, steer);
-			if (ahead.placedOne) placed++;
+			PathMove next = moves.get(index);
+			if (!next.stillPossible(ctx, mayBreak) || next.timedOut(ctx)) {
+				reason = "the next step is no longer usable";
+				failedEdge = currentEdge();
+				steer.clear();
+				return Result.FAILED;
+			}
+			status = next.update(ctx, steer);
+			if (next.placedOne) placed++;
 			if (status == PathMove.Status.FAILED) {
-				reason = ahead.detail;
+				failedEdge = currentEdge();
+				reason = next.detail;
 				return Result.FAILED;
 			}
 		}
 
-		cruise(ctx.player(), steer);
+		if (walkingStalled(ctx, steer)) {
+			reason = "no progress towards the next step";
+			failedEdge = currentEdge();
+			steer.clear();
+			return Result.FAILED;
+		}
+		cruise(ctx, steer);
 		return Result.RUNNING;
+	}
+
+	private boolean walkingStalled(PathMove.Ctx ctx, Bot.Steer steer) {
+		PathMove move = moves.get(index);
+		double dx = move.dest.getX() + 0.5 - ctx.player().getX();
+		double dy = move.dest.getY() - ctx.player().getY();
+		double dz = move.dest.getZ() + 0.5 - ctx.player().getZ();
+		return trackProgress(index, Math.sqrt(dx * dx + dy * dy + dz * dz),
+				steer.hasMove && !steer.precise && ctx.player().onGround(), ctx.cfg().pathStallSec);
+	}
+
+	boolean trackProgress(int step, double distance, boolean walking, double seconds) {
+		if (!walking || step != progressIndex || distance < bestStepDistance - 0.04) {
+			progressIndex = step;
+			bestStepDistance = distance;
+			stalledTicks = 0;
+			return false;
+		}
+		return ++stalledTicks > seconds * 20;
 	}
 
 	// --------------------------------------------------------------- looking
@@ -178,19 +241,29 @@ public final class PathRunner {
 	 * route is now the obstacle avoidance: a run of plain steps is a run of squares the search
 	 * has already said a player fits through.
 	 */
-	private void cruise(LocalPlayer player, Bot.Steer steer) {
+	private void cruise(PathMove.Ctx ctx, Bot.Steer steer) {
 		if (steer.hasLook) return;                 // the move wants to look somewhere specific
+		LocalPlayer player = ctx.player();
 		PathMove current = moves.get(index);
 		BlockPos aim = current.dest;
 		if (plain(current)) {
-			for (int i = index + 1; i < Math.min(moves.size(), index + LOOKAHEAD); i++) {
+			int far = Math.max(1, ctx.cfg().pathLookaheadMoves);
+			for (int i = index + 1; i < Math.min(moves.size(), index + far); i++) {
 				PathMove m = moves.get(i);
 				if (!plain(m) || Math.abs(m.dest.getY() - current.dest.getY()) > 1) break;
+				// Looking around a right-angle corner before reaching it makes the keys alternate
+				// between strafe and forward against the doorframe. Look along this straight leg.
+				if (!sameDirection(current, m)) break;
 				aim = m.dest;
 			}
 		}
 		double heading = PathMove.headingTo(player, aim);
 		steer.lookAt(heading, pitchAlong(player, aim.getY()));
+	}
+
+	static boolean sameDirection(PathMove a, PathMove b) {
+		return a.dest.getX() - a.src.getX() == b.dest.getX() - b.src.getX()
+				&& a.dest.getZ() - a.src.getZ() == b.dest.getZ() - b.src.getZ();
 	}
 
 	private static boolean plain(PathMove m) {
@@ -214,11 +287,13 @@ public final class PathRunner {
 	 *
 	 * @return false when we have genuinely left the route
 	 */
-	private boolean resync(LocalPlayer player) {
+	private boolean resync(PathMove.Ctx ctx) {
+		LocalPlayer player = ctx.player();
 		BlockPos feet = player.blockPosition();
 		if (moves.get(index).validPositions().contains(feet)) return true;
 
-		for (int i = index + 1; i < Math.min(moves.size(), index + LOOKAHEAD + 2); i++) {
+		int far = Math.max(1, ctx.cfg().pathLookaheadMoves) + 2;
+		for (int i = index + 1; i < Math.min(moves.size(), index + far); i++) {
 			if (moves.get(i).validPositions().contains(feet)) {
 				index = i;
 				return true;
@@ -241,7 +316,8 @@ public final class PathRunner {
 			double dz = d.getZ() + 0.5 - player.getZ();
 			best = Math.min(best, dx * dx + dy * dy + dz * dz);
 		}
-		return best <= OFF_ROUTE * OFF_ROUTE;
+		double limit = Math.max(1, ctx.cfg().pathOffRouteBlocks);
+		return best <= limit * limit;
 	}
 
 	// --------------------------------------------------------------- tallies
@@ -253,6 +329,70 @@ public final class PathRunner {
 	 * a broken block, and the client is never told that a break succeeded — the block simply
 	 * stops being there.
 	 */
+	/**
+	 * Self-check on the route bookkeeping — walking one needs a world, knowing where it goes
+	 * and how much of it is left does not:
+	 * {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.PathRunner}
+	 */
+	public static void main(String[] args) {
+		BlockPos goal = new BlockPos(0, 64, 8);
+		PathFinder.Path path = new PathFinder.Path(List.of(
+				new PathFinder.Step(0, 64, 0, PathFinder.Kind.START, 0),
+				new PathFinder.Step(0, 64, 1, PathFinder.Kind.WALK, 1),
+				new PathFinder.Step(0, 64, 2, PathFinder.Kind.MINE, 5),
+				new PathFinder.Step(0, 65, 3, PathFinder.Kind.ASCEND, 1.6)), false, 40, 7.6);
+		PathRunner runner = new PathRunner(PathMove.of(path), false, goal);
+
+		for (int i = 0; i < 30; i++) {
+			boolean stalled = runner.trackProgress(0, 1 + (i % 2) * 0.005, true, 1.25);
+			assert stalled == (i > 25) : "stationary jitter defeated the walking watchdog";
+		}
+		for (int i = 0; i < 50; i++) {
+			assert !runner.trackProgress(1, 5 - i * 0.05, true, 1.25) : "slow walking was treated as stuck";
+		}
+		for (int i = 0; i < 1000; i++) {
+			assert !runner.trackProgress(2, 1, false, 1.25) : "mining was given a walking timeout";
+		}
+		PathMove east = new PathMove(PathFinder.Kind.WALK, BlockPos.ZERO, new BlockPos(1, 0, 0), 1);
+		PathMove south = new PathMove(PathFinder.Kind.WALK, east.dest, new BlockPos(1, 0, 1), 1);
+		new PathRunner(List.of(east, south), true, south.dest);
+		assert !sameDirection(east, south) && east.arrivalRadius <= 0.2 : "corner was cut before clearing the wall";
+
+		assert !runner.isEmpty() && runner.length() == 3 : "three steps became " + runner.length();
+		assert runner.step() == 0 : "a route starts at its first move";
+		assert runner.currentKind() == PathFinder.Kind.WALK : "the first move is a walk";
+
+		// Where a route ends is not what it was planned for. A partial route stops short by
+		// design - the budget runs out long before a base does - and reading the goal as the
+		// destination is how the next leg gets planned from a place we never reached.
+		assert runner.destination().equals(new BlockPos(0, 65, 3)) : "the route ended somewhere else";
+		assert !runner.destination().equals(goal) : "a partial route claimed to reach the goal";
+		assert !runner.complete : "a partial route reported itself complete";
+
+		// What is left is priced from the moves rather than counted, so a route whose remaining
+		// moves are four broken blocks is not "three steps from the end".
+		double all = runner.ticksLeft();
+		assert all > 3 * PathFinder.TICKS_PER_BLOCK
+				: "a route with a mine step in it costs no more than walking: " + all;
+		assert Math.abs(all - 7.6 * PathFinder.TICKS_PER_BLOCK) < 1e-6
+				: "what is left did not add up to what the search paid: " + all;
+
+		// An empty route is a failure with a reason, never a quiet tick: something upstream is
+		// waiting for news, and a runner that hands back nothing is a bot standing perfectly
+		// still while it waits for it.
+		PathRunner nothing = new PathRunner(List.of(), true, goal);
+		assert nothing.isEmpty() && nothing.length() == 0 : "an empty route was not empty";
+		assert nothing.destination().equals(goal) : "an empty route goes to the goal, having not moved";
+		assert nothing.currentKind() == PathFinder.Kind.START : "an empty route is mid-move";
+		assert !nothing.describe().isEmpty() : "an empty route described itself as nothing";
+		assert nothing.ticksLeft() == 0 : "an empty route has time left on it";
+
+		// and a route always has something to say about where it has got to
+		assert runner.describe().contains("1 of 3") : "the route lost its place: " + runner.describe();
+
+		System.out.println("PathRunner self-check passed");
+	}
+
 	private void countMined(PathMove.Ctx ctx) {
 		justMined = null;
 		BlockPos now = index < moves.size() ? moves.get(index).breakingBlock() : null;

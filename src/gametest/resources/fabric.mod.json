@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "id": "movrand-terrain-tests",
+  "version": "1.0.0",
+  "environment": "client",
+  "mixins": ["movrand-gametest.mixins.json"],
+  "entrypoints": { "fabric-client-gametest": ["com.damia.movrand.TerrainGameTest"] }
+}

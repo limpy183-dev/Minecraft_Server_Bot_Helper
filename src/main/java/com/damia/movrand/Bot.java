@@ -4,15 +4,18 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /**
@@ -51,6 +54,10 @@ public final class Bot {
 		public boolean forward, back, left, right;
 		public boolean jump, sneak, sprint;
 		public boolean attack, use;
+		/** Baritone owns movement, interaction and rotation for this tick. */
+		public boolean externalNavigation;
+		/** Precise block intents, rechecked after the final smoothed rotation is applied. */
+		public BlockPos attackTarget, useTarget, placeTarget;
 		/**
 		 * Aiming at one specific block rather than walking somewhere.
 		 *
@@ -78,10 +85,24 @@ public final class Bot {
 			hasMove = true;
 		}
 
+		public void attackAt(BlockPos pos) {
+			attackTarget = pos;
+		}
+
+		public void useAt(BlockPos pos) {
+			useTarget = pos;
+		}
+
+		public void placeInto(BlockPos pos) {
+			placeTarget = pos;
+		}
+
 		public void clear() {
+			externalNavigation = false;
 			hasLook = false;
 			hasMove = false;
 			precise = false;
+			attackTarget = useTarget = placeTarget = null;
 			forward = back = left = right = jump = sneak = sprint = attack = use = false;
 		}
 	}
@@ -422,18 +443,77 @@ public final class Bot {
 	/** A hotbar slot holding something worth putting on the floor, or -1. */
 	public static int buildingSlot(LocalPlayer player, Config cfg) {
 		Inventory inv = player.getInventory();
+		if (buildingBlockCount(player, cfg) <= Math.max(0, cfg.bridgeKeepBlocks)) return -1;
 		for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue; // a protected slot is not scaffolding
 			ItemStack stack = inv.getItem(slot);
-			if (stack.isEmpty() || !(stack.getItem() instanceof BlockItem item)) continue;
-			if (stack.getCount() < Math.max(1, cfg.bridgeKeepBlocks)) continue;
-			BlockState placed = item.getBlock().defaultBlockState();
-			// scaffolding has to hold still and hold weight: no sand, no torches, no slabs
-			if (placed.isAir() || !placed.getFluidState().isEmpty()) continue;
-			if (!cfg.isBuildingBlock(idOf(item))) continue;
+			if (!usableBuildingStack(stack, cfg)) continue;
 			return slot;
 		}
 		return -1;
+	}
+
+	/** One random point per block/face, retained for the entire swing. */
+	public static final class MiningAim {
+		private BlockPos block;
+		private Direction face;
+		private Vec3 point;
+		private double spread = -1;
+
+		public void reset() { block = null; point = null; }
+
+		public Vec3 point(Minecraft mc, LocalPlayer player, BlockPos pos, Direction side, Config cfg) {
+			if (pos.equals(block) && side == face && spread == cfg.taskAimPointSpread && point != null
+					&& clearLine(mc, player, player.getEyePosition(), point, pos)) return point;
+			block = pos;
+			face = side;
+			spread = cfg.taskAimPointSpread;
+			AABB box = blockBox(mc, pos);
+			point = offsetFacePoint(box, side, Rng.range(-spread, spread), Rng.range(-spread, spread));
+			if (clearLine(mc, player, player.getEyePosition(), point, pos)) return point;
+			point = side == null ? box.getCenter() : facePoint(box, side);
+			if (clearLine(mc, player, player.getEyePosition(), point, pos)) return point;
+			// Concave outlines (hoppers, stairs, fences) may have empty space at their bounds' centre.
+			int checked = 0;
+			for (AABB part : mc.level.getBlockState(pos).getShape(mc.level, pos).toAabbs()) {
+				if (++checked > 24) break;
+				Vec3 candidate = part.move(pos).getCenter();
+				if (clearLine(mc, player, player.getEyePosition(), candidate, pos)) {
+					point = candidate;
+					break;
+				}
+			}
+			return point;
+		}
+	}
+
+	static Vec3 offsetFacePoint(AABB box, Direction face, double u, double v) {
+		if (face == null) return box.getCenter();
+		Vec3 centre = facePoint(box, face);
+		return switch (face.getAxis()) {
+			case X -> centre.add(0, u * box.getYsize(), v * box.getZsize());
+			case Y -> centre.add(u * box.getXsize(), 0, v * box.getZsize());
+			case Z -> centre.add(u * box.getXsize(), v * box.getYsize(), 0);
+		};
+	}
+
+	/** Test a proposed camera rotation without moving the camera or changing the crosshair. */
+	public static boolean rotationHits(Minecraft mc, LocalPlayer player, BlockPos pos, double yaw, double pitch) {
+		Vec3 end = player.getEyePosition().add(Vec3.directionFromRotation((float) pitch, (float) yaw)
+				.scale(player.blockInteractionRange()));
+		return clearLine(mc, player, player.getEyePosition(), end, pos);
+	}
+
+	/** Whether a stack is safe enough to use as route scaffolding. */
+	public static boolean usableBuildingStack(ItemStack stack, Config cfg) {
+		if (stack.isEmpty() || Storage.reserved(cfg, stack) || !(stack.getItem() instanceof BlockItem item)) return false;
+		BlockState placed = item.getBlock().defaultBlockState();
+		// Falling blocks do not leave a floor where the planner paid for one.
+		if (item.getBlock() instanceof net.minecraft.world.level.block.FallingBlock) return false;
+		if (placed.isAir() || !placed.getFluidState().isEmpty()) return false;
+		if (!placed.isCollisionShapeFullBlock(net.minecraft.world.level.EmptyBlockGetter.INSTANCE, BlockPos.ZERO)) return false;
+		if (cfg.protectMiningDrops && placed.ignitedByLava()) return false;
+		return cfg.isBuildingBlock(idOf(item));
 	}
 
 	private static String idOf(BlockItem item) {
@@ -448,9 +528,7 @@ public final class Bot {
 		for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
-			if (stack.getItem() instanceof BlockItem item && cfg.isBuildingBlock(idOf(item))) {
-				total += stack.getCount();
-			}
+			if (usableBuildingStack(stack, cfg)) total += stack.getCount();
 		}
 		return total;
 	}
@@ -514,13 +592,48 @@ public final class Bot {
 		BlockPos against = target.relative(face);
 		BlockState state = mc.level.getBlockState(against);
 		if (state.isAir() || !state.getFluidState().isEmpty()) return false;
-		if (state.getCollisionShape(mc.level, against).isEmpty()) return false;
+		// A collision shape is enough to stand on, but not enough to place a pillar from.
+		// Slabs, repeaters, dust, rails and similar partial shapes can be ray-hit while still
+		// being rejected by the block-placement rules. Require the same full upper support a
+		// stable pillar needs, so the bot does not jump and hold use at a placement that can
+		// never succeed.
+		if (!fullPlacementSupport(mc.level, against)) return false;
 		if (!inReach(mc, player, against)) return false;
 		// cheap and exact: a face you are behind is a face you cannot click, no ray needed
 		if (!facesTheEye(blockBox(mc, against), face.getOpposite(), player.getEyePosition())) {
 			return false;
 		}
-		return placesInto(mc, player, target, against, placePoint(mc, target, face));
+		Vec3 aim = placePoint(mc, target, face);
+		return placesInto(mc, player, target, against, aim)
+				&& placementWouldBeAccepted(mc, player, target, against, face, aim);
+	}
+
+	/**
+	 * A full, upper support face: the conservative support a player can reliably build a column
+	 * from. This intentionally rejects partial collision shapes even where vanilla allows a few
+	 * decorative placements; route scaffolding must leave a dependable block under the feet.
+	 */
+	public static boolean fullPlacementSupport(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		BlockState state = level.getBlockState(pos);
+		if (state.isAir() || !state.getFluidState().isEmpty()) return false;
+		return state.isCollisionShapeFullBlock(level, pos)
+				&& state.isFaceSturdy(level, pos, Direction.UP,
+						net.minecraft.world.level.block.SupportType.FULL);
+	}
+
+	/** Check the selected block item using the same placement context vanilla will receive. */
+	private static boolean placementWouldBeAccepted(Minecraft mc, LocalPlayer player, BlockPos target,
+	                                                BlockPos against, Direction face, Vec3 aim) {
+		ItemStack stack = player.getMainHandItem();
+		if (!(stack.getItem() instanceof BlockItem item)) return false;
+		BlockHitResult hit = new BlockHitResult(aim, face.getOpposite(), against, false);
+		BlockPlaceContext context = new BlockPlaceContext(player, InteractionHand.MAIN_HAND, stack, hit);
+		if (!context.canPlace()) return false;
+		BlockPlaceContext updated = item.updatePlacementContext(context);
+		if (updated == null || !updated.canPlace() || !updated.getClickedPos().equals(target)) return false;
+		BlockState placed = item.getBlock().getStateForPlacement(updated);
+		if (placed == null || !placed.canSurvive(mc.level, target)) return false;
+		return mc.level.isUnobstructed(placed, target, CollisionContext.placementContext(player));
 	}
 
 	/**
@@ -589,12 +702,19 @@ public final class Bot {
 	 * stood on. Nothing further out: a lake across the room is scenery, not a hazard.
 	 */
 	public static BlockPos lavaBeside(Minecraft mc, LocalPlayer player) {
+		return liquidBeside(mc, player, false, true);
+	}
+
+	/** Selected fluid right beside the feet, at foot level or under the lip being stood on. */
+	public static BlockPos liquidBeside(Minecraft mc, LocalPlayer player, boolean water, boolean lava) {
 		if (mc.level == null) return null;
 		BlockPos feet = player.blockPosition();
 		for (BlockPos base : new BlockPos[]{feet, feet.below()}) {
 			for (Direction face : Direction.Plane.HORIZONTAL) {
 				BlockPos pos = base.relative(face);
-				if (Avoidance.isLavaAt(mc.level, pos)) return pos;
+				var fluid = mc.level.getBlockState(pos).getFluidState();
+				if ((lava && fluid.is(net.minecraft.tags.FluidTags.LAVA))
+						|| (water && fluid.is(net.minecraft.tags.FluidTags.WATER))) return pos;
 			}
 		}
 		return null;
@@ -635,6 +755,14 @@ public final class Bot {
 	 * {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.Bot}
 	 */
 	public static void main(String[] args) {
+		for (Direction face : Direction.values()) {
+			AABB thin = new AABB(0, 0, 0, 1, 0.0625, 1);
+			for (double u : new double[]{-0.4, 0, 0.4}) {
+				for (double v : new double[]{-0.4, 0, 0.4}) {
+					assert thin.contains(offsetFacePoint(thin, face, u, v)) : "random aim escaped a thin target";
+				}
+			}
+		}
 		// The yaw convention is the one place this file can be silently wrong: get it
 		// backwards and the bot mines the block behind it forever.
 		assert Math.abs(yawTo(0, 1) - 0) < 0.001 : "+Z must be yaw 0, got " + yawTo(0, 1);

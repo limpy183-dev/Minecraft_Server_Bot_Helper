@@ -228,6 +228,15 @@ public final class Config {
 	public double gotoCorrectionDegPerTick = 1.6;
 	/** Let the random turn events wander this far off the bearing before correcting. */
 	public double gotoMaxWanderDeg = 28.0;
+	/**
+	 * Walk there on a route rather than steering at the bearing.
+	 *
+	 * <p>The bearing is enough across open country and useless in a building: it answers "which
+	 * way is it" and never "is there a wall in the way". With this on the same search the base
+	 * destroyer uses plans the way there — round the wall, through the door, down the drop —
+	 * and the same follower walks it, through the same camera.
+	 */
+	public boolean gotoPathfind = false;
 	public boolean gotoStopOnArrive = true;
 	public Reaction gotoArriveReaction = Reaction.ALERT;
 	/** Give up and alert if we get no closer for this long. 0 = never. */
@@ -375,6 +384,8 @@ public final class Config {
 	public double areaX1 = -128, areaZ1 = -128, areaX2 = 128, areaZ2 = 128;
 	/** Trim the rectangle to a disc — what "N chunks around me" should mean. */
 	public boolean areaCircular = false;
+	/** Filter the sweep map overlay; navigation always uses this world and dimension. */
+	public boolean areaThisWorldOnly = true;
 	public AreaCoverage.Route areaRoute = AreaCoverage.Route.ORGANIC;
 	/** How many of the nearest unvisited chunks the organic route picks between. */
 	public int areaRouteLookahead = 6;
@@ -395,14 +406,67 @@ public final class Config {
 	// --------------------------------------------------- the base destroyer
 
 	public boolean destroyerEnabled = false;
+	/** Versioned migration applies the requested terrain capabilities to existing saved settings once. */
+	public int terrainSettingsVersion = 0;
+	public boolean baritoneNavigation = true;
+	public boolean destroyLoadedChunks = true;
+	public boolean protectMiningDrops = true;
+	public int dropSafetyDepth = 16;
+	public double prepareSiteSec = 45;
+	public boolean baritoneParkour = true;
+	public boolean baritoneParkourPlace = true;
+	public boolean baritoneVines = true;
+	public boolean baritoneWaterBucketFalls = false;
+	public double baritoneTurnSmoothing = 0.35;
+	public double baritoneTurnRate = 24;
+	public double baritoneAimVariation = 0.03;
+	public double baritoneNoProgressSec = 8;
 	/** How far to look for blocks worth breaking. Blocks, not chunks. */
 	public int destroyRadius = 32;
 	public int destroyVerticalRadius = 16;
 	/** A ceiling on one scan, so a warehouse of redstone does not build a huge list. */
 	public int destroyMaxTargets = 512;
+	/** How often to look again, drawn fresh between the two so it is not a metronome. */
 	public double destroyScanSec = 1.5;
-	/** How long a target may refuse to be reached or seen before it is written off. */
-	public double destroyGiveUpSec = 6;
+	public double destroyScanMaxSec = 3.0;
+	/** Maximum near-tie candidates, re-ranked by current distance at each decision. */
+	public int destroyTargetChoices = 3;
+	/** Random choices stay this close to the nearest candidate, measured in blocks. */
+	public double destroyTargetDistanceSlack = 0.35;
+	public double destroyTargetRandomness = 0.2;
+	public boolean destroyPreferReachable = true;
+	/** Keep inventories and their potentially large item drops until other selected blocks are gone. */
+	public boolean destroyStorageLast = false;
+	/** Only select blocks the player's current view can genuinely raycast to. */
+	public boolean destroyRequireLineOfSight = false;
+	/** Horizontal/vertical view cone used with line-of-sight. 360 means any visible direction. */
+	public double destroyFieldOfViewDeg = 120;
+	/** Consecutive complete empty scans required before the destroyer can announce completion. */
+	public int destroyEmptyScansToFinish = 3;
+	/** Permit completion when part of the configured search circle is not currently loaded. */
+	public boolean destroyAllowIncompleteScanFinish = false;
+	/**
+	 * How long one block may be swung at before it is written off.
+	 *
+	 * <p>The only honest way to tell a slow block from an impossible one: a client is never
+	 * told why a swing did nothing, so claimed land, region protection and spawn protection all
+	 * look exactly like mining that has not finished yet. Obsidian with an iron pickaxe is
+	 * twenty-five seconds of honest work, so this is generous on purpose.
+	 */
+	public double destroyBlockSec = 35;
+	/**
+	 * How long one target may occupy the bot in total, however that time is spent.
+	 *
+	 * <p>Wider than the block ceiling, because it covers walking there as well as breaking it.
+	 * The point is that it exists: with every individual step bounded and nothing bounding the
+	 * whole, a bot can still spend an afternoon on one block by failing at it in a slightly
+	 * different way each time.
+	 */
+	public double destroyTargetSec = 120;
+	/** How long an unreachable or protected target stays out of the candidate list. */
+	public double destroyRetrySec = 45;
+	/** Moving this far makes a written-off target worth reconsidering before the timer expires. */
+	public double destroyRetryMoveBlocks = 8;
 	public boolean destroySprint = true;
 	/**
 	 * Whether the job carries on through the interruptions the job itself causes.
@@ -439,7 +503,7 @@ public final class Config {
 	 * the obsidian wall in front of them. Off lets the bot tunnel through anything breakable
 	 * to reach a target, which is the only way into a room with no door.
 	 */
-	public boolean pathMineOnlySelected = true;
+	public boolean pathMineOnlySelected = false;
 	public boolean pathBridge = true;
 	public boolean pathDiagonal = true;
 	public int pathMaxFall = 3;
@@ -448,7 +512,45 @@ public final class Config {
 	public int pathPlaceCost = 3;
 	/** The search budget. Bigger finds longer routes and costs more per plan. */
 	public int pathMaxNodes = 8000;
+	/**
+	 * How far over the shortest route the search may settle, in exchange for expanding far
+	 * fewer nodes. 1 is exact and slow; 1.15 is a route up to a seventh longer, found in a
+	 * fraction of the time.
+	 */
+	public double pathHeuristicWeight = 1.15;
+	/** How much of a tick one slice of planning may take. A tick is fifty milliseconds. */
+	public double pathSliceMs = 2.0;
+	/**
+	 * How much route to leave before the next leg starts being planned behind it, drawn
+	 * fresh between these two every time. A fixed number here is a rhythm rather than a
+	 * decision, and it is the one that shows: it is the moment the walk stops being smooth.
+	 */
 	public double pathRefreshSec = 3.0;
+	public double pathRefreshMaxSec = 6.0;
+	/**
+	 * How long to wait after a plan comes to nothing. Never zero: retrying on the next tick
+	 * asks the same question of the same world from the same place, twenty times a second.
+	 */
+	public double pathRestMinSec = 0.35;
+	public double pathRestMaxSec = 0.9;
+	/** Plans in a row that produce nothing walkable before a goal is called impossible. */
+	public int pathAttempts = 3;
+	/** How many moves ahead the camera looks, and how far forward a lost position is sought. */
+	public int pathLookaheadMoves = 5;
+	/** Further than this from every square of a route, and it is not that route being walked. */
+	public double pathOffRouteBlocks = 4.0;
+	/** How many moves ahead to revalidate, so a dead end is seen before it is walked into. */
+	public int pathVerifyAhead = 3;
+	/**
+	 * Patience on top of what one step should physically take, drawn between these two. It is
+	 * a give-up time, so it only ever adds — and a give-up time that is the same integer every
+	 * time is one more constant on the wire.
+	 */
+	public double pathMoveSlackSec = 3.0;
+	public double pathMoveSlackMaxSec = 6.0;
+	/** Detect a stationary walking step without applying a walking deadline to mining. */
+	public double pathStallSec = 1.25;
+	public double pathFailedEdgeRetrySec = 8;
 
 	// --------------------------------------------------- building and cover
 
@@ -459,8 +561,22 @@ public final class Config {
 	public boolean bridgeSneak = true;
 	/** Never place the last few, so there is always something left to get out of a hole. */
 	public int bridgeKeepBlocks = 1;
+	/**
+	 * Cap lava that turns up right beside the feet.
+	 *
+	 * <p>Deliberately only the adjacent square. Lava that is in the <em>way</em> is the route's
+	 * problem and the route bridges over it, priced and planned against the dry ground going the
+	 * same direction. A standing scan of everything liquid nearby meant that in a base with a
+	 * lava floor the job never ran once.
+	 */
 	public boolean coverLiquids = true;
-	public int coverRadius = 3;
+	/** Which adjacent fluids the cover behavior handles. Lava defaults on; water is opt-in. */
+	public boolean coverLava = true;
+	public boolean coverWater = false;
+	/** How long to spend trying to cap one square before leaving it alone. */
+	public double coverGiveUpSec = 3;
+	/** And how long to leave it alone afterwards, so a square that cannot be capped is not retried forever. */
+	public double coverRestSec = 20;
 
 	/**
 	 * Watch the air bar and surface before it runs out.
@@ -476,8 +592,25 @@ public final class Config {
 
 	public boolean collectDrops = true;
 	public int collectRadius = 12;
+	/**
+	 * How long to spend on one drop before deferring it for a timed retry.
+	 *
+	 * <p>A pile behind a wall the route may not break looks exactly like a pile two steps away
+	 * until you have spent the time proving otherwise.
+	 */
+	public double collectGiveUpSec = 60;
+	public double collectRetrySec = 10;
+	public double collectPickupWaitSec = 0.75;
+	/** Finish the current swing, then collect a batch before returning to mining. */
+	public double collectBatchSec = 4;
+	public boolean collectAllowEdits = true;
 
 	// ----------------------------------------------------------- the bag
+
+	public boolean storageEnabled = false;
+	public boolean storageReturnShulkers = true;
+	public double storagePlayerRadius = 32;
+	public List<Storage.Target> storageTargets = new ArrayList<>();
 
 	/** Slots that are never sold, dropped, or placed. Indices into the player inventory. */
 	public List<Integer> protectedSlots = new ArrayList<>();
@@ -485,6 +618,8 @@ public final class Config {
 	public List<Integer> sellSlots = new ArrayList<>();
 	public double inventoryFullFraction = 0.9;
 	public boolean stopWhenInventoryFull = true;
+	/** What to do about a full bag with nothing left to sell and nothing left to throw away. */
+	public Reaction inventoryFullReaction = Reaction.ALERT;
 	public boolean restockHotbar = true;
 	public boolean dropJunk = false;
 	public List<String> junkItems = new ArrayList<>(List.of(
@@ -498,12 +633,16 @@ public final class Config {
 	public double autoSellCooldownSec = 60;
 	/** Without the slash — the client adds it. */
 	public String sellCommand = "sell";
+	/** Optional text the opened menu title must contain before the bot will click it. */
+	public String sellMenuTitleContains = "";
 	/** The item on the confirm button. The bottom-right match in the menu is the one clicked. */
 	public String sellConfirmItem = "lime_stained_glass_pane";
 	/** A counted-out slot index, used only when the item above matches nothing. -1 to disable. */
 	public int sellConfirmSlot = -1;
 	/** Refuse to press confirm if nothing was actually moved in. */
 	public boolean sellRequiresDeposit = true;
+	/** How many times to wait for a menu that never came before giving the sale up. */
+	public int sellOpenAttempts = 3;
 	public double sellDelayMinSec = 0.6;
 	public double sellDelayMaxSec = 1.4;
 	public double sellClickMinSec = 0.18;
@@ -527,16 +666,50 @@ public final class Config {
 	public double combatRetreatHealth = 6;
 
 	/** A reaction time in front of every decision the task layer makes. */
-	public double taskReactionMinSec = 0.25;
-	public double taskReactionMaxSec = 0.8;
-	/**
-	 * A tighter camera for work that has to land on one face of one block. Vanilla throws
-	 * away mining progress the moment the crosshair leaves the block, so a filter as lazy as
-	 * the one used for wandering does not mine slowly — it never finishes.
-	 */
+	public double taskReactionMinSec = 0.08;
+	public double taskReactionMaxSec = 0.25;
+	/** Probability that a newly chosen block gets the reaction pause above. */
+	public double taskReactionChance = 0.2;
+	/** Finite turn rounding for precision work. Navigation smoothing is the destroyer's minimum. */
 	public double taskAimSmoothing = 0.35;
-	/** How much view wobble to keep while aiming. Never zero: no noise at all is a signature. */
+	/** How much view wobble to keep while aiming; reduced further when a small shape needs it. */
 	public double taskAimWobbleScale = 0.35;
+	/** Fraction of a visible face used for a stable, randomly offset aim point. */
+	public double taskAimPointSpread = 0.18;
+	public double taskAimMaxTurnDeg = 24;
+
+	/** Apply just the work-speed controls; keep block selections and inventory permissions. */
+	public void fastDestroyerTuning() {
+		destroyTargetChoices = 3;
+		destroyTargetDistanceSlack = 0.35;
+		destroyTargetRandomness = 0.2;
+		destroyPreferReachable = true;
+		destroyStorageLast = false;
+		taskReactionMinSec = 0.08;
+		taskReactionMaxSec = 0.25;
+		taskReactionChance = 0.2;
+		taskAimSmoothing = 0.35;
+		taskAimWobbleScale = 0.35;
+		taskAimPointSpread = 0.18;
+		taskAimMaxTurnDeg = 24;
+		pathStallSec = 1.25;
+		pathFailedEdgeRetrySec = 8;
+		collectGiveUpSec = 60;
+		collectRetrySec = 10;
+		collectPickupWaitSec = 0.75;
+		collectBatchSec = 4;
+	}
+
+	public void terrainDefaults() {
+		baritoneNavigation = true;
+		destroyLoadedChunks = true;
+		destroyRequireLineOfSight = false;
+		pathMineOnlySelected = false;
+		collectAllowEdits = true;
+		protectMiningDrops = true;
+		collectGiveUpSec = Math.max(60, collectGiveUpSec);
+		terrainSettingsVersion = 1;
+	}
 
 	// --------------------------------------------------------- safe stop
 
@@ -693,6 +866,7 @@ public final class Config {
 			try {
 				Config c = GSON.fromJson(Files.readString(p), Config.class);
 				if (c != null) {
+					if (c.terrainSettingsVersion < 1) c.terrainDefaults();
 					if (c.chatKeywords == null) c.chatKeywords = new ArrayList<>();
 					c.clampAll();
 					return c;
@@ -826,7 +1000,7 @@ public final class Config {
 		areaRouteLookahead = Math.max(1, Math.min(64, areaRouteLookahead));
 		areaTargetJitter = Math.max(0, Math.min(7.5, areaTargetJitter));
 		areaAroundRadius = Math.max(0, Math.min(512, areaAroundRadius));
-		areaMapView = Math.max(4, Math.min(4096, areaMapView));
+		areaMapView = Math.max(4, Math.min(32_768, areaMapView));
 		avoidLookahead = Math.max(1.0, Math.min(12.0, avoidLookahead));
 		avoidMaxDeviationDeg = Math.max(15, Math.min(180, avoidMaxDeviationDeg));
 		avoidTurnDegPerTick = Math.max(0.2, Math.min(30, avoidTurnDegPerTick));
@@ -835,24 +1009,65 @@ public final class Config {
 		safeStopWindowSec = Math.max(0.5, safeStopWindowSec);
 		safeStopRubberBandBlocks = Math.max(0.5, Math.min(32, safeStopRubberBandBlocks));
 		destroyRadius = Math.max(4, Math.min(160, destroyRadius));
+		dropSafetyDepth = Math.max(3, Math.min(64, dropSafetyDepth));
+		prepareSiteSec = Math.max(5, Math.min(180, prepareSiteSec));
+		baritoneTurnSmoothing = Math.max(0, Math.min(1, baritoneTurnSmoothing));
+		baritoneTurnRate = Math.max(8, Math.min(90, baritoneTurnRate));
+		baritoneAimVariation = Math.max(0, Math.min(0.2, baritoneAimVariation));
+		baritoneNoProgressSec = Math.max(3, Math.min(60, baritoneNoProgressSec));
 		destroyVerticalRadius = Math.max(2, Math.min(160, destroyVerticalRadius));
 		destroyMaxTargets = Math.max(16, Math.min(20_000, destroyMaxTargets));
 		destroyScanSec = Math.max(0.25, Math.min(60, destroyScanSec));
-		destroyGiveUpSec = Math.max(1, Math.min(120, destroyGiveUpSec));
+		destroyScanMaxSec = Math.max(destroyScanSec, Math.min(120, destroyScanMaxSec));
+		destroyTargetChoices = Math.max(1, Math.min(32, destroyTargetChoices));
+		destroyTargetDistanceSlack = Math.max(0, Math.min(2, destroyTargetDistanceSlack));
+		destroyTargetRandomness = Math.max(0, Math.min(1, destroyTargetRandomness));
+		destroyFieldOfViewDeg = Math.max(10, Math.min(360, destroyFieldOfViewDeg));
+		destroyEmptyScansToFinish = Math.max(1, Math.min(10, destroyEmptyScansToFinish));
+		// never below what obsidian honestly takes with an iron pick, or the ceiling meant to
+		// catch a block that will never break starts catching blocks that simply are slow
+		destroyBlockSec = Math.max(25, Math.min(600, destroyBlockSec));
+		// and a target is always allowed at least as long as one of its own blocks
+		destroyTargetSec = Math.max(destroyBlockSec * 2, Math.min(3600, destroyTargetSec));
+		destroyRetrySec = Math.max(1, Math.min(3600, destroyRetrySec));
+		destroyRetryMoveBlocks = Math.max(0, Math.min(64, destroyRetryMoveBlocks));
 		pathMaxFall = Math.max(1, Math.min(24, pathMaxFall));
 		pathMineCost = Math.max(1, Math.min(64, pathMineCost));
 		pathPlaceCost = Math.max(1, Math.min(64, pathPlaceCost));
 		pathMaxNodes = Math.max(500, Math.min(200_000, pathMaxNodes));
+		// below 1 the heuristic overestimates nothing and the search is simply slower; above 3
+		// it stops being A* and becomes a greedy walk at the goal, wall or no wall
+		pathHeuristicWeight = Math.max(1.0, Math.min(3.0, pathHeuristicWeight));
+		// a slice longer than a tick would drop the frame it was supposed to protect
+		pathSliceMs = Math.max(0.1, Math.min(25, pathSliceMs));
 		pathRefreshSec = Math.max(0.5, Math.min(60, pathRefreshSec));
+		pathRefreshMaxSec = Math.max(pathRefreshSec, Math.min(120, pathRefreshMaxSec));
+		pathRestMinSec = Math.max(0.1, Math.min(10, pathRestMinSec));
+		pathRestMaxSec = Math.max(pathRestMinSec, Math.min(20, pathRestMaxSec));
+		pathAttempts = Math.max(1, Math.min(20, pathAttempts));
+		pathLookaheadMoves = Math.max(1, Math.min(32, pathLookaheadMoves));
+		pathOffRouteBlocks = Math.max(1, Math.min(32, pathOffRouteBlocks));
+		pathVerifyAhead = Math.max(1, Math.min(16, pathVerifyAhead));
+		pathMoveSlackSec = Math.max(0.5, Math.min(30, pathMoveSlackSec));
+		pathMoveSlackMaxSec = Math.max(pathMoveSlackSec, Math.min(60, pathMoveSlackMaxSec));
+		pathStallSec = Math.max(0.4, Math.min(10, pathStallSec));
+		pathFailedEdgeRetrySec = Math.max(1, Math.min(60, pathFailedEdgeRetrySec));
 		bridgeKeepBlocks = Math.max(1, Math.min(64, bridgeKeepBlocks));
-		coverRadius = Math.max(1, Math.min(16, coverRadius));
+		coverGiveUpSec = Math.max(0.5, Math.min(30, coverGiveUpSec));
+		// longer than the attempt it follows, or "leave it alone for a while" is not a rest
+		coverRestSec = Math.max(coverGiveUpSec, Math.min(600, coverRestSec));
 		collectRadius = Math.max(1, Math.min(48, collectRadius));
+		collectGiveUpSec = Math.max(2, Math.min(300, collectGiveUpSec));
+		collectRetrySec = Math.max(1, Math.min(120, collectRetrySec));
+		collectPickupWaitSec = Math.max(0.2, Math.min(3, collectPickupWaitSec));
+		collectBatchSec = Math.max(0.5, Math.min(30, collectBatchSec));
 		// never zero: surfacing at zero air means surfacing while already taking damage
 		airSecondsLeft = Math.max(1, Math.min(14, airSecondsLeft));
 		inventoryFullFraction = Math.max(0.1, Math.min(1.0, inventoryFullFraction));
 		autoSellMinStacks = Math.max(1, Math.min(36, autoSellMinStacks));
 		autoSellCooldownSec = Math.max(5, Math.min(3600, autoSellCooldownSec));
 		sellConfirmSlot = Math.max(-1, Math.min(200, sellConfirmSlot));
+		sellOpenAttempts = Math.max(1, Math.min(20, sellOpenAttempts));
 		// every delay has a floor: a zero here is a burst of packets no hand can produce
 		sellDelayMinSec = Math.max(0.1, Math.min(10, sellDelayMinSec));
 		sellDelayMaxSec = Math.max(sellDelayMinSec, Math.min(20, sellDelayMaxSec));
@@ -866,10 +1081,15 @@ public final class Config {
 		combatRetreatHealth = Math.max(0, Math.min(20, combatRetreatHealth));
 		taskReactionMinSec = Math.max(0.05, Math.min(5, taskReactionMinSec));
 		taskReactionMaxSec = Math.max(taskReactionMinSec, Math.min(10, taskReactionMaxSec));
-		taskAimSmoothing = Math.max(0, Math.min(0.95, taskAimSmoothing));
-		taskAimWobbleScale = Math.max(0.05, Math.min(1, taskAimWobbleScale));
+		taskReactionChance = Math.max(0, Math.min(1, taskReactionChance));
+		taskAimSmoothing = Math.max(0, Math.min(1, taskAimSmoothing));
+		taskAimWobbleScale = Math.max(0, Math.min(1, taskAimWobbleScale));
+		taskAimPointSpread = Math.max(0, Math.min(0.4, taskAimPointSpread));
+		taskAimMaxTurnDeg = Math.max(2, Math.min(90, taskAimMaxTurnDeg));
 		if (sellCommand == null || sellCommand.isBlank()) sellCommand = "sell";
 		sellCommand = sellCommand.trim().replaceFirst("^/", "");
+		if (sellMenuTitleContains == null) sellMenuTitleContains = "";
+		sellMenuTitleContains = sellMenuTitleContains.trim();
 		autoEatThreshold = Math.max(0, Math.min(19, autoEatThreshold));
 		autoEatMaxTicks = Math.max(20, autoEatMaxTicks);
 		playerAlertRepeats = Math.max(1, Math.min(50, playerAlertRepeats));
@@ -886,7 +1106,7 @@ public final class Config {
 		logViewLimit = Math.max(20, Math.min(5000, logViewLimit));
 		reactionDelayMinMs = Math.max(0, Math.min(5000, reactionDelayMinMs));
 		reactionDelayMaxMs = Math.max(reactionDelayMinMs, Math.min(5000, reactionDelayMaxMs));
-		mapSpanBlocks = Math.max(64, Math.min(32768, mapSpanBlocks));
+		mapSpanBlocks = Math.max(64, Math.min(32_768 * 16, mapSpanBlocks));
 		mapMaxAgeHours = Math.max(0, Math.min(8760, mapMaxAgeHours));
 		cameraSmoothYaw = Math.max(0, Math.min(0.95, cameraSmoothYaw));
 		cameraSmoothPitch = Math.max(0, Math.min(0.95, cameraSmoothPitch));
@@ -897,6 +1117,11 @@ public final class Config {
 		if (junkItems == null) junkItems = new ArrayList<>();
 		if (protectedSlots == null) protectedSlots = new ArrayList<>();
 		if (sellSlots == null) sellSlots = new ArrayList<>();
+		if (!Double.isFinite(storagePlayerRadius)) storagePlayerRadius = 32;
+		storagePlayerRadius = Math.max(16, Math.min(128, storagePlayerRadius));
+		if (storageTargets == null) storageTargets = new ArrayList<>();
+		storageTargets.removeIf(java.util.Objects::isNull);
+		storageTargets.forEach(Storage.Target::clamp);
 		if (dimensionFilter == null) dimensionFilter = new java.util.HashMap<>();
 		for (String d : Journal.DIMENSIONS) dimensionFilter.putIfAbsent(d, true);
 		if (logViewKinds == null) logViewKinds = new java.util.HashMap<>();
@@ -977,6 +1202,7 @@ public final class Config {
 			if (!Files.isRegularFile(f)) return null;
 			Config c = GSON.fromJson(Files.readString(f), Config.class);
 			if (c == null) return null;
+			if (c.terrainSettingsVersion < 1) c.terrainDefaults();
 			if (c.chatKeywords == null) c.chatKeywords = new ArrayList<>();
 			c.activeProfile = sanitise(name);
 			c.clampAll();

@@ -342,12 +342,25 @@ public final class Avoidance {
 	 * sitting on top of it, can come in.
 	 */
 	public static boolean floodsWhenBroken(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
+		return floodsWhenBroken(level, pos, false, true);
+	}
+
+	/** Fluid-aware form used by the destroyer when water containment is enabled. */
+	public static boolean floodsWhenBroken(net.minecraft.world.level.BlockGetter level, BlockPos pos,
+	                                      boolean water, boolean lava) {
 		if (level.getBlockState(pos).getCollisionShape(level, pos).isEmpty()) return false;
-		if (isLavaAt(level, pos.above())) return true;
+		if (isSelectedFluidAt(level, pos.above(), water, lava)) return true;
 		for (Direction face : Direction.Plane.HORIZONTAL) {
-			if (isLavaAt(level, pos.relative(face))) return true;
+			if (isSelectedFluidAt(level, pos.relative(face), water, lava)) return true;
 		}
 		return false;
+	}
+
+	private static boolean isSelectedFluidAt(net.minecraft.world.level.BlockGetter level, BlockPos pos,
+	                                         boolean water, boolean lava) {
+		var fluid = level.getBlockState(pos).getFluidState();
+		return (lava && fluid.is(net.minecraft.tags.FluidTags.LAVA))
+				|| (water && fluid.is(net.minecraft.tags.FluidTags.WATER));
 	}
 
 	/** Everything that damages, traps or freezes on contact. */

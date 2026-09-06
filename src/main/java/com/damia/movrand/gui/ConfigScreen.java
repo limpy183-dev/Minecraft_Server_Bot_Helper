@@ -12,6 +12,7 @@ import com.damia.movrand.MovRand;
 import com.damia.movrand.MovementController;
 import com.damia.movrand.Presets;
 import com.damia.movrand.Risks;
+import com.damia.movrand.Storage;
 import com.damia.movrand.WorldId;
 import com.damia.movrand.gui.Widgets.Action;
 import com.damia.movrand.gui.Widgets.Cycle;
@@ -77,6 +78,7 @@ public final class ConfigScreen extends Screen {
 		DESTROYER("Base destroyer", Group.DESTROY),
 		BLOCKS("Blocks to mine", Group.DESTROY),
 		INVENTORY("Inventory", Group.DESTROY),
+		STORAGE("Storage", Group.DESTROY),
 		SELLING("Auto sell", Group.DESTROY),
 		COMBAT("Combat", Group.DESTROY),
 
@@ -108,11 +110,11 @@ public final class ConfigScreen extends Screen {
 	};
 	private static final String NUMERIC = "-0123456789.";
 	private static final List<Integer> MAP_ZOOMS =
-			List.of(8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096);
+			List.of(8, 16, 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, 32768);
 
 	/** Only the zooms that fit inside the world border, so no listed option is a lie. */
 	private static List<Integer> mapZooms() {
-		int max = com.damia.movrand.WorldBounds.maxSpanChunks(4096);
+		int max = com.damia.movrand.WorldBounds.maxSpanChunks(32_768);
 		List<Integer> out = new ArrayList<>();
 		for (int z : MAP_ZOOMS) if (z <= max) out.add(z);
 		if (out.isEmpty()) out.add(MAP_ZOOMS.getFirst());
@@ -141,6 +143,10 @@ public final class ConfigScreen extends Screen {
 	private static final double[] SCROLL = new double[Tab.values().length];
 	private static double sidebarScroll;
 
+	private enum Scrollbar {
+		NONE, SIDEBAR, CONTENT
+	}
+
 	private final Config cfg = MovRand.config();
 	private final MovementController ctl = MovRand.controller();
 
@@ -153,6 +159,10 @@ public final class ConfigScreen extends Screen {
 	private int journalSizeWhenBuilt = -1;
 	private String newProfileName = "";
 	private String pendingDelete = "";
+	/** The scrollbar currently held by the mouse, if any. */
+	private Scrollbar draggingScrollbar = Scrollbar.NONE;
+	/** Where inside the thumb the mouse grabbed it, so dragging does not make it jump. */
+	private double scrollbarGrabOffset;
 	/** Recomputed on every build, so the red flags never lag behind a setting. */
 	private List<Risks.Risk> risks = List.of();
 	private String worldNow = "";
@@ -172,6 +182,7 @@ public final class ConfigScreen extends Screen {
 
 	@Override
 	protected void init() {
+		draggingScrollbar = Scrollbar.NONE;
 		panelW = Math.min(700, width - 30);
 		panelH = Math.min(460, height - 30);
 		panelX = (width - panelW) / 2;
@@ -191,6 +202,9 @@ public final class ConfigScreen extends Screen {
 	private String blockSearch = "";
 	/** The same, for the grid of blocks the destroyer is allowed to place. */
 	private String placeSearch = "";
+	private String junkSearch = "";
+	private String storageSearch = "";
+	private Storage.Target storageTarget;
 
 	private void build() {
 		// A text box whose setter rebuilds the page - the two searches both do - would
@@ -219,6 +233,7 @@ public final class ConfigScreen extends Screen {
 			case DESTROYER -> buildDestroyer();
 			case BLOCKS -> buildBlocks();
 			case INVENTORY -> buildInventory();
+			case STORAGE -> buildStorage();
 			case SELLING -> buildSelling();
 			case COMBAT -> buildCombat();
 			case LOGGING -> buildLogging();
@@ -309,6 +324,13 @@ public final class ConfigScreen extends Screen {
 	}
 
 	// -------------------------------------------------------------- tabs
+
+	private void addBaritoneRecommendation() {
+		add(new Toggle("Use Baritone navigation", () -> cfg.baritoneNavigation,
+				v -> { cfg.baritoneNavigation = v; build(); })
+				.tip("Uses the bundled Baritone engine for digging, bridging, pillars, stairs, slabs, ladders and terrain recovery. Off selects the legacy planner.")
+				.recommend("Keep enabled for terrain navigation and recovery."));
+	}
 
 	private void buildPresets() {
 		add(new Note("New here? Pick a setup below. Everything it changes is listed, and every", Ui.TEXT));
@@ -616,6 +638,14 @@ public final class ConfigScreen extends Screen {
 
 	private void buildArea() {
 		AreaCoverage area = ctl.area;
+		ctl.syncAreaWorld(minecraft);
+		add(new Toggle("This world or server only", () -> cfg.areaThisWorldOnly, v -> {
+			cfg.areaThisWorldOnly = v;
+			build();
+		}).tip("Shows only this world's current dimension. Off overlays all saved areas; edits and the bot still use this dimension only."));
+		add(new KeyValue("You are on", WorldId::currentLabel, () -> accent()));
+		add(new KeyValue("Dimension", () -> minecraft.level == null ? "unknown"
+				: minecraft.level.dimension().identifier().toString(), () -> accent()));
 
 		add(new Toggle("Sweep an area", () -> cfg.areaEnabled, v -> {
 			cfg.areaEnabled = v;
@@ -890,6 +920,9 @@ public final class ConfigScreen extends Screen {
 				+ "not run on its own.", Ui.TEXT_FAINT));
 
 		add(new Section("How far it looks"));
+        add(new Toggle("Search all loaded terrain", () -> cfg.destroyLoadedChunks, v -> { cfg.destroyLoadedChunks = v; build(); })
+                .tip("Searches every height in the loaded view distance, through walls. The server must have sent the chunks. Scanning is spread over ticks."));
+        if (!cfg.destroyLoadedChunks) {
 		add(Slider.ints("Search radius", 4, 160, () -> cfg.destroyRadius, v -> cfg.destroyRadius = v)
 				.tip("Blocks, not chunks. The scan skips whole 16-block sections whose palette "
 						+ "does not contain anything selected, so a wide radius through plain "
@@ -898,16 +931,86 @@ public final class ConfigScreen extends Screen {
 		add(Slider.ints("Height band", 2, 160, () -> cfg.destroyVerticalRadius,
 				v -> cfg.destroyVerticalRadius = v)
 				.tip("How far above and below you to look."));
-		add(new Slider("Rescan every", 0.25, 30, 0.25, 2, "s",
-				() -> cfg.destroyScanSec, v -> cfg.destroyScanSec = v));
-		add(new Slider("Give up on a block after", 1, 60, 0.5, 1, "s",
-				() -> cfg.destroyGiveUpSec, v -> cfg.destroyGiveUpSec = v)
-				.tip("A block it cannot see or cannot get to is set aside and tried again once "
-						+ "everything else in range has been dealt with."));
+		}
+		add(new RangeSlider("Rescan every", 0.25, 30, 0.25, 2, "s",
+				() -> cfg.destroyScanSec, v -> cfg.destroyScanSec = v,
+				() -> cfg.destroyScanMaxSec, v -> cfg.destroyScanMaxSec = v)
+				.tip("Drawn fresh from this range each time rather than run on a fixed clock. The "
+						+ "scan itself sends nothing — it reads chunks the server already sent — "
+						+ "so this is about cost, not about being seen."));
 		add(Slider.ints("At most", 16, 4000, () -> cfg.destroyMaxTargets, v -> cfg.destroyMaxTargets = v)
 				.tip("A ceiling on one scan, so a warehouse does not build a list of fifty thousand."));
+		add(new Action("Apply fast, smooth mining settings", true, () -> cfg.fastDestroyerTuning())
+				.tip("Updates targeting, aim, reaction and recovery timing. Keeps your block selections, inventory and path-edit permissions."));
+		add(new Toggle("Prefer blocks already in reach", () -> cfg.destroyPreferReachable,
+				v -> cfg.destroyPreferReachable = v)
+				.tip("Mine visible nearby blocks before planning a journey to an obstructed block."));
+		add(Slider.ints("Choose between the nearest", 1, 32,
+				() -> cfg.destroyTargetChoices, v -> cfg.destroyTargetChoices = v)
+				.tip("Maximum near-tie candidates. Re-ranked from your current position at each decision."));
+		flag("Always the nearest block");
+		add(new Slider("Near-tie distance allowance", 0, 2, 0.05, 2, " blocks",
+				() -> cfg.destroyTargetDistanceSlack, v -> cfg.destroyTargetDistanceSlack = v)
+				.tip("Random choices cannot be farther than the nearest eligible block plus this allowance."));
+		add(new Slider("Vary the target on this share", 0, 1, 0.05, 2, " x",
+				() -> cfg.destroyTargetRandomness, v -> cfg.destroyTargetRandomness = v)
+				.tip("0 always chooses the nearest eligible block. Variation stays inside the distance allowance."));
+		add(new Toggle("Break storage last", () -> cfg.destroyStorageLast,
+				v -> cfg.destroyStorageLast = v)
+				.tip("Keeps chests, shulkers, barrels, hoppers and furnaces out of the shortlist "
+						+ "until other selected blocks are gone, so their contents do not flood the floor early."));
+		add(new Toggle("Only choose blocks I can see", () -> cfg.destroyRequireLineOfSight,
+				v -> cfg.destroyRequireLineOfSight = v)
+				.tip("Requires the target to be inside the view cone and the first block hit by a "
+						+ "ray from the eyes. The full scan still counts hidden matches so they can never "
+						+ "be mistaken for a finished job. Off can choose every selected block in chunks "
+						+ "the server has already sent."));
+		add(new Slider("Visible view cone", 10, 360, 5, 0, "°",
+				() -> cfg.destroyFieldOfViewDeg, v -> cfg.destroyFieldOfViewDeg = v)
+				.tip("Used by the visibility option. 360 still requires a clear line of sight, but "
+						+ "allows a remembered block behind the current camera direction."));
+
+		add(new Section("When to give up"));
+		add(new Slider("On one block after", 25, 600, 5, 0, "s",
+				() -> cfg.destroyBlockSec, v -> cfg.destroyBlockSec = v)
+				.tip("The only honest way to tell a slow block from an impossible one: a client "
+						+ "is never told why a swing did nothing, so claimed land, region "
+						+ "protection and spawn protection all look exactly like mining that has "
+						+ "not finished yet. Obsidian with an iron pickaxe is twenty-five seconds "
+						+ "of honest work, so this cannot go below that."));
+		add(new Slider("On one target after", 60, 3600, 10, 0, "s",
+				() -> cfg.destroyTargetSec, v -> cfg.destroyTargetSec = v)
+				.tip("However the time was spent — walking, planning, lining up, swinging. With "
+						+ "every individual step bounded and nothing bounding the whole, a bot can "
+						+ "still spend an afternoon on one block by failing at it in a slightly "
+						+ "different way each time."));
+		add(new Slider("Retry a failed block after", 1, 600, 1, 0, "s",
+				() -> cfg.destroyRetrySec, v -> cfg.destroyRetrySec = v)
+				.tip("A protected or unreachable block stays out for this long instead of being "
+						+ "selected again immediately when it is the only candidate."));
+		add(new Slider("Or after moving", 0, 64, 1, 0, " blocks",
+				() -> cfg.destroyRetryMoveBlocks, v -> cfg.destroyRetryMoveBlocks = v)
+				.tip("A new vantage point can make a failed block reachable before its timer expires. "
+						+ "Zero retries as soon as another selection pass reaches it."));
 
 		add(new Section("Route"));
+        addBaritoneRecommendation();
+        if (cfg.baritoneNavigation) {
+            add(new Toggle("Parkour across gaps", () -> cfg.baritoneParkour, v -> cfg.baritoneParkour = v));
+            add(new Toggle("Place while crossing a gap", () -> cfg.baritoneParkourPlace, v -> cfg.baritoneParkourPlace = v)
+                    .tip("Also needs bridging permission and expendable building blocks."));
+            add(new Toggle("Climb vines", () -> cfg.baritoneVines, v -> cfg.baritoneVines = v));
+            add(new Toggle("Use water buckets for long falls", () -> cfg.baritoneWaterBucketFalls, v -> cfg.baritoneWaterBucketFalls = v)
+                    .tip("Requires a usable water bucket. Off keeps routes within the longest-drop limit."));
+            add(new Slider("Navigation turn smoothing", 0, 1, 0.05, 2, " x", () -> cfg.baritoneTurnSmoothing, v -> cfg.baritoneTurnSmoothing = v)
+                    .tip("1 gives full glide with continuous frame-by-frame camera motion. Sets the minimum smoothing for all Base destroyer actions. Higher smoothness does not lower the turn rate or hold movement keys."));
+            add(new Slider("Maximum navigation turn per tick", 8, 90, 1, 0, " degrees", () -> cfg.baritoneTurnRate, v -> cfg.baritoneTurnRate = v));
+            add(new Slider("Navigation aim variation", 0, 0.2, 0.01, 2, " degrees", () -> cfg.baritoneAimVariation, v -> cfg.baritoneAimVariation = v)
+                    .tip("Bounded random aim variation, passed through the turn filter during navigation. Jumps, placement and landing keep the same smoothing."));
+            add(new Slider("Extra time per terrain move", 3, 60, 1, 0, "s", () -> cfg.baritoneNoProgressSec, v -> cfg.baritoneNoProgressSec = v)
+                    .tip("Added to the predicted movement cost before Baritone cancels a stalled step."));
+            add(Slider.ints("Failed route attempts", 1, 20, () -> cfg.pathAttempts, v -> cfg.pathAttempts = v));
+        }
 		add(new Toggle("Mine through walls", () -> cfg.pathMine, v -> cfg.pathMine = v)
 				.tip("Lets the route go through a block rather than round it. Without this the "
 						+ "bot can only reach places it could already walk to."));
@@ -919,7 +1022,7 @@ public final class ConfigScreen extends Screen {
 		add(new Toggle("Bridge across gaps", () -> cfg.pathBridge, v -> cfg.pathBridge = v)
 				.tip("Places a block to stand on. Only uses the blocks listed below, and never "
 						+ "from a protected slot."));
-		add(new Toggle("Cut corners", () -> cfg.pathDiagonal, v -> cfg.pathDiagonal = v)
+		if (!cfg.baritoneNavigation) add(new Toggle("Cut corners", () -> cfg.pathDiagonal, v -> cfg.pathDiagonal = v)
 				.tip("Diagonal steps. Faster routes; a few more nodes to search."));
 		add(Slider.ints("Longest drop", 1, 24, () -> cfg.pathMaxFall, v -> cfg.pathMaxFall = v)
 				.tip("A drop taller than this is not a route. Fall damage starts past three."));
@@ -929,19 +1032,101 @@ public final class ConfigScreen extends Screen {
 						+ "means \"dig straight there\"."));
 		add(Slider.ints("A placed block is worth", 1, 32,
 				() -> cfg.pathPlaceCost, v -> cfg.pathPlaceCost = v));
+		if (!cfg.baritoneNavigation) {
 		add(Slider.ints("Search budget", 500, 60000, () -> cfg.pathMaxNodes, v -> cfg.pathMaxNodes = v)
 				.tip("Nodes per plan. Running out is not a failure — the best partial route is "
 						+ "walked anyway and replanned from further along."));
-		add(new Slider("Replan every", 0.5, 30, 0.5, 1, "s",
-				() -> cfg.pathRefreshSec, v -> cfg.pathRefreshSec = v));
+		add(new Slider("Settle for a route this much longer", 1, 3, 0.05, 2, " x",
+				() -> cfg.pathHeuristicWeight, v -> cfg.pathHeuristicWeight = v)
+				.tip("1 finds the shortest route there is and searches hardest for it. Above that "
+						+ "it will accept a route up to this much longer in exchange for looking "
+						+ "at far fewer places, which is nearly always the better trade on a "
+						+ "client. Past about 1.5 it stops being a search and becomes a walk "
+						+ "straight at the target, wall or no wall."));
+		}
 		add(new KeyValue("Last route", () -> "%d nodes searched · cost %.0f"
 				.formatted(d.lastPathNodes, d.lastPathCost), () -> Ui.TEXT_MUTED));
 
-		add(new Section("Building and liquid"));
-		add(new Toggle("Cover water and lava", () -> cfg.coverLiquids, v -> cfg.coverLiquids = v)
-				.tip("Caps an exposed surface with a block before mining anywhere near it."));
-		add(Slider.ints("Cover within", 1, 16, () -> cfg.coverRadius, v -> cfg.coverRadius = v));
-		add(new Toggle("Sneak while placing", () -> cfg.bridgeSneak, v -> cfg.bridgeSneak = v)
+		if (!cfg.baritoneNavigation) {
+		add(new Section("How the route is walked"));
+		add(new Slider("Planning per tick", 0.1, 25, 0.1, 1, "ms",
+				() -> cfg.pathSliceMs, v -> cfg.pathSliceMs = v)
+				.tip("A tick is fifty milliseconds, and a whole route can take twenty to work "
+						+ "out. Spreading that over several ticks is the difference between a "
+						+ "pause you can see and one you cannot."));
+		add(new RangeSlider("Start the next leg with", 0.5, 30, 0.5, 1, "s left",
+				() -> cfg.pathRefreshSec, v -> cfg.pathRefreshSec = v,
+				() -> cfg.pathRefreshMaxSec, v -> cfg.pathRefreshMaxSec = v)
+				.tip("A route that stops short is normal — the search budget runs out long before "
+						+ "a base does — so the next leg gets planned behind the one being walked. "
+						+ "Drawn fresh from this range every time: a fixed number is the one thing "
+						+ "here anybody watching could see, because it is the moment the walk "
+						+ "stops being smooth."));
+		add(new RangeSlider("Wait after a plan comes to nothing", 0.1, 10, 0.05, 2, "s",
+				() -> cfg.pathRestMinSec, v -> cfg.pathRestMinSec = v,
+				() -> cfg.pathRestMaxSec, v -> cfg.pathRestMaxSec = v)
+				.tip("Retrying on the next tick asks the same question of the same world from the "
+						+ "same place, twenty times a second. Never zero."));
+		add(Slider.ints("Give up on a destination after", 1, 20,
+				() -> cfg.pathAttempts, v -> cfg.pathAttempts = v)
+				.tip("Plans in a row that find nothing walkable before the place is called "
+						+ "unreachable. A plan that got some of the way does not count — it moved "
+						+ "us, so the next one starts somewhere new."));
+		add(Slider.ints("Look this many moves ahead", 1, 32,
+				() -> cfg.pathLookaheadMoves, v -> cfg.pathLookaheadMoves = v)
+				.tip("Where the camera points between things it has to aim at. The next square is "
+						+ "under a block away, and a heading to something that close swings hard "
+						+ "as you close on it — so a filtered camera spends the whole route "
+						+ "chasing a target that never settles."));
+		add(Slider.ints("Check this many moves ahead", 1, 16,
+				() -> cfg.pathVerifyAhead, v -> cfg.pathVerifyAhead = v)
+				.tip("Stops the bot walking three blocks up a corridor to find the doorway it was "
+						+ "routed through has been filled in."));
+		add(new Slider("Off the route past", 1, 32, 0.5, 1, " blocks",
+				() -> cfg.pathOffRouteBlocks, v -> cfg.pathOffRouteBlocks = v)
+				.tip("Further than this from every square of the route and it is not that route "
+						+ "being walked any more, so it is replanned from where we actually are. "
+						+ "This is what a knockback, a teleport and a server putting you back all "
+						+ "come out as."));
+		add(new RangeSlider("Patience per step", 0.5, 30, 0.5, 1, "s",
+				() -> cfg.pathMoveSlackSec, v -> cfg.pathMoveSlackSec = v,
+				() -> cfg.pathMoveSlackMaxSec, v -> cfg.pathMoveSlackMaxSec = v)
+				.tip("On top of what the step should physically take, which is worked out from "
+						+ "the block and the tool. It is the only way to tell a slow block from "
+						+ "an impossible one — a client is never told which it is — so claimed "
+						+ "land and region protection end here rather than swinging forever."));
+
+		add(new Slider("Replan a stalled walk after", 0.4, 10, 0.05, 2, "s",
+				() -> cfg.pathStallSec, v -> cfg.pathStallSec = v)
+				.tip("No progress towards the next step triggers a new route. Mining, placing and airborne motion use their own deadlines."));
+		add(new Slider("Avoid a failed step for", 1, 60, 1, 0, "s",
+				() -> cfg.pathFailedEdgeRetrySec, v -> cfg.pathFailedEdgeRetrySec = v)
+				.tip("A replan tries another approach instead of repeating the same blocked transition."));
+
+		}
+        add(new Section("Protect mined drops"));
+        add(new Toggle("Prepare a safe drop area before mining", () -> cfg.protectMiningDrops, v -> cfg.protectMiningDrops = v)
+                .tip("Contains exposed lava and builds catch floors before breaking. Includes route digging. Requires solid, nonflammable building supplies; defers blocks whose protection cannot be completed."));
+        add(Slider.ints("Check below each drop", 3, 64, () -> cfg.dropSafetyDepth, v -> cfg.dropSafetyDepth = v)
+                .tip("Checks a 3 by 3 landing patch. A deeper shaft needs a catch floor."));
+        add(new Slider("Time to prepare one mining site", 5, 180, 5, 0, "s", () -> cfg.prepareSiteSec, v -> cfg.prepareSiteSec = v));
+        add(new Section("Building and liquid"));
+		add(new Toggle("Cap liquid underfoot", () -> cfg.coverLiquids, v -> cfg.coverLiquids = v)
+				.tip("Only a square right beside the feet. Liquid that is in the way is the "
+						+ "route's problem and the route bridges over it, priced against the dry "
+						+ "ground going the same direction — a standing scan of everything liquid "
+						+ "nearby meant that in a base with a lava floor the job never ran once."));
+		add(new Toggle("Cover lava", () -> cfg.coverLava, v -> cfg.coverLava = v));
+		add(new Toggle("Cover water", () -> cfg.coverWater, v -> cfg.coverWater = v)
+				.tip("Optional because water is usually an inconvenience rather than a lethal hazard. "
+						+ "When enabled, the route also refuses to open walls that would flood it."));
+		add(new Slider("Spend at most", 0.5, 30, 0.5, 1, "s on one square",
+				() -> cfg.coverGiveUpSec, v -> cfg.coverGiveUpSec = v)
+				.tip("Then leave it alone. A square with nothing to place a block against never "
+						+ "becomes one by being stared at for longer."));
+		add(new Slider("Then leave it alone for", 1, 600, 1, 0, "s",
+				() -> cfg.coverRestSec, v -> cfg.coverRestSec = v));
+		if (!cfg.baritoneNavigation) add(new Toggle("Sneak while placing", () -> cfg.bridgeSneak, v -> cfg.bridgeSneak = v)
 				.tip("Stops the bot walking off the edge it is building from."));
 		add(Slider.ints("Always keep back", 1, 64, () -> cfg.bridgeKeepBlocks,
 				v -> cfg.bridgeKeepBlocks = v)
@@ -992,10 +1177,41 @@ public final class ConfigScreen extends Screen {
 						+ "head — which is the way the job usually gets itself wet."));
 
 		add(new Section("Drops"));
-		add(new Toggle("Pick things up", () -> cfg.collectDrops, v -> cfg.collectDrops = v));
+		add(new Toggle("Pick things up", () -> cfg.collectDrops, v -> cfg.collectDrops = v)
+				.tip("Never mid-swing at a block already in reach: that block takes a second and "
+						+ "the drop lasts five minutes, and walking off throws away the progress "
+						+ "on both."));
 		add(Slider.ints("Pick up within", 1, 48, () -> cfg.collectRadius, v -> cfg.collectRadius = v));
+		add(new Slider("Give up on one after", 2, 300, 1, 0, "s",
+				() -> cfg.collectGiveUpSec, v -> cfg.collectGiveUpSec = v)
+				.tip("A pile behind a wall the route may not break looks exactly like a pile two "
+						+ "steps away until the time has been spent proving otherwise. Written off "
+						+ "temporarily, then tried again after the retry delay or if the item moves."));
+
+		add(new Slider("Retry an unreachable drop after", 1, 120, 1, 0, "s",
+				() -> cfg.collectRetrySec, v -> cfg.collectRetrySec = v));
+		add(new Slider("Wait for pickup confirmation", 0.2, 3, 0.05, 2, "s",
+				() -> cfg.collectPickupWaitSec, v -> cfg.collectPickupWaitSec = v)
+				.tip("Time to allow for pickup delay once physically in range. Items that remain are deferred."));
+		add(new Slider("Collect for at most per batch", 0.5, 30, 0.5, 1, "s",
+				() -> cfg.collectBatchSec, v -> cfg.collectBatchSec = v)
+				.tip("Yields between completed journeys once this time has elapsed. An active bridge or descent is allowed to finish."));
+		add(new Toggle("Mine or bridge to reach drops", () -> cfg.collectAllowEdits,
+				v -> cfg.collectAllowEdits = v)
+				.tip("Off uses walking, doors, steps and safe drops. On permits the same mining and building rules as the main job."));
 
 		add(new Section("When it runs out"));
+		add(Slider.ints("Empty scans before done", 1, 10,
+				() -> cfg.destroyEmptyScansToFinish, v -> cfg.destroyEmptyScansToFinish = v)
+				.tip("Requires this many fresh, complete scans with zero selected blocks. Three "
+						+ "filters out transient chunk updates without making a genuinely finished job "
+						+ "wait very long."));
+		add(new Toggle("Allow done with unloaded chunks", () -> cfg.destroyAllowIncompleteScanFinish,
+				v -> cfg.destroyAllowIncompleteScanFinish = v)
+				.tip("Off means every chunk touched by the search circle must be loaded before an "
+						+ "empty scan counts. Turn this on only if the radius deliberately extends beyond "
+						+ "your loaded distance.")
+				.risk("calling an unseen part of the search area empty"));
 		add(new Toggle("Stop when nothing is left", () -> cfg.destroyStopWhenDone,
 				v -> cfg.destroyStopWhenDone = v));
 		add(reaction("When the job is done", () -> cfg.destroyDoneReaction,
@@ -1005,22 +1221,28 @@ public final class ConfigScreen extends Screen {
 						+ "finishes. Thorough, and a lot of lines."));
 
 		add(new Section("Humanisation"));
-		add(new RangeSlider("Reaction before each decision", 0.05, 5, 0.05, 2, "s",
+		add(new RangeSlider("Reaction before starting a target", 0.05, 5, 0.05, 2, "s",
 				() -> cfg.taskReactionMinSec, v -> cfg.taskReactionMinSec = v,
 				() -> cfg.taskReactionMaxSec, v -> cfg.taskReactionMaxSec = v)
 				.tip("A pause between noticing something and acting on it. Nothing else in the "
 						+ "job has a constant delay, and a constant zero is the easiest thing "
 						+ "in the world to notice."));
-		add(new Slider("Aim smoothing while working", 0, 0.95, 0.01, 2, "",
+		add(new Slider("Pause on this share of targets", 0, 1, 0.05, 2, " x",
+				() -> cfg.taskReactionChance, v -> cfg.taskReactionChance = v)
+				.tip("1 pauses before every newly selected block; 0 never does. A probability avoids "
+						+ "turning reaction time into a fixed rhythm across a wall of adjacent blocks."));
+		add(new Slider("Aim smoothing while working", 0, 1, 0.01, 2, "",
 				() -> cfg.taskAimSmoothing, v -> cfg.taskAimSmoothing = v)
-				.tip("Tighter than the wandering camera on purpose. Vanilla throws mining "
-						+ "progress away the moment the crosshair leaves the block, so too much "
-						+ "smoothing here does not mine slowly — it never finishes."));
-		add(new Slider("Aim wobble while working", 0.05, 1, 0.05, 2, " x",
+				.tip("Rounds acceleration and braking with a finite settling time, even at 1. Base destroyer uses at least the navigation smoothing for every action. Turn speed is controlled separately below."));
+		add(new Slider("Aim wobble while working", 0, 1, 0.05, 2, " x",
 				() -> cfg.taskAimWobbleScale, v -> cfg.taskAimWobbleScale = v)
-				.tip("How much of the view wobble to keep while aiming at a block. Never zero: "
-						+ "a rotation stream with no noise at all is the one genuinely easy "
-						+ "thing to pick out of a log."));
+				.tip("Scales working wobble; 0 disables it. Noise is reduced when it would move the crosshair off a small block."));
+		add(new Slider("Aim point variation", 0, 0.4, 0.01, 2, " x",
+				() -> cfg.taskAimPointSpread, v -> cfg.taskAimPointSpread = v)
+				.tip("A stable random offset inside each visible face, held for the whole swing. 0 uses the face centre."));
+		add(new Slider("Maximum working turn per tick", 2, 90, 1, 0, "\u00b0",
+				() -> cfg.taskAimMaxTurnDeg, v -> cfg.taskAimMaxTurnDeg = v)
+				.tip("Caps large camera turns while preserving the smoothing setting. Higher turns to new blocks faster."));
 		add(new Toggle("Sprint between blocks", () -> cfg.destroySprint, v -> cfg.destroySprint = v));
 		add(new Toggle("Work through interruptions", () -> cfg.destroyerKeepWorking,
 				v -> cfg.destroyerKeepWorking = v)
@@ -1128,6 +1350,8 @@ public final class ConfigScreen extends Screen {
 	// ----------------------------------------------------------- inventory
 
 	private void buildInventory() {
+		add(new Toggle("Store collected items in containers", () -> cfg.storageEnabled, v -> cfg.storageEnabled = v));
+		add(new Action("Choose storage containers, items and order", false, () -> { activeTab = Tab.STORAGE; revealActiveTab(); build(); }));
 		add(new Section("Your slots"));
 		add(new Note("Left click a slot to protect it — never sold, never dropped, never spent "
 				+ "as scaffolding. Right click to mark it for sale.", Ui.TEXT_MUTED));
@@ -1165,6 +1389,8 @@ public final class ConfigScreen extends Screen {
 				v -> cfg.stopWhenInventoryFull = v)
 				.tip("With selling off and nothing left to throw away, this is what stops it "
 						+ "mining into a floor it cannot pick up."));
+		add(reaction("When the bag is full", () -> cfg.inventoryFullReaction,
+				v -> cfg.inventoryFullReaction = v));
 		add(new Toggle("Move blocks up to the hotbar", () -> cfg.restockHotbar,
 				v -> cfg.restockHotbar = v)
 				.tip("Shift-clicks a stack of building blocks up when the bar runs dry."));
@@ -1174,9 +1400,165 @@ public final class ConfigScreen extends Screen {
 				.tip("One stack at a time, and never from a protected slot. Thirty-six throws "
 						+ "in one tick is the most obvious thing this mod could send, so it "
 						+ "does not."));
-		add(new TextInput("Junk, comma separated", null,
-				() -> String.join(", ", cfg.junkItems),
-				v -> cfg.junkItems = splitList(v)));
+		add(new TextInput("Find a block or item", null, () -> junkSearch, v -> {
+			junkSearch = v;
+			build();
+		}).tip("Type at least two letters of a name, then click an icon to mark it as junk. "
+				+ "Selected items stay at the front of the grid."));
+
+		List<String> junk = new ArrayList<>(cfg.junkItems);
+		List<String> matches = searchItems(junkSearch);
+		for (String id : matches) {
+			if (!cfg.isJunk(id)) junk.add(id);
+		}
+		if (junkSearch.trim().length() >= 2 && matches.isEmpty()) {
+			add(new Note("Nothing matches \"" + junkSearch + "\".", Ui.TEXT_FAINT));
+		}
+		add(new Note(cfg.junkItems.isEmpty()
+				? "Nothing selected — no items will be thrown away."
+				: "Highlighted items are junk. Click an icon to add or remove it.", Ui.TEXT_FAINT));
+		if (!junk.isEmpty()) {
+			add(new Widgets.ItemGrid(junk, cfg.junkItems::contains, id -> {
+				if (!cfg.junkItems.remove(id)) cfg.junkItems.add(id);
+				build();
+			}));
+		}
+	}
+
+	private void buildStorage() {
+		add(new Section("Collected item storage"));
+		add(new Toggle("Store collected items in containers", () -> cfg.storageEnabled, v -> cfg.storageEnabled = v));
+		add(new Note("Stores matching unprotected stacks, including any already in your bag. Choose each container, "
+				+ "its allowed slots and its item filter below. Empty filters store nothing. Runs before selling and junk disposal.", Ui.TEXT_MUTED));
+		add(new KeyValue("Storage", () -> ctl.storage.status, () -> ctl.storage.failed() ? Ui.WARN : Ui.TEXT_MUTED));
+		if (ctl.storage.busy()) {
+			add(new Note("A storage trip is running. Container rules can be edited once it finishes.", Ui.TEXT_MUTED));
+			add(new Action("Stop storage trip", false, () -> { ctl.stop(minecraft, "Storage cancelled from menu"); build(); }));
+			return;
+		}
+		if (ctl.storage.failed()) {
+			add(new Note("Check the reported sites and recover any containers left there before clearing the stop. "
+					+ "Movement stays off until you start it again.", Ui.WARN));
+			add(new Action("I have checked the containers — clear storage stop", false, () -> { ctl.storage.acknowledge(); build(); }));
+		}
+		add(new Toggle("Return shulkers to their original ender-chest slots", () -> cfg.storageReturnShulkers,
+				v -> cfg.storageReturnShulkers = v).tip("Off keeps the filled shulkers in your bag and changes their routes to bag shulkers."));
+		add(new Slider("Keep away from every other player", 16, 128, 4, 0, " blocks",
+				() -> cfg.storagePlayerRadius, v -> cfg.storagePlayerRadius = v));
+		add(new Note("Placement needs solid ground and at least 5 blocks of clearance from all liquids, including waterlogged blocks. "
+				+ "Shulkers go next to the ender chest, one at a time. Keep two bag slots empty and one hotbar slot unprotected. "
+				+ "Ender-chest access requires a Silk Touch pickaxe; placed containers are recovered afterward.", Ui.TEXT_FAINT));
+		add(new Section("Choose a shulker or ender chest from your inventory"));
+		add(new SlotGrid(36, true, "Click a shulker to configure it; click an ender chest to inspect it",
+				i -> minecraft.player == null ? net.minecraft.world.item.ItemStack.EMPTY : minecraft.player.getInventory().getItem(i),
+				i -> storageTarget != null && storageTarget.kind == Storage.Kind.INVENTORY_SHULKER && storageTarget.inventorySlot == i,
+				(i, button) -> {
+					if (minecraft.player == null) return;
+					var stack = minecraft.player.getInventory().getItem(i);
+					if (stack.is(net.minecraft.world.item.Items.ENDER_CHEST)) {
+						storageTarget = ctl.storage.enderTarget();
+						ctl.storage.inspect(minecraft, storageTarget, this);
+					} else {
+						Storage.Target t = ctl.storage.selectShulker(minecraft, i, false);
+						if (t != null) storageTarget = t;
+						build();
+					}
+				}));
+		List<net.minecraft.world.item.ItemStack> ender = ctl.storage.enderView();
+		if (!ender.isEmpty()) {
+			add(new Section("Inside your ender chest · last inspection"));
+			add(new Note("Click a shulker here to configure its contents. Use the Ender chest destination below to choose "
+					+ "slots for loose items. Inspect again after manually changing the chest.", Ui.TEXT_MUTED));
+			add(new SlotGrid(27, false, "Click one or more shulkers to create their individual routes", ender::get,
+					i -> cfg.storageTargets.stream().anyMatch(t -> t.kind == Storage.Kind.ENDER_SHULKER && t.enderSlot == i
+							&& t.world.equals(WorldId.current())),
+					(i, button) -> { Storage.Target t = ctl.storage.selectShulker(minecraft, i, true); if (t != null) storageTarget = t; build(); }));
+		}
+		add(new Section("Nearby placed chests, barrels and shulkers"));
+		add(new Action("Refresh nearby containers", false, this::build));
+		if (minecraft.player != null && minecraft.level != null) {
+			var origin = minecraft.player.blockPosition();
+			int found = 0;
+			for (var p : net.minecraft.core.BlockPos.betweenClosed(origin.offset(-6, -3, -6), origin.offset(6, 3, 6))) {
+				if (!minecraft.level.hasChunk(p.getX() >> 4, p.getZ() >> 4)
+						|| !Storage.supported(minecraft.level.getBlockState(p).getBlock())) continue;
+				var pos = p.immutable();
+				String label = minecraft.level.getBlockState(pos).getBlock().getName().getString() + " · " + pos.toShortString();
+				add(new Action("Inspect " + label, false, () -> {
+					storageTarget = ctl.storage.selectWorld(minecraft, pos);
+					ctl.storage.inspect(minecraft, storageTarget, this);
+				}));
+				if (++found >= 24) break;
+			}
+			if (found == 0) add(new Note("No supported containers within 6 blocks.", Ui.TEXT_FAINT));
+		}
+		List<Storage.Target> routes = cfg.storageTargets.stream().filter(t -> t.world.equals(WorldId.current())).toList();
+		if (routes.isEmpty()) return;
+		if (!routes.contains(storageTarget)) storageTarget = routes.getFirst();
+		Storage.Target t = storageTarget;
+		add(new Section("Container rules"));
+		add(new Cycle<>("Destination", routes, r -> Ui.elide(minecraft.font, r.name, Math.max(70, contentW / 2 - 30)),
+				() -> storageTarget, r -> { storageTarget = r; build(); }));
+		add(new Toggle("Use this destination", () -> t.enabled, v -> t.enabled = v));
+		add(new Action("Remove this destination", false, () -> { cfg.storageTargets.remove(t); storageTarget = null; build(); }));
+		add(new Note("Highlighted destination slots may receive items. Click cells to toggle them. Existing stacks stay where they are; "
+				+ "the order controls how new deposits fill compatible or empty slots. Shulkers cannot go inside shulkers.", Ui.TEXT_MUTED));
+		List<net.minecraft.world.item.ItemStack> view = ctl.storage.view(t);
+		add(new SlotGrid(t.size, false, "Destination slots · last known contents", view::get, t.slots::contains,
+				(i, button) -> { if (!t.slots.remove(Integer.valueOf(i))) t.slots.add(i); }));
+		add(new Row(List.of(new Action("Select all slots", false, () -> {
+			t.slots.clear(); for (int i = 0; i < t.size; i++) t.slots.add(i);
+		}), new Action("Clear slots", false, t.slots::clear))));
+		add(new Cycle<>("Deposit items by", List.of(Storage.ItemOrder.values()), r -> switch (r) {
+			case INVENTORY -> "Inventory order"; case NAME -> "Item name";
+			case LARGEST_STACK -> "Largest stack first"; case FILTER_ORDER -> "Filter selection order";
+		}, () -> t.itemOrder, v -> t.itemOrder = v));
+		add(new Cycle<>("Fill destination by", List.of(Storage.SlotOrder.values()), r -> switch (r) {
+			case ROWS -> "Rows, top left first"; case REVERSE_ROWS -> "Rows, bottom right first"; case COLUMNS -> "Columns, top to bottom";
+		}, () -> t.slotOrder, v -> t.slotOrder = v));
+		add(new Section("Items for this container"));
+		add(new SlotGrid(36, true, "Click carried items to add/remove their item types",
+				i -> minecraft.player == null ? net.minecraft.world.item.ItemStack.EMPTY : minecraft.player.getInventory().getItem(i),
+				i -> minecraft.player != null && t.accepts(net.minecraft.core.registries.BuiltInRegistries.ITEM
+						.getKey(minecraft.player.getInventory().getItem(i).getItem()).toString()),
+				(i, button) -> {
+					if (minecraft.player == null) return;
+					var stack = minecraft.player.getInventory().getItem(i);
+					if (stack.isEmpty() || Storage.shulker(stack) || stack.is(net.minecraft.world.item.Items.ENDER_CHEST) || Storage.silk(stack)) return;
+					String id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+					if (!t.items.remove(id)) t.items.add(id); build();
+				}));
+		add(new TextInput("Find items to store", null, () -> storageSearch, v -> { storageSearch = v; build(); }));
+		List<String> items = new ArrayList<>(t.items);
+		for (String match : searchItems(storageSearch)) if (!items.contains(Storage.id(match))) items.add(Storage.id(match));
+		add(new Note(t.items.isEmpty() ? "No items selected — nothing will be stored here." : "Selected types, in filter order: "
+				+ String.join(", ", t.items).replace("minecraft:", ""), Ui.TEXT_FAINT));
+		if (!items.isEmpty()) add(new Widgets.ItemGrid(items, t.items::contains, id -> {
+			if (!t.items.remove(Storage.id(id))) t.items.add(Storage.id(id)); build();
+		}));
+	}
+
+	/** Search inventory items, including blocks, by display name or registry id. */
+	private static List<String> searchItems(String query) {
+		List<String> out = new ArrayList<>();
+		String needle = query == null ? "" : query.trim().toLowerCase(Locale.ROOT);
+		if (needle.length() < 2) return out;
+		try {
+			for (var item : net.minecraft.core.registries.BuiltInRegistries.ITEM) {
+				var stack = item.getDefaultInstance();
+				if (stack.isEmpty()) continue;
+				var id = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(item);
+				if (id == null) continue;
+				if (id.toString().contains(needle)
+						|| stack.getHoverName().getString().toLowerCase(Locale.ROOT).contains(needle)) {
+					out.add(id.getNamespace().equals("minecraft") ? id.getPath() : id.toString());
+				}
+				if (out.size() >= 24) break;
+			}
+		} catch (Exception | LinkageError e) {
+			// Registries are unavailable outside a game.
+		}
+		return out;
 	}
 
 	private String describeBag() {
@@ -1204,6 +1586,10 @@ public final class ConfigScreen extends Screen {
 		add(new Section("The command"));
 		add(new TextInput("Command, without the slash", null,
 				() -> cfg.sellCommand, v -> cfg.sellCommand = v.trim().replaceFirst("^/", "")));
+		add(new TextInput("Menu title must contain (optional)", null,
+				() -> cfg.sellMenuTitleContains, v -> cfg.sellMenuTitleContains = v.trim())
+				.tip("When set, the bot will never click a container whose title does not contain this "
+						+ "text. Useful when another plugin or lag can open a different menu."));
 		add(new TextInput("Confirm button item", null,
 				() -> cfg.sellConfirmItem, v -> cfg.sellConfirmItem = v.trim())
 				.tip("The item id on the button that completes the sale — on most servers that "
@@ -1318,8 +1704,28 @@ public final class ConfigScreen extends Screen {
 		add(new TextInput("Y", NUMERIC, () -> fmt(cfg.gotoY), v -> cfg.gotoY = parse(v, cfg.gotoY)));
 
 		add(new Section("Steering"));
-		add(new Slider("Arrive within", 0.5, 32, 0.5, 1, " blocks",
-				() -> cfg.gotoArriveRadius, v -> cfg.gotoArriveRadius = v));
+		add(new Toggle("Walk there with the router", () -> cfg.gotoPathfind, v -> {
+			cfg.gotoPathfind = v;
+			build();
+		})
+				.tip("Off, the bot leans on the bearing: it knows which way the target is and "
+						+ "nothing about what is between here and there, which is enough across a "
+						+ "field and useless in a building. On, the same search the base destroyer "
+						+ "uses plans the way - round the wall, through the door, down the drop - "
+						+ "and the same follower walks it, through the same camera. The route "
+						+ "settings live on the Base destroyer tab; if it cannot find a way it "
+						+ "says so once and goes back to the bearing."));
+		Element bearing = new Slider("Arrive within", 0.5, 32, 0.5, 1, " blocks",
+				() -> cfg.gotoArriveRadius, v -> cfg.gotoArriveRadius = v);
+		add(bearing);
+		if (cfg.gotoPathfind) {
+			add(new KeyValue("Route", () -> ctl.route.walking()
+					? "step %d of %d".formatted(ctl.route.step() + 1, ctl.route.length())
+					: ctl.route.status.isEmpty() ? "—" : ctl.route.status, () -> accent()));
+			add(new Note("The wander, the correction speed and the allowed wander below are the "
+					+ "bearing's, and do not apply while the router is walking a route.",
+					Ui.TEXT_FAINT));
+		}
 		add(new Slider("Correction speed", 0.05, 8, 0.05, 2, "°/tick",
 				() -> cfg.gotoCorrectionDegPerTick, v -> cfg.gotoCorrectionDegPerTick = v)
 				.tip("How hard it pulls back onto the bearing. Low is lazier and more natural."));
@@ -2050,11 +2456,11 @@ public final class ConfigScreen extends Screen {
 						+ "worth walking back to."))));
 
 		add(new Section("How it looks"));
-		add(new Slider("Blocks across", 64, 8192, 64, 0, "",
-				() -> Math.min(cfg.mapSpanBlocks, com.damia.movrand.WorldBounds.maxSpanBlocks(32768)),
+		add(new Slider("Blocks across", 64, com.damia.movrand.WorldBounds.maxSpanBlocks(32_768 * 16), 64, 0, "",
+				() -> Math.min(cfg.mapSpanBlocks, com.damia.movrand.WorldBounds.maxSpanBlocks(32_768 * 16)),
 				v -> cfg.mapSpanBlocks = v)
-				.tip("The wheel reaches further in both directions than this slider does, but "
-						+ "neither goes past the world border."));
+				.tip("Zoom out to 32,768 chunks across (524,288 blocks), limited by the world border. "
+						+ "Use the wheel over the map for finer zoom control."));
 		add(worldBorderRow());
 		add(new Toggle("Follow the player", () -> cfg.mapFollowPlayer, v -> cfg.mapFollowPlayer = v)
 				.tip("Panning or zooming switches this off on its own."));
@@ -2288,6 +2694,19 @@ public final class ConfigScreen extends Screen {
 		return Math.max(0, sidebarContentHeight() - sidebarBoxHeight());
 	}
 
+	/** The thumb geometry is shared by drawing and input, so a thin bar stays easy to grab. */
+	private int sidebarThumbHeight() {
+		int box = sidebarBoxHeight();
+		return Math.min(box, Math.max(18, (int) ((double) box * box / sidebarContentHeight())));
+	}
+
+	private int sidebarThumbY() {
+		int top = sidebarTop();
+		int box = sidebarBoxHeight();
+		int thumbH = sidebarThumbHeight();
+		return top + (int) ((box - thumbH) * (sidebarScroll / sidebarMaxScroll()));
+	}
+
 	/** Keeps the selected tab on screen when it is chosen with the keyboard. */
 	private void revealActiveTab() {
 		for (SidebarRow row : sidebarRows()) {
@@ -2335,8 +2754,8 @@ public final class ConfigScreen extends Screen {
 		if (max > 0) {
 			int trackX = x + w - 3;
 			Ui.roundRect(g, trackX, top, 2, box, 1, Ui.TRACK);
-			int thumbH = Math.max(18, (int) ((double) box * box / sidebarContentHeight()));
-			int thumbY = top + (int) ((box - thumbH) * (sidebarScroll / max));
+			int thumbH = sidebarThumbHeight();
+			int thumbY = sidebarThumbY();
 			Ui.roundRect(g, trackX, thumbY, 2, thumbH, 1, Ui.mix(Ui.TRACK, accent, 0.8));
 		}
 	}
@@ -2365,9 +2784,10 @@ public final class ConfigScreen extends Screen {
 			e.w = contentW;
 			if (e.y + e.h < contentY - 8 || e.y > contentY + contentH + 8) continue;
 			e.render(g, font, mx, my, accent);
-			// a red edge out in the gutter: visible at a glance, and it cannot collide with
+			// A status edge out in the gutter: visible at a glance, and it cannot collide with
 			// anything the element itself draws
 			if (!e.risk.isEmpty()) Ui.roundRect(g, e.x - 4, e.y + 1, 2, Math.max(2, e.h - 2), 1, Ui.BAD);
+			else if (!e.recommendation.isEmpty()) Ui.roundRect(g, e.x - 4, e.y + 1, 2, Math.max(2, e.h - 2), 1, Ui.GOOD);
 			if (e instanceof JournalMap jm) {
 				String copied = jm.takePicked();
 				if (copied != null) ctl.lastReason = "Copied " + copied;
@@ -2379,9 +2799,82 @@ public final class ConfigScreen extends Screen {
 		if (maxScroll > 0) {
 			int trackX = contentX + contentW + 8;
 			Ui.roundRect(g, trackX, contentY, 3, contentH, 1, Ui.TRACK);
-			int thumbH = Math.max(20, (int) ((double) contentH * contentH / contentHeight));
-			int thumbY = contentY + (int) ((contentH - thumbH) * (scroll / maxScroll));
+			int thumbH = contentThumbHeight();
+			int thumbY = contentThumbY();
 			Ui.roundRect(g, trackX, thumbY, 3, thumbH, 1, accent);
+		}
+	}
+
+	private int contentThumbHeight() {
+		return Math.min(contentH, Math.max(20,
+				(int) ((double) contentH * contentH / Math.max(1, contentHeight))));
+	}
+
+	private int contentThumbY() {
+		double max = Math.max(0, contentHeight - contentH);
+		double scroll = Math.max(0, Math.min(max, SCROLL[activeTab.ordinal()]));
+		return contentY + (max == 0 ? 0 : (int) ((contentH - contentThumbHeight()) * scroll / max));
+	}
+
+	/**
+	 * Starts a scrollbar drag. The visual bars are deliberately only a few pixels wide, so
+	 * the mouse target extends around them without stealing clicks from the content controls.
+	 * Clicking the track beside the thumb centers it at that spot and starts a drag there, as
+	 * users generally expect from a scrollbar.
+	 */
+	private boolean beginScrollbarDrag(double mx, double my) {
+		if (mx >= sidebarX() + sidebarW() - 9 && mx <= sidebarX() + sidebarW() + 4
+				&& my >= sidebarTop() && my < sidebarTop() + sidebarBoxHeight()) {
+			double max = sidebarMaxScroll();
+			if (max > 0) {
+				int thumbH = sidebarThumbHeight();
+				int thumbY = sidebarThumbY();
+				draggingScrollbar = Scrollbar.SIDEBAR;
+				if (my >= thumbY && my < thumbY + thumbH) {
+					scrollbarGrabOffset = my - thumbY;
+				} else {
+					scrollbarGrabOffset = thumbH / 2.0;
+					dragScrollbar(my);
+				}
+				return true;
+			}
+		}
+
+		int trackX = contentX + contentW + 8;
+		if (mx >= trackX - 5 && mx <= trackX + 8
+				&& my >= contentY && my < contentY + contentH) {
+			double max = Math.max(0, contentHeight - contentH);
+			if (max > 0) {
+				int thumbH = contentThumbHeight();
+				int thumbY = contentThumbY();
+				draggingScrollbar = Scrollbar.CONTENT;
+				if (my >= thumbY && my < thumbY + thumbH) {
+					scrollbarGrabOffset = my - thumbY;
+				} else {
+					scrollbarGrabOffset = thumbH / 2.0;
+					dragScrollbar(my);
+				}
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/** Converts the held thumb's y position back into the corresponding continuous scroll. */
+	private void dragScrollbar(double mouseY) {
+		if (draggingScrollbar == Scrollbar.SIDEBAR) {
+			int box = sidebarBoxHeight();
+			int thumbH = sidebarThumbHeight();
+			double travel = Math.max(1, box - thumbH);
+			double fraction = (mouseY - scrollbarGrabOffset - sidebarTop()) / travel;
+			fraction = Math.max(0, Math.min(1, fraction));
+			sidebarScroll = fraction * sidebarMaxScroll();
+		} else if (draggingScrollbar == Scrollbar.CONTENT) {
+			int thumbH = contentThumbHeight();
+			double travel = Math.max(1, contentH - thumbH);
+			double fraction = (mouseY - scrollbarGrabOffset - contentY) / travel;
+			fraction = Math.max(0, Math.min(1, fraction));
+			SCROLL[activeTab.ordinal()] = fraction * Math.max(0, contentHeight - contentH);
 		}
 	}
 
@@ -2402,6 +2895,13 @@ public final class ConfigScreen extends Screen {
 		double mx = event.x();
 		double my = event.y();
 		int button = event.button();
+
+		if (draggingScrollbar != Scrollbar.NONE) return true;
+
+		if (button == 0 && beginScrollbarDrag(mx, my)) {
+			unfocusInputs();
+			return true;
+		}
 
 		String status = ctl.describeState();
 		int pw = font.width(status) + 26;
@@ -2438,6 +2938,10 @@ public final class ConfigScreen extends Screen {
 
 	@Override
 	public boolean mouseDragged(MouseButtonEvent event, double dx, double dy) {
+		if (draggingScrollbar != Scrollbar.NONE) {
+			if (event.button() == 0) dragScrollbar(event.y());
+			return true;
+		}
 		for (Element e : elements) e.mouseDragged(event.x(), event.y());
 		cfg.clampAll();
 		return true;
@@ -2445,12 +2949,20 @@ public final class ConfigScreen extends Screen {
 
 	@Override
 	public boolean mouseReleased(MouseButtonEvent event) {
+		if (draggingScrollbar != Scrollbar.NONE) {
+			if (event.button() == 0) {
+				dragScrollbar(event.y());
+				draggingScrollbar = Scrollbar.NONE;
+			}
+			return true;
+		}
 		for (Element e : elements) e.mouseReleased();
 		return super.mouseReleased(event);
 	}
 
 	@Override
 	public boolean mouseScrolled(double mx, double my, double dx, double dy) {
+		if (draggingScrollbar != Scrollbar.NONE) return true;
 		if (mx >= sidebarX() && mx < sidebarX() + sidebarW()) {
 			sidebarScroll = Math.max(0, Math.min(sidebarMaxScroll(), sidebarScroll - dy * 22));
 			return true;

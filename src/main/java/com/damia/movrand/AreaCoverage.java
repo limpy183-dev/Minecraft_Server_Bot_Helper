@@ -3,6 +3,10 @@ package com.damia.movrand;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import net.minecraft.client.Minecraft;
+import net.minecraft.world.level.storage.LevelResource;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Files;
@@ -45,7 +49,89 @@ public final class AreaCoverage {
 	private static final Gson GSON = new GsonBuilder().create();
 
 	private final Config cfg;
+	private final Path coveragePath;
 	private final Set<Long> visited = new HashSet<>();
+	private final Map<String, Region> worlds = new LinkedHashMap<>();
+	private String scope = "";
+
+	/** Selection and coverage belong together; the toggle only changes the map overlay. */
+	public record Region(double x1, double z1, double x2, double z2, boolean circular,
+	                     boolean enabled, Set<Long> visited) {
+		public int minX() { return Math.min(blockToChunk(x1), blockToChunk(x2)); }
+		public int maxX() { return Math.max(blockToChunk(x1), blockToChunk(x2)); }
+		public int minZ() { return Math.min(blockToChunk(z1), blockToChunk(z2)); }
+		public int maxZ() { return Math.max(blockToChunk(z1), blockToChunk(z2)); }
+		public boolean contains(int x, int z) {
+			if (x < minX() || x > maxX() || z < minZ() || z > maxZ()) return false;
+			if (!circular) return true;
+			double dx = x - (minX() + maxX()) / 2.0, dz = z - (minZ() + maxZ()) / 2.0;
+			double r = Math.min(maxX() - minX() + 1, maxZ() - minZ() + 1) / 2.0;
+			return dx * dx + dz * dz <= r * r;
+		}
+	}
+
+	public String scope() {
+		return scope;
+	}
+
+	public Region region() {
+		return new Region(cfg.areaX1, cfg.areaZ1, cfg.areaX2, cfg.areaZ2,
+				cfg.areaCircular, cfg.areaEnabled, visited);
+	}
+
+	public List<Region> mapRegions() {
+		List<Region> regions = new ArrayList<>();
+		if (!cfg.areaThisWorldOnly) {
+			worlds.forEach((key, region) -> { if (!key.equals(scope)) regions.add(region); });
+		}
+		regions.add(region());
+		return regions;
+	}
+
+	/** Called before input and movement, including when the bot is idle. */
+	public boolean syncWorld(Minecraft mc) {
+		String key = "";
+		if (mc.level != null) {
+			String world = WorldId.current();
+			// Display names are not unique: two single-player saves can share a name.
+			if (mc.hasSingleplayerServer() && mc.getSingleplayerServer() != null) {
+				world = "sp:" + mc.getSingleplayerServer().getWorldPath(LevelResource.ROOT)
+						.toAbsolutePath().normalize();
+			}
+			if (!world.isEmpty()) key = world + "|" + mc.level.dimension().identifier();
+		}
+		return switchWorld(key);
+	}
+
+	private boolean switchWorld(String next) {
+		if (scope.equals(next)) return false;
+		save();
+		scope = next;
+		Region saved = worlds.get(next);
+		if (saved == null) saved = new Region(-128, -128, 128, 128, false, false, Set.of());
+		cfg.areaX1 = saved.x1();
+		cfg.areaZ1 = saved.z1();
+		cfg.areaX2 = saved.x2();
+		cfg.areaZ2 = saved.z2();
+		cfg.areaCircular = saved.circular();
+		cfg.areaEnabled = saved.enabled();
+		visited.clear();
+		visited.addAll(saved.visited());
+		target = null;
+		sigValid = false;
+		invalidate();
+		return true;
+	}
+
+	private void storeCurrent() {
+		Region current = region();
+		Region previous = worlds.get(scope);
+		if (dirty || !current.equals(previous)) {
+			worlds.put(scope, new Region(current.x1(), current.z1(), current.x2(), current.z2(),
+					current.circular(), current.enabled(), new HashSet<>(visited)));
+			dirty = true;
+		}
+	}
 	private Target target;
 
 	// isComplete() runs every tick, and in circle mode both counts walk the whole
@@ -61,7 +147,12 @@ public final class AreaCoverage {
 	private int version;
 
 	public AreaCoverage(Config cfg) {
+		this(cfg, path());
+	}
+
+	private AreaCoverage(Config cfg, Path coveragePath) {
 		this.cfg = cfg;
+		this.coveragePath = coveragePath;
 		load();
 	}
 
@@ -526,13 +617,14 @@ public final class AreaCoverage {
 	}
 
 	public void save() {
+		ensureFresh();
+		storeCurrent();
 		if (!dirty) return;
 		try {
-			Path p = path();
+			Path p = coveragePath;
 			if (p == null) return;
 			Files.createDirectories(p.getParent());
-			Saved saved = new Saved(areaSignature(), new ArrayList<>(visited));
-			Files.writeString(p, GSON.toJson(saved));
+			Files.writeString(p.resolveSibling("movrand-coverage-worlds.json"), GSON.toJson(worlds));
 			dirty = false;
 		} catch (Exception | LinkageError e) {
 			MovRand.LOG.warn("[movrand] could not write coverage progress", e);
@@ -541,20 +633,101 @@ public final class AreaCoverage {
 
 	private void load() {
 		try {
-			Path p = path();
-			if (p == null || !Files.exists(p)) return;
-			Saved saved = GSON.fromJson(Files.readString(p), TypeToken.get(Saved.class).getType());
-			// progress only means anything for the area it was recorded in
-			if (saved != null && saved.area != null && saved.area.equals(areaSignature()) && saved.visited != null) {
-				visited.addAll(saved.visited);
-				invalidate();
+			Path p = coveragePath;
+			if (p == null) return;
+			Path scoped = p.resolveSibling("movrand-coverage-worlds.json");
+			if (Files.exists(scoped)) {
+				Map<String, Region> saved = GSON.fromJson(Files.readString(scoped),
+						new TypeToken<Map<String, Region>>() {}.getType());
+				if (saved != null) worlds.putAll(saved);
+			} else if (Files.exists(p)) {
+				// Old progress has no world identity. Keep it in the unassigned overlay;
+				// never claim that it belongs to whichever world is joined first.
+				Saved saved = GSON.fromJson(Files.readString(p), Saved.class);
+				if (saved != null && saved.area != null && saved.area.equals(areaSignature()) && saved.visited != null) {
+					visited.addAll(saved.visited);
+				}
+				storeCurrent();
 			}
+			Region unknown = worlds.get("");
+			if (unknown != null) {
+				cfg.areaX1 = unknown.x1(); cfg.areaZ1 = unknown.z1();
+				cfg.areaX2 = unknown.x2(); cfg.areaZ2 = unknown.z2();
+				cfg.areaCircular = unknown.circular();
+				cfg.areaEnabled = unknown.enabled();
+				visited.addAll(unknown.visited());
+			}
+			invalidate();
 		} catch (Exception | LinkageError e) {
 			MovRand.LOG.warn("[movrand] could not read coverage progress", e);
 		}
 	}
 
 	private record Saved(String area, List<Long> visited) {
+	}
+
+	private static void checkWorlds() throws Exception {
+		Path dir = Files.createTempDirectory("movrand-area-check");
+		Path legacy = dir.resolve("movrand-coverage.json");
+		Path scoped = dir.resolve("movrand-coverage-worlds.json");
+		try {
+			Config cfg = new Config();
+			AreaCoverage a = new AreaCoverage(cfg, legacy);
+			a.switchWorld("sp:save-a|minecraft:overworld");
+			a.setCorners(0, 0, 63, 63);
+			cfg.areaEnabled = true;
+			a.markCovered(1, 1, 0);
+			a.nextTarget(0, 0, 0);
+			int oldVersion = a.version();
+			a.switchWorld("sp:save-a|minecraft:the_nether");
+			assert a.visitedCount() == 0 && !cfg.areaEnabled;
+			assert a.currentTarget() == null && a.version() != oldVersion;
+			a.setCorners(160, 160, 223, 223);
+			cfg.areaCircular = true;
+			a.markCovered(11, 11, 0);
+			a.switchWorld("mp:server-b|minecraft:overworld");
+			assert !a.isVisited(1, 1) && !a.isVisited(11, 11);
+			a.setCorners(-64, -64, -1, -1);
+			a.markAll();
+			a.switchWorld("sp:save-a|minecraft:overworld");
+			assert cfg.areaX1 == 0 && cfg.areaX2 == 63 && !cfg.areaCircular && cfg.areaEnabled;
+			assert a.visitedCount() == 1 && a.isVisited(1, 1);
+			assert a.mapRegions().size() == 1;
+			cfg.areaThisWorldOnly = false;
+			assert a.mapRegions().stream().anyMatch(r -> r.visited().contains(key(11, 11)));
+			a.unmark(1, 1);
+			a.save();
+			AreaCoverage loaded = new AreaCoverage(new Config(), legacy);
+			loaded.switchWorld("sp:save-a|minecraft:the_nether");
+			assert loaded.cfg.areaCircular && loaded.cfg.areaX1 == 160;
+			assert loaded.visitedCount() == 1 && loaded.isVisited(11, 11);
+			loaded.reset();
+			loaded.switchWorld("mp:server-b|minecraft:overworld");
+			assert loaded.visitedCount() == 16;
+			loaded.switchWorld("sp:save-a|minecraft:overworld");
+			assert loaded.visitedCount() == 0 && loaded.cfg.areaX2 == 63;
+			// Exact-corner edits must persist even when no coverage was changed.
+			loaded.cfg.areaX2 = 95;
+			loaded.save();
+			AreaCoverage edited = new AreaCoverage(new Config(), legacy);
+			edited.switchWorld("sp:save-a|minecraft:overworld");
+			assert edited.cfg.areaX2 == 95;
+			Files.delete(scoped);
+			Config oldCfg = new Config();
+			AreaCoverage old = new AreaCoverage(oldCfg, null);
+			Files.writeString(legacy, GSON.toJson(new Saved(old.areaSignature(), List.of(key(0, 0)))));
+			AreaCoverage migrated = new AreaCoverage(oldCfg, legacy);
+			migrated.switchWorld("sp:save-a|minecraft:overworld");
+			assert migrated.visitedCount() == 0;
+			oldCfg.areaThisWorldOnly = false;
+			assert migrated.mapRegions().stream().anyMatch(r -> r.visited().contains(key(0, 0)));
+			assert Files.exists(legacy) : "legacy backup must be retained";
+			System.out.println("World/dimension isolation, persistence, overlays and migration passed");
+		} finally {
+			Files.deleteIfExists(scoped);
+			Files.deleteIfExists(legacy);
+			Files.delete(dir);
+		}
 	}
 
 	/** The slow, obvious count, kept only so the fast one can be checked against it. */
@@ -576,7 +749,8 @@ public final class AreaCoverage {
 	 * a target and walking to it must finish the area. A route that can return a chunk it
 	 * already ticked off, or skip one, would loop forever in game and look like a hang.
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
+		checkWorlds();
 		Config cfg = new Config();
 		cfg.areaX1 = 0;
 		cfg.areaZ1 = 0;

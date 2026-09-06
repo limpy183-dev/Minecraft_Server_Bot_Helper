@@ -8,7 +8,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerInput;
 import net.minecraft.world.inventory.Slot;
-import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
@@ -18,15 +17,15 @@ import java.util.Locale;
 /**
  * The inventory: what is protected, what is rubbish, and what gets sold.
  *
- * <p>Slots are the unit rather than items, because that is how a person thinks about their
- * own inventory — "the row across the bottom and the two next to it are mine, do what you
- * like with the rest". An item rule cannot express "this particular stack of diamonds", and
- * a slot rule can.
+ * <p>Slots are the unit rather than items, because that is how a person thinks about their own
+ * inventory — "the row across the bottom and the two next to it are mine, do what you like
+ * with the rest". An item rule cannot express "this particular stack of diamonds", and a slot
+ * rule can.
  *
- * <p>Selling is a state machine rather than a burst of clicks. A server that opens a menu
- * does it a packet later, the deposit has to land before the confirm is worth pressing, and
- * a confirm pressed on a menu that has not repainted yet sells nothing. Every step waits,
- * and every wait is a randomised length.
+ * <p>Selling is a state machine rather than a burst of clicks. A server that opens a menu does
+ * it a packet later, the deposit has to land before the confirm is worth pressing, and a
+ * confirm pressed on a menu that has not repainted yet sells nothing. Every step waits, and
+ * every wait is a randomised length.
  */
 public final class Backpack {
 
@@ -47,6 +46,12 @@ public final class Backpack {
 	private int waitTicks;
 	private int deposited;
 	private int attempts;
+	private int activeMenuId = -1;
+	private int pendingDepositSlot = -1;
+	private int pendingDepositCount;
+	private int depositFailures;
+	// NOT Long.MIN_VALUE: `tick - lastSellTick` would overflow to a negative number, which is
+	// always below the cooldown, so a sale would never be allowed to start.
 	private long lastSellTick = Long.MIN_VALUE / 2;
 	public String status = "idle";
 	/** Counts for the panel, so a sale that quietly does nothing is visible. */
@@ -61,8 +66,30 @@ public final class Backpack {
 		return phase;
 	}
 
+	/**
+	 * Whether a menu on screen is one this class opened.
+	 *
+	 * <p>Read by the controller's "pause while a screen is open" guard. A chest or villager
+	 * window is one the server opened and a vanilla client cannot move while one is up — but
+	 * pausing on our own sell menu would leave the sale half finished with the bag still full.
+	 */
 	public boolean busy() {
 		return phase != Phase.IDLE;
+	}
+
+	/** Whether the screen on top is the transaction this state machine is waiting for. */
+	public boolean handles(net.minecraft.client.gui.screens.Screen screen) {
+		if (!busy() || !(screen instanceof AbstractContainerScreen<?> container)) return false;
+		if (activeMenuId >= 0) return container.getMenu().containerId == activeMenuId;
+		String wanted = cfg.sellMenuTitleContains == null ? ""
+				: cfg.sellMenuTitleContains.trim().toLowerCase(Locale.ROOT);
+		return wanted.isEmpty() || container.getTitle().getString().toLowerCase(Locale.ROOT).contains(wanted);
+	}
+
+	/** Abort bookkeeping without closing an unexpected screen that may belong to the user. */
+	public void unexpectedScreen() {
+		if (!busy()) return;
+		fail("an unexpected screen replaced the sell menu");
 	}
 
 	// ------------------------------------------------------------- fullness
@@ -89,8 +116,8 @@ public final class Backpack {
 	 * Throw away one stack of rubbish, or return false when there is none.
 	 *
 	 * <p>One per call on purpose: a person emptying their bag does it a stack at a time, and
-	 * thirty-six throw packets in a single tick is the single most obvious thing this mod
-	 * could possibly send.
+	 * thirty-six throw packets in a single tick is the single most obvious thing this mod could
+	 * possibly send.
 	 */
 	public boolean dropOneJunkStack(Minecraft mc, LocalPlayer player) {
 		if (!cfg.dropJunk || cfg.junkItems.isEmpty()) return false;
@@ -98,7 +125,7 @@ public final class Backpack {
 		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
-			if (stack.isEmpty() || !cfg.isJunk(itemId(stack))) continue;
+			if (stack.isEmpty() || Storage.reserved(cfg, stack) || !cfg.isJunk(itemId(stack))) continue;
 			throwStack(mc, player, slot);
 			status = "dropped " + stack.getHoverName().getString();
 			return true;
@@ -114,8 +141,7 @@ public final class Backpack {
 		for (int slot = Inventory.SELECTION_SIZE; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
-			if (!(stack.getItem() instanceof BlockItem item)) continue;
-			if (!cfg.isBuildingBlock(blockId(item))) continue;
+			if (!Bot.usableBuildingStack(stack, cfg)) continue;
 			click(mc, player, player.inventoryMenu, menuSlotFor(player.inventoryMenu, player, slot),
 					0, ContainerInput.QUICK_MOVE);
 			status = "moved " + stack.getHoverName().getString() + " to the hotbar";
@@ -138,7 +164,7 @@ public final class Backpack {
 		int n = 0;
 		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot) || !cfg.slotForSale(slot)) continue;
-			if (!inv.getItem(slot).isEmpty()) n++;
+			if (!inv.getItem(slot).isEmpty() && !Storage.reserved(cfg, inv.getItem(slot))) n++;
 		}
 		return n;
 	}
@@ -148,8 +174,11 @@ public final class Backpack {
 		sellRuns++;
 		deposited = 0;
 		attempts = 0;
+		activeMenuId = -1;
+		pendingDepositSlot = -1;
+		depositFailures = 0;
 		phase = Phase.OPENING;
-		waitTicks = Rng.ticks(cfg.sellDelayMinSec, cfg.sellDelayMaxSec);
+		waitTicks = menuWait();
 		status = "sending /" + cfg.sellCommand;
 		player.connection.sendCommand(cfg.sellCommand.trim());
 	}
@@ -158,13 +187,17 @@ public final class Backpack {
 		if (phase == Phase.IDLE) return;
 		phase = Phase.IDLE;
 		waitTicks = 0;
+		activeMenuId = -1;
+		pendingDepositSlot = -1;
 		status = "cancelled";
-		if (mc.gui.screen() instanceof AbstractContainerScreen<?>) mc.player.closeContainer();
+		if (mc.gui.screen() instanceof AbstractContainerScreen<?> && mc.player != null) {
+			mc.player.closeContainer();
+		}
 	}
 
 	/**
-	 * One tick of the sale. Returns true while it is still running, so the task above knows
-	 * to stand still rather than walk off mid-menu.
+	 * One tick of the sale. Returns true while it is still running, so the task above knows to
+	 * stand still rather than walk off mid-menu.
 	 */
 	public boolean tick(Minecraft mc, LocalPlayer player) {
 		if (phase == Phase.IDLE) return false;
@@ -174,32 +207,55 @@ public final class Backpack {
 			return true;
 		}
 
-		AbstractContainerMenu menu = mc.gui.screen() instanceof AbstractContainerScreen<?> screen
-				? screen.getMenu() : null;
+		AbstractContainerScreen<?> screen = mc.gui.screen() instanceof AbstractContainerScreen<?> shown
+				? shown : null;
+		AbstractContainerMenu menu = screen == null ? null : screen.getMenu();
+		String titleNeedle = cfg.sellMenuTitleContains == null ? ""
+				: cfg.sellMenuTitleContains.trim().toLowerCase(Locale.ROOT);
+		if (phase == Phase.OPENING && screen != null && !titleNeedle.isEmpty()
+				&& !screen.getTitle().getString().toLowerCase(Locale.ROOT).contains(titleNeedle)) {
+			menu = null;
+		}
+		if (phase != Phase.OPENING && menu != null && menu.containerId != activeMenuId) {
+			fail("a different menu replaced the sell menu");
+			return false;
+		}
 
 		switch (phase) {
 			case OPENING -> {
 				if (menu == null) {
 					// the menu never came: the command may not exist on this server
-					if (++attempts > 3) {
+					if (++attempts > Math.max(1, cfg.sellOpenAttempts)) {
 						fail("the sell menu never opened");
 						return false;
 					}
-					waitTicks = Rng.ticks(0.5, 1.2);
+					waitTicks = menuWait();
 					return true;
 				}
+				activeMenuId = menu.containerId;
 				phase = Phase.DEPOSITING;
-				waitTicks = pause();
+				waitTicks = clickWait();
 			}
 			case DEPOSITING -> {
 				if (menu == null) {
 					fail("the menu closed while filling it");
 					return false;
 				}
+				if (pendingDepositSlot >= 0) {
+					int now = player.getInventory().getItem(pendingDepositSlot).getCount();
+					if (now < pendingDepositCount) {
+						deposited++;
+						depositFailures = 0;
+					} else if (++depositFailures > Math.max(1, cfg.sellOpenAttempts)) {
+						fail("the menu refused an inventory transfer");
+						return false;
+					}
+					pendingDepositSlot = -1;
+				}
 				int slot = nextSellSlot(player);
 				if (slot < 0) {
 					phase = deposited > 0 || !cfg.sellRequiresDeposit ? Phase.CONFIRMING : Phase.CLOSING;
-					waitTicks = pause();
+					waitTicks = clickWait();
 					return true;
 				}
 				int menuSlot = menuSlotFor(menu, player, slot);
@@ -207,11 +263,11 @@ public final class Backpack {
 					fail("could not find the inventory inside the sell menu");
 					return false;
 				}
+				pendingDepositSlot = slot;
+				pendingDepositCount = player.getInventory().getItem(slot).getCount();
 				click(mc, player, menu, menuSlot, 0, ContainerInput.QUICK_MOVE);
-				deposited++;
-				soldStacks++;
-				status = "moved " + deposited + " stacks in";
-				waitTicks = pause();
+				status = "moving stack " + (deposited + 1) + " in";
+				waitTicks = clickWait();
 			}
 			case CONFIRMING -> {
 				if (menu == null) {
@@ -226,15 +282,18 @@ public final class Backpack {
 				click(mc, player, menu, confirm, 0, ContainerInput.PICKUP);
 				status = "confirmed";
 				phase = Phase.SETTLING;
-				waitTicks = Rng.ticks(cfg.sellDelayMinSec, cfg.sellDelayMaxSec);
+				waitTicks = menuWait();
 			}
 			case SETTLING -> {
 				phase = Phase.CLOSING;
-				waitTicks = pause();
+				waitTicks = clickWait();
 			}
 			case CLOSING -> {
 				if (menu != null) player.closeContainer();
+				soldStacks += deposited;
 				phase = Phase.IDLE;
+				activeMenuId = -1;
+				pendingDepositSlot = -1;
 				status = "sold %d stacks".formatted(deposited);
 				return false;
 			}
@@ -245,10 +304,18 @@ public final class Backpack {
 
 	private void fail(String why) {
 		phase = Phase.IDLE;
+		activeMenuId = -1;
+		pendingDepositSlot = -1;
 		status = "sell failed — " + why;
 	}
 
-	private int pause() {
+	/** Long enough for a server to answer a command and paint a window. */
+	private int menuWait() {
+		return Rng.ticks(cfg.sellDelayMinSec, cfg.sellDelayMaxSec);
+	}
+
+	/** The gap between two clicks inside a menu, which is the one a packet log can see. */
+	private int clickWait() {
 		return Rng.ticks(cfg.sellClickMinSec, cfg.sellClickMaxSec);
 	}
 
@@ -256,7 +323,7 @@ public final class Backpack {
 		Inventory inv = player.getInventory();
 		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot) || !cfg.slotForSale(slot)) continue;
-			if (!inv.getItem(slot).isEmpty()) return slot;
+			if (!inv.getItem(slot).isEmpty() && !Storage.reserved(cfg, inv.getItem(slot))) return slot;
 		}
 		return -1;
 	}
@@ -267,7 +334,7 @@ public final class Backpack {
 	static int menuSlotFor(AbstractContainerMenu menu, LocalPlayer player, int inventorySlot) {
 		for (int i = 0; i < menu.slots.size(); i++) {
 			Slot slot = menu.slots.get(i);
-			if (slot.container == player.getInventory() && slot.index == inventorySlot) return i;
+			if (slot.container == player.getInventory() && slot.getContainerSlot() == inventorySlot) return i;
 		}
 		return -1;
 	}
@@ -275,10 +342,10 @@ public final class Backpack {
 	/**
 	 * The button that completes the sale.
 	 *
-	 * <p>Named by item rather than by position, because the position is a server's layout
-	 * choice and the item is what the user is actually looking at. Among matches, the last
-	 * one in the container half wins — a confirm button lives in the bottom right corner,
-	 * and the highest slot index in a chest grid <em>is</em> the bottom right corner.
+	 * <p>Named by item rather than by position, because the position is a server's layout choice
+	 * and the item is what the user is actually looking at. Among matches, the last one in the
+	 * container half wins — a confirm button lives in the bottom right corner, and the highest
+	 * slot index in a chest grid <em>is</em> the bottom right corner.
 	 */
 	static int confirmSlot(AbstractContainerMenu menu, LocalPlayer player, String wanted, int fallback) {
 		String needle = wanted == null ? "" : wanted.trim().toLowerCase(Locale.ROOT);
@@ -321,14 +388,9 @@ public final class Backpack {
 		return id == null ? "" : id.toString();
 	}
 
-	private static String blockId(BlockItem item) {
-		var id = BuiltInRegistries.BLOCK.getKey(item.getBlock());
-		return id == null ? "" : id.getPath();
-	}
-
 	/**
-	 * Self-check on the slot rules — the menus need a server, the bookkeeping does not:
-	 * {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.Backpack}
+	 * Self-check on the slot rules and the click spacing — the menus need a server, the
+	 * bookkeeping does not: {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.Backpack}
 	 */
 	public static void main(String[] args) {
 		Config cfg = new Config();
@@ -359,6 +421,37 @@ public final class Backpack {
 		assert cfg.sellClickMinSec > 0 : "a zero click delay is a burst of packets";
 		assert cfg.sellDelayMinSec > 0 : "a zero menu delay clicks a menu that is not there";
 		assert cfg.sellClickMaxSec >= cfg.sellClickMinSec : "the click delay range is inverted";
+
+		// A menu that never opens has to end the sale rather than retry forever, and the retry
+		// count cannot be nothing or a slow server sells nothing at all.
+		cfg.sellOpenAttempts = 0;
+		cfg.clampAll();
+		assert cfg.sellOpenAttempts >= 1 : "the sell menu was given no chance to open";
+		assert cfg.sellOpenAttempts <= 20 : "a sale that retries this long is a stall";
+
+		// The state machine runs forward and ends. Every phase has a next one, and IDLE is the
+		// only one that is not busy - a sale stuck busy pauses the walk for good.
+		Backpack bag = new Backpack(cfg);
+		assert !bag.busy() && bag.phase() == Phase.IDLE : "a fresh bag was mid-sale";
+		for (Phase p : Phase.values()) {
+			assert !p.label.isEmpty() : "a sale phase with nothing to show for it: " + p;
+			assert (p == Phase.IDLE) == (p.label.equals("idle")) : "only IDLE is idle";
+		}
+
+		// and the click gap is drawn, not fixed: a burst of identically spaced container clicks
+		// is the clearest thing in a packet log
+		cfg.sellClickMinSec = 0.18;
+		cfg.sellClickMaxSec = 0.45;
+		cfg.clampAll();
+		int low = Integer.MAX_VALUE, high = 0;
+		for (int i = 0; i < 20_000; i++) {
+			int gap = bag.clickWait();
+			assert gap >= 1 : "two container clicks landed on the same tick";
+			low = Math.min(low, gap);
+			high = Math.max(high, gap);
+		}
+		assert high > low : "every click gap came out the same";
+		assert low >= 4 && high <= 9 : "click gaps left the 0.18-0.45s range: %d to %d".formatted(low, high);
 
 		System.out.println("Backpack self-check passed");
 	}

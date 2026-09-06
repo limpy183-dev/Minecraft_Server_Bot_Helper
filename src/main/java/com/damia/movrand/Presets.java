@@ -53,6 +53,20 @@ public final class Presets {
 		c.maxRuntimeMinutes = 45;
 		c.autoJumpCooldownTicks = 8;
 		c.holdSneak = false;
+
+		// The job itself is off in every preset — that switch is the whole of the mod's
+		// detectable surface and nobody should get it by picking a setup blind. What is set
+		// here is how it behaves once somebody turns it on knowing what it costs: a shortlist
+		// rather than a spiral, a rescan on a range rather than a clock, and patience long
+		// enough that honest slow work finishes.
+		c.destroyTargetChoices = 3;
+		c.destroyScanSec = 1.5;
+		c.destroyScanMaxSec = 3.0;
+		c.destroyBlockSec = 35;
+		c.destroyTargetSec = 120;
+		c.taskAimWobbleScale = 0.35;
+		c.destroyerKeepWorking = true;
+		c.pathMineOnlySelected = true;
 	}
 
 	public static final List<Preset> ALL = List.of(

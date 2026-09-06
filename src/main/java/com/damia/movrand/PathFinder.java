@@ -40,8 +40,25 @@ public final class PathFinder {
 
 	/** Everything the search needs to know about the world, and nothing else. */
 	public interface World {
+		/** Whether the client actually has this column loaded. Unknown terrain is not air. */
+		default boolean known(int x, int z) {
+			return true;
+		}
+
 		/** Has collision: you cannot stand inside it. */
 		boolean solid(int x, int y, int z);
+
+		/**
+		 * Whether the upper face is a dependable full support for a pillar placement.
+		 *
+		 * <p>The default keeps synthetic worlds useful: a full-height collision is treated as a
+		 * full support. The real-world adapter overrides this with Minecraft's exact collision and
+		 * sturdy-face predicates, which excludes slabs, repeaters, dust, rails and other partial
+		 * shapes that can be stood on or ray-hit but cannot safely anchor a column.
+		 */
+		default boolean fullSupport(int x, int y, int z) {
+			return topOf(x, y, z) >= 0.99;
+		}
 
 		/**
 		 * How tall the collision in this block is, from its own floor: 0 for air, 1 for a
@@ -161,15 +178,43 @@ public final class PathFinder {
 	public record Step(int x, int y, int z, Kind kind, double cost) {
 	}
 
-	/** What the search is allowed to do, and what each of those things is worth. */
+	/** Directed transition temporarily rejected by the physical route follower. */
+	public record Edge(long from, long to) {}
+
+	/**
+	 * What the search is allowed to do, and what each of those things is worth.
+	 *
+	 * @param heuristicWeight how far over the shortest route the search may settle for. See
+	 *                        {@link #DEFAULT_HEURISTIC}.
+	 */
 	public record Rules(boolean mine, boolean bridge, boolean diagonal, int maxFall, int maxStepUp,
-	                    double mineCost, double placeCost, int maxNodes) {
+	                    double mineCost, double placeCost, int maxNodes, double heuristicWeight,
+	                    int maxPlacements) {
+
+		/** With no opinion on the weight, which is what the self-check has. */
+		public Rules(boolean mine, boolean bridge, boolean diagonal, int maxFall, int maxStepUp,
+		             double mineCost, double placeCost, int maxNodes) {
+			this(mine, bridge, diagonal, maxFall, maxStepUp, mineCost, placeCost, maxNodes,
+					DEFAULT_HEURISTIC, bridge ? Integer.MAX_VALUE : 0);
+		}
+
+		/** With a heuristic choice but no finite inventory model (mainly self-check callers). */
+		public Rules(boolean mine, boolean bridge, boolean diagonal, int maxFall, int maxStepUp,
+		             double mineCost, double placeCost, int maxNodes, double heuristicWeight) {
+			this(mine, bridge, diagonal, maxFall, maxStepUp, mineCost, placeCost, maxNodes,
+					heuristicWeight, bridge ? Integer.MAX_VALUE : 0);
+		}
 
 		public static Rules of(Config cfg, boolean canMine, boolean canBridge) {
-			return new Rules(cfg.pathMine && canMine, cfg.pathBridge && canBridge, cfg.pathDiagonal,
+			return of(cfg, canMine, canBridge ? Integer.MAX_VALUE : 0);
+		}
+
+		public static Rules of(Config cfg, boolean canMine, int availablePlacements) {
+			int placements = Math.max(0, availablePlacements);
+			return new Rules(cfg.pathMine && canMine, cfg.pathBridge && placements > 0, cfg.pathDiagonal,
 					Math.max(1, cfg.pathMaxFall), Math.max(1, cfg.autoJumpMaxHeight),
 					Math.max(1, cfg.pathMineCost), Math.max(1, cfg.pathPlaceCost),
-					Math.max(500, cfg.pathMaxNodes));
+					Math.max(500, cfg.pathMaxNodes), Math.max(1, cfg.pathHeuristicWeight), placements);
 		}
 	}
 
@@ -232,11 +277,12 @@ public final class PathFinder {
 	 * Weighted A*: the heuristic is inflated slightly, which gives up on finding the very
 	 * shortest route in exchange for expanding far fewer nodes. On a client tick budget that
 	 * is the right trade — a route two blocks longer, found in a tenth of the time.
+	 *
+	 * <p>Weighted A* with a closed set is ε-admissible, so at 1.15 a route can be up to 15%
+	 * longer than the shortest one. That is the setting behind it: 1.0 is exact and slow, and
+	 * anything above it is a promise about how much worse a route is allowed to be.
 	 */
-	// ponytail: weighted A* with a closed set is ε-admissible, so a route can be up to 15%
-	// longer than optimal. Drop the weight to 1.0 if a route ever looks visibly silly; the
-	// search is time-sliced now, so the extra expansions are affordable.
-	private static final double HEURISTIC_WEIGHT = 1.15;
+	static final double DEFAULT_HEURISTIC = 1.15;
 
 	private static final int[][] SIDES = {{1, 0}, {-1, 0}, {0, 1}, {0, -1}};
 	private static final int[][] CORNERS = {{1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
@@ -263,6 +309,8 @@ public final class PathFinder {
 		 * pillar could climb exactly one block before deciding it had nothing to jump off.
 		 */
 		boolean standsOnPlaced;
+		/** Blocks this route has consumed before reaching this node. */
+		int placements;
 
 		Node(int x, int y, int z) {
 			this.x = x;
@@ -275,6 +323,8 @@ public final class PathFinder {
 			return Double.compare(f, o.f);
 		}
 	}
+
+	private record NodeKey(long position, int placements) {}
 
 	/**
 	 * A search in progress.
@@ -290,15 +340,21 @@ public final class PathFinder {
 		private final Goal goal;
 		private final Rules rules;
 		private final int gx, gy, gz;
-		private final Map<Long, Node> seen = new HashMap<>();
+		private final Map<NodeKey, Node> seen = new HashMap<>();
 		private final PriorityQueue<Node> open = new PriorityQueue<>();
-		private final Set<Long> closed = new HashSet<>();
+		private final Set<NodeKey> closed = new HashSet<>();
 		private final Node start;
 		private Node best;
 		private double bestScore;
 		private Node arrived;
 		private int expanded;
 		private boolean finished;
+		private Set<Edge> blockedEdges = Set.of();
+
+		public Search avoiding(Set<Edge> edges) {
+			blockedEdges = Set.copyOf(edges);
+			return this;
+		}
 
 		Search(World world, int sx, int sy, int sz, int gx, int gy, int gz, Goal goal, Rules rules) {
 			this.world = world;
@@ -309,8 +365,8 @@ public final class PathFinder {
 			this.gz = gz;
 			this.start = new Node(sx, sy, sz);
 			start.g = 0;
-			start.f = heuristic(sx, sy, sz, gx, gy, gz);
-			seen.put(key(sx, sy, sz), start);
+			start.f = heuristic(sx, sy, sz, gx, gy, gz, rules.heuristicWeight());
+			seen.put(nodeKey(start), start);
 			open.add(start);
 			this.best = start;
 			this.bestScore = Math.sqrt(dist2(sx, sy, sz, gx, gy, gz));
@@ -336,7 +392,7 @@ public final class PathFinder {
 				// A position reached twice is not searched twice. Without this the queue
 				// re-expands everything it has already been through, and a budget meant for a
 				// route across a base is spent several times over on the room it started in.
-				if (!closed.add(key(current.x, current.y, current.z))) continue;
+				if (!closed.add(nodeKey(current))) continue;
 				expanded++;
 
 				if (goal.reached(current.x, current.y, current.z)) {
@@ -353,10 +409,12 @@ public final class PathFinder {
 				}
 
 				for (Node next : neighbours(world, current, rules)) {
-					long k = key(next.x, next.y, next.z);
+					if (blockedEdges.contains(new Edge(key(current.x, current.y, current.z),
+							key(next.x, next.y, next.z)))) continue;
+					NodeKey k = nodeKey(next);
 					Node existing = seen.get(k);
 					if (existing != null && existing.g <= next.g) continue;
-					next.f = next.g + heuristic(next.x, next.y, next.z, gx, gy, gz);
+					next.f = next.g + heuristic(next.x, next.y, next.z, gx, gy, gz, rules.heuristicWeight());
 					seen.put(k, next);
 					open.add(next);
 				}
@@ -420,6 +478,7 @@ public final class PathFinder {
 				step(world, from, d[0], d[1], DIAGONAL, rules, out);
 			}
 		}
+		out.removeIf(node -> node.placements > rules.maxPlacements());
 		return out;
 	}
 
@@ -459,7 +518,7 @@ public final class PathFinder {
 		// Up: a block placed under your own feet while jumping off them. Both the space you
 		// rise into and the one above it have to be free, or paid for with a swing - a ceiling
 		// is the usual case, since that is what standing on a lower floor means.
-		boolean footing = from.standsOnPlaced || standableFloor(world, x, from.y, z, rules);
+		boolean footing = from.standsOnPlaced || pillarFooting(world, x, from.y, z);
 		if (rules.bridge() && footing && from.y + 2 <= world.maxY()) {
 			double extra = 0;
 			for (int y = from.y + 1; y <= from.y + 2; y++) {
@@ -477,6 +536,7 @@ public final class PathFinder {
 	/** One horizontal move, resolved into whichever of walk / step up / drop / mine it is. */
 	private static void step(World world, Node from, int dx, int dz, double base, Rules rules, List<Node> out) {
 		int x = from.x + dx, z = from.z + dz;
+		if (!world.known(x, z)) return;
 		Kind level = base == WALK ? Kind.WALK : Kind.DIAGONAL;
 
 		// level ground, or a step up we can jump
@@ -556,12 +616,14 @@ public final class PathFinder {
 		n.edge = cost;
 		n.kind = kind;
 		n.standsOnPlaced = placed;
+		n.placements = from.placements + (placed ? 1 : 0);
 		out.add(n);
 	}
 
 	/** Two blocks of space for a player, and nothing in either that hurts. */
 	private static boolean clear(World world, int x, int y, int z, Rules rules) {
-		return passable(world, x, y, z, rules) && passable(world, x, y + 1, z, rules);
+		return world.known(x, z) && passable(world, x, y, z, rules)
+				&& passable(world, x, y + 1, z, rules);
 	}
 
 	/**
@@ -589,7 +651,13 @@ public final class PathFinder {
 	 */
 	private static boolean standableFloor(World world, int x, int y, int z, Rules rules) {
 		if (world.hazard(x, y - 1, z) || world.hazard(x, y, z)) return false;
-		return world.topOf(x, y - 1, z) > 0 || world.topOf(x, y, z) > 0;
+		double atFeet = world.topOf(x, y, z);
+		return world.topOf(x, y - 1, z) > 0 || (atFeet > 0 && atFeet <= STEPPABLE);
+	}
+
+	/** A pillar is only offered where the block directly under the feet can anchor it. */
+	private static boolean pillarFooting(World world, int x, int y, int z) {
+		return world.fullSupport(x, y - 1, z);
 	}
 
 	private static Path build(Node end, boolean complete, int searched) {
@@ -618,8 +686,8 @@ public final class PathFinder {
 		return y;
 	}
 
-	private static double heuristic(int x, int y, int z, int gx, int gy, int gz) {
-		return Math.sqrt(dist2(x, y, z, gx, gy, gz)) * HEURISTIC_WEIGHT;
+	private static double heuristic(int x, int y, int z, int gx, int gy, int gz, double weight) {
+		return Math.sqrt(dist2(x, y, z, gx, gy, gz)) * weight;
 	}
 
 	private static double dist2(int x, int y, int z, int gx, int gy, int gz) {
@@ -630,6 +698,10 @@ public final class PathFinder {
 	/** Same packing vanilla uses for block positions: 26 bits of x and z, 12 of y. */
 	static long key(int x, int y, int z) {
 		return ((long) (x & 0x3FFFFFF) << 38) | ((long) (z & 0x3FFFFFF) << 12) | (y & 0xFFFL);
+	}
+
+	private static NodeKey nodeKey(Node node) {
+		return new NodeKey(key(node.x, node.y, node.z), node.placements);
 	}
 
 	// -------------------------------------------------------------- adapter
@@ -716,6 +788,12 @@ public final class PathFinder {
 		}
 
 		@Override
+		public boolean known(int x, int z) {
+			return level.getChunkSource().getChunk(x >> 4, z >> 4,
+					net.minecraft.world.level.chunk.status.ChunkStatus.FULL, false) != null;
+		}
+
+		@Override
 		public boolean solid(int x, int y, int z) {
 			return topOf(x, y, z) > 0;
 		}
@@ -729,6 +807,15 @@ public final class PathFinder {
 			double top = shape.isEmpty() ? 0 : shape.max(net.minecraft.core.Direction.Axis.Y);
 			tops.put(state, top);
 			return top;
+		}
+
+		@Override
+		public boolean fullSupport(int x, int y, int z) {
+			var state = at(x, y, z);
+			return !state.isAir() && state.getFluidState().isEmpty()
+					&& state.isCollisionShapeFullBlock(level, cursor)
+					&& state.isFaceSturdy(level, cursor, net.minecraft.core.Direction.UP,
+							net.minecraft.world.level.block.SupportType.FULL);
 		}
 
 		@Override
@@ -787,7 +874,7 @@ public final class PathFinder {
 			// so the one that cannot be cached by state. It is also asked only about blocks the
 			// route is considering breaking, which is a small fraction of what it looks at.
 			at(x, y, z);
-			return Avoidance.floodsWhenBroken(level, cursor);
+			return Avoidance.floodsWhenBroken(level, cursor, cfg.coverWater, true);
 		}
 
 		@Override
@@ -897,6 +984,10 @@ public final class PathFinder {
 		return false;
 	}
 
+	private static long count(Path p, Kind kind) {
+		return p.steps().stream().filter(step -> step.kind() == kind).count();
+	}
+
 	/**
 	 * Self-check on the search: {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.PathFinder}
 	 */
@@ -916,6 +1007,18 @@ public final class PathFinder {
 				: "the path must start where we are";
 		assert p.steps().getFirst().kind() == Kind.START : "the first step is not a move";
 		Step last = p.last();
+		Step firstMove = p.steps().get(1);
+		Edge refused = new Edge(key(1, 1, 1), key(firstMove.x(), firstMove.y(), firstMove.z()));
+		Search alternate = begin(room, 1, 1, 1, 3, 1, 3, within(0.5, 3, 1, 3), walk)
+				.avoiding(Set.of(refused));
+		alternate.advance(Long.MAX_VALUE);
+		assert alternate.result().complete() : "failed edge prevented using the other corridor";
+		List<Step> rerouted = alternate.result().steps();
+		for (int i = 1; i < rerouted.size(); i++) {
+			Step a = rerouted.get(i - 1), b = rerouted.get(i);
+			assert !refused.equals(new Edge(key(a.x(), a.y(), a.z()), key(b.x(), b.y(), b.z())))
+					: "replan repeated the physically blocked step";
+		}
 		assert last.x() == 3 && last.y() == 1 && last.z() == 3 : "the path must end at the goal";
 		// and it must actually go round the pillar at (2,2) rather than through it
 		assert !visits(p, 2, 1, 2) : "the route walked through a solid pillar";
@@ -932,6 +1035,14 @@ public final class PathFinder {
 		Sketch sealed = new Sketch(0, floor, split, split);
 		Path out = find(sealed, 1, 1, 1, 3, 1, 1, 0.5, walk);
 		assert !out.complete() : "there is no way through a solid wall without mining";
+		net.minecraft.world.phys.AABB dropBox = new net.minecraft.world.phys.AABB(3.375, 1, 1.375, 3.625, 1.25, 1.625);
+		Goal pickup = (x, y, z) -> DropCollector.pickupOverlap(
+				new net.minecraft.world.phys.AABB(x + 0.2, y, z + 0.2, x + 0.8, y + 1.8, z + 0.8), dropBox);
+		assert !pickup.reached(1, 1, 1) : "pickup through a wall accepted the starting square";
+		assert !find(sealed, 1, 1, 1, 3, 1, 1, pickup, walk).complete()
+				: "sealed-room drop had a walking route";
+		Path pickupRoute = find(room, 1, 1, 1, 3, 1, 1, pickup, walk);
+		assert pickupRoute.complete() && !pickupRoute.atGoal() : "nearby drop with a doorway was abandoned";
 
 		// with mining on, there is - and it costs what two broken blocks cost
 		Path dug = find(sealed, 1, 1, 1, 3, 1, 1, 0.5, mining);
@@ -993,6 +1104,22 @@ public final class PathFinder {
 				new Rules(false, false, false, 0, 1, 4, 3, 20000)).isEmpty()
 				: "a trench was crossed with nothing to place in it";
 
+		// Inventory is part of route feasibility, not something discovered after walking to the
+		// second gap. Two empty rows need two blocks and a one-block budget must not promise it.
+		String[] doubleTrench = {"#####", "#####", ".....", ".....", "#####", "#####"};
+		String[] doubleAir = {".....", ".....", ".....", ".....", ".....", "....."};
+		Sketch twoGaps = new Sketch(true, 0, doubleTrench, doubleAir, doubleAir);
+		Rules oneBlock = new Rules(false, true, false, 0, 1, 4, 3, 20000,
+				DEFAULT_HEURISTIC, 1);
+		Rules twoBlocks = new Rules(false, true, false, 0, 1, 4, 3, 20000,
+				DEFAULT_HEURISTIC, 2);
+		Path shortOnBlocks = find(twoGaps, 2, 1, 1, 2, 1, 4, 0.5, oneBlock);
+		assert !shortOnBlocks.complete() && count(shortOnBlocks, Kind.BRIDGE) <= 1
+				: "a one-block inventory planned two bridge placements";
+		Path enoughBlocks = find(twoGaps, 2, 1, 1, 2, 1, 4, 0.5, twoBlocks);
+		assert enoughBlocks.complete() && count(enoughBlocks, Kind.BRIDGE) == 2
+				: "two available blocks did not cross two gaps";
+
 		// A wall with lava behind it is not a door, however cheap breaking it looks. The same
 		// two cells as above, and the only difference is that every wall is now holding
 		// something back — so the way through that mining just found has to stop existing.
@@ -1016,6 +1143,10 @@ public final class PathFinder {
 		for (Step s : paved2.steps()) {
 			assert s.y() == 1 : "the route left the slab floor for y" + s.y() + ", which is mid-air";
 		}
+		assert !pillarFooting(paved, 1, 2, 1)
+				: "a half slab was treated as a valid pillar anchor";
+		assert pillarFooting(room, 1, 1, 1)
+				: "a full block floor stopped being a valid pillar anchor";
 		// and the search still refuses to walk into something that genuinely fills the space
 		Sketch cubes = new Sketch(0, floor, walls, walls);
 		assert !visits(find(cubes, 1, 1, 1, 2, 1, 2, 0.5, walk), 2, 1, 2)
@@ -1139,12 +1270,56 @@ public final class PathFinder {
 		assert groundY(room, 1, 1, 1, 5) == 1 : "a start already on the floor was moved";
 		assert groundY(room, 1, 40, 1, 3) == 40 : "a start with nothing under it moved anyway";
 
+		// A sealed room is left by the cheapest wall, not by the one facing the way we want to
+		// go. The box below is one block thick on its north side and four on its south, the
+		// goal is outside it to the south, and the only other way round is the long corridor at
+		// the west edge - so the answer is out through the thin wall and the long way round,
+		// which is what a person does and what a bot pricing every swing the same will not.
+		String[] boxFloor = new String[8];
+		java.util.Arrays.fill(boxFloor, "#####");
+		String[] boxWalls = {".....", ".o#o.", ".o.o.", ".o#o.", ".o#o.", ".o#o.", ".o#o.", "....."};
+		Sketch box = new Sketch(true, 0, boxFloor, boxWalls, boxWalls);
+		Rules thickWall = new Rules(true, false, false, 3, 1, 8, 3, 20000);
+		Path out2 = find(box, 2, 1, 2, 2, 1, 7, 0.5, thickWall);
+		assert out2.complete() : "a sealed box with breakable walls should have a way out";
+		assert visits(out2, 2, 1, 1) : "the route did not leave through the one-block wall";
+		for (int z = 3; z <= 6; z++) {
+			assert !visits(out2, 2, 1, z)
+					: "the route dug through four blocks of wall to save walking round";
+		}
+		// and it really is sealed: with nothing to break there is no way out at all
+		assert find(box, 2, 1, 2, 2, 1, 7, 0.5, walk).isEmpty()
+				: "a sealed box was left without breaking anything";
+
+		// The weight is a promise about how much worse a route may be, so the exact search must
+		// never come back with a longer one than the weighted search settled for.
+		Rules exact = new Rules(false, false, false, 3, 1, 4, 3, 20000, 1.0);
+		Rules greedy = new Rules(false, false, false, 3, 1, 4, 3, 20000, 1.5);
+		Path best = find(room, 1, 1, 1, 3, 1, 3, 0.5, exact);
+		Path quick = find(room, 1, 1, 1, 3, 1, 3, 0.5, greedy);
+		assert best.complete() && quick.complete() : "both weights should find the way round a pillar";
+		assert best.cost() <= quick.cost() + 1e-9
+				: "the exact search found a longer route (%.2f) than the weighted one (%.2f)"
+				.formatted(best.cost(), quick.cost());
+		assert new Rules(false, false, false, 3, 1, 4, 3, 20000).heuristicWeight() == DEFAULT_HEURISTIC
+				: "a search with no opinion on the weight did not get the default";
+
 		// The budget is a floor under the answer, not a cliff: a search that runs out still
 		// hands back the best it found, and that is what keeps the bot walking.
 		Rules tiny = new Rules(false, false, false, 3, 1, 4, 3, 500);
 		Path partial = find(room, 1, 1, 1, 400, 1, 400, 0.5, tiny);
 		assert !partial.complete() : "that goal is not reachable";
 		assert partial.searched() <= 500 : "the node budget was ignored: " + partial.searched();
+		// and "the best it found" has to mean something: a partial route nobody can walk is the
+		// same as no route, and leaves the caller with nothing to do but plan it again
+		Sketch corridor = new Sketch(true, 0,
+				new String[]{"#########################"},
+				new String[]{"........................."},
+				new String[]{"........................."});
+		Path stopped = find(corridor, 0, 1, 0, 400, 1, 0, 0.5, tiny);
+		assert !stopped.complete() : "that goal is off the end of the world";
+		assert !stopped.isEmpty() : "a search that ran out of budget handed back nothing to walk";
+		assert stopped.last().x() > 0 : "the best partial route made no progress at all";
 
 		// Resuming. A search run a slice at a time has to arrive at the same answer as one run
 		// in a single go, or a plan means something different depending on how busy the client

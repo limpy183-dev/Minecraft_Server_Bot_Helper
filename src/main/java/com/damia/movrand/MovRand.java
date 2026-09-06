@@ -49,6 +49,10 @@ public final class MovRand implements ClientModInitializer {
 	}
 
 	public static void replaceConfig(Config fresh) {
+		if (controller != null && controller.storage.busy()) {
+			controller.stop(Minecraft.getInstance(), "Configuration changed during storage");
+			fresh.movementEnabled = false;
+		}
 		config = fresh;
 		controller = new MovementController(fresh);
 	}
@@ -89,14 +93,17 @@ public final class MovRand implements ClientModInitializer {
 
 		// Runs before the player's own tick, so the key states we write are the ones vanilla reads.
 		ClientTickEvents.START_CLIENT_TICK.register(mc -> {
+			controller.syncAreaWorld(mc);
 			while (openKey.consumeClick()) {
 				if (mc.gui.screen() == null) openMenu(mc);
 			}
 			while (toggleKey.consumeClick()) {
 				controller.toggle(mc);
 			}
+			CameraSmoothing.beginTick(mc);
 			controller.tick(mc);
 		});
+		ClientTickEvents.END_CLIENT_TICK.register(CameraSmoothing::endTick);
 
 		// CHAT is what another player typed, and is always worth reading. GAME is everything
 		// else the client prints - including this mod's own output, which is why it is filtered.

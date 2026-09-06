@@ -21,9 +21,11 @@ import net.minecraft.world.phys.Vec3;
  * happens to be the version that gets you caught — a client that turns to face something the
  * moment it enters render distance is describing itself.
  *
- * <p>Attacks are discrete swings rather than a held button, because that is what vanilla
- * sends for an entity, and they wait for the cooldown, because a swing at forty percent
- * charge does forty percent damage and no person swings that way on purpose.
+ * <p>Attacks are discrete swings rather than a held button, because that is what vanilla sends
+ * for an entity, and they wait for the cooldown, because a swing at forty percent charge does
+ * forty percent damage and no person swings that way on purpose. The spacing on top of the
+ * cooldown is randomised: the cooldown alone would produce a perfectly periodic swing, which
+ * is a signature.
  */
 public final class Combat {
 
@@ -32,9 +34,13 @@ public final class Combat {
 	private Entity target;
 	private int swingCooldown;
 	/** Ticks since something last hurt us — the difference between a threat and scenery. */
-	private int sinceHurt = 9999;
-	private int engagedTicks;
+	private int sinceHurt = COLD;
+	/** Entity vanilla reports as the most recent attacker, not merely the nearest bystander. */
+	private int attackerId = -1;
 	public String status = "idle";
+
+	/** Longer ago than any memory setting reaches, so a fresh fight starts from "not hurt". */
+	private static final int COLD = 9999;
 
 	public Combat(Config cfg) {
 		this.cfg = cfg;
@@ -49,15 +55,19 @@ public final class Combat {
 	}
 
 	/** Told by the controller, which is already working out how much health went missing. */
-	public void onDamage(float lost) {
-		if (lost > 0) sinceHurt = 0;
+	public void onDamage(LocalPlayer player, float lost) {
+		if (lost <= 0) return;
+		sinceHurt = 0;
+		LivingEntity attacker = player.getLastHurtByMob();
+		if (attacker != null && attacker.isAlive()) attackerId = attacker.getId();
 	}
 
 	/**
 	 * @return true when a fight is happening and the task above should hold off
 	 */
 	public boolean tick(Minecraft mc, LocalPlayer player, Bot.Steer steer) {
-		if (sinceHurt < 9999) sinceHurt++;
+		if (sinceHurt < COLD) sinceHurt++;
+		if (sinceHurt > cfg.combatMemorySec * 20) attackerId = -1;
 		if (swingCooldown > 0) swingCooldown--;
 
 		if (!cfg.combatEnabled || mc.level == null) {
@@ -68,11 +78,9 @@ public final class Combat {
 
 		target = pickTarget(mc, player);
 		if (target == null) {
-			engagedTicks = 0;
 			status = "clear";
 			return false;
 		}
-		engagedTicks++;
 
 		double distance = Math.sqrt(target.distanceToSqr(player));
 		String name = target.getName().getString();
@@ -83,8 +91,8 @@ public final class Combat {
 				? Math.toDegrees(Math.atan2(-away.x, away.z)) : player.getYRot();
 
 		// Losing badly is not a fight, it is a death. Back off and let the guards decide -
-		// facing it the whole way, because turning your back on something is how you stop
-		// seeing whether it is still following, and because a shield only works forwards.
+		// facing it the whole way, because turning your back on something is how you stop seeing
+		// whether it is still following, and because a shield only works forwards.
 		if (cfg.combatRetreat && player.getHealth() <= cfg.combatRetreatHealth) {
 			steer.lookAt(look[0], 0);
 			steer.moveTowards(awayYaw);
@@ -94,13 +102,18 @@ public final class Combat {
 			return true;
 		}
 
+		// Never precise. That flag re-casts the crosshair from this tick's rotation, which is
+		// exactly right for a block and exactly wrong here: it would hand this code a block
+		// where it is expecting the mob it is swinging at. The aim still goes out through the
+		// same filter and the same wobble, and the swing names the entity rather than trusting
+		// the crosshair, which is what vanilla itself sends.
 		steer.lookAt(look[0], look[1]);
 
 		// a shield is worth raising while closing the distance, not while swinging
-		if (cfg.combatUseShield && hasShield(player) && distance > 2.5) steer.use = true;
+		if (cfg.combatUseShield && hasShield(player) && distance > SWINGING_RANGE) steer.use = true;
 
 		// A creeper is not a thing to stand next to between swings. Hit it, back out past the
-		// blast while the cooldown runs, come back in - which is also how a person fights one.
+		// blast while the cooldown runs, come back in — which is also how a person fights one.
 		if (target instanceof Creeper && distance < CREEPER_BLAST && swingCooldown > 0) {
 			steer.moveTowards(awayYaw);
 			status = "backing off %s".formatted(name);
@@ -110,8 +123,8 @@ public final class Combat {
 		if (distance > player.entityInteractionRange()) {
 			if (!cfg.combatChase) {
 				// Not going to walk to it, so there is nothing to do about it. Standing in the
-				// open staring at a skeleton until it wanders off is not a fight, it is a stall
-				// - and every tick spent here is a tick the job does not get.
+				// open staring at a skeleton until it wanders off is not a fight, it is a stall —
+				// and every tick spent here is a tick the job does not get.
 				steer.clear();
 				status = "%s is %.1f blocks off".formatted(name, distance);
 				return false;
@@ -129,6 +142,8 @@ public final class Combat {
 
 		boolean charged = player.getAttackStrengthScale(0) >= cfg.combatMinCharge;
 		if (charged && swingCooldown <= 0 && mc.gameMode != null) {
+			// One swing, named at the entity, exactly as vanilla's own click does. Holding the
+			// attack key at a mob is not what a client sends and not what a person does.
 			mc.gameMode.attack(player, target);
 			player.swing(InteractionHand.MAIN_HAND);
 			// a little scatter on top of the cooldown: a perfectly periodic swing is a
@@ -145,8 +160,8 @@ public final class Combat {
 	}
 
 	/**
-	 * The thing most worth hitting: closest first, but only among things that count as a
-	 * threat at all.
+	 * The thing most worth hitting: closest first, but only among things that count as a threat
+	 * at all.
 	 */
 	private Entity pickTarget(Minecraft mc, LocalPlayer player) {
 		double radius = Math.max(2, cfg.combatRadius);
@@ -163,10 +178,11 @@ public final class Combat {
 				found = e;
 			}
 		}
-		// once committed, stay committed while it is still in range: swapping target every
-		// time something drifts a block closer produces a camera that spins and hits nothing
+		// Once committed, stay committed while it is still roughly the nearest thing. Swapping
+		// target every time something drifts a block closer produces a camera that spins and a
+		// bot that hits nothing.
 		if (target != null && target.isAlive() && counts(player, target)
-				&& target.distanceToSqr(player) <= best * 2.25) {
+				&& target.distanceToSqr(player) <= best * STICKY) {
 			return target;
 		}
 		return found;
@@ -179,16 +195,16 @@ public final class Combat {
 		// fought, and the retreat and the damage guard are what answer it instead.
 		if (!player.hasLineOfSight(e)) return false;
 
-		boolean recentlyHurt = sinceHurt <= cfg.combatMemorySec * 20;
+		boolean recentlyHurtByThis = sinceHurt <= cfg.combatMemorySec * 20 && e.getId() == attackerId;
 		if (e instanceof Player) {
 			if (!cfg.combatFightPlayers) return false;
-			return !cfg.combatOnlyWhenAttacked || recentlyHurt;
+			return !cfg.combatOnlyWhenAttacked || recentlyHurtByThis;
 		}
 		if (!(e instanceof Enemy)) return false;
 		if (!cfg.combatFightMobs) return false;
-		if (cfg.combatOnlyWhenAttacked && !recentlyHurt) {
+		if (cfg.combatOnlyWhenAttacked && !recentlyHurtByThis) {
 			// something within arm's reach is attacking whether or not it has landed one yet
-			return e.distanceToSqr(player) <= 9;
+			return e.distanceToSqr(player) <= ON_TOP_OF_US * ON_TOP_OF_US;
 		}
 		return true;
 	}
@@ -199,6 +215,18 @@ public final class Combat {
 
 	/** Blast radius plus a step. Inside this, a creeper going off takes most of a health bar. */
 	static final double CREEPER_BLAST = 4.0;
+	/**
+	 * Close enough to be swinging rather than closing, so the shield comes down. Vanilla reach
+	 * is three blocks; half a block past it is the moment the swing becomes the point.
+	 */
+	static final double SWINGING_RANGE = 2.5;
+	/** Arm's length. Something this close is attacking whether or not it has landed one yet. */
+	static final double ON_TOP_OF_US = 3.0;
+	/**
+	 * How much further than the nearest threat the one already being fought may be before it is
+	 * dropped for it, as a multiple of squared distance. 2.25 is half again as far.
+	 */
+	static final double STICKY = 2.25;
 
 	/**
 	 * The best weapon on the hotbar, scored. Zero means there is nothing here to fight with,
@@ -252,8 +280,8 @@ public final class Combat {
 	}
 
 	/**
-	 * Self-check on the weapon ordering — the fight needs a world, the ranking does not:
-	 * {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.Combat}
+	 * Self-check on the weapon ordering and the swing spacing — the fight needs a world, neither
+	 * of those does: {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.Combat}
 	 */
 	public static void main(String[] args) {
 		assert score("minecraft:diamond_sword") > score("minecraft:diamond_axe")
@@ -271,6 +299,42 @@ public final class Combat {
 				: "nothing that is not a weapon should score at all";
 		assert score("minecraft:golden_sword") < score("minecraft:iron_sword")
 				: "gold is soft, and the ranking should say so";
+
+		// A swing is a discrete click with a randomised gap after it. Zero would be an
+		// autoclicker, and a fixed number would be a metronome — the two shapes anybody
+		// histogramming click intervals is looking for.
+		Config cfg = new Config();
+		cfg.combatSwingMinSec = 0;
+		cfg.combatSwingMaxSec = 0;
+		cfg.clampAll();
+		assert cfg.combatSwingMinSec > 0 : "a zero swing gap is an autoclicker";
+		assert cfg.combatSwingMaxSec >= cfg.combatSwingMinSec : "the swing range is inverted";
+
+		cfg.combatSwingMinSec = 0.55;
+		cfg.combatSwingMaxSec = 0.85;
+		cfg.clampAll();
+		int low = Integer.MAX_VALUE, high = 0;
+		for (int i = 0; i < 20_000; i++) {
+			int gap = Math.max(1, Rng.ticks(cfg.combatSwingMinSec, cfg.combatSwingMaxSec));
+			assert gap >= 1 : "a swing landed on the same tick as the last one";
+			low = Math.min(low, gap);
+			high = Math.max(high, gap);
+		}
+		assert high > low : "every swing gap came out the same, which is a metronome";
+		assert low >= 11 && high <= 17
+				: "swing gaps left the 0.55-0.85s range: %d to %d ticks".formatted(low, high);
+
+		// A partial charge does partial damage, so the default has to be most of one.
+		cfg.combatMinCharge = 0;
+		cfg.clampAll();
+		assert cfg.combatMinCharge > 0 : "swinging at no charge at all does nothing and looks it";
+
+		// The standoff has to be outside the blast, or backing off from a creeper is standing
+		// next to a creeper with extra steps.
+		assert CREEPER_BLAST > 3 : "a creeper's blast reaches three blocks; the standoff is inside it";
+		assert SWINGING_RANGE < CREEPER_BLAST : "the shield would come down inside the blast";
+		assert ON_TOP_OF_US <= CREEPER_BLAST : "something at arm's length is inside the blast";
+		assert STICKY > 1 : "the target would be dropped for anything a hair nearer";
 
 		System.out.println("Combat self-check passed");
 	}

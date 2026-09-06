@@ -58,13 +58,20 @@ public final class Risks {
 
 		// --- acting on things the player cannot see ---------------------------
 
+		if (c.destroyerEnabled && !c.destroyRequireLineOfSight) {
+			out.add(new Risk("Only blocks I can see", "Base destroyer", Level.HIGH,
+					"The unrestricted scan can act on blocks through walls, which is a decision "
+							+ "a player could not make from the current view.",
+					"Require a clear ray and a human-sized view cone",
+					cfg -> {
+						cfg.destroyRequireLineOfSight = true;
+						cfg.destroyFieldOfViewDeg = 120;
+					}));
+		}
 		if (c.destroyerEnabled) {
-			out.add(new Risk("Take bases apart automatically", "Base destroyer", Level.HIGH,
-					"This is the whole of the mod's detectable surface in one switch. The scan "
-							+ "reads blocks through walls, and the bot then walks to them and "
-							+ "mines them - a decision no player could make, repeated for hours. "
-							+ "Everything else here is about how it looks; this is about what it "
-							+ "does.",
+			out.add(new Risk("Take bases apart automatically", "Base destroyer", Level.LOW,
+					"Humanised inputs are still automation. Long, repeated block destruction can be "
+							+ "identified from behaviour even when every target was visible.",
 					"Turn the destroyer off",
 					cfg -> cfg.destroyerEnabled = false));
 		}
@@ -103,6 +110,22 @@ public final class Risks {
 						cfg.sellClickMinSec = 0.18;
 						cfg.sellClickMaxSec = 0.45;
 					}));
+		}
+		if (c.destroyerEnabled && c.destroyTargetChoices <= 1) {
+			out.add(new Risk("Always the nearest block", "Base destroyer", Level.LOW,
+					"Strictly nearest-first clears a room in a spiral, and the order blocks "
+							+ "went is the one record of this that survives after the bot has "
+							+ "walked away. Nobody clears a base in a perfect spiral.",
+					"Choose between the nearest three",
+					cfg -> cfg.destroyTargetChoices = 3));
+		}
+		if (c.destroyerEnabled && c.destroyScanMaxSec - c.destroyScanSec < 0.25) {
+			out.add(new Risk("Fixed rescan interval", "Base destroyer", Level.LOW,
+					"The scan itself is invisible — it reads chunks the server already sent — "
+							+ "but what follows it is not: every target the bot turns towards is "
+							+ "a reaction, and on a fixed clock those land on a cadence.",
+					"Give the rescan a real range",
+					cfg -> cfg.destroyScanMaxSec = Math.max(cfg.destroyScanSec * 2, cfg.destroyScanSec + 1)));
 		}
 		if (c.destroyerEnabled && c.taskAimWobbleScale <= 0.1) {
 			out.add(new Risk("No wobble while aiming", "Base destroyer", Level.MEDIUM,

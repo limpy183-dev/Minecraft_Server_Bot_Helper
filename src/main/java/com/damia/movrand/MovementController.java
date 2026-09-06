@@ -13,6 +13,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.phys.Vec3;
 
 import java.util.Locale;
 
@@ -120,17 +121,39 @@ public final class MovementController {
 	public double gotoDistance = -1;
 	private final NavProgress navProgress = new NavProgress();
 
+	/** The router, for a go-to that walks a route instead of leaning on a bearing. */
+	public final Pathing route;
+	/**
+	 * What that route is for, latched.
+	 *
+	 * <p>Latched rather than recomputed, because the planner throws a route away the moment
+	 * the goal it was planned for changes — and a goal rebuilt from the player's own Y every
+	 * tick changes on every step down a staircase.
+	 */
+	private BlockPos routeGoal;
+	/** So "there is no way there" is said once rather than every tick for as long as it is true. */
+	private boolean routeGaveUp;
+	/**
+	 * Where the router last ruled the destination out.
+	 *
+	 * <p>"No way there" is always "no way there <em>from here</em>", so it is worth asking
+	 * again from somewhere else — and not worth asking again from the same spot, which is a
+	 * search a second for as long as the wall stands. The bearing walk is what moves us, and
+	 * this is what notices that it has.
+	 */
+	private Vec3 gaveUpAt;
+
+	/** Far enough from where a route was ruled out that it is a different question. */
+	private static final double RETRY_BLOCKS = 16;
+
 	// container scan
 	public ContainerScanner.Result lastScan = ContainerScanner.Result.EMPTY;
 	private final Deaths deaths = new Deaths();
 	/** Ticks left to wait for the server to say what killed you. -1 when not dying. */
 	private int deathLogIn = -1;
 	private int scanCooldown;
-	/** What the guards worked out this tick, so the destroyer does not compute it twice. */
+	/** Health lost since the last tick, worked out once and read by the guards. */
 	private float lastDamage;
-	/** The block the destroyer is on, kept so its disappearance can be counted. */
-	private BlockPos watchedBlock;
-	private String watchedName = "";
 
 	public MovementController(Config cfg) {
 		this.cfg = cfg;
@@ -139,7 +162,11 @@ public final class MovementController {
 		this.safeStop = new SafeStop(cfg);
 		this.autoEat = new AutoEat(cfg);
 		this.destroyer = new BaseDestroyer(cfg, journal);
+		this.route = new Pathing(cfg);
+		this.storage = new Storage(cfg);
 	}
+
+	public final Storage storage;
 
 	// -------------------------------------------------------- public control
 
@@ -169,7 +196,11 @@ public final class MovementController {
 		}
 		safeStop.reset(mc.player);
 		avoid.reset();
-		destroyer.reset(mc.player);
+		route.reset();
+		routeGoal = null;
+		routeGaveUp = false;
+		gaveUpAt = null;
+		destroyer.reset();
 		newSegment();
 		state = State.RUNNING;
 		lastReason = "Started";
@@ -180,11 +211,14 @@ public final class MovementController {
 	}
 
 	public void stop(Minecraft mc, String reason) {
+		storage.cancel(mc, reason);
 		cfg.movementEnabled = false;
 		pendingStopReason = null;
 		pendingStopTicks = 0;
 		state = State.IDLE;
 		lastReason = reason;
+		route.reset();
+		routeGoal = null;
 		destroyer.stop();
 		release(mc);
 		if (mc.player != null) {
@@ -218,7 +252,15 @@ public final class MovementController {
 
 	// ------------------------------------------------------------- main tick
 
+	public void syncAreaWorld(Minecraft mc) {
+		if (!area.syncWorld(mc)) return;
+		forgetRoute();
+		navActive = false;
+		navProgress.reset();
+	}
+
 	public void tick(Minecraft mc) {
+		syncAreaWorld(mc);
 		tickCount++;
 		if (jumpCooldown > 0) jumpCooldown--;
 		if (jumpTicks > 0) jumpTicks--;
@@ -241,6 +283,17 @@ public final class MovementController {
 		}
 
 		if (!cfg.movementEnabled) {
+			if (storage.previewing()) {
+				Bot.Steer inspection = storage.tick(mc);
+				eating = false;
+				if (mc.player != null && inspection != null) {
+					if (inspection.externalNavigation) releaseKeys(mc);
+					else applySteer(mc, mc.player, inspection);
+				}
+				return;
+			}
+			storage.cancel(mc, "Movement stopped");
+			NativeNavigation.stopAll();
 			if (keysHeld) release(mc);
 			state = State.IDLE;
 			eating = false;
@@ -265,9 +318,17 @@ public final class MovementController {
 		// Our own menus never count. The config screen, because the whole point is watching
 		// it work while it runs - and the sell menu, because the mod opened it on purpose and
 		// pausing on it would leave the sale half finished with the bag still full.
-		boolean ourScreen = mc.gui.screen() instanceof com.damia.movrand.gui.ConfigScreen
-				|| destroyer.backpack.busy();
-		boolean foreignScreen = mc.gui.screen() != null && !ourScreen;
+		boolean ourScreen = mc.gui.screen() instanceof com.damia.movrand.gui.ConfigScreen;
+		if (storage.busy() && mc.gui.screen() != null && !storage.handles(mc.gui.screen())) {
+			storage.cancel(mc, "Another screen interrupted storage");
+			release(mc);
+			return;
+		}
+		boolean sellScreen = destroyer.backpack.handles(mc.gui.screen()) || storage.handles(mc.gui.screen());
+		if (destroyer.backpack.busy() && mc.gui.screen() != null && !ourScreen && !sellScreen) {
+			destroyer.backpack.unexpectedScreen();
+		}
+		boolean foreignScreen = mc.gui.screen() != null && !ourScreen && !sellScreen;
 		if (cfg.pauseWhileScreenOpen && foreignScreen) {
 			release(mc);
 			state = State.BLOCKED;
@@ -287,31 +348,43 @@ public final class MovementController {
 		if (runGuards(mc, player, level)) return;
 
 		// The job, when there is one. It answers with an intent rather than with keys and a
-		// rotation, so everything below this - the camera filter, the wobble, the key writer,
-		// the handbrake - is the same code a wandering bot runs.
-		// Getting clear outranks the job: a retreat that stops to mine is not a retreat.
-		Bot.Steer steer = fleeing() ? null : destroyer.tick(mc, player, level, lastDamage);
-		// Outside the branch: the job hands the tick back when it has run out of blocks, and
-		// that is exactly the moment the count and the reaction have to happen.
-		if (cfg.destroyerEnabled) {
-			countMined(level);
-			if (destroyer.takeFinished() && destroyerFinished(mc, player, level)) return;
+		// rotation, so everything below this — the camera filter, the wobble, the key writer,
+		// the handbrake — is the same code a wandering bot runs.
+		Bot.Steer steer = job(mc, player, level);
+		if (!cfg.movementEnabled) { release(mc); return; } // includes a failed storage transaction
+		if (NativeNavigation.yieldFor(steer)) {
+			steer = new Bot.Steer();
+			steer.externalNavigation = true;
 		}
 		if (steer != null) {
-			eating = autoEat.tick(mc, player);
-			if (eating) state = State.EATING;
-			else state = State.WORKING;
-			lastReason = destroyer.describe();
-			applySteer(mc, player, steer);
+			eating = !storage.busy() && !(steer.externalNavigation && NativeNavigation.finishingCriticalMove()) && autoEat.tick(mc, player);
+			if (steer.externalNavigation && !eating) {
+				releaseKeys(mc);
+				state = State.WORKING;
+				human.syncCamera(player.getYRot(), player.getXRot());
+				baseYaw = player.getYRot();
+				safeStop.expectYaw(player.getYRot());
+				safeStop.grace(5);
+				resetProgress(player);
+				return;
+			}
+			if (eating && steer.externalNavigation) {
+				NativeNavigation.stopAll();
+				steer.clear();
+			}
+			state = eating ? State.EATING : State.WORKING;
+			// A refused step is the one thing the plan cannot see coming: the route was worked
+			// out in a world this bot changes for a living, and the keys have just been let go
+			// of. Left unsaid it is a tick with nothing in it and no counter running, which is
+			// a bot standing perfectly still in front of a hole it dug.
+			BlockPos refused = applySteer(mc, player, steer);
+			if (refused != null) blocked(level, refused);
 			runSafeStop(mc, player, level);
 			if (!cfg.movementEnabled) return;
-			// standing still to mine, sell or fight is not being stuck
-			if (destroyer.phase == BaseDestroyer.Phase.WALKING
-					|| destroyer.phase == BaseDestroyer.Phase.COLLECTING) {
-				updateStuck(mc, player);
-			} else {
-				resetProgress(player);
-			}
+			// Standing still to mine, to place, or to think is not being stuck. Asking for a
+			// heading and not moving is, and that is exactly what the steer already says.
+			if (steer.hasMove) updateStuck(mc, player);
+			else resetProgress(player);
 			return;
 		}
 
@@ -565,13 +638,197 @@ public final class MovementController {
 	// ------------------------------------------------------------ the job
 
 	/**
+	 * One tick of whatever job is running, or null to hand the tick back to the wandering.
+	 *
+	 * <p>Getting clear outranks every job there is: a retreat that stops to work out a route is
+	 * not a retreat.
+	 */
+	private Bot.Steer job(Minecraft mc, LocalPlayer player, ClientLevel level) {
+		if (fleeing()) {
+			storage.cancel(mc, "Retreat interrupted storage");
+			forgetRoute();
+			return null;
+		}
+		Bot.Steer storing = storage.tick(mc);
+		if (storing != null) {
+			forgetRoute();
+			lastReason = storage.status;
+			return storing;
+		}
+		if (cfg.destroyerEnabled) {
+			Bot.Steer working = destroyer.tick(mc, player, level, lastDamage);
+			if (destroyer.takeBagFull()) {
+				String reason = "Inventory is full and nothing can be sold, moved, or discarded";
+				journal.log(Journal.Kind.STUCK, level, player.blockPosition(), reason);
+				boolean stopping = react(mc, cfg.inventoryFullReaction, reason);
+				if (cfg.stopWhenInventoryFull && cfg.movementEnabled) {
+					stop(mc, reason);
+					return null;
+				}
+				if (stopping) return null;
+			}
+			// Outside the branch on purpose: the job hands the tick back when it has run out of
+			// blocks, and that is exactly the moment the reaction has to happen.
+			if (destroyer.takeFinished() && destroyerFinished(mc, player, level)) return null;
+			if (working != null) {
+				forgetRoute();
+				lastReason = destroyer.describe();
+				return working;
+			}
+			// Nothing to break here is not nothing to do. Fall through, so a go-to still walks
+			// us somewhere with blocks in it and the next scan picks the job straight back up.
+		}
+		return walkTo(mc, player, level);
+	}
+
+	/** @return true if the job ending also ended the walk. */
+	private boolean destroyerFinished(Minecraft mc, LocalPlayer player, ClientLevel level) {
+		String reason = "Nothing left to break — %d blocks mined".formatted(destroyer.mined);
+		journal.log(Journal.Kind.MINED, level, player.blockPosition(), reason);
+		react(mc, cfg.destroyDoneReaction, reason);
+		if (cfg.destroyStopWhenDone && cfg.movementEnabled) {
+			stop(mc, reason);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Walk to the go-to coordinates on a route rather than by leaning on the bearing.
+	 *
+	 * <p>The bearing answers "which way is it" and never "is there a wall in the way", which is
+	 * enough across a field and useless in a building. Every outcome here ends in a decision:
+	 * walking, still thinking with the camera on the destination, arrived, or there is no way
+	 * there — and that last one hands the tick back to the bearing, which at least gets closer
+	 * than standing still proving it again.
+	 *
+	 * @return the steer, or null when the router has nothing to do with this tick
+	 */
+	private Bot.Steer walkTo(Minecraft mc, LocalPlayer player, ClientLevel level) {
+		// The area sweep owns the destination when it is on, and it is a coverage pattern
+		// rather than a journey, so it stays on the bearing.
+		if (!cfg.gotoPathfind || !cfg.gotoEnabled || cfg.areaEnabled) {
+			forgetRoute();
+			return null;
+		}
+
+		BlockPos goal = routeGoalFor(player);
+		gotoDistance = Math.hypot(cfg.gotoX - player.getX(), cfg.gotoZ - player.getZ());
+		if (gaveUpAt != null) {
+			// Still standing where it was ruled out. The bearing is walking us out of here, and
+			// re-deriving the same answer twenty times a second while it does is the loop this
+			// whole layer exists to not have.
+			if (player.position().distanceToSqr(gaveUpAt) < RETRY_BLOCKS * RETRY_BLOCKS) return null;
+			gaveUpAt = null;
+			routeGaveUp = false;
+			route.reset();
+		}
+		// Arriving is a horizontal question - the go-to has always been two coordinates - so
+		// the test is a disc at any height, and the goal position above is only what the
+		// heuristic leans on.
+		double radius = Math.max(1, cfg.gotoArriveRadius);
+		PathFinder.Goal test = (x, y, z) -> {
+			double dx = x + 0.5 - cfg.gotoX, dz = z + 0.5 - cfg.gotoZ;
+			return dx * dx + dz * dz <= radius * radius;
+		};
+
+		Bot.Steer steer = new Bot.Steer();
+		PathMove.Ctx ctx = new PathMove.Ctx(mc, player, level, cfg);
+		Pathing.Nav result = route.tick(ctx, steer, goal, test, destroyer.mayBreak());
+		lastReason = route.status;
+
+		switch (result) {
+			case WALKING -> {
+				routeGaveUp = false;
+				return steer;
+			}
+			case PLANNING -> {
+				routeGaveUp = false;
+				// Face what we are about to walk to. Half a second spent looking at where you
+				// are going is a person thinking; the same half second spent at the floor is a
+				// client that has stopped responding.
+				double[] look = Bot.aimAt(player, Vec3.atCenterOf(goal));
+				steer.lookAt(look[0], look[1]);
+				return steer;
+			}
+			case ARRIVED -> {
+				forgetRoute();
+				arrive(mc, player);
+				return null;
+			}
+			case NO_ROUTE -> {
+				// Not a job any more. Said once, then the ordinary steering leans on the
+				// bearing, which is what this toggle replaced and is still better than standing
+				// here re-deciding that there is no way there.
+				if (!routeGaveUp) {
+					routeGaveUp = true;
+					react(mc, Config.Reaction.ALERT,
+							"No route to %.0f, %.0f — steering at it instead".formatted(cfg.gotoX, cfg.gotoZ));
+				}
+				gaveUpAt = player.position();
+				return null;
+			}
+		}
+		return steer;
+	}
+
+	/**
+	 * Told that the way ahead is not walkable, whatever the plan said.
+	 *
+	 * <p>Cheaper than waiting for the route to notice, and this is where it is noticed first:
+	 * the keys have already been let go of by the time anything else could ask.
+	 */
+	private void blocked(ClientLevel level, BlockPos where) {
+		String why = "%s straight ahead"
+				.formatted(level.getBlockState(where).getBlock().getName().getString());
+		route.invalidate(why);
+		destroyer.blocked(why);
+		lastReason = why;
+	}
+
+	/**
+	 * The block the route is planned towards, latched.
+	 *
+	 * <p>Two coordinates and no height is what the go-to has always been, so the height has to
+	 * come from somewhere: the configured one when it was given, and otherwise our own. Our own
+	 * changes every step of a staircase, and the planner drops a route whenever the goal it was
+	 * planned for changes — so it is taken once and only taken again when we have genuinely
+	 * left the level it was taken at.
+	 */
+	private BlockPos routeGoalFor(LocalPlayer player) {
+		int y = cfg.gotoUseY ? (int) Math.round(cfg.gotoY) : (int) Math.round(player.getY());
+		if (routeGoal == null
+				|| routeGoal.getX() != (int) Math.floor(cfg.gotoX)
+				|| routeGoal.getZ() != (int) Math.floor(cfg.gotoZ)
+				|| Math.abs(routeGoal.getY() - y) > STOREY) {
+			routeGoal = new BlockPos((int) Math.floor(cfg.gotoX), y, (int) Math.floor(cfg.gotoZ));
+			// a different destination is a different question, so whatever was ruled out about
+			// the last one is not an answer to this one
+			gaveUpAt = null;
+			routeGaveUp = false;
+		}
+		return routeGoal;
+	}
+
+	/** Far enough off the level a route was planned at to be worth aiming again. */
+	private static final int STOREY = 16;
+
+	private void forgetRoute() {
+		if (routeGoal == null && !route.walking()) return;
+		route.reset();
+		routeGoal = null;
+		gaveUpAt = null;
+		routeGaveUp = false;
+	}
+
+	/**
 	 * One tick of intent, turned into a camera and a set of held keys.
 	 *
 	 * <p>The heading is remembered in {@code baseYaw} on the way through, so the moment the
 	 * job finishes the wandering picks up facing the way the work left it rather than
 	 * snapping back to whatever it was pointing at when the job started.
 	 */
-	private void applySteer(Minecraft mc, LocalPlayer player, Bot.Steer steer) {
+	private BlockPos applySteer(Minecraft mc, LocalPlayer player, Bot.Steer steer) {
 		// Asked for by whatever filled the steer in, rather than guessed from the phase. Only
 		// the code aiming at a block knows it is aiming at a block: a walking phase can be
 		// placing a bridge block, and a mining phase can be walking up to the wall.
@@ -587,34 +844,73 @@ public final class MovementController {
 		// still worth asking every tick is whether the ground has changed under the plan,
 		// because this is a job that changes it.
 		avoid.reset();
+		BlockPos refused = null;
 		if (!precise && steer.hasMove && mc.level != null) {
-			net.minecraft.core.BlockPos hurt =
-					Avoidance.deadlyStepAt(mc.level, player, steer.moveYaw, cfg, cfg.pathMaxFall);
-			if (hurt != null) {
-				stopped = true;
-				// where, not just that: a block can be put on a square and cannot be put on a yes
-				destroyer.blocked("something that hurts, straight ahead", hurt);
-			}
+			refused = Avoidance.deadlyStepAt(mc.level, player, steer.moveYaw, cfg, cfg.pathMaxFall);
+			if (refused != null) stopped = true;
 		}
 
 		if (steer.hasLook) {
+			double previousYaw = player.getYRot(), previousPitch = player.getXRot();
 			// Whatever the job asked to look at, it gets. Overwriting this with the walking
 			// heading is how the bot ended up facing away from the item it was walking to.
 			double smoothYaw = precise ? cfg.taskAimSmoothing : cfg.cameraSmoothYaw;
 			double smoothPitch = precise ? cfg.taskAimSmoothing : cfg.cameraSmoothPitch;
+			boolean smoothWork = precise || cfg.destroyerEnabled;
+			if (cfg.destroyerEnabled) {
+				// Navigation smoothness is the minimum for the entire job, including handoffs.
+				smoothYaw = Math.max(smoothYaw, cfg.baritoneTurnSmoothing);
+				smoothPitch = Math.max(smoothPitch, cfg.baritoneTurnSmoothing);
+			}
 			double wobble = precise ? cfg.taskAimWobbleScale : 1;
 
-			float finalYaw = (float) Mth.wrapDegrees(human.yawFor(cfg, steer.yaw, smoothYaw, wobble));
+			double maxTurn = precise ? cfg.taskAimMaxTurnDeg : cfg.destroyerEnabled ? cfg.baritoneTurnRate : 180;
+			float finalYaw = (float) Mth.wrapDegrees(smoothWork
+					? human.workingYawFor(cfg, steer.yaw, smoothYaw, wobble, maxTurn)
+					: human.yawFor(cfg, steer.yaw, smoothYaw, wobble, maxTurn));
 			player.setYRot(finalYaw);
 			safeStop.expectYaw(finalYaw);
 			// A precise phase is already aiming at a specific block; overriding that would not
 			// avoid an enderman, it would just stop the mining.
 			double pitch = precise ? steer.pitch : aimPitch(steer.pitch);
-			if (!eating) player.setXRot((float) human.pitchFor(cfg, pitch, smoothPitch, wobble));
+			if (!eating) player.setXRot((float) (smoothWork
+					? human.workingPitchFor(cfg, pitch, smoothPitch, wobble, maxTurn)
+					: human.pitchFor(cfg, pitch, smoothPitch, wobble, maxTurn)));
 			else human.syncCamera(finalYaw, player.getXRot());
 			baseYaw = steer.yaw;
 			wanderOffset = 0;
-			if (precise) refreshCrosshair(mc, player);
+			if (precise) {
+				// Keep as much noise as the visible shape allows. The clean rotation is still
+				// smoothed and rate limited; never snap to the requested target to force a hit.
+				if (!eating && steer.attackTarget != null
+						&& !Bot.rotationHits(mc, player, steer.attackTarget, player.getYRot(), player.getXRot())
+						&& Bot.rotationHits(mc, player, steer.attackTarget, human.cleanYaw(), human.cleanPitch())) {
+					double noiseYaw = Human.wrap(player.getYRot() - human.cleanYaw());
+					double noisePitch = player.getXRot() - human.cleanPitch();
+					double scale = 0.5;
+					for (int i = 0; i < 5; i++, scale *= 0.5) {
+						if (Bot.rotationHits(mc, player, steer.attackTarget,
+								human.cleanYaw() + noiseYaw * scale, human.cleanPitch() + noisePitch * scale)) break;
+					}
+					if (!Bot.rotationHits(mc, player, steer.attackTarget,
+							human.cleanYaw() + noiseYaw * scale, human.cleanPitch() + noisePitch * scale)) scale = 0;
+					player.setYRot((float) (human.cleanYaw() + noiseYaw * scale));
+					player.setXRot((float) (human.cleanPitch() + noisePitch * scale));
+					safeStop.expectYaw(player.getYRot());
+				}
+			}
+			if (smoothWork) {
+				// Humanisation and thin-shape noise correction share the same final turn cap.
+				player.setYRot((float) Human.limitedSmooth(previousYaw, player.getYRot(), 0, maxTurn));
+				if (!eating) player.setXRot((float) Human.limitedPitch(previousPitch, player.getXRot(), 0, maxTurn));
+				safeStop.expectYaw(player.getYRot());
+			}
+			if (precise) {
+				refreshCrosshair(mc, player);
+				if (steer.attackTarget != null) steer.attack = Bot.lookingAt(mc, steer.attackTarget);
+				if (steer.useTarget != null) steer.use = Bot.lookingAt(mc, steer.useTarget);
+				if (steer.placeTarget != null) steer.use = Bot.aboutToPlaceInto(mc, steer.placeTarget);
+			}
 		}
 
 		Options o = mc.options;
@@ -636,8 +932,6 @@ public final class MovementController {
 
 		// using an item cancels a sprint, so never ask for both at once
 		sprint = sprint && forward && !eating && !steer.use;
-		// only on the walk between jobs: hopping on the spot at a wall mines nothing
-		if (destroyer.phase == BaseDestroyer.Phase.WALKING) updateJumpSprint(player, sprint && !still);
 		if (forward && !still && !precise && mc.level != null) autoJump(player, mc.level, steer.moveYaw);
 		askedForward = forward && !still;
 		setKey(o.keyUp, askedForward);
@@ -645,11 +939,12 @@ public final class MovementController {
 		setKey(o.keyLeft, left && !still);
 		setKey(o.keyRight, right && !still);
 		setKey(o.keyJump, (steer.jump || jumpTicks > 0) && !still);
-		setKey(o.keyShift, steer.sneak || cfg.holdSneak);
+		setKey(o.keyShift, steer.sneak || (cfg.holdSneak && !storage.busy()));
 		setKey(o.keySprint, sprint);
 		setKey(o.keyAttack, steer.attack && !eating);
 		setKey(o.keyUse, steer.use && !eating);
 		keysHeld = true;
+		return refused;
 	}
 
 	/**
@@ -681,31 +976,6 @@ public final class MovementController {
 		mc.hitResult = mc.level.clip(new net.minecraft.world.level.ClipContext(eyes, end,
 				net.minecraft.world.level.ClipContext.Block.OUTLINE,
 				net.minecraft.world.level.ClipContext.Fluid.NONE, player));
-	}
-
-	/** @return true if the job ending also ended the walk. */
-	private boolean destroyerFinished(Minecraft mc, LocalPlayer player, ClientLevel level) {
-		String reason = "Nothing left to break — %d blocks mined".formatted(destroyer.mined);
-		journal.log(Journal.Kind.MINED, level, player.blockPosition(), reason);
-		react(mc, cfg.destroyDoneReaction, reason);
-		if (cfg.destroyStopWhenDone && cfg.movementEnabled) {
-			stop(mc, reason);
-			return true;
-		}
-		return false;
-	}
-
-	/** Notices a target block turning to air, which is the only honest way to count one. */
-	private void countMined(ClientLevel level) {
-		BlockPos now = destroyer.target();
-		if (watchedBlock != null && !watchedBlock.equals(now)) {
-			if (level.getBlockState(watchedBlock).isAir()) destroyer.noteMined(level, watchedBlock, watchedName);
-			watchedBlock = null;
-		}
-		if (now != null && !now.equals(watchedBlock)) {
-			watchedBlock = now;
-			watchedName = level.getBlockState(now).getBlock().getName().getString();
-		}
 	}
 
 	// ------------------------------------------------------------- key state
@@ -767,6 +1037,11 @@ public final class MovementController {
 	}
 
 	private void release(Minecraft mc) {
+		NativeNavigation.stopAll();
+		releaseKeys(mc);
+	}
+
+	private void releaseKeys(Minecraft mc) {
 		Options o = mc.options;
 		for (KeyMapping key : new KeyMapping[]{o.keyUp, o.keyDown, o.keyLeft, o.keyRight, o.keySprint,
 				o.keyShift, o.keyJump, o.keyUse, o.keyAttack}) {
@@ -803,7 +1078,7 @@ public final class MovementController {
 		if (cfg.stopAtLedge && !handled && player.onGround() && checkLedge(level, feet)) {
 			String why = "Drop of more than %d blocks straight ahead".formatted(cfg.ledgeDropBlocks);
 			journal.log(Journal.Kind.LEDGE, level, player.blockPosition(), why);
-			if (react(mc, cfg.ledgeReaction, why, false)) return;
+			if (react(mc, soften(cfg.ledgeReaction), why, false)) return;
 		}
 
 		autoJump(player, level, walkYaw);
@@ -875,8 +1150,7 @@ public final class MovementController {
 		// honestly slow, and answering "you are being held up, stop" to that is answering its
 		// own work. Every hard fault below - a teleport, a dimension change, a hijacked camera -
 		// still applies, because none of those are things the job does.
-		boolean wantsForward = mc.options.keyUp.isDown() && state != State.PAUSED && !eating
-				&& !(cfg.destroyerKeepWorking && working());
+		boolean wantsForward = mc.options.keyUp.isDown() && state != State.PAUSED && !eating;
 		String failure = safeStop.check(mc, player, wantsForward,
 				mc.options.keySprint.isDown(), mc.options.keyShift.isDown());
 		if (failure == null) return;
@@ -927,12 +1201,6 @@ public final class MovementController {
 		// The random turn is the wandering bot's answer, and it is the wrong one here: it
 		// points the bot away from where it was going and the follower spends the next second
 		// undoing it.
-		if (working()) {
-			destroyer.blocked(why, null);
-			if (cfg.verboseLogging) say(mc, "§e" + why + " — replanning");
-			return;
-		}
-
 		if (cfg.stuckAutoUnstick && unstickTried < cfg.stuckUnstickAttempts) {
 			unstickTried++;
 			state = State.UNSTICKING;
@@ -945,7 +1213,7 @@ public final class MovementController {
 		}
 		unstickTried = 0;
 		journal.log(Journal.Kind.STUCK, mc.level, player.blockPosition(), why);
-		react(mc, jobGuard(cfg.stuckReaction), why);
+		react(mc, soften(cfg.stuckReaction), why);
 	}
 
 	// -------------------------------------------------------------- guards
@@ -987,21 +1255,8 @@ public final class MovementController {
 	}
 
 	/**
-	 * Whether damage is being answered rather than merely suffered.
-	 *
-	 * <p>"Stop the moment anything hits me" and "fight back when something hits me" are
-	 * directly contradictory instructions, and with both on the first is the only one that
-	 * ever runs — the stop lands on the same tick as the hit, before the fight can start. So
-	 * with the job running and fighting back switched on, this guard stands down and the
-	 * combat retreat and the low-health guard are what keep the bot alive.
-	 */
-	private boolean fightingBack() {
-		return cfg.destroyerEnabled && cfg.combatEnabled;
-	}
-
-	/**
-	 * The same contradiction as {@link #fightingBack()}, from the other direction: "walk away
-	 * from what is chasing me" and "stand still the moment it lands a hit" cannot both run,
+	 * "Walk away from what is chasing me" and "stand still the moment it lands a hit" cannot
+	 * both run,
 	 * and the stop would always win because the hit and the retreat land on the same tick.
 	 * With a retreat under way the damage stop and the hostile stop both stand down; the
 	 * low-health guard does not, because that one is the alarm for a retreat that is losing.
@@ -1010,13 +1265,46 @@ public final class MovementController {
 		return cfg.fleeFromHostiles && fleeing();
 	}
 
+	/**
+	 * Whether the job is running and has been told to work through its own side effects.
+	 *
+	 * <p>Read one tick late — the guards run before the job does — which costs nothing: a job
+	 * that was working last tick is working now.
+	 */
+	private boolean working() {
+		return cfg.destroyerEnabled && cfg.destroyerKeepWorking
+				&& destroyer.phase != BaseDestroyer.Phase.OFF
+				&& destroyer.phase != BaseDestroyer.Phase.DONE;
+	}
+
+	/**
+	 * A guard the job trips <em>by working</em> is an alert, not a stop.
+	 *
+	 * <p>The guards were written for a bot that wanders quietly and wants to be told when
+	 * anything happens. A base destroyer sets them off by doing its job: it walks into rooms
+	 * full of chests, it gets hit, it wades, and it stalls in doorways. With every one of them
+	 * stopping the mod outright, switching the destroyer on is a way of switching the mod off a
+	 * few seconds later — which from the outside looks exactly like a bot that cannot do
+	 * anything.
+	 *
+	 * <p>Only the stop is taken away. The sound still plays, the journal entry is still written
+	 * at the call site, and the reason still reaches the HUD. And only for the guards the job
+	 * actually causes: low health, hunger, another player and the runtime limit go through
+	 * untouched, because none of those are things the job does and all of them are worth
+	 * stopping for.
+	 */
+	private Config.Reaction soften(Config.Reaction reaction) {
+		if (!working() || !reaction.stops()) return reaction;
+		return Config.Reaction.ALERT;
+	}
+
 	/** @return true if a guard already stopped movement this tick. */
 	private boolean runGuards(Minecraft mc, LocalPlayer player, ClientLevel level) {
 		float health = player.getHealth();
 		float lost = lastDamage; // worked out in tick(), which samples whether walking or not
-		if (cfg.stopOnDamage && lost >= cfg.damageThreshold && !fightingBack() && !walkingAway()) {
+		if (cfg.stopOnDamage && lost >= cfg.damageThreshold && !walkingAway()) {
 			journal.log(Journal.Kind.DAMAGE, level, player.blockPosition(), "Took %.1f damage".formatted(lost));
-			return react(mc, jobGuard(cfg.damageReaction), "Took %.1f damage".formatted(lost));
+			return react(mc, soften(cfg.damageReaction), "Took %.1f damage".formatted(lost));
 		}
 
 		if (cfg.stopOnLowHealth && health <= cfg.lowHealthThreshold) {
@@ -1034,7 +1322,7 @@ public final class MovementController {
 			return react(mc, cfg.hungerReaction, "Hunger down to " + player.getFoodData().getFoodLevel());
 		}
 		if (cfg.stopInLiquid && (player.isInWater() || player.isInLava())) {
-			return react(mc, jobGuard(cfg.liquidReaction), "Standing in liquid", false);
+			return react(mc, soften(cfg.liquidReaction), "Standing in liquid", false);
 		}
 		if (cfg.stopAfterMaxRuntime && runtimeSeconds() >= cfg.maxRuntimeMinutes * 60) {
 			return react(mc, cfg.maxRuntimeReaction, "Ran for %.0f minutes".formatted(cfg.maxRuntimeMinutes));
@@ -1052,7 +1340,7 @@ public final class MovementController {
 				journal.log(Journal.Kind.HOSTILE, level, mob.blockPosition(), why);
 				boolean visible = !cfg.hostileStopOnlyIfVisible || player.hasLineOfSight(mob);
 				// walking away is already the answer to this one, so only its alert half is left
-				return react(mc, gate(cfg.hostileMobReaction, visible && !cfg.fleeFromHostiles), why);
+				return react(mc, soften(gate(cfg.hostileMobReaction, visible && !cfg.fleeFromHostiles)), why);
 			}
 		}
 
@@ -1078,7 +1366,7 @@ public final class MovementController {
 				// recorded there is no "already found" to consult, so it behaves as it did.
 				boolean fresh = journal.log(Journal.Kind.CONTAINER_CLUSTER, level, where, note);
 				if (fresh || !journal.records(Journal.Kind.CONTAINER_CLUSTER)) {
-					return react(mc, jobGuard(cfg.containerReaction), note);
+					return react(mc, soften(cfg.containerReaction), note);
 				}
 			}
 		}
@@ -1287,21 +1575,6 @@ public final class MovementController {
 		// a threat never seen has no reference to measure against
 		assert !charging(1, -1) : "an unmeasured threat counted as charging";
 
-		// The guards above the job were written for a bot that wanders quietly and wants to be
-		// told when anything happens. A base destroyer trips every one of them by working, and
-		// with all of them set to stop, switching the destroyer on was a way of switching the
-		// mod off a few seconds later. They keep the alert; they lose the stop.
-		for (Config.Reaction r : Config.Reaction.values()) {
-			Config.Reaction idle = jobGuard(r, true, false);
-			assert idle == r : "a guard was softened while nothing was working: " + r;
-			Config.Reaction off = jobGuard(r, false, true);
-			assert off == r : "the setting was off and the guard was softened anyway: " + r;
-
-			Config.Reaction busy = jobGuard(r, true, true);
-			assert !busy.stops() : r + " still stopped the job it was tripped by";
-			assert busy.alerts() == r.alerts() : r + " lost its alert as well as its stop";
-		}
-
 		System.out.println("MovementController self-check passed");
 	}
 
@@ -1375,34 +1648,6 @@ public final class MovementController {
 	 * exactly what someone in vanish is checking for. So the sound still plays and the
 	 * coordinate is still logged - only the part anyone else could see is withheld.
 	 */
-	/**
-	 * Whether the job is what is about to be interrupted.
-	 *
-	 * <p>Not just "is the destroyer switched on": a job that has run out of blocks and handed
-	 * the tick back is not working, and the guards should behave normally again.
-	 */
-	private boolean working() {
-		return cfg.destroyerEnabled && destroyer.phase != BaseDestroyer.Phase.OFF
-				&& destroyer.phase != BaseDestroyer.Phase.DONE;
-	}
-
-	/**
-	 * A guard the job sets off by doing its job, downgraded to an alert while it is running.
-	 *
-	 * <p>Every one of these was a stop, and every one of them fires in the first minute of
-	 * taking a base apart: a room has twelve chests in it, something hits you, you step in
-	 * water, a doorway takes three seconds. Reused rather than rewritten - {@link #gate} has
-	 * always known how to turn a stop into an alert, this just decides when to ask it to.
-	 */
-	private Config.Reaction jobGuard(Config.Reaction reaction) {
-		return jobGuard(reaction, cfg.destroyerKeepWorking, working());
-	}
-
-	/** The decision on its own, so the one thing that must never regress has a check. */
-	static Config.Reaction jobGuard(Config.Reaction reaction, boolean keepWorking, boolean working) {
-		return keepWorking && working ? gate(reaction, false) : reaction;
-	}
-
 	private static Config.Reaction gate(Config.Reaction reaction, boolean visible) {
 		if (visible) return reaction;
 		return reaction.alerts() ? Config.Reaction.ALERT : Config.Reaction.NOTHING;
@@ -1425,18 +1670,23 @@ public final class MovementController {
 	}
 
 	public String describeState() {
+		if (storage.busy()) return storage.status;
+		if (storage.failed()) return "Storage stopped — see Storage settings";
 		if (!cfg.movementEnabled) return "Off";
 		if (fleeing()) {
 			return nearestHostile != null
 					? "Leaving - %s %.0fm".formatted(nearestHostile.getName().getString(), nearestHostileDistance)
 					: "Leaving";
 		}
-		if (cfg.destroyerEnabled && destroyer.phase != BaseDestroyer.Phase.OFF) {
-			return destroyer.phase.label;
-		}
 		String suffix = "";
 		if (cfg.areaEnabled) suffix = " · %.0f%%".formatted(area.progress() * 100);
-		else if (navActive && gotoDistance >= 0) suffix = String.format(Locale.ROOT, " → %.0fm", gotoDistance);
+		else if (gotoDistance >= 0) suffix = String.format(Locale.ROOT, " → %.0fm", gotoDistance);
+		if (cfg.destroyerEnabled && destroyer.phase != BaseDestroyer.Phase.OFF) {
+			return destroyer.phase.label + suffix;
+		}
+		// A route says what it is doing far more usefully than "Working" does: which of the
+		// moves it is on, and whether it is walking one or still looking for one.
+		if (state == State.WORKING && !route.status.isEmpty()) return route.status + suffix;
 		if (cfg.avoidEnabled && avoid.steering()) {
 			return (avoid.trapped() ? "Boxed in" : "Going round") + suffix;
 		}

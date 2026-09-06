@@ -1,0 +1,7 @@
+{
+  "required": true,
+  "package": "com.damia.movrand.testmixin",
+  "compatibilityLevel": "JAVA_25",
+  "client": ["IntegratedServerTestMixin"],
+  "injectors": {"defaultRequire": 1}
+}

@@ -5,41 +5,40 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
  * The job: take a base apart, block by block, without needing anybody to watch it.
  *
  * <p>This is a priority list, not a plan. Everything a person would interrupt themselves for
- * interrupts it, in the order a person would: something is hitting me, then I cannot carry
- * any more, then I am standing next to lava, then there is a pile of my own drops on the
- * floor, and only then the actual work. Each of those is a state, each one runs to a natural
- * stopping point, and the work is picked back up afterwards rather than restarted.
+ * interrupts it, in the order a person would, and each of those is a state that runs to a
+ * natural stopping point with the work picked back up afterwards rather than restarted.
  *
  * <p>Getting anywhere is not this class's problem. {@link Pathing} plans the route, walks it,
  * revalidates it while it is being walked, and — the part that matters — always comes back
- * with an answer: walking, arrived, still thinking, or there is no way there. This used to be
- * a follower living here that could return a tick with nothing in it at all, which is a bot
- * standing perfectly still with no counter running and no way out of it. Every one of those
- * paths now ends in a decision: mine it, or give up on it and take the next block.
+ * with an answer: walking, arrived, still thinking, or there is no way there. Every branch
+ * below ends in a decision. A tick that hands back an empty steer with no counter running is
+ * a bot standing perfectly still until somebody notices, and it is the specific failure this
+ * class is shaped around not having.
  *
  * <p>Nothing here writes a rotation or a key. It fills in a {@link Bot.Steer} and hands it
- * back, and {@link MovementController} pushes that through the same wobble, easing and
- * filter that a wandering bot uses. That is the whole reason the humanisation applies to
- * this at all — there is one camera in the mod, and it does not know what job it is doing.
+ * back, and {@link MovementController} pushes that through the same wobble, easing and filter
+ * a wandering bot uses. That is the whole reason the humanisation applies to this at all —
+ * there is one camera in the mod, and it does not know what job it is doing.
  */
 public final class BaseDestroyer {
 
 	public enum Phase {
 		OFF("Off"), SCANNING("Looking for blocks"), WALKING("Walking"), MINING("Mining"),
-		COLLECTING("Picking up drops"), COVERING("Covering liquid"), BRIDGING("Bridging"),
+		COLLECTING("Picking up drops"), COVERING("Covering liquid"), PREPARING("Protecting drops"), BRIDGING("Bridging"),
 		CLEARING("Clearing the way"), FIGHTING("Fighting"), SELLING("Selling"),
 		SURFACING("Coming up for air"), PLANNING("Working out a route"),
 		TIDYING("Sorting the bag"), WAITING("Waiting"), DONE("Nothing left in range");
@@ -53,16 +52,16 @@ public final class BaseDestroyer {
 
 	private final Config cfg;
 	private final Journal journal;
+	/** Resolved once per change of selection: the scan asks it a few hundred thousand times. */
 	private final BlockTargets targets = new BlockTargets();
 	public final Combat combat;
 	public final Backpack backpack;
-
 	/**
-	 * Two of them, because the job and the shopping are two separate journeys.
+	 * Two routers, because the job and the shopping are two separate journeys.
 	 *
 	 * <p>Sharing one would mean every dropped item threw away the route to the block and every
-	 * block threw away the route to the item, which is a bot that walks the first third of two
-	 * journeys over and over. They cost two fields.
+	 * block threw away the route to the item, which is a bot walking the first third of two
+	 * journeys over and over. They cost one field.
 	 */
 	private final Pathing nav;
 	private final Pathing fetch;
@@ -85,39 +84,51 @@ public final class BaseDestroyer {
 	 * progress to the thing measuring it. This does not care what the time went on.
 	 */
 	private int targetTicks;
+	private int arrivalTicks;
+	private final NavProgress arrivalProgress = new NavProgress();
+	private final Set<Long> rejectedWorkCells = new java.util.HashSet<>();
 	private int waitTicks;
-	private long tick;
-	/** Targets that could not be reached, so the search does not keep choosing them. */
-	private final Set<Long> giveUp = new HashSet<>();
+	/** Why a target is temporarily out: when to retry it and where that failure happened. */
+	private record Retry(long afterTick, BlockPos from) {}
+	/** Targets that could not be reached or broken, without turning one failure into a permanent ban. */
+	private final Map<Long, Retry> retries = new HashMap<>();
 	private int scanCooldown;
+	private BlockPos scanFrom;
 	private List<BlockTargets.Found> found = List.of();
+	/** Full-pass facts, including matching blocks omitted from the bounded target shortlist. */
+	private BlockTargets.ScanResult lastScan = BlockTargets.ScanResult.EMPTY;
+	/** Consecutive exhaustive empty passes; one transient client-world frame is not completion. */
+	private int emptyScans;
 	/** The block actually being broken: the target, unless something is in front of it. */
 	private BlockPos breaking;
 	/** Ticks spent on that block. The only way to notice a block that will never break. */
 	private int mineTicks;
 	/** The face being aimed at, kept between ticks so the crosshair does not hop. */
 	private Direction aimFace;
-	/** The same, for putting a block down: where it is going and which face is being clicked. */
+	/** The block being swung at last tick, and its name while it still had one. */
+	private BlockPos wasBreaking;
+	private String wasBreakingName = "";
+	/** Set once on running out of work, so the reaction fires once rather than every tick. */
+	private boolean finished;
+	/** Ticks the job has been running, for the sale cooldown. */
+	private long tick;
+	/** Whether we are on the way up. Latches, so it does not flicker at the threshold. */
+	private boolean surfacing;
+	/** Where a block is going and which face is being clicked to put it there. */
 	private BlockPos placeTarget;
 	private Direction placeFace;
 	private int placeTicks;
-	/** Whether use was already down, so one placement is counted once rather than per tick. */
-	private boolean wasPlacing;
+	/** Whether the active placement square was fillable last tick, for confirmed counts. */
+	private boolean placeWasFillable;
 	/** Ticks before lava is worth another look, after one that could not be capped. */
 	private int capCooldown;
-	/** Ticks left since the way ahead was refused for being dangerous. See {@link #blocked}. */
-	private int hazardAhead;
-	/** And where it was, so the block that gets put down lands on the thing that stopped us. */
-	private BlockPos hazardPos;
-	/** The drop being walked to, and how long that has been going on. */
-	private int collectId = -1;
-	private int collectTicks;
-	/** Drops that could not be reached, so the walk does not keep choosing them. */
-	private final Set<Integer> unreachableDrops = new HashSet<>();
-	/** Set once on running out of work, so the reaction fires once rather than every tick. */
-	private boolean finished;
-	/** Whether we are on the way up. Latches, so it does not flicker at the threshold. */
-	private boolean surfacing;
+	private final DropCollector drops;
+	private final Bot.MiningAim miningAim = new Bot.MiningAim();
+	private final SitePreparation preparation;
+	private int aimMissTicks;
+	/** The bag is full with nothing left to do about it, and whether that has been said yet. */
+	private boolean bagFull;
+	private boolean bagFullNews;
 
 	public BaseDestroyer(Config cfg, Journal journal) {
 		this.cfg = cfg;
@@ -125,42 +136,55 @@ public final class BaseDestroyer {
 		this.combat = new Combat(cfg);
 		this.backpack = new Backpack(cfg);
 		this.nav = new Pathing(cfg);
-		this.fetch = new Pathing(cfg);
+		this.drops = new DropCollector(cfg);
+		this.fetch = drops.nav;
+		this.preparation = new SitePreparation(cfg);
 	}
 
-	public void reset(LocalPlayer player) {
+	public void reset() {
+		preparation.reset();
+		MineSafety.clearDenied();
 		phase = Phase.SCANNING;
 		detail = "";
 		target = null;
 		targetTicks = 0;
 		waitTicks = 0;
 		scanCooldown = 0;
-		giveUp.clear();
-		unreachableDrops.clear();
+		scanFrom = null;
+		lastScan = BlockTargets.ScanResult.EMPTY;
+		emptyScans = 0;
+		found = List.of();
+		retries.clear();
+		drops.reset();
 		finished = false;
 		surfacing = false;
-		forgetBlock();
-		collectId = -1;
+		bagFull = false;
+		bagFullNews = false;
 		capCooldown = 0;
-		hazardAhead = 0;
-		hazardPos = null;
+		forgetBlock();
+		forgetPlacement();
+		wasBreaking = null;
 		nav.reset();
 		fetch.reset();
 	}
 
 	public void stop() {
+		preparation.reset();
+		MineSafety.clearDenied();
+		NativeNavigation.stopAll();
 		phase = Phase.OFF;
 		target = null;
 		nav.reset();
 		fetch.reset();
 	}
 
+	/** The block being worked towards, for anything outside that wants to watch it. */
 	public BlockPos target() {
 		return target;
 	}
 
 	public int remaining() {
-		return found.size();
+		return lastScan.matching();
 	}
 
 	/** True once per run of running out of work, so the caller can react to it exactly once. */
@@ -174,67 +198,115 @@ public final class BaseDestroyer {
 		return detail.isEmpty() ? phase.label : phase.label + " — " + detail;
 	}
 
+	/**
+	 * The only blocks a route may break through, or null for anything breakable.
+	 *
+	 * <p>"Only break what I picked" is a restriction on the route rather than on the targets.
+	 * Somebody who ticked redstone and containers did not ask for a hole through the obsidian
+	 * wall on the way to them, and a search will happily take one if nothing says otherwise.
+	 */
+	public Set<Block> mayBreak() {
+		return cfg.pathMineOnlySelected ? targets.blocks(cfg) : null;
+	}
+
 	// ---------------------------------------------------------------- ticking
 
 	/**
-	 * @return the steer for this tick, or null when the destroyer has nothing to say and
-	 * the ordinary wandering should take over
+	 * One tick of the job, as a priority ladder.
+	 *
+	 * <p>The order is the order a person would interrupt themselves in, and each rung runs to a
+	 * natural stopping point with the work picked back up afterwards rather than restarted — the
+	 * target survives a fight, a sale and a swim, and so does the route under it wherever it
+	 * still makes sense.
+	 *
+	 * @param healthLost how much health went missing since last tick, so the fight knows the
+	 *                   difference between a threat and scenery
+	 * @return the steer for this tick, or null when the destroyer has nothing to say and the
+	 * ordinary wandering should take over
 	 */
 	public Bot.Steer tick(Minecraft mc, LocalPlayer player, ClientLevel level, float healthLost) {
-		tick++;
-		if (hazardAhead > 0 && --hazardAhead == 0) hazardPos = null;
-		combat.onDamage(healthLost);
-		Bot.Steer steer = new Bot.Steer();
-
 		if (!cfg.destroyerEnabled) {
 			if (phase != Phase.OFF) stop();
 			return null;
 		}
-		if (phase == Phase.OFF) reset(player);
+		if (phase == Phase.OFF) reset();
+		tick++;
+		if (scanCooldown > 0) scanCooldown--;
+		if (capCooldown > 0) capCooldown--;
+		combat.onDamage(player, healthLost);
+
+		Bot.Steer steer = new Bot.Steer();
 		PathMove.Ctx ctx = new PathMove.Ctx(mc, player, level, cfg);
+		drops.observe(ctx);
+		collected = drops.collected;
+		countBrokenBlock(level);
+		countPlaced(mc);
 
 		// 0. Air. Everything else on this list is a thing that might go wrong; this one is a
-		//    clock that is already running, and it only runs one way. A fight underwater with
-		//    no air left is not a fight worth winning, so this comes above even that.
+		//    clock that is already running, and it only runs one way. A fight underwater with no
+		//    air left is not a fight worth winning, so this comes above even that.
 		if (breathe(mc, player, level, steer)) {
 			phase = Phase.SURFACING;
 			return steer;
 		}
 
-		// 1. Something is hitting us. Nothing else matters until it is not.
+		// 1. Something is hitting us. Nothing else matters until it is not — and the route is
+		//    left exactly where it was, because a fight that ends where it started is a fight
+		//    the walk can simply carry on from.
 		if (combat.tick(mc, player, steer)) {
 			phase = Phase.FIGHTING;
 			detail = combat.status;
-			nav.invalidate("interrupted by a fight");   // the route is stale by the time this ends
 			return steer;
 		}
 
-		// 2. A menu is open, which means a sale is in progress or the user opened something.
+		// 2. A menu is open, which means a sale is in progress.
 		if (backpack.tick(mc, player)) {
 			phase = Phase.SELLING;
 			detail = backpack.status;
 			return steer;
 		}
 
-		// 3. A deliberate pause. Reaction time, not idleness — see waitABit.
+		// 3. A deliberate pause. Reaction time rather than idleness — see waitABit — and the one
+		//    rung here that hands back a steer with nothing in it, because it has a counter
+		//    running and the counter is the whole point of it.
 		if (waitTicks > 0) {
 			waitTicks--;
-			phase = phase == Phase.OFF ? Phase.WAITING : phase;
+			phase = Phase.WAITING;
+			if (target != null) {
+				double[] look = Bot.aimAt(player, Bot.aimPoint(mc, player, target));
+				steer.lookAt(look[0], look[1]);
+				steer.precise = true;
+			}
 			return steer;
 		}
 
 		// 4. The bag. Selling and tidying both stand still, so they come before walking.
 		if (handleInventory(mc, player, level, steer)) return steer;
 
-		// 5. Lava at our own feet, and only when it is the thing stopping us getting on with
-		//    it. This used to be a standing scan of everything liquid nearby, ahead of the
-		//    job, which in a base with a lava floor meant the job never ran once.
-		if (cfg.coverLiquids && capLava(mc, player, level, steer)) return steer;
+		// Preparation and denied route mining used to return before the target deadline was
+		// counted. Keep the deadline above every kind of work that can hold onto a target.
+		if (target != null && ++targetTicks > targetCeilingTicks()) {
+			detail = "spent long enough on " + describeBlock(level, target);
+			writeOff(target, player);
+		}
 
-		// 6. Our own drops, before they despawn - but not in the middle of breaking
-		//    something. A block already in arm's reach takes a second; a drop lasts five
-		//    minutes, and walking off mid-swing throws away the progress on both.
-		if (cfg.collectDrops && !holdingABlock(mc, player)) {
+		// 5. Lava at our own feet, and only when it is the thing stopping us getting on with it.
+		//    Lava that is in the *way* is the route's problem and the route bridges over it,
+		//    priced and planned. This is only for the square that turns up underfoot.
+		if (!NativeNavigation.controlling() && !preparation.active()
+				&& cfg.coverLiquids && capLiquid(mc, player, level, steer)) return steer;
+
+		// 6. Our own drops, before they despawn — but not in the middle of breaking something. A
+		//    block already in arm's reach takes a second; a drop lasts five minutes, and walking
+		//    off mid-swing throws away the progress on both.
+		BlockPos denied = MineSafety.deniedBlock();
+		if (denied != null) {
+			SitePreparation.Result result = prepare(ctx, denied, steer);
+			if (result == SitePreparation.Result.WORKING) return steer;
+			MineSafety.clearDenied();
+			if (result == SitePreparation.Result.FAILED) { writeOff(denied, player); steer.clear(); }
+		}
+		if (cfg.collectDrops && !preparation.active() && !holdingABlock(mc, player)) {
 			Bot.Steer fetching = collectDrops(ctx, steer);
 			if (fetching != null) return fetching;
 		}
@@ -243,9 +315,11 @@ public final class BaseDestroyer {
 		return work(ctx, steer);
 	}
 
-	/** Whether there is a target in arm's reach that is worth finishing before anything else. */
+	/** Finish an active swing before collecting, but let drops interrupt between blocks. */
 	private boolean holdingABlock(Minecraft mc, LocalPlayer player) {
-		return target != null && Bot.inReach(mc, player, target);
+		if (mc.level == null) return false;
+		BlockPos active = breaking != null && !mc.level.getBlockState(breaking).isAir() ? breaking : nav.breakingBlock();
+		return active != null && !mc.level.getBlockState(active).isAir() && Bot.inReach(mc, player, active);
 	}
 
 	// -------------------------------------------------------------- the job
@@ -255,50 +329,70 @@ public final class BaseDestroyer {
 		LocalPlayer player = ctx.player();
 		Minecraft mc = ctx.mc();
 
-		if (target != null && !stillATarget(level, target)) {
+		countBrokenBlock(level);
+
+		boolean finishedTarget = target != null && !stillATarget(level, target);
+		if (finishedTarget) {
 			// it went: either we broke it or somebody else did
 			target = null;
+			preparation.reset();
+			MineSafety.clearDenied();
+			nav.reset();
+			// The cached list may now be exhausted. The next choice must be backed by a fresh
+			// full pass, not an empty list left over from before this block disappeared.
 			forgetBlock();
-		}
-		if (target != null && ++targetTicks > targetCeilingTicks()) {
-			detail = "spent long enough on " + describeBlock(level, target);
-			writeOff(target);
-			return steer;
 		}
 
 		if (target == null) {
-			if (scanCooldown > 0) scanCooldown--;
-			else {
-				found = targets.scan(level, player, cfg);
-				scanCooldown = Math.max(1, (int) (cfg.destroyScanSec * 20));
-			}
-			target = pickTarget(level);
+			if (scanFrom != null && player.blockPosition().distSqr(scanFrom) >= 4) scanCooldown = 0;
+			// Consume a still-live cached candidate first. If none exists, waiting for the scan
+			// clock is fine, but it is never evidence that the loaded area is empty.
+			target = pickTarget(mc, level, player);
 			if (target == null) {
-				if (phase != Phase.DONE) finished = true;
-				phase = Phase.DONE;
-				detail = cfg.destroyBlocks.isEmpty() && noFamilies()
-						? "no blocks selected" : "nothing selected within " + cfg.destroyRadius + " blocks";
-				// Nothing here is not the same as nothing anywhere. Handing the tick back lets
-				// the wandering and the area sweep carry us somewhere with blocks in it, and
-				// the next scan picks the job straight back up - which beats standing on an
-				// empty patch of floor waiting for a base to walk past.
-				return null;
+				if (scanCooldown > 0 && !finishedTarget) {
+					phase = Phase.SCANNING;
+					detail = "waiting for the next block scan";
+					return steer;
+				}
+
+				phase = Phase.SCANNING;
+				lastScan = targets.scanDetailed(level, player, cfg,
+						pos -> eligibleForScan(level, player, pos));
+				found = lastScan.found();
+				scanFrom = player.blockPosition().immutable();
+				scanCooldown = lastScan.complete() ? Rng.ticks(cfg.destroyScanSec, cfg.destroyScanMaxSec) : 0;
+				target = pickTarget(mc, level, player);
+				if (target == null) return handleEmptyShortlist();
 			}
 			// back in business after a dry spell: the next dry spell is news again
 			finished = false;
+			emptyScans = 0;
 			targetTicks = 0;
-			// A person does not start walking the instant a block appears on screen. They do
-			// not stop to think between two blocks already under their nose either, and a
-			// quarter second of standing still after every swing is most of what a bot
-			// clearing a wall of redstone would spend its time doing.
-			if (!Bot.inReach(mc, player, target)) waitABit();
+			arrivalTicks = 0;
+			arrivalProgress.reset();
+			rejectedWorkCells.clear();
+			// A person does not start walking the instant a block appears on screen. They do not
+			// stop to think between two blocks already under their nose either, and a quarter
+			// second of standing still after every swing is most of what a bot clearing a wall
+			// of redstone would spend its time doing.
+			if (Rng.chance(cfg.taskReactionChance)) waitABit();
 			journalTarget(level);
+			if (waitTicks > 0) {
+				double[] look = Bot.aimAt(player, Bot.aimPoint(mc, player, target));
+				steer.lookAt(look[0], look[1]);
+				steer.precise = true;
+				phase = Phase.WAITING;
+				return steer;
+			}
 		}
 
-		// In arm's reach: swing at it, or at whatever turns out to be in front of it. This
-		// hands the tick back only when something we cannot break is in the way, which is a
-		// reason to stand somewhere else rather than a reason to stand still.
-		if (Bot.inReach(mc, player, target)) {
+		// In arm's reach: swing at it, or at whatever turns out to be in front of it. This hands
+		// the tick back only when something we cannot break is in the way, which is a reason to
+		// go and stand somewhere else rather than a reason to stand still.
+		SitePreparation.Result prepared = prepare(ctx, target, steer);
+		if (prepared == SitePreparation.Result.WORKING) return steer;
+		if (prepared == SitePreparation.Result.FAILED) { writeOff(target, player); steer.clear(); return steer; }
+		if (Bot.inReach(mc, player, target) && closeToDrops(player, target)) {
 			Bot.Steer mining = mine(ctx, steer);
 			if (mining != null) return mining;
 		}
@@ -306,35 +400,118 @@ public final class BaseDestroyer {
 		return travel(ctx, steer);
 	}
 
+	private SitePreparation.Result prepare(PathMove.Ctx ctx, BlockPos block, Bot.Steer steer) {
+		SitePreparation.Result result = preparation.tick(ctx, block, steer, mayBreak());
+		placed += preparation.placed;
+		preparation.placed = 0;
+		if (result != SitePreparation.Result.READY) {
+			phase = preparation.coveringLiquid ? Phase.COVERING : Phase.PREPARING;
+			detail = preparation.detail;
+		}
+		return result;
+	}
+
+	private boolean closeToDrops(LocalPlayer player, BlockPos block) {
+		return !cfg.protectMiningDrops || DropCollector.pickupOverlap(player.getBoundingBox(),
+				new net.minecraft.world.phys.AABB(block).deflate(0.25));
+	}
+
+	/**
+	 * Interpret a freshly scanned but empty shortlist without confusing filters with absence.
+	 *
+	 * <p>A scan can have no selectable target because every match is behind the current view,
+	 * waiting for retry, unsafe to uncover beside liquid, or outside an unloaded chunk. None of
+	 * those means the configured blocks are gone, and none is allowed to fire the done reaction.
+	 */
+	private Bot.Steer handleEmptyShortlist() {
+        finished = false;
+        if (!lastScan.complete()) {
+            phase = Phase.SCANNING;
+            detail = "scanning loaded terrain: " + lastScan.scannedChunks() + " chunks";
+            return new Bot.Steer();
+        }
+		if (cfg.destroyBlocks.isEmpty() && noFamilies()) {
+			emptyScans = 0;
+			phase = Phase.WAITING;
+			detail = "no blocks selected";
+			return new Bot.Steer();
+		}
+
+		if (lastScan.matching() > 0) {
+			emptyScans = 0;
+			phase = Phase.SCANNING;
+			int deferred = lastScan.deferred();
+			if (lastScan.hidden() > 0 && deferred > 0) {
+				detail = "%d selected remain · %d outside view · %d deferred or liquid-unsafe"
+						.formatted(lastScan.matching(), lastScan.hidden(), deferred);
+			} else if (lastScan.hidden() > 0) {
+				detail = "%d selected blocks remain outside the current view"
+						.formatted(lastScan.matching());
+			} else if (deferred > 0) {
+				detail = "%d selected blocks remain, waiting for retry or liquid-safe access"
+						.formatted(lastScan.matching());
+			} else {
+				// The world changed between section scan and candidate validation. Recheck on
+				// the next tick instead of sitting through the ordinary interval.
+				detail = "blocks changed during the scan — checking again";
+				scanCooldown = 0;
+			}
+			return new Bot.Steer();
+		}
+
+		if (!provesEmpty(lastScan, cfg.destroyAllowIncompleteScanFinish)) {
+			emptyScans = 0;
+			phase = Phase.SCANNING;
+			detail = "scan incomplete — %d nearby chunk%s not loaded"
+					.formatted(lastScan.unloadedChunks(), lastScan.unloadedChunks() == 1 ? " is" : "s are");
+			return new Bot.Steer();
+		}
+
+		emptyScans++;
+		if (emptyScans < cfg.destroyEmptyScansToFinish) {
+			phase = Phase.SCANNING;
+			detail = "empty scan %d/%d — confirming before finishing"
+					.formatted(emptyScans, cfg.destroyEmptyScansToFinish);
+			return new Bot.Steer();
+		}
+
+		if (phase != Phase.DONE) finished = true;
+		phase = Phase.DONE;
+		detail = "confirmed no selected blocks within " + cfg.destroyRadius + " blocks";
+		// Nothing here is not the same as nothing anywhere. Handing the tick back lets
+		// the wandering and the area sweep carry us somewhere with blocks in it if the
+		// configured done action does not stop the run.
+		return new Bot.Steer();
+	}
+
+	/** A bounded shortlist is proof of nothing; only a complete full pass can prove empty. */
+	static boolean provesEmpty(BlockTargets.ScanResult scan, boolean allowIncomplete) {
+		return scan.matching() == 0 && (allowIncomplete || scan.unloadedChunks() == 0);
+	}
+
 	/**
 	 * Walk to somewhere the target can actually be swung at.
 	 *
-	 * <p>Every branch of this ends in a decision. That is the whole point of it: the previous
-	 * version had three ways to return a tick with no keys and no counter running, and each of
-	 * them was a bot standing in front of a redstone build doing nothing at all until somebody
-	 * turned it off. Arriving with no shot means the block is written off; no route means the
-	 * block is written off; and the whole written-off list gets a second chance the moment
-	 * there is nothing left to try.
+	 * <p>Every branch of this ends in a decision, and that is the whole point of it. Arriving
+	 * with no shot writes the block off; no route writes the block off; and the whole
+	 * written-off list gets a second chance only after its retry timer or a changed vantage.
 	 */
 	private Bot.Steer travel(PathMove.Ctx ctx, Bot.Steer steer) {
 		ClientLevel level = ctx.level();
 		BlockPos want = target;
-		// The margin is 0.8 and not a rounder number for a reason. This asks the question with
-		// the eye at the middle of a candidate square; the mining asks it from wherever in that
-		// square the player actually ends up standing, which is up to 0.71 away corner to
-		// corner. Any margin smaller than that lets the search declare a square workable that
-		// the mining then finds is out of reach — and the job, arriving somewhere it cannot
-		// work from and being told it has arrived, gives up on a block it could have had.
-		double reach = Math.max(1.5, ctx.player().blockInteractionRange() - 0.8);
-		// The goal is somewhere the block can actually be broken from, not somewhere within
-		// four blocks of it. Those are the same thing in an open field and nothing like it in
-		// a building, which is where this job happens.
+		double reach = Math.max(MIN_REACH, ctx.player().blockInteractionRange() - REACH_MARGIN);
+		// The goal is somewhere the block can actually be broken from, not somewhere within four
+		// blocks of it. Those are the same thing in an open field and nothing like it in a
+		// building, which is where this job happens.
 		Vec3 aim = Bot.blockCentre(ctx.mc(), want);
 		PathFinder.Goal goal = (x, y, z) ->
-				Bot.canWorkFrom(level, ctx.player(), x, y, z, want, aim, reach);
+				!rejectedWorkCells.contains(BlockPos.asLong(x, y, z))
+				&& Bot.canWorkFrom(level, ctx.player(), x, y, z, want, aim, reach)
+				&& (!cfg.protectMiningDrops || DropCollector.pickupOverlap(
+						new net.minecraft.world.phys.AABB(x + 0.2, y, z + 0.2, x + 0.8, y + 1.8, z + 0.8),
+						new net.minecraft.world.phys.AABB(want).deflate(0.25)));
 
-		Pathing.Nav result = nav.tick(ctx, steer, want, goal,
-				cfg.pathMineOnlySelected ? targets.blocks(cfg) : null);
+		Pathing.Nav result = nav.tick(ctx, steer, want, goal, mayBreak());
 		absorb(level, nav);
 
 		switch (result) {
@@ -348,29 +525,63 @@ public final class BaseDestroyer {
 				detail = nav.status;
 				// Face what we are about to walk to. Working out a route is half a second of
 				// standing still at worst, and half a second spent looking at the thing you are
-				// about to go and get is a person thinking; the same half second spent staring
-				// at the floor is a client that has stopped responding.
+				// about to go and get is a person thinking; the same half second spent staring at
+				// the floor is a client that has stopped responding.
 				double[] look = Bot.aimAt(ctx.player(), aim);
 				steer.lookAt(look[0], look[1]);
 				return steer;
 			}
 			case ARRIVED -> {
-				// Standing somewhere the search says the block can be worked from, and the
-				// mining above still handed the tick back. The two disagree, so the block is
-				// not workable in practice and standing here proving that again next tick is
-				// the loop this whole class was rebuilt to end.
+				phase = Phase.WALKING;
+				detail = "settling into reach of " + describeBlock(level, target);
+				// The grid can accept an edge of a cell before the player's body reaches it.
+				// Give the last step a few ticks to settle before rejecting that working cell.
+				if (++arrivalTicks <= 4) {
+					double[] look = Bot.aimAt(ctx.player(), aim);
+					steer.lookAt(look[0], look[1]);
+					return steer;
+				}
+				BlockPos feet = ctx.player().blockPosition();
+				Vec3 centre = new Vec3(feet.getX() + 0.5, ctx.player().getY(), feet.getZ() + 0.5);
+				if (centre.distanceToSqr(ctx.player().position()) > 0.015 && DropCollector.directWalk(ctx, centre)
+						&& !arrivalProgress.update(centre.x, centre.z, centre.distanceTo(ctx.player().position()), cfg.pathStallSec)) {
+					DropCollector.aimAndWalk(ctx, steer, centre);
+					return steer;
+				}
+				// Another side of the block may be reachable even when this cell's centre
+				// is behind a hole. Remember the rejected cell across the next route search.
+				if (rejectedWorkCells.size() < 6 && rejectedWorkCells.add(feet.asLong())) {
+					arrivalTicks = 0;
+					arrivalProgress.reset();
+					nav.invalidate("trying another working position");
+					return steer;
+				}
 				detail = "cannot line up on " + describeBlock(level, target);
-				writeOff(target);
+				writeOff(target, ctx.player());
 				return steer;
 			}
 			case NO_ROUTE -> {
-				detail = "cannot get to " + describeBlock(level, target);
-				writeOff(target);
+				detail = "cannot get to " + describeBlock(level, target) + ": " + nav.status;
+				writeOff(target, ctx.player());
 				return steer;
 			}
 		}
 		return steer;
 	}
+
+	/**
+	 * How much to shrink the reach by when asking whether a square could be worked from.
+	 *
+	 * <p>Not a rounder number for a reason. The search asks the question with the eye at the
+	 * middle of a candidate square; the mining asks it from wherever in that square the player
+	 * actually ends up standing, which is up to 0.71 away corner to corner. Any margin smaller
+	 * than that lets the search call a square workable that the mining then finds is out of
+	 * reach — and the job, arriving somewhere it cannot work from and being told it has
+	 * arrived, gives up on a block it could have had.
+	 */
+	private static final double REACH_MARGIN = 0.8;
+	/** Servers can configure reach down. Below this there is no job here to do. */
+	private static final double MIN_REACH = 1.5;
 
 	/** A route doing something worth naming on the HUD gets to name it. */
 	private static Phase phaseFor(PathFinder.Kind kind) {
@@ -389,6 +600,7 @@ public final class BaseDestroyer {
 			noteMined(level, from.justMined, from.justMinedName);
 		}
 		from.mined = 0;
+		from.justMined = null;
 		lastPathCost = from.lastCost;
 		lastPathNodes = from.lastNodes;
 	}
@@ -398,51 +610,74 @@ public final class BaseDestroyer {
 		return true;
 	}
 
-	private BlockPos pickTarget(ClientLevel level) {
-		BlockPos found1 = firstWorthTaking(level);
-		if (found1 != null) return found1;
-		// everything within reach has been written off: let them back in and try again
-		if (!giveUp.isEmpty() && !found.isEmpty()) {
-			giveUp.clear();
-			return firstWorthTaking(level);
-		}
-		return null;
+	// -------------------------------------------------------- choosing one
+
+	private BlockPos pickTarget(Minecraft mc, ClientLevel level, LocalPlayer player) {
+		return chooseFrom(mc, level, player);
 	}
 
 	/**
-	 * The nearest thing on the list still worth walking to.
+	 * Eligibility used while building the bounded nearest-target heap.
 	 *
-	 * <p>The staleness check is the point. The list is only rebuilt every scan interval, and
-	 * the block at the top of it is very often the one just mined — so handing it back means
-	 * picking it, discarding it as no longer a target, taking a reaction pause, and picking
-	 * it again, standing perfectly still, until the next scan. A second and a half of that
-	 * after every single block.
+	 * <p>Filtering here rather than after the heap is full prevents sixteen nearby protected
+	 * blocks from hiding the seventeenth, workable block. The scan still counts rejected matches
+	 * separately, so they cannot make the job announce completion.
 	 */
-	private BlockPos firstWorthTaking(ClientLevel level) {
-		for (BlockTargets.Found f : found) {
-			if (giveUp.contains(f.pos().asLong())) continue;
-			if (!stillATarget(level, f.pos())) continue;
-			// a block holding lava back is a block that ends the run, not a target
-			if (Avoidance.floodsWhenBroken(level, f.pos())) continue;
-			return f.pos();
-		}
-		return null;
+	private boolean eligibleForScan(ClientLevel level, LocalPlayer player, BlockPos pos) {
+		Retry retry = retries.get(pos.asLong());
+		if (retry != null
+				&& !retryReady(retry, tick, player.blockPosition(), cfg.destroyRetryMoveBlocks)) return false;
+		return cfg.protectMiningDrops || !Avoidance.floodsWhenBroken(level, pos, cfg.coverWater, true);
 	}
 
-	/**
-	 * A one-line account of what the job thinks it is doing, for when what it is doing and
-	 * what it says it is doing have stopped agreeing.
-	 */
-	public String diagnose(Minecraft mc, LocalPlayer player) {
-		if (target == null) return "no target";
-		double d = Math.sqrt(Bot.blockCentre(mc, target).distanceToSqr(player.getEyePosition()));
-		BlockPos hit = Bot.hitBlock(mc);
-		String on = hit == null ? "-" : hit.equals(target) ? "TGT"
-				: hit.equals(breaking) ? "wall" : "%d,%d,%d".formatted(hit.getX(), hit.getY(), hit.getZ());
-		return "%d,%d,%d d%.1f see%s hit%s p%d/%d".formatted(
-				target.getX(), target.getY(), target.getZ(), d,
-				Bot.visibleFace(mc, player, target, aimFace) != null ? "Y" : "N",
-				on, nav.step(), nav.length());
+	/** Re-rank from the current eye position, with randomisation confined to near ties. */
+	private record Candidate(BlockPos pos, double distance, boolean reachable, boolean storage) {}
+
+	private BlockPos chooseFrom(Minecraft mc, ClientLevel level, LocalPlayer player) {
+		List<Candidate> candidates = new ArrayList<>();
+		for (BlockTargets.Found f : found) {
+			if (!stillATarget(level, f.pos()) || !eligibleForScan(level, player, f.pos())) continue;
+			if (!cfg.destroyLoadedChunks && Math.abs(f.pos().getY() - player.getY()) > cfg.destroyVerticalRadius) continue;
+			double dx = f.pos().getX() + 0.5 - player.getX(), dz = f.pos().getZ() + 0.5 - player.getZ();
+			if (!cfg.destroyLoadedChunks && dx * dx + dz * dz > (double) cfg.destroyRadius * cfg.destroyRadius) continue;
+			if (cfg.destroyRequireLineOfSight && !BlockTargets.visibleToPlayer(level, player, f.pos(),
+					level.getBlockState(f.pos()), cfg.destroyFieldOfViewDeg)) continue;
+			double distance = Math.sqrt(Bot.blockCentre(mc, f.pos()).distanceToSqr(player.getEyePosition()));
+			boolean reachable = distance <= player.blockInteractionRange()
+					&& (Bot.visibleFace(mc, player, f.pos(), null) != null
+					|| Bot.rotationHits(mc, player, f.pos(), Bot.aimAt(player, Bot.blockCentre(mc, f.pos()))[0],
+							Bot.aimAt(player, Bot.blockCentre(mc, f.pos()))[1]));
+			candidates.add(new Candidate(f.pos(), distance, reachable, f.storage()));
+		}
+		return chooseCandidate(candidates, cfg);
+	}
+
+	static BlockPos chooseCandidate(List<Candidate> candidates, Config cfg) {
+		if (candidates.isEmpty()) return null;
+		candidates.sort(java.util.Comparator
+				.comparingInt((Candidate c) -> cfg.destroyStorageLast && c.storage ? 1 : 0)
+				.thenComparingInt(c -> cfg.destroyPreferReachable && !c.reachable ? 1 : 0)
+				.thenComparingDouble(Candidate::distance)
+				.thenComparingLong(c -> c.pos.asLong()));
+		Candidate first = candidates.getFirst();
+		int choices = 1;
+		while (choices < Math.min(cfg.destroyTargetChoices, candidates.size())) {
+			Candidate next = candidates.get(choices);
+			if ((cfg.destroyStorageLast && next.storage != first.storage)
+					|| (cfg.destroyPreferReachable && next.reachable != first.reachable)
+					|| next.distance > first.distance + cfg.destroyTargetDistanceSlack) break;
+			choices++;
+		}
+		return candidates.get(choices > 1 && Rng.chance(cfg.destroyTargetRandomness) ? Rng.nextInt(choices) : 0).pos;
+	}
+
+	static boolean retryReady(Retry retry, long now, BlockPos current, double moveBlocks) {
+		return now >= retry.afterTick() || moveBlocks <= 0
+				|| current.distSqr(retry.from()) >= moveBlocks * moveBlocks;
+	}
+
+	private boolean stillATarget(ClientLevel level, BlockPos pos) {
+		return !Storage.protectedWorldBlock(cfg, level, pos) && targets.blocks(cfg).contains(level.getBlockState(pos).getBlock());
 	}
 
 	/**
@@ -450,20 +685,15 @@ public final class BaseDestroyer {
 	 *
 	 * <p>Somebody who ticked redstone and containers did not ask for a hole through the
 	 * obsidian wall between here and them, and every route to a block behind a wall goes
-	 * through this: the search while it is planning, and the mining when something turns out
-	 * to be in front of the target.
+	 * through this: the search while it is planning, and the mining when something turns out to
+	 * be in front of the target.
 	 */
 	private boolean mayBreakToPass(ClientLevel level, BlockPos pos) {
 		if (!cfg.pathMine) return false;
 		BlockState state = level.getBlockState(pos);
 		if (!BlockTargets.breakable(state, level, pos)) return false;
-		if (Avoidance.floodsWhenBroken(level, pos)) return false;
+		if (Avoidance.floodsWhenBroken(level, pos, cfg.coverWater, true)) return false;
 		return !cfg.pathMineOnlySelected || targets.blocks(cfg).contains(state.getBlock());
-	}
-
-	private boolean stillATarget(ClientLevel level, BlockPos pos) {
-		BlockState state = level.getBlockState(pos);
-		return targets.blocks(cfg).contains(state.getBlock());
 	}
 
 	private void journalTarget(ClientLevel level) {
@@ -480,8 +710,8 @@ public final class BaseDestroyer {
 	/**
 	 * Swing at the target, or at whatever is in front of it.
 	 *
-	 * @return the steer, or null when something we cannot break is in the way and the answer
-	 * is to go and stand somewhere else
+	 * @return the steer, or null when something we cannot break is in the way and the answer is
+	 * to go and stand somewhere else
 	 */
 	private Bot.Steer mine(PathMove.Ctx ctx, Bot.Steer steer) {
 		Minecraft mc = ctx.mc();
@@ -491,36 +721,36 @@ public final class BaseDestroyer {
 
 		// One face, held. Re-picking it every tick makes the crosshair hop as the view wobbles,
 		// and vanilla throws away every bit of mining progress the moment it lands on a
-		// different block - which does not mine slowly, it mines never, and it looks from the
-		// outside exactly like a bot standing still twitching its head.
+		// different block — which does not mine slowly, it mines never, and from the outside it
+		// looks exactly like a bot standing still twitching its head.
 		BlockPos want = target;
 		Direction face = Bot.visibleFace(mc, player, target, target.equals(breaking) ? aimFace : null);
 		if (face == null) {
 			BlockPos wall = Bot.obstruction(mc, player, target);
 			if (wall == null) {
 				// Nothing at all between the eyes and the middle of it. No face passed the
-				// per-face test, which happens on shapes whose faces are all nearly edge-on -
-				// but the centre ray is the test vanilla's own crosshair uses, so aiming there
-				// is aiming at the block. Handing the tick back here instead is how a target in
-				// plain sight became a target the bot stood in front of and never touched.
+				// per-face test, which happens on shapes whose faces are all nearly edge-on — but
+				// the centre ray is the test vanilla's own crosshair uses, so aiming there is
+				// aiming at the block. Handing the tick back here instead is how a target in
+				// plain sight became one the bot stood in front of and never touched.
 				face = null;
 			} else if (Bot.inReach(mc, player, wall) && mayBreakToPass(level, wall)) {
 				want = wall;
 				face = Bot.visibleFace(mc, player, wall, wall.equals(breaking) ? aimFace : null);
 			} else {
-				// Something solid we are not allowed to break, or cannot reach. That is a
-				// reason to stand somewhere else, and the search's goal is "somewhere I can
-				// see it from" - so let it run.
+				// Something solid we are not allowed to break, or cannot reach. That is a reason
+				// to stand somewhere else, and the search's goal is "somewhere I can see it
+				// from" — so let it run.
 				return null;
 			}
 		}
 
-		// Standing on what you are breaking is a controlled fall over a floor and a death over
-		// a shaft, and the search has already said how far a drop it is willing to take.
+		// Standing on what you are breaking is a controlled fall over a floor and a death over a
+		// shaft, and the search has already said how far a drop it is willing to take.
 		if (want.equals(player.blockPosition().below())
-				&& Bot.dropUnder(level, want, cfg.pathMaxFall + 2) > cfg.pathMaxFall) {
+				&& Bot.dropUnder(level, want, cfg.pathMaxFall + PAST_THE_LIMIT) > cfg.pathMaxFall) {
 			detail = "not standing on that one";
-			writeOff(want);
+			writeOff(want, player);
 			return steer;
 		}
 
@@ -531,11 +761,26 @@ public final class BaseDestroyer {
 		// honest way to tell: a client is never told why a swing did nothing. Claimed land,
 		// region protection and spawn protection all look identical to mining that never ends,
 		// and without a ceiling the bot stands there doing it until somebody notices.
-		if (++mineTicks > mineCeilingTicks()) {
+		aimMissTicks = onIt ? 0 : aimMissTicks + 1;
+		if (aimMissTicks > aimDeadlineTicks(cfg)) {
+			detail = "cannot keep a clear aim on " + describeBlock(level, want);
+			writeOff(want, player);
+			steer.clear();
+			return steer;
+		}
+		if (onIt && ++mineTicks > mineCeilingTicks()) {
 			detail = describeBlock(level, want) + " will not break";
-			writeOff(want);
+			writeOff(want, player);
 		}
 		return steer;
+	}
+
+	/** Looked at one block past the limit, so "at the limit" and "past it" are different answers. */
+	private static final int PAST_THE_LIMIT = 2;
+
+	static int aimDeadlineTicks(Config cfg) {
+		// The finite filter adds two ticks, independently of smoothing strength.
+		return Math.max(60, (int) Math.ceil(180 / cfg.taskAimMaxTurnDeg) + 20);
 	}
 
 	/**
@@ -552,7 +797,7 @@ public final class BaseDestroyer {
 			// alternates between the target and the wall in front of it swings forever without
 			// either of them ever running out of patience.
 			breaking = pos;
-			face = null;
+			aimMissTicks = 0;
 		}
 		aimFace = face;
 		int tool = Bot.bestToolSlot(player, level.getBlockState(pos));
@@ -560,143 +805,38 @@ public final class BaseDestroyer {
 			player.getInventory().setSelectedSlot(tool);
 		}
 		double[] look = Bot.aimAt(player,
-				aimFace == null ? Bot.blockCentre(mc, pos) : Bot.facePoint(mc, pos, aimFace));
+				miningAim.point(mc, player, pos, aimFace, cfg));
 		steer.lookAt(look[0], look[1]);
+		// The tighter camera and the re-cast crosshair both hang off this. Nothing snaps: the
+		// rotation still goes out through the same filter and the same wobble, and the crosshair
+		// is re-read from where that filter actually put it.
 		steer.precise = true;
 
-		// Vanilla does the mining. Holding attack while the crosshair is on the block runs
-		// the same progress, swing and packet loop a person's mouse does; reimplementing it
-		// would be more code producing a stream that is easier to tell apart, not harder.
+		// Vanilla does the mining. Holding attack while the crosshair is on the block runs the
+		// same progress, swing and packet loop a person's mouse does; reimplementing it would be
+		// more code producing a stream that is easier to tell apart, not harder.
+		steer.attackAt(pos);
 		steer.attack = Bot.lookingAt(mc, pos);
 		return steer.attack;
 	}
 
 	/**
-	 * Point at a face and hold use until a block goes into {@code where}.
+	 * Notice a block we were swinging at turn to air.
 	 *
-	 * @return false when there is nowhere to place it from
+	 * <p>The only honest way to count one. A swing is not a broken block, a held button is not a
+	 * broken block, and the client is never told that a break succeeded — the block simply
+	 * stops being there.
 	 */
-	private boolean placeInto(Minecraft mc, LocalPlayer player, BlockPos where, Bot.Steer steer) {
-		if (!where.equals(placeTarget)) {
-			placeTarget = where;
-			placeFace = null;
-			placeTicks = 0;
+	private void countBrokenBlock(ClientLevel level) {
+		if (wasBreaking != null && level.getBlockState(wasBreaking).isAir()) {
+			noteMined(level, wasBreaking, wasBreakingName);
+			wasBreaking = null;
 		}
-		placeTicks++;
-		placeFace = Bot.placeAgainst(mc, player, where, placeFace);
-		if (placeFace == null) return false;
-		double[] look = Bot.aimAt(player, Bot.placePoint(mc, where, placeFace));
-		steer.lookAt(look[0], look[1]);
-		steer.precise = true;
-		// Counted on the way in rather than every tick the key is down: vanilla holds a right
-		// click across its own four-tick delay, so a tick is not a block.
-		boolean pressing = Bot.aboutToPlaceInto(mc, where);
-		steer.use = pressing;
-		if (pressing && !wasPlacing) placed++;
-		wasPlacing = pressing;
-		return true;
-	}
-
-	private void forgetPlacement() {
-		placeTarget = null;
-		placeFace = null;
-		placeTicks = 0;
-		wasPlacing = false;
-	}
-
-	/**
-	 * Put a block into lava the bot is standing right beside.
-	 *
-	 * <p>Deliberately almost nothing. Lava that is in the <em>way</em> is the route's problem
-	 * and the route bridges over it, priced and planned; this is only for the square that
-	 * turns up under our own feet without being planned for. It is bounded, it gives up, and
-	 * when it gives up it stays given up for a while.
-	 */
-	private boolean capLava(Minecraft mc, LocalPlayer player, ClientLevel level, Bot.Steer steer) {
-		if (capCooldown > 0) {
-			capCooldown--;
-			return false;
+		if (breaking != null && !breaking.equals(wasBreaking) && !level.getBlockState(breaking).isAir()) {
+			wasBreaking = breaking;
+			// read the name while the block still has one, not after it is air
+			wasBreakingName = describeBlock(level, breaking);
 		}
-		BlockPos lava = hazardPos != null && Avoidance.isLavaAt(level, hazardPos)
-				? hazardPos : Bot.lavaBeside(mc, player);
-		if (lava == null || !Bot.inReach(mc, player, lava)) return false;
-		int slot = Bot.buildingSlot(player, cfg);
-		if (slot < 0) return false;
-
-		phase = Phase.COVERING;
-		detail = "capping the lava underfoot";
-		player.getInventory().setSelectedSlot(slot);
-		steer.sneak = true;                        // at the edge of it, so do not walk in
-		if (!placeInto(mc, player, lava, steer) || placeTicks > CAP_GIVE_UP) {
-			// nothing to place it against, or long enough spent failing to
-			capCooldown = CAP_REST;
-			forgetPlacement();
-			return false;
-		}
-		return true;
-	}
-
-	/** Ticks to spend on one square of lava, and how long to leave it alone after failing. */
-	private static final int CAP_GIVE_UP = 60;
-	private static final int CAP_REST = 400;
-
-	/**
-	 * How long one block may take before it is written off.
-	 *
-	 * <p>Generous on purpose. Obsidian with an iron pick is twenty-five seconds of honest
-	 * work, and the thing this exists to catch - a server quietly putting the block back -
-	 * never finishes at all. So being generous costs one wasted half minute, and being tight
-	 * costs a target given up on for the crime of being slow.
-	 */
-	// ponytail: one fixed ceiling rather than a per-block estimate from hardness and tool
-	// speed; the route's moves do work theirs out properly, so copy that if a target ever
-	// needs mining that is slower than obsidian.
-	private int mineCeilingTicks() {
-		return Math.max(700, (int) (cfg.destroyGiveUpSec * 20 * 6));
-	}
-
-	/**
-	 * How long one target may occupy the bot in total, however that time is spent.
-	 *
-	 * <p>Wider than the mining ceiling, because it has to cover walking there as well as
-	 * breaking it. The point is only that it exists: with every individual step bounded and
-	 * nothing bounding the whole, a bot can still spend an afternoon on one block by failing
-	 * at it in a slightly different way each time.
-	 */
-	private int targetCeilingTicks() {
-		return Math.max(2400, (int) (cfg.destroyGiveUpSec * 20 * 20));
-	}
-
-	/** Give up on a block, and on whatever target it was standing between us and. */
-	private void writeOff(BlockPos block) {
-		giveUp.add(block.asLong());
-		if (target != null) giveUp.add(target.asLong());
-		target = null;
-		targetTicks = 0;
-		forgetBlock();
-		nav.reset();
-	}
-
-	/** Drop the per-block aiming state, so the next one starts by choosing a face again. */
-	private void forgetBlock() {
-		breaking = null;
-		mineTicks = 0;
-		aimFace = null;
-		forgetPlacement();
-	}
-
-	/**
-	 * Told from outside that the way ahead is not walkable, whatever the plan said.
-	 *
-	 * <p>A route is only as fresh as the world it was planned in, and this is a job that takes
-	 * blocks out of that world for a living. The plan gets dropped rather than argued with.
-	 */
-	public void blocked(String why, BlockPos where) {
-		detail = why;
-		nav.invalidate(why);
-		fetch.invalidate(why);
-		hazardAhead = 40;
-		hazardPos = where;
 	}
 
 	/** Called when a block turns to air, so the count and the journal are real. */
@@ -707,8 +847,83 @@ public final class BaseDestroyer {
 		}
 	}
 
+	// ------------------------------------------------------------ patience
+
+	/**
+	 * How long one block may be swung at before it is written off.
+	 *
+	 * <p>Generous on purpose. Obsidian with an iron pick is twenty-five seconds of honest work,
+	 * and the thing this exists to catch — a server quietly putting the block back — never
+	 * finishes at all. So being generous costs one wasted half minute, and being tight costs a
+	 * target given up on for the crime of being slow.
+	 */
+	int mineCeilingTicks() {
+		return (int) Math.round(cfg.destroyBlockSec * 20);
+	}
+
+	/**
+	 * How long one target may occupy the bot in total, however that time is spent.
+	 *
+	 * <p>Wider than the mining ceiling, because it has to cover walking there as well as
+	 * breaking it. The point is only that it exists: with every individual step bounded and
+	 * nothing bounding the whole, a bot can still spend an afternoon on one block by failing at
+	 * it in a slightly different way each time.
+	 */
+	int targetCeilingTicks() {
+		return (int) Math.round(cfg.destroyTargetSec * 20);
+	}
+
+	/** Give up on a block, and on whatever target it was standing between us and. */
+	private void writeOff(BlockPos block, LocalPlayer player) {
+		MovRand.LOG.info("[movrand] Deferring block {}: {}", block.toShortString(), detail);
+		long after = tick + Math.max(20, Math.round(cfg.destroyRetrySec * 20));
+		BlockPos from = player.blockPosition().immutable();
+		retries.put(block.asLong(), new Retry(after, from));
+		if (target != null) retries.put(target.asLong(), new Retry(after, from));
+		target = null;
+		// Rebuild the bounded heap now that this block is deferred, so it cannot occupy a slot
+		// that could have held another workable target.
+		scanCooldown = 0;
+		targetTicks = 0;
+		preparation.reset();
+		MineSafety.clearDenied();
+		forgetPlacement();
+		forgetBlock();
+		nav.reset();
+		phase = Phase.SCANNING;
+	}
+
+	/** Drop the per-block aiming state, so the next one starts by choosing a face again. */
+	private void forgetBlock() {
+		arrivalTicks = 0;
+		arrivalProgress.reset();
+		rejectedWorkCells.clear();
+		breaking = null;
+		miningAim.reset();
+		aimMissTicks = 0;
+		mineTicks = 0;
+		aimFace = null;
+	}
+
+	/**
+	 * Told from outside that the way ahead is not walkable, whatever the plan said.
+	 *
+	 * <p>A route is only as fresh as the world it was planned in, and this is a job that takes
+	 * blocks out of that world for a living. The plan gets dropped rather than argued with.
+	 */
+	public void blocked(String why) {
+		detail = why;
+		nav.invalidate(why);
+		fetch.invalidate(why);
+	}
+
 	// --------------------------------------------------------- the interrupts
 
+	/**
+	 * The bag: sell it, thin it out, or say it is full and mean something by it.
+	 *
+	 * @return true when the bag is what this tick is about
+	 */
 	private boolean handleInventory(Minecraft mc, LocalPlayer player, ClientLevel level, Bot.Steer steer) {
 		if (backpack.wantsToSell(mc, player, tick) && (backpack.full(player) || cfg.autoSellAlways)) {
 			phase = Phase.SELLING;
@@ -720,29 +935,53 @@ public final class BaseDestroyer {
 			}
 			return true;
 		}
-		if (!backpack.full(player)) return false;
-
-		if (backpack.dropOneJunkStack(mc, player) || backpack.restockHotbar(mc, player)) {
+		// Restocking is useful before the bag is full: a bridge can run out while most inventory
+		// slots are still empty. Keeping this below the full check made the option effectively a
+		// full-inventory recovery switch rather than a hotbar restocker.
+		if (backpack.restockHotbar(mc, player)) {
 			phase = Phase.TIDYING;
 			detail = backpack.status;
 			waitABit();
 			return true;
 		}
-		if (cfg.stopWhenInventoryFull) {
-			phase = Phase.WAITING;
-			detail = "inventory full";
+		if (!backpack.full(player)) {
+			bagFull = false;
+			return false;
+		}
+
+		if (backpack.dropOneJunkStack(mc, player)) {
+			phase = Phase.TIDYING;
+			detail = backpack.status;
+			waitABit();
 			return true;
 		}
+		// Full, with nothing left to sell and nothing left to throw away. Standing still over it
+		// is a tick with no counter running, so this is said out loud exactly once and the
+		// controller decides — carry on mining into a floor we cannot pick up, or stop.
+		if (!bagFull) {
+			bagFull = true;
+			bagFullNews = true;
+		}
 		return false;
+	}
+
+	/**
+	 * True once per time the bag fills with nothing left to do about it, so the caller reacts
+	 * once rather than every tick.
+	 */
+	public boolean takeBagFull() {
+		boolean was = bagFullNews;
+		bagFullNews = false;
+		return was;
 	}
 
 	/**
 	 * Get to the surface before the bar runs out.
 	 *
 	 * <p>Swimming up is the whole of it in open water. Under a ceiling it is not, which is
-	 * exactly the situation the job creates for itself: mine into an aquifer from below and
-	 * the way out is through the stone you are standing under. So the ceiling gets broken
-	 * too, with whatever is in hand — there is no time to be picky about the tool.
+	 * exactly the situation the job creates for itself: mine into an aquifer from below and the
+	 * way out is through the stone you are standing under. So the ceiling gets broken too, with
+	 * whatever is in hand — there is no time to be picky about the tool.
 	 *
 	 * @return true while surfacing, so nothing else gets a say
 	 */
@@ -768,22 +1007,26 @@ public final class BaseDestroyer {
 			double[] look = Bot.aimAt(player, Bot.aimPoint(mc, player, above));
 			steer.lookAt(look[0], look[1]);
 			steer.precise = true;
+			steer.attackAt(above);
 			steer.attack = Bot.lookingAt(mc, above);
 		} else {
-			steer.lookAt(player.getYRot(), -70);   // look up, which is also where we are going
+			steer.lookAt(player.getYRot(), SURFACE_PITCH);   // up, which is also where we are going
 		}
 		// a route planned from down here is a route back to the thing that drowned us
 		nav.invalidate("surfacing");
 		return true;
 	}
 
+	/** Looking up, without being so far up that the camera is on its back. */
+	private static final double SURFACE_PITCH = -70;
+
 	/**
 	 * Whether to be heading for the surface.
 	 *
-	 * <p>Latching matters more than the threshold does. Without it the bot surfaces to one
-	 * tick above the line, goes back to work, drops under it again, and spends the whole bar
-	 * oscillating an inch below the water — so once it starts climbing it keeps climbing
-	 * until it is actually breathing again.
+	 * <p>Latching matters more than the threshold does. Without it the bot surfaces to one tick
+	 * above the line, goes back to work, drops under it again, and spends the whole bar
+	 * oscillating an inch below the water — so once it starts climbing it keeps climbing until
+	 * it is actually breathing again.
 	 */
 	static boolean needsAir(boolean submerged, int air, int maxAir, double secondsLeft, boolean already) {
 		if (already) return submerged || air < maxAir;
@@ -791,101 +1034,117 @@ public final class BaseDestroyer {
 	}
 
 	/**
-	 * Go and get whatever is on the floor.
+	 * Put a block into lava the bot is standing right beside.
 	 *
-	 * <p>Straight at it when it is close enough that walking into it will do it, and through
-	 * the search when it is not — which is the whole difference between a bot that walks round
-	 * the block in the way and one that stands against it until the item despawns. A drop
-	 * three blocks away on the far side of a wall is exactly as unreachable as one across a
-	 * canyon, and only a route knows the difference.
+	 * <p>Deliberately almost nothing. Lava that is in the <em>way</em> is the route's problem and
+	 * the route bridges over it, priced and planned; this is only for the square that turns up
+	 * under our own feet without being planned for. It is bounded, it gives up, and when it
+	 * gives up it stays given up for a while.
 	 */
-	private Bot.Steer collectDrops(PathMove.Ctx ctx, Bot.Steer steer) {
-		LocalPlayer player = ctx.player();
-		if (backpack.full(player)) return null;
-		ItemEntity best = null;
-		double bestDist = (double) cfg.collectRadius * cfg.collectRadius;
-		for (Entity e : ctx.level().entitiesForRendering()) {
-			if (!(e instanceof ItemEntity item)) continue;
-			if (unreachableDrops.contains(e.getId())) continue;
-			double d = e.distanceToSqr(player);
-			if (d < bestDist) {
-				bestDist = d;
-				best = item;
-			}
-		}
-		if (best == null) {
-			collectId = -1;
-			return null;
-		}
-		// close enough that walking into it will do it: vanilla pickup is 1 block
-		if (bestDist < 1.2) {
-			collected++;
-			collectId = -1;
-			return null;
-		}
+	private boolean capLiquid(Minecraft mc, LocalPlayer player, ClientLevel level, Bot.Steer steer) {
+		if (capCooldown > 0) return false;
+		BlockPos liquid = Bot.liquidBeside(mc, player, cfg.coverWater, cfg.coverLava);
+		if (liquid == null || !Bot.inReach(mc, player, liquid)) { forgetPlacement(); return false; }
+		int slot = Bot.buildingSlot(player, cfg);
+		if (slot < 0) return false;
 
-		if (best.getId() != collectId) {
-			collectId = best.getId();
-			collectTicks = 0;
-			fetch.reset();
+		phase = Phase.COVERING;
+		detail = "capping " + (Avoidance.isLavaAt(level, liquid) ? "lava" : "water") + " underfoot";
+		player.getInventory().setSelectedSlot(slot);
+		steer.sneak = true;                        // at the edge of it, so do not walk in
+		if (!placeInto(mc, player, liquid, steer) || placeTicks > capGiveUpTicks()) {
+			// nothing to place it against, or long enough spent failing to
+			capCooldown = (int) Math.round(cfg.coverRestSec * 20);
+			forgetPlacement();
+			steer.clear();
+			return false;
 		}
-		if (++collectTicks > Math.max(60, (int) (cfg.destroyGiveUpSec * 20)) * 2) {
-			giveUpOnDrop();
-			return null;
-		}
-
-		phase = Phase.COLLECTING;
-		detail = best.getItem().getHoverName().getString();
-		BlockPos where = best.blockPosition();
-
-		// Near enough to simply step onto: walk at it. Vanilla picks up from a block away, so
-		// anything this close is already at our feet and a route to it is ceremony.
-		if (bestDist < 4.0) {
-			double dx = best.getX() - player.getX(), dz = best.getZ() - player.getZ();
-			double heading = Math.toDegrees(Math.atan2(-dx, dz));
-			steer.lookAt(heading, 20);
-			steer.moveTowards(heading);
-			return steer;
-		}
-
-		// Otherwise it is a journey like any other, and the search knows how to make one.
-		// Near it, not on it: asking to stand exactly on a square that may be the hole we just
-		// dug is how a perfectly reachable item ends up with no route to it at all.
-		Pathing.Nav result = fetch.tick(ctx, steer, where,
-				PathFinder.within(1.4, where.getX(), where.getY(), where.getZ()),
-				cfg.pathMineOnlySelected ? targets.blocks(cfg) : null);
-		absorb(ctx.level(), fetch);
-		switch (result) {
-			case WALKING, PLANNING -> {
-				phase = Phase.COLLECTING;
-				return steer;
-			}
-			case ARRIVED -> {
-				// Standing on top of it and it is still on the floor: it is not ours to have.
-				giveUpOnDrop();
-				return null;
-			}
-			case NO_ROUTE -> {
-				giveUpOnDrop();
-				return null;
-			}
-		}
-		return steer;
+		return true;
 	}
 
-	private void giveUpOnDrop() {
-		// a bounded memory: the ids are per-world and the list is only here to stop the same
-		// unreachable pile being walked at forever
-		if (unreachableDrops.size() > 256) unreachableDrops.clear();
-		if (collectId >= 0) unreachableDrops.add(collectId);
-		collectId = -1;
-		fetch.reset();
+	private int capGiveUpTicks() {
+		return (int) Math.round(cfg.coverGiveUpSec * 20);
+	}
+
+	/**
+	 * Point at a face and hold use until a block goes into {@code where}.
+	 *
+	 * <p>Latched exactly as breaking is, and for the same reason: the camera is filtered, so a
+	 * support face re-chosen every tick means the crosshair is always on its way to somewhere it
+	 * has already stopped wanting to be, and the check that presses the button never comes true.
+	 *
+	 * @return false when there is nowhere to place it from
+	 */
+	private boolean placeInto(Minecraft mc, LocalPlayer player, BlockPos where, Bot.Steer steer) {
+		if (!where.equals(placeTarget)) {
+			placeTarget = where;
+			placeFace = null;
+			placeTicks = 0;
+			placeWasFillable = Bot.fillable(mc, where);
+		}
+		placeTicks++;
+		placeFace = Bot.placeAgainst(mc, player, where, placeFace);
+		if (placeFace == null) return false;
+		double[] look = Bot.aimAt(player, Bot.placePoint(mc, where, placeFace));
+		steer.lookAt(look[0], look[1]);
+		steer.precise = true;
+		// Counted on the way in rather than every tick the key is down: vanilla holds a right
+		// click across its own four-tick delay, so a tick is not a block.
+		boolean pressing = Bot.aboutToPlaceInto(mc, where);
+		steer.placeInto(where);
+		steer.use = pressing;
+		return true;
+	}
+
+	/** Count a placement only after the client world confirms the fillable square became solid. */
+	private void countPlaced(Minecraft mc) {
+		if (placeTarget == null) return;
+		boolean fillable = Bot.fillable(mc, placeTarget);
+		if (placeWasFillable && !fillable) {
+			placed++;
+			forgetPlacement();
+			return;
+		}
+		placeWasFillable = fillable;
+	}
+
+	private void forgetPlacement() {
+		placeTarget = null;
+		placeFace = null;
+		placeTicks = 0;
+		placeWasFillable = false;
+	}
+
+	private Bot.Steer collectDrops(PathMove.Ctx ctx, Bot.Steer steer) {
+		if (backpack.full(ctx.player())) return null;
+		boolean active = drops.tick(ctx, steer, mayBreak());
+		absorb(ctx.level(), fetch);
+		if (!active) return null;
+		phase = Phase.COLLECTING;
+		detail = drops.detail;
+		return steer;
 	}
 
 	/** A reaction time, so a decision does not land on the same tick as the thing that caused it. */
 	private void waitABit() {
 		if (cfg.taskReactionMaxSec <= 0) return;
 		waitTicks = Rng.ticks(cfg.taskReactionMinSec, cfg.taskReactionMaxSec);
+	}
+
+	/**
+	 * A one-line account of what the job thinks it is doing, for when what it is doing and what
+	 * it says it is doing have stopped agreeing.
+	 */
+	public String diagnose(Minecraft mc, LocalPlayer player) {
+		if (target == null) return "no target";
+		double d = Math.sqrt(Bot.blockCentre(mc, target).distanceToSqr(player.getEyePosition()));
+		BlockPos hit = Bot.hitBlock(mc);
+		String on = hit == null ? "-" : hit.equals(target) ? "TGT"
+				: hit.equals(breaking) ? "wall" : "%d,%d,%d".formatted(hit.getX(), hit.getY(), hit.getZ());
+		return "%d,%d,%d d%.1f see%s hit%s p%d/%d".formatted(
+				target.getX(), target.getY(), target.getZ(), d,
+				Bot.visibleFace(mc, player, target, aimFace) != null ? "Y" : "N",
+				on, nav.step(), nav.length());
 	}
 
 	// ----------------------------------------------------------- self-check
@@ -897,30 +1156,62 @@ public final class BaseDestroyer {
 	public static void main(String[] args) {
 		Config cfg = new Config();
 		cfg.clampAll();
+		BaseDestroyer d = new BaseDestroyer(cfg, null);
 
-		// The give-up set is what stops the bot picking the same unreachable block forever,
-		// and clearing it is what stops it giving up on a base it could finish later.
-		Set<Long> giveUp = new HashSet<>();
-		List<BlockPos> found = List.of(new BlockPos(1, 1, 1), new BlockPos(2, 1, 1));
-		giveUp.add(found.getFirst().asLong());
-		BlockPos next = null;
-		for (BlockPos p : found) {
-			if (giveUp.contains(p.asLong())) continue;
-			next = p;
-			break;
+		BlockPos near = new BlockPos(1, 0, 0), far = new BlockPos(8, 0, 0), tie = new BlockPos(1, 0, 1);
+		cfg.destroyTargetRandomness = 1;
+		for (int i = 0; i < 500; i++) {
+			BlockPos chosen = chooseCandidate(new ArrayList<>(List.of(
+					new Candidate(far, 8, true, false), new Candidate(near, 1, true, false),
+					new Candidate(tie, 1.2, true, false))), cfg);
+			assert !far.equals(chosen) : "randomisation selected a distant block";
 		}
-		assert next != null && next.equals(found.get(1)) : "a written-off block was picked again";
-		giveUp.add(found.get(1).asLong());
-		next = null;
-		for (BlockPos p : found) {
-			if (giveUp.contains(p.asLong())) continue;
-			next = p;
-			break;
-		}
-		assert next == null : "everything is written off, so nothing should be chosen";
+		cfg.destroyTargetRandomness = 0;
+		assert near.equals(chooseCandidate(new ArrayList<>(List.of(
+				new Candidate(far, 8, true, false), new Candidate(near, 1, true, false))), cfg))
+				: "old shortlist order beat current distance";
+		assert far.equals(chooseCandidate(new ArrayList<>(List.of(
+				new Candidate(near, 1, false, false), new Candidate(far, 4, true, false))), cfg))
+				: "an obstructed target beat a block ready to mine";
+		cfg.destroyPreferReachable = false;
+		assert near.equals(chooseCandidate(new ArrayList<>(List.of(
+				new Candidate(near, 1, false, false), new Candidate(far, 4, true, false))), cfg));
+		cfg.destroyStorageLast = true;
+		assert far.equals(chooseCandidate(new ArrayList<>(List.of(
+				new Candidate(near, 1, true, true), new Candidate(far, 4, true, false))), cfg));
+		cfg.taskAimMaxTurnDeg = 2;
+		cfg.taskAimSmoothing = 0.95;
+		assert aimDeadlineTicks(cfg) >= 110 : "slow configured aiming was timed out prematurely";
+		cfg.fastDestroyerTuning();
+		cfg.clampAll();
 
-		// The reaction delay has to be a real delay: zero means the bot turns on the same
-		// tick the block appears, which is the one thing no person does.
+		// a phase always has something to say, even before anything has happened
+		assert d.phase == Phase.OFF && !d.describe().isEmpty()
+				: "an idle destroyer described itself as nothing";
+		assert d.remaining() == 0 && d.target() == null : "a fresh destroyer already has work in hand";
+
+		// Written-off targets stay written off until their retry time instead of becoming
+		// immediately eligible again when the shortlist contains nothing else.
+		Map<Long, Retry> giveUp = new HashMap<>();
+		List<BlockPos> seen = List.of(new BlockPos(1, 1, 1), new BlockPos(2, 1, 1));
+		Retry later = new Retry(100, BlockPos.ZERO);
+		giveUp.put(seen.getFirst().asLong(), later);
+		assert !giveUp.containsKey(seen.get(1).asLong()) : "writing one block off wrote off another";
+		giveUp.put(seen.get(1).asLong(), later);
+		assert !retryReady(later, 50, BlockPos.ZERO, 8) : "a written-off block came back early";
+		assert retryReady(later, 100, BlockPos.ZERO, 8) : "the timed retry never became due";
+		assert retryReady(later, 50, new BlockPos(8, 0, 0), 8) : "a new vantage point did not retry";
+
+		// The shortlist is what the target choice draws from, and its two jobs are to have at
+		// least one thing in it and to never be the whole list — a bot picking at random from
+		// every block in range crosses the room and back for the rest of the afternoon.
+		cfg.destroyTargetChoices = 0;
+		cfg.clampAll();
+		assert cfg.destroyTargetChoices >= 1 : "the shortlist was allowed to be empty";
+		assert cfg.destroyTargetChoices <= 32 : "the shortlist is the whole room";
+
+		// The reaction delay has to be a real delay: zero means the bot turns on the same tick
+		// the block appears, which is the one thing no person does.
 		cfg.taskReactionMinSec = 0;
 		cfg.taskReactionMaxSec = 0;
 		cfg.clampAll();
@@ -929,36 +1220,25 @@ public final class BaseDestroyer {
 
 		// and the scan cannot be free, or it runs every tick over a quarter million blocks
 		cfg.destroyScanSec = 0;
+		cfg.destroyScanMaxSec = 0;
 		cfg.clampAll();
 		assert cfg.destroyScanSec >= 0.25 : "the scan interval was allowed to collapse";
+		assert cfg.destroyScanMaxSec >= cfg.destroyScanSec : "the scan range is inverted";
 
-		// Air. The threshold is the easy half; the latch is the half that matters, because
-		// without it the bot bobs an inch under the surface until the bar empties.
-		assert !needsAir(false, 300, 300, 7, false) : "dry land is not a reason to surface";
-		assert !needsAir(true, 300, 300, 7, false) : "a full bar underwater is fine";
-		assert !needsAir(true, 200, 300, 7, false) : "200 ticks is 10s, which is above the line";
-		assert needsAir(true, 140, 300, 7, false) : "7s left is the line, and should trip it";
-		assert needsAir(true, 0, 300, 7, false) : "an empty bar must certainly trip it";
-		// once climbing, keep climbing
-		assert needsAir(true, 299, 300, 7, true) : "still under water, so still climbing";
-		assert needsAir(false, 299, 300, 7, true) : "head out but not refilled, so still climbing";
-		assert !needsAir(false, 300, 300, 7, true) : "breathing again, so stop climbing";
-
-		// a phase always has something to say, even before anything has happened
-		BaseDestroyer d = new BaseDestroyer(cfg, null);
-		assert d.phase == Phase.OFF && !d.describe().isEmpty() : "an idle destroyer described itself as nothing";
-
-		// The mining ceiling is the thing that stops a protected block holding the bot still
-		// forever, so it has to be finite - and long enough that honest slow work finishes.
-		// Obsidian with an iron pickaxe is about 25s, which is the slowest thing worth mining.
-		cfg.destroyGiveUpSec = 1;
+		// The two ceilings are what stop a protected block holding the bot still forever, so
+		// they have to be finite - and long enough that honest slow work finishes. Obsidian with
+		// an iron pickaxe is about twenty-five seconds, which is the slowest thing worth mining.
+		cfg.destroyBlockSec = 0;
+		cfg.destroyTargetSec = 0;
 		cfg.clampAll();
-		int ceiling = d.mineCeilingTicks();
-		assert ceiling >= 25 * 20 : "a block is written off before obsidian could break: " + ceiling;
-		assert ceiling < 20 * 60 * 20 : "the ceiling is so high it is not a ceiling: " + ceiling;
-		cfg.destroyGiveUpSec = 60;
+		int block = d.mineCeilingTicks();
+		int whole = d.targetCeilingTicks();
+		assert block >= 25 * 20 : "a block is written off before obsidian could break: " + block;
+		assert block < 20 * 60 * 20 : "the block ceiling is so high it is not a ceiling: " + block;
+		assert whole > block : "a target may not be given less time in total than one of its blocks";
+		cfg.destroyBlockSec = 90;
 		cfg.clampAll();
-		assert d.mineCeilingTicks() > ceiling : "a longer patience did not buy a longer ceiling";
+		assert d.mineCeilingTicks() > block : "a longer patience did not buy a longer ceiling";
 
 		// Every route outcome the job can be handed has to end in it doing something. This is
 		// the one that used to be missing: arriving somewhere the block cannot actually be
@@ -969,6 +1249,39 @@ public final class BaseDestroyer {
 				case ARRIVED, NO_ROUTE -> true;      // writes the target off and moves on
 			} : "a navigation outcome with nothing decided for it: " + outcome;
 		}
+
+		// Every phase a route can put the job in has to be a phase, and the three that matter
+		// have to be told apart - a HUD that says "walking" while the bot is bridging over lava
+		// is a HUD nobody can debug from.
+		for (PathFinder.Kind kind : PathFinder.Kind.values()) {
+			assert phaseFor(kind) != null && !phaseFor(kind).label.isEmpty()
+					: "a route move with no phase to show for it: " + kind;
+		}
+		assert phaseFor(PathFinder.Kind.MINE) == Phase.CLEARING : "digging through is not walking";
+		assert phaseFor(PathFinder.Kind.BRIDGE) == Phase.BRIDGING : "placing a floor is not walking";
+		assert phaseFor(PathFinder.Kind.WALK) == Phase.WALKING : "walking is walking";
+
+		// and the done reaction fires exactly once per dry spell, or every tick with nothing to
+		// break is an alert and a chat line
+		d.finished = true;
+		assert d.takeFinished() : "running out of work went unreported";
+		assert !d.takeFinished() : "running out of work reported itself twice";
+
+		// Regression: an empty shortlist is not an empty world. Hidden blocks, deferred blocks,
+		// and unloaded chunks used to flow through the same target == null branch as a genuinely
+		// exhaustive empty scan and announce that the job had finished.
+		BlockTargets.ScanResult hidden = new BlockTargets.ScanResult(List.of(), 37, 37, 37, 25, 0);
+		BlockTargets.ScanResult deferred = new BlockTargets.ScanResult(List.of(), 12, 0, 0, 25, 0);
+		BlockTargets.ScanResult incomplete = new BlockTargets.ScanResult(List.of(), 0, 0, 0, 20, 5);
+		BlockTargets.ScanResult empty = new BlockTargets.ScanResult(List.of(), 0, 0, 0, 25, 0);
+		assert !provesEmpty(hidden, false) : "hidden matches were called finished";
+		assert !provesEmpty(deferred, false) : "deferred matches were called finished";
+		assert !provesEmpty(incomplete, false) : "an unloaded search area was called empty";
+		assert provesEmpty(incomplete, true) : "the explicit incomplete-scan override did nothing";
+		assert provesEmpty(empty, false) : "a complete zero-match scan did not prove empty";
+		cfg.destroyEmptyScansToFinish = 0;
+		cfg.clampAll();
+		assert cfg.destroyEmptyScansToFinish == 1 : "empty-scan confirmation could be disabled by accident";
 
 		System.out.println("BaseDestroyer self-check passed");
 	}

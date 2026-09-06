@@ -28,10 +28,31 @@ public final class SlotGrid extends Widgets.Element {
 	private static final int SPLIT = 6;
 
 	private final Config cfg;
+	private java.util.function.IntFunction<ItemStack> contents;
+	private java.util.function.IntPredicate selected;
+	private java.util.function.BiConsumer<Integer, Integer> clicked;
+	private int slots = Inventory.INVENTORY_SIZE;
+	private boolean playerLayout = true;
+	private String caption = "";
 
 	public SlotGrid(Config cfg) {
 		this.cfg = cfg;
 		this.h = CELL * 4 + SPLIT + 14;
+	}
+
+	/** The same inventory cells, also used for storage destinations and container contents. */
+	public SlotGrid(int slots, boolean playerLayout, String caption,
+	                java.util.function.IntFunction<ItemStack> contents,
+	                java.util.function.IntPredicate selected,
+	                java.util.function.BiConsumer<Integer, Integer> clicked) {
+		this.cfg = null;
+		this.slots = slots;
+		this.playerLayout = playerLayout;
+		this.caption = caption;
+		this.contents = contents;
+		this.selected = selected;
+		this.clicked = clicked;
+		this.h = CELL * ((slots + 8) / 9) + (playerLayout ? SPLIT : 0) + 14;
 	}
 
 	private int gridX() {
@@ -40,8 +61,9 @@ public final class SlotGrid extends Widgets.Element {
 
 	/** Top-left of a slot's cell, or null when the index is not on the grid. */
 	private int[] cellOf(int slot) {
-		if (slot < 0 || slot >= Inventory.INVENTORY_SIZE) return null;
+		if (slot < 0 || slot >= slots) return null;
 		int gx = gridX(), gy = y + 12;
+		if (!playerLayout) return new int[]{gx + slot % COLS * CELL, gy + slot / COLS * CELL};
 		if (slot < Inventory.SELECTION_SIZE) {
 			// the hotbar is the bottom row, under the split
 			return new int[]{gx + slot * CELL, gy + 3 * CELL + SPLIT};
@@ -51,7 +73,7 @@ public final class SlotGrid extends Widgets.Element {
 	}
 
 	private int slotAt(double mx, double my) {
-		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
+		for (int slot = 0; slot < slots; slot++) {
 			int[] c = cellOf(slot);
 			if (c == null) continue;
 			if (mx >= c[0] && mx < c[0] + CELL && my >= c[1] && my < c[1] + CELL) return slot;
@@ -61,6 +83,27 @@ public final class SlotGrid extends Widgets.Element {
 
 	@Override
 	public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
+		if (contents != null) {
+			Ui.text(g, f, Ui.elide(f, caption, w - (gridX() - x)), gridX(), y, Ui.TEXT_MUTED);
+			int hovered = slotAt(mx, my);
+			tip = "";
+			for (int slot = 0; slot < slots; slot++) {
+				int[] c = cellOf(slot);
+				boolean on = selected.test(slot);
+				Ui.card(g, c[0], c[1], CELL - 1, CELL - 1, 3,
+						on ? Ui.mix(Ui.CARD, accent, 0.3) : slot == hovered ? Ui.CARD_HOVER : Ui.CARD,
+						on ? accent : Ui.BORDER_SOFT);
+				ItemStack stack = contents.apply(slot);
+				if (!stack.isEmpty()) {
+					g.item(stack, c[0] + 2, c[1] + 2);
+					g.itemDecorations(f, stack, c[0] + 2, c[1] + 2);
+				}
+				if (slot == hovered) tip = "Slot " + slot + " — "
+						+ (stack.isEmpty() ? "empty" : stack.getHoverName().getString())
+						+ (on ? " (selected)" : "");
+			}
+			return;
+		}
 		LocalPlayer player = Minecraft.getInstance().player;
 		Inventory inv = player == null ? null : player.getInventory();
 
@@ -110,6 +153,11 @@ public final class SlotGrid extends Widgets.Element {
 	public boolean mouseClicked(double mx, double my, int button) {
 		int slot = slotAt(mx, my);
 		if (slot < 0) return false;
+		if (clicked != null) {
+			if (button != 0 && button != 1) return false;
+			clicked.accept(slot, button);
+			return true;
+		}
 		if (button == 0) {
 			cfg.setSlotProtected(slot, !cfg.slotProtected(slot));
 		} else if (button == 1) {

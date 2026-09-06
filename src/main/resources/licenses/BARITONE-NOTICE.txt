@@ -1,0 +1,24 @@
+This distribution includes the unmodified official Baritone 1.19.0 Fabric
+release for Minecraft 26.2, copyright the Baritone contributors.
+
+Baritone is licensed under the GNU Lesser General Public License, version 3
+or later. Its LGPL and GPL license texts are provided alongside this notice.
+Movement & Randomisation uses Baritone through its API and separate mixins;
+Baritone's original jar is nested as a replaceable dependency, not shaded.
+
+Release: https://github.com/cabaletta/baritone/releases/tag/v1.19.0
+Source: https://github.com/cabaletta/baritone/tree/9fadf7cf95293d7f6678981e77a939b4a7978373
+Corresponding source archive: baritone-1.19.0-source.zip inside this mod jar.
+The archive includes Baritone's original build instructions and Gradle files.
+
+Binary: baritone-unoptimized-fabric-1.19.0.jar
+SHA-256: ba1a268856e0caee7f828b6663f26670138d5c348fdb81b8c7859809f73e8d2f
+
+To replace the dependency, substitute a compatible Baritone Fabric jar in
+libs, update the dependency coordinates and checksum in build.gradle and
+the Baritone dependency version in fabric.mod.json, then run gradlew build.
+An external compatible Baritone mod can also satisfy Fabric's dependency.
+No restriction is imposed on debugging modifications to the included library.
+
+Baritone also bundles nether-pathfinder 1.6. Its original notices and license
+remain within that dependency's jar, nested inside the Baritone jar.

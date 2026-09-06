@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.level.block.Block;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -54,7 +55,7 @@ public final class PathMove {
 	public final double price;
 
 	public String detail = "";
-	/** Counted up by the runner: one placement per press, not one per tick held. */
+	/** Counted up by the runner after a fillable square actually becomes a block. */
 	public boolean placedOne;
 
 	private int ticks;
@@ -67,12 +68,15 @@ public final class PathMove {
 	// mines never. The same applies to the support face for a placement.
 	private BlockPos breaking;
 	private Direction breakFace;
+	private final Bot.MiningAim miningAim = new Bot.MiningAim();
 	private BlockPos placing;
 	private Direction placeFace;
 	private int placeTicks;
-	private boolean wasPlacing;
+	private boolean placeWasFillable;
 	/** Ticks to leave a door alone after reaching for it, so it is not opened and shut again. */
 	private int doorCooldown;
+	/** Tightened by the runner before a corner, so the shoulders clear the inside wall. */
+	double arrivalRadius = 0.45;
 
 	public PathMove(PathFinder.Kind kind, BlockPos src, BlockPos dest, double price) {
 		this.kind = kind;
@@ -124,6 +128,10 @@ public final class PathMove {
 		BlockPos feet = player.blockPosition();
 		if (feet.getX() != dest.getX() || feet.getZ() != dest.getZ()) return false;
 		if (Math.abs(player.getY() - dest.getY()) >= 0.8) return false;
+		if (kind == PathFinder.Kind.WALK || kind == PathFinder.Kind.DIAGONAL) {
+			double dx = player.getX() - dest.getX() - 0.5, dz = player.getZ() - dest.getZ() - 0.5;
+			if (dx * dx + dz * dz > arrivalRadius * arrivalRadius) return false;
+		}
 		// Building moves finish standing on what they built, not floating over it. Without
 		// this a pillar reports success at the top of the jump that was meant to place the
 		// block, and the route moves on with nothing underneath.
@@ -157,6 +165,11 @@ public final class PathMove {
 	 * stopped being true is dropped where it went wrong rather than walked into.
 	 */
 	public boolean stillPossible(Ctx ctx) {
+		return stillPossible(ctx, null);
+	}
+
+	/** Revalidate against both the live world and the route's original mining permission. */
+	public boolean stillPossible(Ctx ctx, Set<Block> mayBreak) {
 		ClientLevel level = ctx.level();
 		// Anything that hurts, anywhere the feet are going, ends the move whatever kind it is.
 		if (Avoidance.hazardAt(level, dest, ctx.cfg()) && kind != PathFinder.Kind.BRIDGE) return false;
@@ -164,18 +177,30 @@ public final class PathMove {
 		return switch (kind) {
 			// A gap to floor: fine if it is still a gap, and fine if somebody filled it.
 			// What is not fine is having nothing left to fill it with.
-			case BRIDGE, PILLAR -> footingAvailable(ctx);
+			case BRIDGE -> wayIsOpen(level) && footingAvailable(ctx);
+			case PILLAR -> footingAvailable(ctx) && Bot.fullPlacementSupport(ctx.level(), src.below())
+					&& breakableAhead(ctx, mayBreak);
 			// A block to swing at: it may have gone already, which just makes this a walk.
 			// It may not have become something we are not allowed to break.
-			case MINE, DIG_DOWN -> breakableAhead(ctx);
+			case MINE, DIG_DOWN -> breakableAhead(ctx, mayBreak) && safeFloor(level);
 			// Everything else is a plain step, and the only thing that invalidates one is
 			// something appearing in the space it goes through.
-			default -> wayIsOpen(level);
+			default -> wayIsOpen(level) && safeFloor(level);
 		};
 	}
 
 	private boolean wayIsOpen(ClientLevel level) {
-		return !inTheWay(level, dest) && !inTheWay(level, dest.above());
+		return clearOrDoor(level, dest) && clearOrDoor(level, dest.above());
+	}
+
+	private static boolean clearOrDoor(ClientLevel level, BlockPos pos) {
+		return !inTheWay(level, pos) || Bot.opensByHand(level, pos);
+	}
+
+	private boolean safeFloor(ClientLevel level) {
+		double atFeet = Avoidance.topOf(level, dest);
+		return Avoidance.holdsWeight(level, dest.below())
+				|| (atFeet > 0 && atFeet <= Avoidance.STEPPABLE);
 	}
 
 	private boolean footingAvailable(Ctx ctx) {
@@ -184,10 +209,12 @@ public final class PathMove {
 		return Bot.buildingSlot(ctx.player(), ctx.cfg()) >= 0;
 	}
 
-	private boolean breakableAhead(Ctx ctx) {
+	private boolean breakableAhead(Ctx ctx, Set<Block> mayBreak) {
 		for (BlockPos pos : toBreak(ctx.level())) {
-			if (!BlockTargets.breakable(ctx.level().getBlockState(pos), ctx.level(), pos)) return false;
-			if (Avoidance.floodsWhenBroken(ctx.level(), pos)) return false;
+			var state = ctx.level().getBlockState(pos);
+			if (!BlockTargets.breakable(state, ctx.level(), pos)) return false;
+			if (mayBreak != null && !mayBreak.contains(state.getBlock())) return false;
+			if (Avoidance.floodsWhenBroken(ctx.level(), pos, ctx.cfg().coverWater, true)) return false;
 		}
 		return true;
 	}
@@ -213,16 +240,22 @@ public final class PathMove {
 		double physical = 0;
 		for (BlockPos pos : toBreak(ctx.level())) {
 			double t = Bot.breakTicks(ctx.player(), ctx.level(), pos, ctx.level().getBlockState(pos));
-			physical += Math.min(t, 30 * 20);       // an unbreakable block is not an infinite wait
+			physical += Math.min(t, CEILING_TICKS);  // an unbreakable block is not an infinite wait
 		}
 		// A placement is a right click and a four tick cooldown; the rest is walking a block,
 		// which is five ticks in a straight line and rather more round a doorframe.
-		if (needsGround()) physical += 20;
-		return (int) Math.min(30 * 20, physical * 1.5) + SLACK;
+		if (needsGround()) physical += PLACE_TICKS;
+		// Jittered, because this is a give-up time and a give-up time that is the same integer
+		// every single time is one more constant on the wire. It only ever adds.
+		double slack = Rng.range(ctx.cfg().pathMoveSlackSec, ctx.cfg().pathMoveSlackMaxSec) * 20;
+		return (int) (Math.min(CEILING_TICKS * Math.max(1, toBreak(ctx.level()).size()),
+				physical * 1.5) + slack);
 	}
 
-	/** Ticks of patience on top of the physical estimate, for lag, mobs and doorframes. */
-	private static final int SLACK = 60;
+	/** However long a move is priced at, nothing gets more than half a minute of it. */
+	private static final int CEILING_TICKS = 30 * 20;
+	/** A right click, its four-tick cooldown, and the second of walking either side of it. */
+	private static final int PLACE_TICKS = 20;
 
 	// ------------------------------------------------------------- execution
 
@@ -239,7 +272,12 @@ public final class PathMove {
 	public Status update(Ctx ctx, Bot.Steer steer) {
 		ticks++;
 		if (doorCooldown > 0) doorCooldown--;
-		placedOne = false;
+		placedOne = placing != null && placeWasFillable && !Bot.fillable(ctx.mc(), placing);
+		if (placedOne) {
+			placing = null;
+			placeFace = null;
+			placeWasFillable = false;
+		}
 		if (arrived(ctx.player())) return Status.SUCCESS;
 
 		// A shut door is the one solid block that stops being solid if you ask, and the search
@@ -371,6 +409,13 @@ public final class PathMove {
 
 	private Status pillar(Ctx ctx, Bot.Steer steer) {
 		LocalPlayer player = ctx.player();
+		if (!Bot.fullPlacementSupport(ctx.level(), src.below())) {
+			// A slab, repeater, dust line or other partial shape can look clickable but is
+			// not a dependable anchor for a block under the player's feet. The planner also
+			// rejects this case; this guard handles a world change between planning and use.
+			detail = "no full block below to pillar on";
+			return Status.FAILED;
+		}
 		BlockPos head = firstInTheWay(ctx.level());
 		if (head != null) {
 			// A ceiling is the usual case — that is what standing on a lower floor means — and
@@ -418,8 +463,9 @@ public final class PathMove {
 		steer.lookAt(look[0], look[1]);
 		steer.precise = true;
 		// Once, then wait: a use key held on a door opens it and shuts it again.
-		if (doorCooldown == 0 && Bot.lookingAt(ctx.mc(), door)) {
-			steer.use = true;
+		if (doorCooldown == 0) {
+			steer.useAt(door);
+			steer.use = Bot.lookingAt(ctx.mc(), door);
 			doorCooldown = 8;
 		}
 		return Status.RUNNING;
@@ -444,10 +490,10 @@ public final class PathMove {
 		if (tool != ctx.player().getInventory().getSelectedSlot()) {
 			ctx.player().getInventory().setSelectedSlot(tool);
 		}
-		double[] look = Bot.aimAt(ctx.player(),
-				breakFace == null ? Bot.blockCentre(ctx.mc(), pos) : Bot.facePoint(ctx.mc(), pos, breakFace));
+		double[] look = Bot.aimAt(ctx.player(), miningAim.point(ctx.mc(), ctx.player(), pos, breakFace, ctx.cfg()));
 		steer.lookAt(look[0], look[1]);
 		steer.precise = true;
+		steer.attackAt(pos);
 		// Vanilla does the mining. Holding attack while the crosshair is on the block runs the
 		// same progress, swing and packet loop a person's mouse does; reimplementing it would
 		// be more code producing a stream that is easier to tell apart, not harder.
@@ -469,6 +515,7 @@ public final class PathMove {
 			placing = where;
 			placeFace = null;
 			placeTicks = 0;
+			placeWasFillable = Bot.fillable(ctx.mc(), where);
 		}
 		placeTicks++;
 		placeFace = Bot.placeAgainst(ctx.mc(), ctx.player(), where, placeFace);
@@ -479,9 +526,8 @@ public final class PathMove {
 		// Counted on the way in rather than every tick the key is down: vanilla holds a right
 		// click across its own four-tick delay, so a tick is not a block.
 		boolean pressing = Bot.aboutToPlaceInto(ctx.mc(), where);
+		steer.placeInto(where);
 		steer.use = pressing;
-		placedOne = pressing && !wasPlacing;
-		wasPlacing = pressing;
 		return true;
 	}
 

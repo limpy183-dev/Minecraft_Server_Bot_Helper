@@ -48,9 +48,11 @@ Requirements: Fabric Loader 0.19.3+, Fabric API, Java 25.
 
 To try it in a dev client instead: `./gradlew runClient`.
 
-Several pieces carry runnable self-checks. They run on the real classpath, with assertions on:
+The normal build runs every subsystem self-check with assertions enabled. To run the full
+suite or one check explicitly:
 
 ```bash
+./gradlew allSelfChecks
 ./gradlew selfCheck -Pcheck=com.damia.movrand.Human
 ```
 
@@ -68,12 +70,16 @@ Several pieces carry runnable self-checks. They run on the real classpath, with 
 | `ContainerScanner` | the height band migrates, follows or ignores the player as asked, and cannot invert |
 | `Avoidance` | steering picks the smallest turn that works, never dithers, and always unwinds |
 | `SafeStop` | a spot on the last few seconds of your own path is recognised, one off it is not, and the trail is forgotten on a reset |
-| `PathFinder` | a route goes round a pillar rather than through it, refuses a sealed room without mining and finds the way out with it, never crosses a hazard, refuses a drop past the limit, and hands back its best partial route when the budget runs out |
 | `Bot` | the yaw and pitch conventions, which are the one place a silent sign error mines the block behind you forever |
 | `BlockTargets` | families are rules and select nothing when unticked, `_ore` is a suffix and not a substring, and the never-list holds |
 | `Backpack` | protection beats a sale mark in both directions, and no delay can be set to zero |
 | `Combat` | sword beats axe beats pickaxe, netherite beats diamond, and nothing that is not a weapon scores at all |
-| `BaseDestroyer` | a written-off block is not picked again, the reaction delay cannot collapse, and the air latch keeps climbing until it is breathing rather than bobbing at the threshold |
+| `BaseDestroyer` | current-distance target ordering, bounded near-tie variation, aim deadlines, retries, completion and task delay clamps |
+| `DropCollector` | pickup height/volume, walls, shoulder clearance and supported direct approaches |
+| `PathFinder` | walking, doors, drops, mining, slabs, vertical moves, liquid bridges, finite placement budgets and partial routes |
+| `PathMove` / `PathRunner` / `Pathing` | route execution, resynchronisation, deadlines and planning outcome bookkeeping |
+| `MovementController` / `NavProgress` | damage sampling, heading/progress logic and stuck detection |
+| `Widgets` | GUI grid layout and click geometry |
 
 `AreaCoverage` also times itself: 3000 targets over a 262,144-chunk area, and 200 targets on
 every route at that size. The numbers it prints are the guard against the O(area) version
@@ -544,57 +550,80 @@ Eight accent colours, backdrop dimming, world blur.
 
 ## Base destroyer
 
+The default terrain engine is the official **Baritone 1.19.0 for Minecraft 26.2**, bundled
+inside this mod. The destroyer controls its destinations, inventory permissions, mining
+safety and camera. Baritone executes terrain movement, digging and construction. The legacy
+planner remains available by switching **Use Baritone navigation** off. Keeping Baritone
+enabled is recommended, and its toggle has a green recommendation edge.
+
 Its own section in the sidebar, under a rule, because everything above the rule watches and
 walks and everything below it reaches out and changes the world.
 
 Turn **Take bases apart automatically** on, then use the movement toggle as usual — this
 replaces what that toggle does rather than running on its own. From there it finds the
 blocks you picked, walks to them, mines them, fights back when something hits it, caps lava
-and water, bridges gaps, picks up its own drops, empties its bag and sells.
+(and water when enabled), bridges gaps, picks up its own drops, empties its bag and sells.
 
 ### How it gets there
 
-The wander steering answers "is there a wall in front of me", which is enough to cross a
-field and not enough to leave a room. So there is a real search underneath this: A\* over
-block positions, with walking, stepping up, dropping, mining through and bridging across all
-priced against each other in walked blocks. **A broken block is worth** and **A placed block
-is worth** are those prices — raise the first and it goes round anything it can, lower it and
-it digs straight there.
+Baritone plans across loaded terrain using walking, digging, bridging, backplacement,
+pillaring, stairs, slabs, ladders, vines and parkour. Water-bucket falls are optional.
+**Longest drop** limits unassisted falls. Building needs approved supplies above the reserve;
+protected slots are excluded from both the movement executor and the schematic builder.
 
-A swing is then priced for the block it actually is, from the block's hardness and the best
-tool on your bar. This matters more than it sounds: at one flat price per broken block, a
-wall is always cheaper than a corridor, so the route through obsidian beats walking ten
-blocks round it and the bot spends its afternoon tunnelling. Cobblestone is a second and
-obsidian is most of a minute, and once the search knows that it goes round on its own.
+**Mine through walls**, **Only break what I picked**, **Bridge across gaps**, **Parkour across
+gaps**, **Place while crossing a gap** and **Climb vines** control terrain edits and movement.
+Tunnelling and terrain edits for pickup routes are enabled by default. Your exclusions still
+apply to route digging. Inventory restocking remains under the mod's slot controls.
 
-**Only break what I picked** keeps the route inside your selection. On, because picking
-redstone and containers is not a request for a hole through the wall in front of them; off
-lets it tunnel through anything breakable, which is the only way into a room with no door.
+**Navigation turn smoothing**, **Maximum navigation turn per tick** and **Navigation aim
+variation** control navigation humanisation. Candidate placement checks use the intended
+rotation so smoothing cannot prevent a placement from ever being considered. Smoothing now
+ranges from **0 to 1**. A finite turn filter rounds acceleration and braking, settling within
+two ticks of the rate-limited heading reaching its target at every nonzero strength. Increasing
+smoothing does not reduce the turn rate or repeatedly release movement keys. Walking, sprinting,
+jumps, pillars and landings retain Baritone's planned physical heading while the view turns
+smoothly; precision movements no longer bypass the camera filter. Moving aim points use bounded
+prediction to avoid trailing placement faces, and parkour looks toward the landing during the
+run-up so low turn rates can use the existing travel time to line up.
 
-**Work through interruptions** is on, and it matters more than it sounds. The safety stops
-in the sections above were written for a bot that wanders quietly and wants to be told when
-anything happens — and a base destroyer trips nearly all of them by doing its job. A room
-with twelve chests in it is a container cluster. Taking a heart of damage is damage. Sneaking
-along the edge of a bridge is moving at a third of walking speed, which reads as being held
-up. A doorway with a mob in it is being stuck. Every one of those was **Alert + stop**, and a
-stop switches the whole mod off — so turning the destroyer on was a way of turning the mod
-off a few seconds later. While it is working they now alert and log instead. Low health,
-hunger, another player and the runtime limit still stop it: none of those are things the job
-causes.
+At **1**, the rendered view uses continuous position and velocity between ticks, including
+navigation-to-mining handoffs, placement, combat and working wobble. Rendering uses two ticks
+of rotation history (up to 100 ms); interaction raycasts and movement use the current simulation
+rotation and are not delayed by rendering. Minecraft's movement, jump and mouse buttons retain
+their normal discrete timing. Turn-rate and intentional reaction-delay settings still control
+speed; the smoothing slider controls the shape of the turn. The controller yields its keys
+and camera while Baritone is executing.
 
-A shut wooden door or gate is opened rather than mined. Iron is not — a hand does nothing to
-iron, so that one really is a wall until the route goes round it.
+Pickup journeys continue across batch time limits. A grid arrival on the wrong edge of a
+block triggers centring or another approach. Route failures and repeated loops are bounded;
+failed targets wait for their retry window while other available work continues.
 
-Lava is crossed by putting a block on it, as part of the route, at twice the price of an
-ordinary placement: worth doing, never the first idea, and never at all when there is dry
-ground going the same way.
+**Prepare a safe drop area before mining** checks adjacent lava and a 3 by 3 landing patch,
+including below the block. It contains exposed sources first and builds catch floors over
+unsafe shafts. Preparation approaches a reachable placement face, including from lower
+floors, instead of requiring the square above lava to be empty. A live mining gate checks
+again before each swing, including Baritone's route digging. Only solid, nonflammable blocks
+are accepted as supplies while protection is on.
 
-Running out of **Search budget** is not a failure. The best partial route is walked anyway
-and replanned from further along, which is why a low budget makes the bot wander toward
-things rather than stand still thinking about them.
+Reachable protection blocks are placed directly, with a short confirmation deadline.
+The HUD says **Covering liquid** only when the placement replaces fluid; catch floors say
+**Protecting drops**. Removing the target cancels its preparation immediately. Missing
+supplies, rejected placements and unsafe prerequisite mining defer that target so other
+blocks can be worked on.
 
-Hazards use the same definition the wander steering uses, so a route is never planned through
-something the dodge would refuse to walk into.
+Protection requires reachable faces and sufficient supplies. Completely enclosed lava,
+server-protected terrain, unloaded chunks or exhausted building supplies can leave a target
+deferred. The mod does not promise that every block can be recovered without loss on every
+server; it refuses known unsafe mining when protection is enabled.
+
+### Loaded terrain
+
+**Search all loaded terrain** scans the full height of chunks within the client view distance,
+including blocks hidden behind walls. Turn it off to use the radius and height band. Scans
+run in bounded slices, checking nearby chunks first and skipping irrelevant section palettes.
+The client cannot inspect chunks or entities the server has not sent. **Only choose blocks
+I can see** is an optional additional filter.
 
 ### What it breaks
 
@@ -607,7 +636,19 @@ game itself calls unbreakable are excluded and cannot be added back.
 
 The scan skips whole 16-block sections whose palette contains nothing selected, so a wide
 radius through plain stone is nearly free. Only chunks the server has already sent are ever
-read.
+read. The cap keeps the nearest targets across the whole scan rather than whichever chunks
+happen to be iterated first. Every pass also counts matches that were omitted from that cap,
+deferred for retry/liquid safety, or hidden by perception; an empty shortlist is therefore
+never treated as an empty base. Completion requires repeated complete empty passes, and an
+unloaded part of the search circle keeps the job scanning unless explicitly allowed in the
+menu. **Only choose blocks I can see** optionally requires a clear ray and a configurable view
+cone, while hidden matches still prevent a false finished signal.
+Optional storage-last ordering keeps inventories and their drops until the other selected
+machinery is gone. Fresh tuning favours nearby work instead.
+
+Failed or protected targets are placed on a retry timer. Moving far enough to obtain a new
+vantage point can retry them early; an isolated impossible block is never immediately selected
+again just because it is the only block in the list.
 
 ### Inventory
 
@@ -623,11 +664,55 @@ meant.
 Nothing is sold until you pick slots. That is the whole safety story — there is no clever
 heuristic deciding what is valuable.
 
+The route budgets placements against the blocks actually available on the hotbar after the
+configured emergency reserve. It will not promise a ten-block bridge with one expendable
+block, and falling blocks are never treated as stable scaffolding. Restocking runs whenever
+the hotbar supply is exhausted, not only after the whole inventory becomes full.
+
+### Storage
+
+Enable **Store collected items in containers** in Inventory or the new **Storage** subsection.
+Click a carried shulker in the familiar inventory grid, or inspect a nearby placed chest,
+barrel or shulker. Select its destination slots and item types. Each container has its own
+filter; an empty filter stores nothing. Protected stacks are excluded. Matching stacks already
+in the bag are included, and storage selections take priority over selling, junk and scaffolding.
+Configured world containers are protected from the bot's mining while storage is enabled.
+
+Choose inventory order, item name, largest stack first or filter selection order, and fill
+by rows, reverse rows or columns. These control new deposits; existing contents are not rearranged.
+Full/incompatible cells are skipped without displacing their contents. Routes are tried in the
+order you added them, allowing overflow into another selected container.
+
+Click an **ender chest item** to inspect its contents. The bot requires a Silk Touch pickaxe
+anywhere in the inventory, finds a safe nearby spot, places/opens the chest, reads its contents,
+and recovers the chest before returning to the settings. This inspection also works with movement
+off. The ender-chest grid lets you select individual shulkers and configure their contents, or
+choose the Ender chest destination to store loose items directly into selected slots.
+
+During storage, selected ender shulkers are taken out one at a time, placed directly beside
+the ender chest, filled and recovered. **Return shulkers to their original ender-chest slots**
+returns each box to the exact slot it came from. With this off, the filled boxes stay in your
+bag and their routes follow them there. The bot recovers its placed ender chest with Silk Touch.
+
+Keep two unprotected bag slots empty and at least one hotbar slot unprotected for these trips.
+Placement requires solid, clear ground, at least five blocks of clearance from liquids (including
+waterlogged blocks), and distance from every other player (32 blocks by default, minimum 16).
+The bot searches loaded terrain within 16 blocks and uses routes that do not edit terrain.
+Safety is rechecked while working. A missing/changed shulker, occupied return slot, interrupted
+menu, refused transfer or unsafe site stops the trip and reports its container sites. Check and
+recover anything left there before clearing the storage stop. Inspect/reselect containers after
+manually changing their contents. Server menu transfers use paced, confirmed inventory updates.
+
+`./gradlew runClientGameTest` includes real client/server storage checks for exact-slot transfers,
+partial stacks, protected items, portable shulker recovery and ender-chest workflows.
+
 ### Selling
 
 Sends the command, waits for the menu, shift-clicks everything from the sale slots into it,
 clicks the confirm button, waits, closes. Every step waits a randomised moment, and no delay
-can be set to zero.
+can be set to zero. An optional menu-title check prevents clicks in an unexpected container;
+the menu id is pinned for the rest of the transaction, and a transfer is counted only after
+the inventory stack actually changes.
 
 The confirm button is found **by item** rather than by position — `lime_stained_glass_pane`
 by default. Position is the server's layout choice; the item is what you are actually looking
@@ -637,9 +722,10 @@ fallback for a server that does something else.
 
 ### Fighting
 
-It defends and does not hunt. **Only once something hits you** is on by default, and turning
-it off means swinging at things you may not be able to see — the same mistake as stopping for
-a chest through a wall, and flagged as such. Swings are discrete and wait for the attack
+It defends and does not hunt. **Only once something hits you** is on by default and remembers
+the attacker reported by vanilla, rather than assigning the damage to whichever mob happens
+to be nearest. Turning it off allows proactive attacks, but line of sight is still required.
+Swings are discrete and wait for the attack
 cooldown, with a randomised gap on top, because a perfectly periodic swing is a signature.
 
 Players are off by default. A bot that swings at people is a different thing from a bot that
@@ -654,8 +740,9 @@ pathfinder refuses to route through water at all — worth turning on for a base
 because otherwise a route along the bottom of one is a perfectly valid route as far as the
 search is concerned.
 
-**Not letting it spread** is **Cover water and lava**, on by default. Caps an exposed surface
-within a few blocks with a block before mining near it.
+**Not letting it spread** is **Cap liquid underfoot**. Lava is on by default and water is an
+independent opt-in. It only caps a square beside the feet; route bridges handle liquid in the
+way, and water-aware mode refuses to mine a wall that would flood the opened space.
 
 **Getting out** is **Come up for air**, on by default, and it is the only one of the three
 that helps once the bot is already under. It watches the air bar and drops everything —
@@ -689,24 +776,71 @@ Nothing here writes a rotation or a key. Each tick the job hands back an intent,
 controller pushes it through the same wobble, easing and camera filter a wandering bot uses.
 There is one camera in this mod and it does not know what job it is doing.
 
-Two knobs are specific to working, both on the Base destroyer tab. **Aim smoothing while
-working** is deliberately tighter than the wander camera: vanilla throws mining progress away
-the moment the crosshair leaves the block, so too much smoothing here does not mine slowly,
-it never finishes. **Aim wobble while working** scales the noise down rather than off — a
-rotation stream with no noise in it at all is the single easiest thing to pick out of a log,
-and mining is where the bot spends most of its rotations.
+The **Apply fast, smooth mining settings** button on the Base destroyer tab applies the new
+work-speed settings to existing profiles. It keeps block selections, inventory protection,
+and permissions to mine or bridge. Fresh configurations already use this tuning.
 
-**Reaction before each decision** sits in front of everything the job decides, so nothing
-lands on the same tick as the thing that caused it.
+Targets are re-ranked by distance from the current eye position. **Prefer blocks already
+in reach** favours visible blocks that can be mined immediately. Random selection only runs
+among near ties: by default at most three candidates, no more than 0.35 blocks beyond the
+nearest eligible target, on 20% of decisions. Set **Vary the target on this share** to zero
+for strict distance ordering within your chosen priorities. **Break storage last** is an
+optional priority and is off in the new tuning.
+
+A random aim point is chosen inside a visible face and held for the whole swing. Concave
+outlines also try their component shapes. **Aim point variation** controls the offset;
+**Aim smoothing while working** and **Maximum working turn per tick** control the camera.
+Base destroyer uses the navigation smoothing as a minimum for all its local actions, so setting
+navigation smoothing to 1 also gives mining and target changes full smoothing. Working smoothing
+also supports 1 and uses the same finite filter. Both turn-rate limits include the final wobble
+and any correction needed for a thin target.
+Working wobble is retained wherever possible and reduced when it would move the crosshair
+off a small target. The attack check uses the final camera rotation. Reducing noise never
+snaps the camera to a target or bypasses reach and ray checks.
+
+**Reaction before starting a target** runs before the first swing, with the camera already
+turning towards the target during the pause. It cannot insert a pause after mining starts.
+Fresh tuning uses 0.08-0.25 seconds on 20% of targets. Probability, duration, aim variation,
+wobble, turn rate and smoothing can all be adjusted independently.
+
+### Picking up drops and recovering routes
+
+A pickup journey keeps the same item until it disappears, leaves range or times out. Nearby
+items only get a direct approach when the player's full width fits along a supported,
+hazard-free corridor. Otherwise the pathfinder routes around the obstacle, even when the
+item is less than two blocks away. Pickup goals use the player's and item's bounding boxes,
+including height, instead of assuming a radius around the item's block is close enough.
+The final approach centres the player when a grid-square arrival is still out of pickup range.
+
+**Wait for pickup confirmation** allows a short settling period for pickup delay. Items that
+remain, or cannot be reached, are deferred for **Retry an unreachable drop after**; moving
+items become eligible earlier. **Collect for at most per batch** bounds the interruption so
+mining resumes between completed journeys. **Mine or bridge to reach drops** is enabled by
+default and uses the configured mining restrictions and placement budget.
+
+The native executor also checks physical progress independently of Baritone's busy flag.
+Searches receive a three-second deadline; stationary routes are replanned after about 2.5
+seconds with the default settings, with at most three failed attempts before deferring a
+target. Confirmed mining gets the configured block-breaking allowance. Critical moves finish
+landing before recovery releases the controls. The legacy executor returns its best partial
+route within three seconds and uses per-step progress checks and failed-edge memory.
+
+Run `gradlew build` for all executable regression checks, and `gradlew runClientGameTest`
+for survival-world navigation and mining tests. Test worlds live under `build/run/clientGameTest`.
+The test mod is excluded from the distribution jar.
+
+The unmodified dependency, source archive, license texts and provenance are in `libs/` and
+`src/main/resources/licenses/`. The build verifies the binary checksum and includes the
+corresponding Baritone source archive with the licenses in the distributable jar.
 
 ## What a server can see
 
 Worth being precise, because it is easy to worry about the wrong half.
 
-**Nothing about the movement itself can be caught.** The mod holds vanilla key bindings
-down. Vanilla reads them, vanilla physics computes the motion, vanilla sends the packet.
-There is no modified speed, no flight, no reach, no packet the client would not otherwise
-have sent. The server receives exactly what it would from a hand on the keyboard. The
+**The mechanics use vanilla-compatible input, but that is not an invisibility guarantee.**
+The mod holds key bindings; vanilla physics computes the motion and sends the ordinary
+movement packets. It does not add speed, flight or reach. A server can still infer automation
+from timing, duration, target choice and repeated behaviour. The
 container scan, the log, the map and the alert sound never touch the network at all: they
 read chunks the server already sent, and write files on this machine.
 
@@ -736,11 +870,11 @@ asked for rather than accidents:
 | **Stop on a storage cluster** | halting next to a base you cannot see |
 | **No time limit** | an unbroken multi-hour session is the oldest AFK heuristic there is |
 
-The base destroyer changes that calculus and the risk list says so. It is the one switch in
-the mod that is genuinely, unambiguously detectable: the scan reads blocks through walls and
-the bot then walks to them and mines them, for hours. Everything else in this mod is about
-how the bot *looks*. That switch is about what it *does*, and no amount of wobble makes
-walking straight to a block you have never seen into something a person did.
+The base destroyer changes that calculus and the risk list says so. With unrestricted
+perception it can read blocks through walls and then act on them; **Only blocks I can see**
+removes that specific hidden-information behaviour. It does not make automation undetectable:
+no amount of wobble or line-of-sight filtering can guarantee that repeated autonomous mining
+will look like a person to every server-side model.
 
 None of this makes automation allowed. Being hard to notice is not permission.
 

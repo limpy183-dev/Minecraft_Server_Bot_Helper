@@ -86,6 +86,7 @@ public final class Human {
 	/** Where the camera actually is, as opposed to where it is being asked to point. */
 	private double yawOut, pitchOut;
 	private boolean synced;
+	private final Turn workingYaw = new Turn(), workingPitch = new Turn(false);
 
 	/**
 	 * Tells the filter where the camera is right now, so the first tick after a start does not
@@ -95,6 +96,70 @@ public final class Human {
 		yawOut = yaw;
 		pitchOut = pitch;
 		synced = true;
+		workingYaw.sync(yaw);
+		workingPitch.sync(pitch);
+	}
+
+	/**
+	 * Finite, rate-limited turns. A two-stage moving average rounds acceleration and
+	 * braking instead of feeding the output back into the target. Every nonzero strength
+	 * settles within two ticks of the rate-limited heading arriving, including strength 1.
+	 * Raising smoothness changes the shape, not the turn rate or settling deadline.
+	 */
+	static final class Turn {
+		private final boolean angular;
+		private double heading, previous, midpoint, output, lastTarget, lastTargetDelta;
+		private boolean synced;
+		Turn() { this(true); }
+		Turn(boolean angular) { this.angular = angular; }
+
+		void sync(double angle) {
+			heading = previous = midpoint = output = angle;
+			lastTarget = angle;
+			lastTargetDelta = 0;
+			synced = true;
+		}
+
+		double next(double target, double strength, double rate) {
+			if (!synced) sync(target);
+			strength = Math.max(0, Math.min(1, strength));
+			rate = Math.max(0.05, rate);
+			double targetDelta = angular ? wrap(target - lastTarget) : target - lastTarget;
+			// Cancel the fixed one-tick tracking delay for a steadily moving aim point.
+			// Placement faces move across the view during a jump; trailing them can miss
+			// the entire placement window. A target switch must not be extrapolated.
+			double lead = strength > 0 && targetDelta * lastTargetDelta > 0 && Math.abs(targetDelta) <= rate
+					&& Math.abs(targetDelta - lastTargetDelta) <= rate * 0.5 ? targetDelta : 0;
+			lastTarget = target;
+			lastTargetDelta = targetDelta;
+			double delta = angular ? wrap(target + lead - heading) : target + lead - heading;
+			heading += Math.max(-rate, Math.min(rate, delta));
+			double nextMidpoint = (heading + previous) * 0.5;
+			double rounded = (nextMidpoint + midpoint) * 0.5;
+			// A symmetric kernel keeps one tick of group delay at every nonzero strength.
+			// Blending with the newest sample instead made stronger smoothing lag further.
+			double want = strength == 0 ? heading : previous + strength * (rounded - previous);
+			// A live change of strength/rate must respect the new speed limit too.
+			double error = angular ? wrap(target - output) : target - output;
+			double step = Math.max(-rate, Math.min(rate, want - output));
+			// Stop at the real target if prediction reaches it first, including a sudden stop.
+			output += Math.max(Math.min(0, error), Math.min(Math.max(0, error), step));
+			previous = heading;
+			midpoint = nextMidpoint;
+			return output;
+		}
+	}
+
+	public double workingYawFor(Config cfg, double target, double smoothing, double wobble, double rate) {
+		if (!synced) syncCamera(target, pitchOut);
+		yawOut = workingYaw.next(target, smoothing, rate);
+		return yawOut + yaw(cfg) * wobble;
+	}
+
+	public double workingPitchFor(Config cfg, double target, double smoothing, double wobble, double rate) {
+		if (!synced) syncCamera(yawOut, target);
+		pitchOut = workingPitch.next(Math.max(-90, Math.min(90, target)), smoothing, rate);
+		return Math.max(-90, Math.min(90, pitchOut + pitch(cfg) * wobble));
 	}
 
 	/** Degrees into -180..180, so 350 to 10 is a 20° turn the short way, not 340° the long way. */
@@ -137,10 +202,29 @@ public final class Human {
 	 *                    to pick out.
 	 */
 	public double yawFor(Config cfg, double target, double smoothing, double wobbleScale) {
+		return yawFor(cfg, target, smoothing, wobbleScale, 180);
+	}
+
+	public double yawFor(Config cfg, double target, double smoothing, double wobbleScale, double maxStep) {
 		if (!synced) syncCamera(target, pitchOut);
-		yawOut = wrap(smooth(yawOut, target, smoothing));
+		yawOut = wrap(limitedSmooth(yawOut, target, smoothing, maxStep));
+		workingYaw.sync(yawOut);
 		return yawOut + yaw(cfg) * wobbleScale;
 	}
+
+	static double limitedSmooth(double current, double target, double smoothing, double maxStep) {
+		double change = wrap(smooth(current, target, smoothing) - current);
+		return current + Math.max(-maxStep, Math.min(maxStep, change));
+	}
+
+	static double limitedPitch(double current, double target, double smoothing, double maxStep) {
+		double change = (Math.max(-90, Math.min(90, target)) - current)
+				* (1 - Math.max(0, Math.min(0.95, smoothing)));
+		return current + Math.max(-maxStep, Math.min(maxStep, change));
+	}
+
+	public double cleanYaw() { return yawOut; }
+	public double cleanPitch() { return pitchOut; }
 
 	/**
 	 * The pitch to set this tick. The wobble goes on after the filter, never before it —
@@ -152,8 +236,13 @@ public final class Human {
 	}
 
 	public double pitchFor(Config cfg, double target, double smoothing, double wobbleScale) {
+		return pitchFor(cfg, target, smoothing, wobbleScale, 180);
+	}
+
+	public double pitchFor(Config cfg, double target, double smoothing, double wobbleScale, double maxStep) {
 		if (!synced) syncCamera(yawOut, target);
-		pitchOut = smooth(pitchOut, Math.max(-90, Math.min(90, target)), smoothing);
+		pitchOut = limitedPitch(pitchOut, target, smoothing, maxStep);
+		workingPitch.sync(pitchOut);
 		return Math.max(-90, Math.min(90, pitchOut + pitch(cfg) * wobbleScale));
 	}
 
@@ -182,6 +271,76 @@ public final class Human {
 	public static void main(String[] args) {
 		Config cfg = new Config();
 		cfg.clampAll();
+		// Fixed targets settle on the same tick at .35, .8 and 1, across both rate sliders.
+		for (double rate : new double[]{2, 8, 24, 90}) {
+			for (double target : new double[]{-179, -90, -0.125, 0, 0.125, 90, 179, 181, 359}) {
+				int baseline = -1;
+				double baselineLag = 0;
+				for (int setting = 0; setting <= 20; setting++) {
+					double strength = setting / 20.0;
+					Turn turn = new Turn();
+					turn.sync(0);
+					double angle = 0, largest = 0, totalLag = 0;
+					int arrived = 0, deadline = (int) Math.ceil(Math.abs(wrap(target)) / rate) + 2;
+					for (int tick = 1; tick <= deadline + 2; tick++) {
+						double next = turn.next(target, strength, rate);
+						largest = Math.max(largest, Math.abs(next - angle));
+						assert Math.abs(wrap(target - next)) <= Math.abs(wrap(target - angle)) + 1e-9 : "turn overshot";
+						angle = next;
+						totalLag += Math.abs(wrap(target - next));
+						if (arrived == 0 && Math.abs(wrap(target - angle)) < 1e-9) arrived = tick;
+					}
+					assert largest <= rate + 1e-9 : "finite turn exceeded speed limit";
+					assert arrived > 0 && arrived <= Math.max(1, deadline) : "finite turn did not settle";
+					if (setting == 1) { baseline = arrived; baselineLag = totalLag; }
+					if (setting > 1) {
+						assert arrived == baseline : "raising smoothing delayed arrival";
+						assert Math.abs(totalLag - baselineLag) < 1e-7 : "raising smoothing added tracking lag";
+					}
+				}
+			}
+		}
+		// Moving endpoints, reversals and live slider changes must never strand an old heading.
+		Turn changing = new Turn();
+		changing.sync(179);
+		double prior = 179;
+		for (int tick = 0; tick < 1000; tick++) {
+			double rate = tick % 2 == 0 ? 2 : 90;
+			double next = changing.next(wrap(tick * 17), (tick % 21) / 20.0, rate);
+			assert Double.isFinite(next) && Math.abs(next - prior) <= rate + 1e-9;
+			prior = next;
+		}
+		for (int tick = 0; tick < 100; tick++) prior = changing.next(-179, 1, 2);
+		assert Math.abs(wrap(prior + 179)) < 1e-9 : "target switch never recovered";
+		CameraSmoothing.selfCheck();
+		Turn vertical = new Turn(false);
+		vertical.sync(-90);
+		for (int tick = 0; tick < 92; tick++) {
+			double angle = vertical.next(90, 1, 2);
+			assert angle >= -90 && angle <= 90 : "vertical turn wrapped past the pitch limit";
+		}
+		assert vertical.next(90, 1, 2) == 90 : "vertical turn took the yaw shortcut";
+		assert limitedPitch(-90, 90, 0, 24) == -66;
+		for (double strength : new double[]{0.35, 0.8, 1}) {
+			Turn tracking = new Turn(false);
+			tracking.sync(0);
+			for (int tick = 1; tick <= 30; tick++) {
+				double angle = tracking.next(tick * 2, strength, 8);
+				if (tick >= 5) assert Math.abs(angle - tick * 2) < 1e-9 : "moving aim point lagged";
+			}
+			for (int tick = 0; tick < 10; tick++) assert tracking.next(60, strength, 8) == 60 : "tracking overshot a stopped target";
+		}
+		System.out.println("Finite-turn rate/strength matrix and frame continuity checks passed");
+		for (double smoothing : new double[]{0, 0.35, 0.95}) {
+			double yaw = 170;
+			for (int i = 0; i < 400; i++) {
+				double next = limitedSmooth(yaw, -20, smoothing, 24);
+				assert Math.abs(wrap(next - yaw)) <= 24.00001 : "working camera exceeded turn limit";
+				assert Math.abs(wrap(-20 - next)) <= Math.abs(wrap(-20 - yaw)) + 1e-9 : "working aim overshot";
+				yaw = next;
+			}
+			assert Math.abs(wrap(yaw + 20)) < 0.001 : "smooth working aim never settled";
+		}
 
 		// the amplitude slider has to mean something
 		for (double amp : new double[]{0.2, 0.55, 2.0}) {

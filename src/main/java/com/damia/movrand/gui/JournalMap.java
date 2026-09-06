@@ -64,7 +64,7 @@ public final class JournalMap extends Widgets.Element {
 	}
 
 	/** Read once a frame; see the note on the same field in {@link AreaMap}. */
-	private double maxSpanBlocks = 32768;
+	private double maxSpanBlocks = 32_768 * 16;
 
 	/** Pixels per block. */
 	private double scale() {
@@ -109,7 +109,7 @@ public final class JournalMap extends Widgets.Element {
 	public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
 		lastMouseX = mx;
 		lastMouseY = my;
-		maxSpanBlocks = WorldBounds.maxSpanBlocks(32768);
+		maxSpanBlocks = WorldBounds.maxSpanBlocks(32_768 * 16);
 		Minecraft mc = Minecraft.getInstance();
 		if (!centred || (cfg.mapFollowPlayer && !dragging)) {
 			if (mc.player != null) {

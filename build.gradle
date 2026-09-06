@@ -2,13 +2,28 @@ plugins {
 	id 'net.fabricmc.fabric-loom' version "${loom_version}"
 }
 
+repositories { flatDir { dirs 'libs' } }
+
 dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_api_version}"
+	// Pinned, unmodified official build. Kept separate inside the mod for replacement and LGPL compliance.
+	implementation 'com.github.cabaletta:baritone-unoptimized-fabric:1.19.0'
+	include 'com.github.cabaletta:baritone-unoptimized-fabric:1.19.0'
+}
+
+tasks.register('verifyBaritone') {
+    inputs.file('libs/baritone-unoptimized-fabric-1.19.0.jar')
+    doLast {
+        def digest = java.security.MessageDigest.getInstance('SHA-256').digest(file('libs/baritone-unoptimized-fabric-1.19.0.jar').bytes).encodeHex().toString()
+        if (digest != 'ba1a268856e0caee7f828b6663f26670138d5c348fdb81b8c7859809f73e8d2f') throw new GradleException('Baritone dependency checksum mismatch')
+    }
 }
 
 processResources {
+    dependsOn tasks.named('verifyBaritone')
+    from('libs/baritone-1.19.0-source.zip') { into 'licenses' }
 	inputs.property "version", project.version
 	filesMatching("fabric.mod.json") {
 		expand "version": project.version
@@ -25,16 +40,63 @@ java {
 	targetCompatibility = JavaVersion.VERSION_25
 }
 
+fabricApi.configureTests {
+	createSourceSet = true
+	modId = 'movrand-terrain-tests'
+}
+
 // Runs a class's `main` self-check against the mod's real classpath.
 //   ./gradlew selfCheck -Pcheck=com.damia.movrand.Journal
 tasks.register('selfCheck', JavaExec) {
 	group = 'verification'
 	description = 'Run a self-check main() with assertions on'
 	classpath = sourceSets.main.runtimeClasspath
-	mainClass = project.findProperty('check') ?: 'com.damia.movrand.AreaCoverage'
+	mainClass = providers.gradleProperty('check').getOrElse('com.damia.movrand.AreaCoverage')
 	jvmArgs '-ea'
 	// Minecraft's log4j writes logs/latest.log relative to the working directory, and on a
 	// case-insensitive filesystem that lands inside the mod's own Logs folder. Keep it in run/.
 	workingDir = file('run')
 	doFirst { workingDir.mkdirs() }
+}
+
+// Every executable regression check, run by the normal `check`/`build` lifecycle. Keeping
+// these as separate JVMs makes failures name the subsystem and prevents static test state in
+// one check from leaking into the next.
+def regressionChecks = [
+	'AreaCoverage', 'Avoidance', 'Backpack', 'BaseDestroyer', 'BlockTargets', 'Bot', 'Combat',
+	'ContainerScanner', 'Deaths', 'DropCollector', 'Human', 'Journal', 'MovementController', 'NavProgress',
+	'MineSafety', 'NativeNavigation', 'PathFinder', 'Pathing', 'PathMove', 'PathRunner', 'Presets', 'Risks', 'Rng',
+	'SafeStop', 'Storage', 'WorldBounds'
+]
+
+def regressionTasks = regressionChecks.collect { checkName ->
+	tasks.register("selfCheck${checkName}", JavaExec) {
+		group = 'verification'
+		description = "Run the ${checkName} regression self-check"
+		classpath = sourceSets.main.runtimeClasspath
+		mainClass = "com.damia.movrand.${checkName}"
+		jvmArgs '-ea'
+		workingDir = file('run')
+		doFirst { workingDir.mkdirs() }
+	}
+}
+
+regressionTasks << tasks.register('selfCheckWidgets', JavaExec) {
+	group = 'verification'
+	description = 'Run the GUI widget regression self-check'
+	classpath = sourceSets.main.runtimeClasspath
+	mainClass = 'com.damia.movrand.gui.Widgets'
+	jvmArgs '-ea'
+	workingDir = file('run')
+	doFirst { workingDir.mkdirs() }
+}
+
+tasks.register('allSelfChecks') {
+	group = 'verification'
+	description = 'Run every in-source regression self-check'
+	dependsOn regressionTasks
+}
+
+tasks.named('check') {
+	dependsOn tasks.named('allSelfChecks')
 }

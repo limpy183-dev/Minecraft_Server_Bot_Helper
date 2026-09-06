@@ -45,6 +45,8 @@ public final class AreaMap extends Widgets.Element {
 	private int[] runs;
 	private int runCount;
 	private String runKey;
+	private java.util.List<AreaCoverage.Region> regions = java.util.List.of();
+	private static String worldScope = "";
 
 	public AreaMap(Config cfg, AreaCoverage area, int height) {
 		this.cfg = cfg;
@@ -58,7 +60,7 @@ public final class AreaMap extends Widgets.Element {
 	 * Read once a frame rather than per lookup: the projection is asked for this thousands of
 	 * times while rasterising, and a border is four field reads plus an allocation each time.
 	 */
-	private int maxViewChunks = 4096;
+	private int maxViewChunks = 32_768;
 
 	private int viewChunks() {
 		// never wider than the world - past the border there is nothing to draw
@@ -156,7 +158,14 @@ public final class AreaMap extends Widgets.Element {
 
 	@Override
 	public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
-		maxViewChunks = WorldBounds.maxSpanChunks(4096);
+		String currentScope = area.scope();
+		if (!worldScope.equals(currentScope)) {
+			worldScope = currentScope;
+			follow();
+			dragging = selecting = false;
+		}
+		regions = area.mapRegions();
+		maxViewChunks = WorldBounds.maxSpanChunks(32_768);
 		int size = gridSize();
 		int gx = gridX(), gy = gridY();
 		hovering = insideGrid(mx, my);
@@ -169,13 +178,13 @@ public final class AreaMap extends Widgets.Element {
 
 		double cell = cellSize();
 
-		drawSelection(g, gx, gy, size, accent);
+		for (AreaCoverage.Region region : regions) drawSelection(g, gx, gy, size, accent, region);
 		drawVisited(g, gx, gy, size, accent);
 		drawGridLines(g, gx, gy, size, cell);
 		drawWorldBorder(g, gx, gy, size);
 
 		// the selection outline
-		drawSelectionOutline(g, accent);
+		for (AreaCoverage.Region region : regions) drawSelectionOutline(g, accent, region);
 
 		// the current target
 		AreaCoverage.Target t = area.currentTarget();
@@ -221,14 +230,15 @@ public final class AreaMap extends Widgets.Element {
 	 * <p>A 2048-chunk view is four million cells. The screen has a couple of hundred rows
 	 * whatever the zoom, so that is what this iterates instead.
 	 */
-	private void drawSelection(GuiGraphicsExtractor g, int gx, int gy, int size, int accent) {
+	private void drawSelection(GuiGraphicsExtractor g, int gx, int gy, int size, int accent, AreaCoverage.Region region) {
+		boolean preview = dragging && region == regions.getLast();
 		int colour = Ui.mix(Ui.CARD, accent, 0.18);
 
 		// a drag previews the rectangle it would set, so the fill follows the cursor
-		int minCx = dragging ? Math.min(dragStartCx, dragNowCx) : area.minChunkX();
-		int maxCx = dragging ? Math.max(dragStartCx, dragNowCx) : area.maxChunkX();
-		int minCz = dragging ? Math.min(dragStartCz, dragNowCz) : area.minChunkZ();
-		int maxCz = dragging ? Math.max(dragStartCz, dragNowCz) : area.maxChunkZ();
+		int minCx = preview ? Math.min(dragStartCx, dragNowCx) : region.minX();
+		int maxCx = preview ? Math.max(dragStartCx, dragNowCx) : region.maxX();
+		int minCz = preview ? Math.min(dragStartCz, dragNowCz) : region.minZ();
+		int maxCz = preview ? Math.max(dragStartCz, dragNowCz) : region.maxZ();
 
 		double ccx = (minCx + maxCx) / 2.0;
 		double ccz = (minCz + maxCz) / 2.0;
@@ -239,7 +249,7 @@ public final class AreaMap extends Widgets.Element {
 			if (cz < minCz || cz > maxCz) continue;
 
 			int fromCx = minCx, toCx = maxCx;
-			if (cfg.areaCircular && !dragging) {
+			if (region.circular() && !preview) {
 				// the same test contains() makes, solved for the row rather than asked per cell
 				double dz = cz - ccz;
 				double half = radius * radius - dz * dz;
@@ -267,7 +277,7 @@ public final class AreaMap extends Widgets.Element {
 	 */
 	private void drawVisited(GuiGraphicsExtractor g, int gx, int gy, int size, int accent) {
 		String key = size + ":" + viewChunks() + ":" + firstChunkX() + ":" + firstChunkZ()
-				+ ":" + area.version();
+				+ ":" + area.version() + ":" + cfg.areaThisWorldOnly;
 		if (!key.equals(runKey)) {
 			runKey = key;
 			rebuildRuns(size);
@@ -283,22 +293,25 @@ public final class AreaMap extends Widgets.Element {
 		else java.util.Arrays.fill(mask, false);
 
 		int gx = gridX(), gy = gridY();
-		for (long chunk : area.visitedKeys()) {
-			int cx = (int) (chunk >> 32), cz = (int) chunk;
-			int sx = screenXOf(cx) - gx;
-			int sy = screenYOf(cz) - gy;
-			if (sx >= size || sy >= size) continue;
-			int x1 = Math.max(0, sx), y1 = Math.max(0, sy);
-			if (x1 >= size || y1 >= size) continue;
-			if (!area.contains(cx, cz)) continue;
+		for (AreaCoverage.Region region : regions) {
+			for (long chunk : region.visited()) {
+				int cx = (int) (chunk >> 32), cz = (int) chunk;
+				int sx = screenXOf(cx) - gx;
+				int sy = screenYOf(cz) - gy;
+				if (sx >= size || sy >= size) continue;
+				int x1 = Math.max(0, sx), y1 = Math.max(0, sy);
+				if (x1 >= size || y1 >= size) continue;
+				if (!region.contains(cx, cz)) continue;
 
-			// at least one pixel: zoomed out, a whole chunk is narrower than one
-			int x2 = Math.min(size, Math.max(x1 + 1, screenXOf(cx + 1) - gx));
-			int y2 = Math.min(size, Math.max(y1 + 1, screenYOf(cz + 1) - gy));
-			for (int py = y1; py < y2; py++) {
-				int base = py * size;
-				for (int px = x1; px < x2; px++) mask[base + px] = true;
+				// at least one pixel: zoomed out, a whole chunk is narrower than one
+				int x2 = Math.min(size, Math.max(x1 + 1, screenXOf(cx + 1) - gx));
+				int y2 = Math.min(size, Math.max(y1 + 1, screenYOf(cz + 1) - gy));
+				for (int py = y1; py < y2; py++) {
+					int base = py * size;
+					for (int px = x1; px < x2; px++) mask[base + px] = true;
+				}
 			}
+
 		}
 
 		runCount = 0;
@@ -373,11 +386,12 @@ public final class AreaMap extends Widgets.Element {
 		if (y2 >= gy && y2 <= gy + size) Ui.rect(g, cx1, y2, cx2 - cx1, 1, Ui.WORLD_EDGE);
 	}
 
-	private void drawSelectionOutline(GuiGraphicsExtractor g, int accent) {
-		int minCx = dragging ? Math.min(dragStartCx, dragNowCx) : area.minChunkX();
-		int maxCx = dragging ? Math.max(dragStartCx, dragNowCx) : area.maxChunkX();
-		int minCz = dragging ? Math.min(dragStartCz, dragNowCz) : area.minChunkZ();
-		int maxCz = dragging ? Math.max(dragStartCz, dragNowCz) : area.maxChunkZ();
+	private void drawSelectionOutline(GuiGraphicsExtractor g, int accent, AreaCoverage.Region region) {
+		boolean preview = dragging && region == regions.getLast();
+		int minCx = preview ? Math.min(dragStartCx, dragNowCx) : region.minX();
+		int maxCx = preview ? Math.max(dragStartCx, dragNowCx) : region.maxX();
+		int minCz = preview ? Math.min(dragStartCz, dragNowCz) : region.minZ();
+		int maxCz = preview ? Math.max(dragStartCz, dragNowCz) : region.maxZ();
 
 		int x1 = screenXOf(minCx), y1 = screenYOf(minCz);
 		int x2 = screenXOf(maxCx + 1), y2 = screenYOf(maxCz + 1);
@@ -390,7 +404,7 @@ public final class AreaMap extends Widgets.Element {
 		int cy2 = Math.max(gy, Math.min(gy + size, y2));
 		if (cx2 <= cx1 || cy2 <= cy1) return;
 
-		int colour = dragging ? Ui.WARN : accent;
+		int colour = preview ? Ui.WARN : accent;
 		Ui.rect(g, cx1, cy1, cx2 - cx1, 1, colour);
 		Ui.rect(g, cx1, cy2 - 1, cx2 - cx1, 1, colour);
 		Ui.rect(g, cx1, cy1, 1, cy2 - cy1, colour);

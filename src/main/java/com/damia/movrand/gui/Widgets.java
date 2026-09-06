@@ -34,6 +34,8 @@ public final class Widgets {
 		public String tip = "";
 		/** Non-empty when this setting could give the bot away. Drawn as a red edge. */
 		public String risk = "";
+		/** Non-empty for recommended settings. Drawn as a green edge. */
+		public String recommendation = "";
 		public boolean enabled = true;
 		protected double anim;
 
@@ -90,6 +92,12 @@ public final class Widgets {
 		public Element risk(String why) {
 			this.risk = why;
 			this.tip = tip.isEmpty() ? "Unsafe: " + why : tip + "   —   Unsafe: " + why;
+			return this;
+		}
+
+		public Element recommend(String why) {
+			this.recommendation = why;
+			this.tip = tip.isEmpty() ? "Recommended: " + why : tip + "   —   Recommended: " + why;
 			return this;
 		}
 
@@ -601,15 +609,17 @@ public final class Widgets {
 		}
 
 		/**
-		 * The item form of a block id, or empty when the block has no item — fire, water and
-		 * piston heads are all real blocks you cannot hold.
+		 * The item form of a block or an ordinary inventory item. Blocks with no item
+		 * (such as fire and water) remain empty.
 		 */
 		public static ItemStack stackOf(String id) {
 			try {
 				Identifier key = Identifier.tryParse(id.contains(":") ? id : "minecraft:" + id);
 				if (key == null) return ItemStack.EMPTY;
 				return BuiltInRegistries.BLOCK.getOptional(key)
-						.map(block -> new ItemStack(block)).orElse(ItemStack.EMPTY);
+						.map(block -> new ItemStack(block))
+						.orElseGet(() -> BuiltInRegistries.ITEM.getOptional(key)
+								.map(item -> new ItemStack(item)).orElse(ItemStack.EMPTY));
 			} catch (Exception | LinkageError e) {
 				return ItemStack.EMPTY; // no registry outside a game
 			}
