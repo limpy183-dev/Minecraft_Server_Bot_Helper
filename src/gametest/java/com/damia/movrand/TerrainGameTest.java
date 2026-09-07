@@ -11,6 +11,7 @@ import net.minecraft.world.level.block.Blocks;
 public final class TerrainGameTest implements FabricClientGameTest {
 	@Override public void runTest(ClientGameTestContext test) {
 		try (var world = test.worldBuilder().create()) {
+			miningAimPoints(test, world);
 			if (!Boolean.parseBoolean(System.getenv("MOVRAND_TERRAIN_ONLY"))) {
 				smoothingMatrix(test, world);
 				smoothEating(test, world);
@@ -75,6 +76,61 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			if (baritone.Baritone.getExecutor() instanceof java.util.concurrent.ExecutorService executor)
 				executor.shutdownNow();
 		}
+	}
+
+	/** Real outline/reach rays, sticky offsets and live toggle changes. */
+	private static void miningAimPoints(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		world.getServer().runCommand("tp @p 0.5 1 0.5 -90 0");
+		BlockPos pos = new BlockPos(2, 1, 0);
+		for (String block : new String[]{"stone", "redstone_wire", "iron_bars"}) {
+			world.getServer().runCommand("setblock 2 1 0 " + block);
+			world.getConnection().waitForClientboundPackets();
+			test.waitTicks(5);
+			test.runOnClient(mc -> {
+				Config cfg = new Config();
+				cfg.taskAimPointSpread = 0.4;
+				Bot.MiningAim aim = new Bot.MiningAim();
+				var face = Bot.visibleFace(mc, mc.player, pos, null);
+				var centre = face == null ? Bot.blockCentre(mc, pos) : Bot.facePoint(mc, pos, face);
+				var points = new java.util.HashSet<net.minecraft.world.phys.Vec3>();
+				for (int i = 0; i < 32; i++) {
+					aim.reset();
+					var point = aim.point(mc, mc.player, pos, face, cfg);
+					points.add(point);
+					double[] look = Bot.aimAt(mc.player, point);
+					if (!Bot.rotationHits(mc, mc.player, pos, look[0], look[1]))
+						throw new AssertionError("random aim missed " + block);
+					if (!point.equals(aim.point(mc, mc.player, pos, face, cfg)))
+						throw new AssertionError("aim moved during a swing");
+					cfg.taskAimRandomisation = false;
+					if (!centre.equals(aim.point(mc, mc.player, pos, face, cfg)))
+						throw new AssertionError("toggle did not clear cached variation");
+					cfg.taskAimRandomisation = true;
+				}
+				if (block.equals("stone") && points.size() < 2)
+					throw new AssertionError("mining aim never varied");
+			});
+		}
+		world.getServer().runCommand("setblock 2 1 0 stone");
+		world.getConnection().waitForClientboundPackets();
+		test.waitTicks(5);
+		test.runOnClient(mc -> {
+			Config cfg = new Config();
+			cfg.taskAimPointSpread = 0.4;
+			var previous = mc.player.position();
+			try {
+				// The face centre is reachable, but almost every lateral offset is beyond reach.
+				mc.player.setPos(2.001 - mc.player.blockInteractionRange(), 1.5 - mc.player.getEyeHeight(), 0.5);
+				for (int i = 0; i < 64; i++) {
+					var point = new Bot.MiningAim().point(mc, mc.player, pos, net.minecraft.core.Direction.WEST, cfg);
+					double[] look = Bot.aimAt(mc.player, point);
+					if (!Bot.rotationHits(mc, mc.player, pos, look[0], look[1]))
+						throw new AssertionError("variation lost a block at the edge of reach");
+				}
+			} finally { mc.player.setPos(previous); }
+			MovRand.LOG.info("Mining aim variation, toggle, thin shapes and reach checks passed");
+		});
 	}
 
 	/** Production mining, thin shapes, navigation and camera handoffs at slider boundaries. */

@@ -463,14 +463,15 @@ public final class Bot {
 		public void reset() { block = null; point = null; }
 
 		public Vec3 point(Minecraft mc, LocalPlayer player, BlockPos pos, Direction side, Config cfg) {
-			if (pos.equals(block) && side == face && spread == cfg.taskAimPointSpread && point != null
-					&& clearLine(mc, player, player.getEyePosition(), point, pos)) return point;
+			double requestedSpread = cfg.miningAimSpread();
+			if (pos.equals(block) && side == face && spread == requestedSpread && point != null
+					&& canHitPoint(mc, player, pos, point)) return point;
 			block = pos;
 			face = side;
-			spread = cfg.taskAimPointSpread;
+			spread = requestedSpread;
 			AABB box = blockBox(mc, pos);
 			point = offsetFacePoint(box, side, Rng.range(-spread, spread), Rng.range(-spread, spread));
-			if (clearLine(mc, player, player.getEyePosition(), point, pos)) return point;
+			if (canHitPoint(mc, player, pos, point)) return point;
 			point = side == null ? box.getCenter() : facePoint(box, side);
 			if (clearLine(mc, player, player.getEyePosition(), point, pos)) return point;
 			// Concave outlines (hoppers, stairs, fences) may have empty space at their bounds' centre.
@@ -484,6 +485,13 @@ public final class Bot {
 				}
 			}
 			return point;
+		}
+
+		private static boolean canHitPoint(Minecraft mc, LocalPlayer player, BlockPos pos, Vec3 point) {
+			if (!clearLine(mc, player, player.getEyePosition(), point, pos)) return false;
+			// A clear ray to an offset can still exceed reach. Check the actual camera ray too.
+			double[] look = aimAt(player, point);
+			return rotationHits(mc, player, pos, look[0], look[1]);
 		}
 	}
 
@@ -755,6 +763,15 @@ public final class Bot {
 	 * {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.Bot}
 	 */
 	public static void main(String[] args) {
+		Config aimConfig = new com.google.gson.Gson().fromJson("{}", Config.class);
+		assert aimConfig.taskAimRandomisation && aimConfig.miningAimSpread() == 0.18
+				: "new and existing configs must default to varied mining aim";
+		aimConfig.taskAimRandomisation = false;
+		aimConfig = aimConfig.copy();
+		assert !aimConfig.taskAimRandomisation && aimConfig.miningAimSpread() == 0
+				&& aimConfig.taskAimPointSpread == 0.18 : "disabling variation lost the saved amount";
+		aimConfig.taskAimRandomisation = true;
+		assert aimConfig.copy().miningAimSpread() == 0.18 : "re-enabling variation did not restore it";
 		for (Direction face : Direction.values()) {
 			AABB thin = new AABB(0, 0, 0, 1, 0.0625, 1);
 			for (double u : new double[]{-0.4, 0, 0.4}) {

@@ -1237,9 +1237,14 @@ public final class ConfigScreen extends Screen {
 		add(new Slider("Aim wobble while working", 0, 1, 0.05, 2, " x",
 				() -> cfg.taskAimWobbleScale, v -> cfg.taskAimWobbleScale = v)
 				.tip("Scales working wobble; 0 disables it. Noise is reduced when it would move the crosshair off a small block."));
+		add(new Toggle("Randomise mining aim points", () -> cfg.taskAimRandomisation,
+				v -> cfg.taskAimRandomisation = v)
+				.tip("Varies where you look and mine within each block, keeping the point steady while breaking it. "
+						+ "Only clear, reachable offsets are used; otherwise it falls back to the usual aim point. "
+						+ "Off uses the usual aim point and remembers the variation amount below."));
 		add(new Slider("Aim point variation", 0, 0.4, 0.01, 2, " x",
 				() -> cfg.taskAimPointSpread, v -> cfg.taskAimPointSpread = v)
-				.tip("A stable random offset inside each visible face, held for the whole swing. 0 uses the face centre."));
+				.tip("Amount used when Randomise mining aim points is on. The default gives moderate variation inside the face; 0 uses the face centre."));
 		add(new Slider("Maximum working turn per tick", 2, 90, 1, 0, "\u00b0",
 				() -> cfg.taskAimMaxTurnDeg, v -> cfg.taskAimMaxTurnDeg = v)
 				.tip("Caps large camera turns while preserving the smoothing setting. Higher turns to new blocks faster."));

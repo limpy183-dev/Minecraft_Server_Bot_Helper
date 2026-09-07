@@ -674,9 +674,15 @@ public final class Config {
 	public double taskAimSmoothing = 0.35;
 	/** How much view wobble to keep while aiming; reduced further when a small shape needs it. */
 	public double taskAimWobbleScale = 0.35;
+	/** Vary mining aim points without changing the saved amount of variation. */
+	public boolean taskAimRandomisation = true;
 	/** Fraction of a visible face used for a stable, randomly offset aim point. */
 	public double taskAimPointSpread = 0.18;
 	public double taskAimMaxTurnDeg = 24;
+
+	public double miningAimSpread() {
+		return taskAimRandomisation ? taskAimPointSpread : 0;
+	}
 
 	/** Apply just the work-speed controls; keep block selections and inventory permissions. */
 	public void fastDestroyerTuning() {

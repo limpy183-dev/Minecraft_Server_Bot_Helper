@@ -788,8 +788,11 @@ nearest eligible target, on 20% of decisions. Set **Vary the target on this shar
 for strict distance ordering within your chosen priorities. **Break storage last** is an
 optional priority and is off in the new tuning.
 
-A random aim point is chosen inside a visible face and held for the whole swing. Concave
-outlines also try their component shapes. **Aim point variation** controls the offset;
+**Randomise mining aim points** (on by default, under Base destroyer → Humanisation)
+chooses a random point inside a visible face and holds it for the whole swing. Off restores
+the usual aim point without losing the saved variation amount. Offsets must pass visibility
+and reach checks; otherwise aiming falls back to the usual point. Concave outlines also try
+their component shapes. **Aim point variation** controls the offset (default 0.18);
 **Aim smoothing while working** and **Maximum working turn per tick** control the camera.
 Jobs use navigation smoothing as a minimum for all local actions, so setting
 navigation smoothing to 1 also gives mining, target changes, and chest/shulker placement,
