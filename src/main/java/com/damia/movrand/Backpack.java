@@ -133,21 +133,32 @@ public final class Backpack {
 		return false;
 	}
 
-	/** Shift-click a stack of building blocks up to the hotbar when the bar has run dry. */
+	/** Move building blocks into an empty, unprotected hotbar slot when supplies run dry. */
 	public boolean restockHotbar(Minecraft mc, LocalPlayer player) {
-		if (!cfg.restockHotbar) return false;
+		if (!cfg.restockHotbar || mc.gameMode == null || player.containerMenu != player.inventoryMenu) return false;
 		if (Bot.buildingSlot(player, cfg) >= 0) return false;
 		Inventory inv = player.getInventory();
+		int destination = restockDestination(cfg, slot -> inv.getItem(slot).isEmpty());
+		if (destination < 0) return false;
 		for (int slot = Inventory.SELECTION_SIZE; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
 			if (!Bot.usableBuildingStack(stack, cfg)) continue;
 			click(mc, player, player.inventoryMenu, menuSlotFor(player.inventoryMenu, player, slot),
-					0, ContainerInput.QUICK_MOVE);
+					destination, ContainerInput.SWAP);
+			// A rejected/no-op click must not keep the destroyer in its tidying/pause loop.
+			if (inv.getItem(destination).isEmpty()) return false;
 			status = "moved " + stack.getHoverName().getString() + " to the hotbar";
 			return true;
 		}
 		return false;
+	}
+
+	static int restockDestination(Config cfg, java.util.function.IntPredicate empty) {
+		for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
+			if (!cfg.slotProtected(slot) && empty.test(slot)) return slot;
+		}
+		return -1;
 	}
 
 	// ------------------------------------------------------------- the sale
@@ -400,6 +411,11 @@ public final class Backpack {
 		assert cfg.slotProtected(0) && cfg.slotProtected(8) : "a listed slot must be protected";
 		assert !cfg.slotProtected(2) : "an unlisted slot must not be";
 		assert !cfg.slotProtected(-1) && !cfg.slotProtected(999) : "a nonsense slot is not protected";
+
+		assert restockDestination(cfg, slot -> false) == -1 : "a full hotbar must not trigger tidying";
+		assert restockDestination(cfg, cfg::slotProtected) == -1 : "empty protected slots cannot receive blocks";
+		assert restockDestination(cfg, slot -> true) == 2 : "restocking must skip protected slots";
+		assert restockDestination(cfg, slot -> slot == 7) == 7 : "restocking must target the actual empty slot";
 
 		// Protection beats sale, always and without the user having to keep the two lists
 		// consistent. Getting this backwards sells the thing they most wanted kept.

@@ -142,7 +142,7 @@ public final class Widgets {
 
 		@Override
 		public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
-			Ui.text(g, f, Ui.elide(f, body, w), x, y + 2, colour);
+			Ui.textElided(g, f, body, w, x, y + 2, colour);
 		}
 	}
 
@@ -161,7 +161,7 @@ public final class Widgets {
 		@Override
 		public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
 			Ui.text(g, f, key, x, y + 4, Ui.TEXT_MUTED);
-			Ui.textRight(g, f, Ui.elide(f, value.get(), w - f.width(key) - 12), x + w, y + 4, colour.get());
+			Ui.textRightElided(g, f, value.get(), w - f.width(key) - 12, x + w, y + 4, colour.get());
 		}
 	}
 
@@ -187,7 +187,7 @@ public final class Widgets {
 			boolean hover = hovered(mx, my);
 			approach(on ? 1 : 0);
 
-			Ui.text(g, f, Ui.elide(f, label, w - TRACK_W - 16), x, y + (h - 8) / 2, enabled ? Ui.TEXT : Ui.TEXT_FAINT);
+			Ui.textElided(g, f, label, w - TRACK_W - 16, x, y + (h - 8) / 2, enabled ? Ui.TEXT : Ui.TEXT_FAINT);
 
 			int tx = x + w - TRACK_W;
 			int ty = y + (h - TRACK_H) / 2;
@@ -394,7 +394,7 @@ public final class Widgets {
 			int bx = x + w - bw;
 			Ui.card(g, bx, y, bw, h, 5, Ui.mix(Ui.CARD, Ui.CARD_HOVER, anim),
 					Ui.mix(Ui.BORDER, accent, anim * 0.8));
-			Ui.textCentre(g, f, value, bx + bw / 2, y + (h - 8) / 2, enabled ? Ui.TEXT : Ui.TEXT_FAINT);
+			Ui.textCentreElided(g, f, value, bw - 28, bx + bw / 2, y + (h - 8) / 2, enabled ? Ui.TEXT : Ui.TEXT_FAINT);
 			Ui.text(g, f, "‹", bx + 6, y + (h - 8) / 2, Ui.mix(Ui.TEXT_FAINT, accent, anim));
 			Ui.text(g, f, "›", bx + bw - 10, y + (h - 8) / 2, Ui.mix(Ui.TEXT_FAINT, accent, anim));
 		}
@@ -437,7 +437,7 @@ public final class Widgets {
 			int border = primary ? Ui.shade(accent, 1.25) : Ui.mix(Ui.BORDER, accent, anim * 0.7);
 			Ui.card(g, x, y, w, h, 5, enabled ? fill : Ui.CARD, enabled ? border : Ui.BORDER_SOFT);
 			int textColour = !enabled ? Ui.TEXT_FAINT : primary ? 0xFF0B0B12 : Ui.TEXT;
-			Ui.textCentre(g, f, Ui.elide(f, label.get(), w - 10), x + w / 2, y + (h - 8) / 2, textColour);
+			Ui.textCentreElided(g, f, label.get(), w - 10, x + w / 2, y + (h - 8) / 2, textColour);
 		}
 
 		@Override
@@ -800,7 +800,7 @@ public final class Widgets {
 
 			Ui.card(g, x, y, w, h, 6, Ui.mix(Ui.CARD, Ui.CARD_HOVER, hover ? 0.6 : 0),
 					Ui.mix(Ui.BORDER_SOFT, accent, anim));
-			Ui.text(g, f, Ui.elide(f, title, headWidth()), x + 10, y + 11, Ui.TEXT);
+			Ui.textElided(g, f, title, headWidth(), x + 10, y + 11, Ui.TEXT);
 
 			int ty = y + 25;
 			for (String line : wrapped) {
@@ -810,7 +810,7 @@ public final class Widgets {
 			ty += 4;
 			for (String b : bullets) {
 				Ui.roundRect(g, x + 12, ty + 2, 3, 3, 1, accent);
-				Ui.text(g, f, Ui.elide(f, b, w - 30), x + 20, ty, Ui.TEXT_FAINT);
+				Ui.textElided(g, f, b, w - 30, x + 20, ty, Ui.TEXT_FAINT);
 				ty += 10;
 			}
 
@@ -1016,6 +1016,13 @@ public final class Widgets {
 	/** {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.gui.Widgets} */
 	public static void main(String[] args) {
 		ItemGrid.selfCheck();
+		assert Ui.textHoverHit(true, true, 10, 20, 10, 20, 50, 9);
+		assert Ui.textHoverHit(true, true, 59, 28, 10, 20, 50, 9);
+		assert !Ui.textHoverHit(false, true, 10, 20, 10, 20, 50, 9) : "Unclipped text needs no tooltip";
+		assert !Ui.textHoverHit(true, false, 10, 20, 10, 20, 50, 9) : "Scrolled-out text must not hover";
+		assert !Ui.textHoverHit(true, true, 60, 20, 10, 20, 50, 9);
+		assert !Ui.textHoverHit(true, true, 10, 29, 10, 20, 50, 9);
+		assert !Ui.textHoverHit(true, true, 9, 20, 10, 20, 50, 9);
 		System.out.println("Widgets self-check passed");
 	}
 }

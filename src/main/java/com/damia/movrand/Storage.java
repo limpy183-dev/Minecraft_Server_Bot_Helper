@@ -65,7 +65,7 @@ public final class Storage {
         public boolean accepts(String item) { return items.contains(id(item)); }
     }
 
-    private enum Phase { IDLE, SITE, TRAVEL, PREPARE, PLACE_ENDER, OPEN_ENDER, TAKE,
+    private enum Phase { IDLE, SITE, SEEK, TRAVEL, PREPARE, PLACE_ENDER, OPEN_ENDER, TAKE,
         PLACE_BOX, OPEN_DEST, DEPOSIT, BREAK_BOX, PICK_BOX, REOPEN_ENDER, RETURN,
         BREAK_ENDER, PICK_ENDER, NEXT, FAILED }
     private final Config cfg;
@@ -77,6 +77,9 @@ public final class Storage {
     private List<ItemStack> enderView = List.of();
     private String viewWorld = "";
     private BlockPos stand, enderPos, boxPos, boxWork;
+    private BlockPos searchGoal;
+    private double searchYaw;
+    private final Set<BlockPos> unreachableSites = new HashSet<>();
     private boolean enderPlaced, boxPlaced, preview, returnBoxes;
 	private boolean placementAttempted;
 	private int placementCount;
@@ -223,10 +226,14 @@ public final class Storage {
             fail(mc, "Another screen interrupted storage"); return steer;
         }
         PathMove.Ctx ctx = new PathMove.Ctx(mc, mc.player, mc.level, cfg);
-        if (++ticks > (phase == Phase.TRAVEL ? 1200 : 600)) {
+        ++ticks;
+        if (phase == Phase.TRAVEL && ticks > 1200) {
+            retrySite(); return steer;
+        }
+        if (phase != Phase.SEEK && ticks > 600 && phase != Phase.TRAVEL) {
             fail(mc, "Timed out: " + phase); return steer;
         }
-        if (phase != Phase.SITE && phase != Phase.TRAVEL && phase != Phase.NEXT
+        if (phase != Phase.SITE && phase != Phase.SEEK && phase != Phase.TRAVEL && phase != Phase.NEXT
                 && !safe(ctx, mc.player.blockPosition())) {
             fail(mc, "Storage area became unsafe"); return steer;
         }
@@ -241,6 +248,7 @@ public final class Storage {
         }
         switch (phase) {
             case SITE -> findSite(ctx);
+            case SEEK -> seekSite(ctx, steer);
             case TRAVEL -> travel(ctx, steer);
             case PREPARE -> prepare(ctx);
             case PLACE_ENDER -> {
@@ -334,6 +342,7 @@ public final class Storage {
     }
     private void startTarget(Target t) {
         target = t; stand = enderPos = boxPos = boxWork = null;
+        searchGoal = null; searchYaw = sessionPlayer.getYRot(); unreachableSites.clear();
         enderPlaced = boxPlaced = false; menuId = -1; handSlot = -1;
         boxInventorySlot = enderInventorySlot = pickInventorySlot = -1;
         boxStack = ItemStack.EMPTY; transfer = null;
@@ -352,22 +361,22 @@ public final class Storage {
         if (needsEnder() && silkPick(ctx.player()) < 0) { fail(ctx.mc(), "A Silk Touch pickaxe with durability is required"); return; }
         BlockPos origin = target.kind == Kind.WORLD ? target.pos() : ctx.player().blockPosition();
         if (target.kind == Kind.WORLD && !worldMatches(ctx)) { fail(ctx.mc(), "Selected container is missing or in another dimension"); return; }
-        // ponytail: bounded loaded-area search; distant safe sites need a separate user journey.
+        // Scan locally, then walk farther to load another area if necessary.
         for (int r = 0; r <= 16; r++) for (int dx = -r; dx <= r; dx++) for (int dz = -r; dz <= r; dz++) {
             if (Math.max(Math.abs(dx), Math.abs(dz)) != r) continue;
             for (int dy : new int[]{0, 1, -1, 2, -2}) {
                 BlockPos p = origin.offset(dx, dy, dz);
-                if (!floor(ctx, p) || !safe(ctx, p)) continue;
+                if (unreachableSites.contains(p) || !floor(ctx, p) || !safe(ctx, p)) continue;
                 if (target.kind == Kind.WORLD) {
                     if (!Bot.canWorkFrom(ctx.level(), ctx.player(), p.getX(), p.getY(), p.getZ(), target.pos(),
                             Bot.blockCentre(ctx.mc(), target.pos()), Math.min(4, ctx.player().blockInteractionRange()))) continue;
-                    stand = p; go(Phase.TRAVEL); return;
+                    nav.reset(); stand = p; go(Phase.TRAVEL); return;
                 }
                 for (Direction d : Direction.Plane.HORIZONTAL) {
                     BlockPos e = p.relative(d), b = e.relative(d.getClockWise()), work = p.relative(d.getClockWise());
                     if (!floor(ctx, e) || !safe(ctx, e) || !floor(ctx, b) || !safe(ctx, b)
                             || !floor(ctx, work) || !safe(ctx, work)) continue;
-                    stand = p;
+                    nav.reset(); stand = p;
                     enderPos = needsEnder() ? e : null;
                     boxPos = needsEnder() ? b : e;
                     boxWork = needsEnder() ? work : p;
@@ -375,7 +384,49 @@ public final class Storage {
                 }
             }
         }
-        fail(ctx.mc(), "No loaded safe spot within 16 blocks (players, hazards or liquid within 5 blocks)");
+        if (phase != Phase.SEEK) go(Phase.SEEK);
+        status = target.kind == Kind.WORLD ? "Waiting for a safe spot beside the selected container"
+                : "Moving to find a safe storage spot";
+    }
+    private void seekSite(PathMove.Ctx ctx, Bot.Steer steer) {
+        if (ticks % 40 == 0) {
+            findSite(ctx);
+            if (phase != Phase.SEEK) return;
+        }
+        // A fixed container cannot follow us; retry its working area without placing anything.
+        if (target.kind == Kind.WORLD) return;
+        if (searchGoal == null) {
+            BlockPos origin = ctx.player().blockPosition();
+            double best = Double.NEGATIVE_INFINITY;
+            double yaw = Math.toRadians(searchYaw);
+            for (int dx = -12; dx <= 12; dx++) for (int dz = -12; dz <= 12; dz++) {
+                if (Math.max(Math.abs(dx), Math.abs(dz)) != 12) continue;
+                for (int dy : new int[]{0, 1, -1, 2, -2}) {
+                    BlockPos p = origin.offset(dx, dy, dz);
+                    if (!floor(ctx, p) || Avoidance.hazardAt(ctx.level(), p, cfg)
+                            || Avoidance.hazardAt(ctx.level(), p.below(), cfg)) continue;
+                    double score = -dx * Math.sin(yaw) + dz * Math.cos(yaw) - Math.abs(dy);
+                    if (score > best) { best = score; searchGoal = p; }
+                }
+            }
+            if (searchGoal == null) {
+                status = "Waiting for a walkable route to a safe storage spot";
+                pause = 20; return;
+            }
+        }
+        BlockPos goal = searchGoal;
+        Pathing.Nav result = nav.tick(ctx, steer, goal,
+                (x, y, z) -> x == goal.getX() && y == goal.getY() && z == goal.getZ(), Set.of(), false);
+        if (result == Pathing.Nav.ARRIVED || result == Pathing.Nav.NO_ROUTE || ticks >= 1200) {
+            nav.reset(); searchGoal = null;
+            if (result != Pathing.Nav.ARRIVED) searchYaw += 90;
+            ticks = 0;
+            findSite(ctx);
+        }
+    }
+    private void retrySite() {
+        unreachableSites.add(stand);
+        nav.reset(); searchGoal = null; go(Phase.SITE);
     }
     private void travel(PathMove.Ctx ctx, Bot.Steer steer) {
         if (!safe(ctx, stand) || !floor(ctx, stand)) { nav.reset(); go(Phase.SITE); return; }
@@ -388,7 +439,7 @@ public final class Storage {
         }
         Pathing.Nav result = nav.tick(ctx, steer, stand,
                 (x, y, z) -> x == stand.getX() && y == stand.getY() && z == stand.getZ(), Set.of(), false);
-        if (result == Pathing.Nav.NO_ROUTE) fail(ctx.mc(), "Cannot reach the safe storage spot without editing terrain");
+        if (result == Pathing.Nav.NO_ROUTE) retrySite();
     }
     /** Stand alongside the shulker's square so the ender chest cannot occlude its floor. */
     private boolean at(PathMove.Ctx ctx, Bot.Steer steer, BlockPos destination) {

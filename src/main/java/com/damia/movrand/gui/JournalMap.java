@@ -250,7 +250,7 @@ public final class JournalMap extends Widgets.Element {
 			}
 			Ui.roundRect(g, px - 2, py - 2, 5, 5, 2, colour);
 			if (cfg.mapShowLabels) {
-				Ui.text(g, f, Ui.elide(f, e.kind().label, 90), px + 5, py - 3, Ui.alpha(colour, 0.85));
+				Ui.textElided(g, f, e.kind().label, 90, px + 5, py - 3, Ui.alpha(colour, 0.85));
 			}
 		}
 
@@ -290,11 +290,11 @@ public final class JournalMap extends Widgets.Element {
 		if (hover != null) {
 			Ui.roundRect(g, x, ty - 2, w, 22, 3, Ui.CARD);
 			Ui.roundRect(g, x + 4, ty + 2, 3, 12, 1, ConfigScreen.kindColour(hover.kind(), accent));
-			Ui.text(g, f, Ui.elide(f, hover.kind().label + "  " + hover.coords(), w / 2), x + 12, ty, Ui.TEXT);
-			Ui.text(g, f, Ui.elide(f, hover.dimension() + "  ·  " + hover.when(), w / 2), x + 12, ty + 10,
+			Ui.textElided(g, f, hover.kind().label + "  " + hover.coords(), w / 2, x + 12, ty, Ui.TEXT);
+			Ui.textElided(g, f, hover.dimension() + "  ·  " + hover.when(), w / 2, x + 12, ty + 10,
 					Ui.TEXT_FAINT);
 			String note = hover.note().isEmpty() ? "click to copy the teleport" : hover.note();
-			Ui.textRight(g, f, Ui.elide(f, note, w / 2 - 16), x + w - 6, ty + 5, Ui.TEXT_MUTED);
+			Ui.textRightElided(g, f, note, w / 2 - 16, x + w - 6, ty + 5, Ui.TEXT_MUTED);
 			return;
 		}
 

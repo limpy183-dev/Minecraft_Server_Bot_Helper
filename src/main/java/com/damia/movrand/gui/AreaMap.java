@@ -221,7 +221,7 @@ public final class AreaMap extends Widgets.Element {
 			label = area.describe();
 			colour = Ui.TEXT_MUTED;
 		}
-		Ui.text(g, f, Ui.elide(f, label, w), gx, gy + size + 4, colour);
+		Ui.textElided(g, f, label, w, gx, gy + size + 4, colour);
 	}
 
 	/**

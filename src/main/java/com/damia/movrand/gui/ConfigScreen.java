@@ -1497,7 +1497,7 @@ public final class ConfigScreen extends Screen {
 		if (!routes.contains(storageTarget)) storageTarget = routes.getFirst();
 		Storage.Target t = storageTarget;
 		add(new Section("Container rules"));
-		add(new Cycle<>("Destination", routes, r -> Ui.elide(minecraft.font, r.name, Math.max(70, contentW / 2 - 30)),
+		add(new Cycle<>("Destination", routes, r -> r.name,
 				() -> storageTarget, r -> { storageTarget = r; build(); }));
 		add(new Toggle("Use this destination", () -> t.enabled, v -> t.enabled = v));
 		add(new Action("Remove this destination", false, () -> { cfg.storageTargets.remove(t); storageTarget = null; build(); }));
@@ -2494,11 +2494,11 @@ public final class ConfigScreen extends Screen {
 			Ui.card(g, x, y, w, h, 4, Ui.mix(Ui.CARD, Ui.CARD_HOVER, anim),
 					Ui.mix(Ui.BORDER_SOFT, accentColour, anim * 0.8));
 			Ui.roundRect(g, x + 6, y + 7, 3, h - 14, 1, kindColour(entry.kind(), accentColour));
-			Ui.text(g, f, Ui.elide(f, entry.kind().label, w / 2), x + 14, y + 5, Ui.TEXT);
-			Ui.text(g, f, Ui.elide(f, entry.dimension() + "  " + entry.coords(), w - 20), x + 14, y + 15, Ui.TEXT_MUTED);
+			Ui.textElided(g, f, entry.kind().label, w / 2, x + 14, y + 5, Ui.TEXT);
+			Ui.textElided(g, f, entry.dimension() + "  " + entry.coords(), w - 20, x + 14, y + 15, Ui.TEXT_MUTED);
 			Ui.textRight(g, f, entry.when(), x + w - 8, y + 5, Ui.TEXT_FAINT);
 			if (!entry.note().isEmpty()) {
-				Ui.textRight(g, f, Ui.elide(f, entry.note(), w / 2 - 20), x + w - 8, y + 15, Ui.TEXT_FAINT);
+				Ui.textRightElided(g, f, entry.note(), w / 2 - 20, x + w - 8, y + 15, Ui.TEXT_FAINT);
 			}
 		}
 
@@ -2612,6 +2612,7 @@ public final class ConfigScreen extends Screen {
 		if ((activeTab == Tab.LOGS || activeTab == Tab.MAP)
 				&& ctl.journal.size() != journalSizeWhenBuilt) build();
 
+		Ui.beginTextHover(g, mouseX, mouseY);
 		hoverTip = "";
 		int accent = accent();
 
@@ -2624,6 +2625,7 @@ public final class ConfigScreen extends Screen {
 		drawSidebar(g, mouseX, mouseY, accent);
 		drawContent(g, mouseX, mouseY, accent);
 		drawFooter(g);
+		Ui.endTextHover();
 	}
 
 	private void drawHeader(GuiGraphicsExtractor g, int mx, int my, int accent) {
@@ -2742,7 +2744,7 @@ public final class ConfigScreen extends Screen {
 			} else if (hover) {
 				Ui.roundRect(g, x, ry, w, row.height(), 5, Ui.CARD);
 			}
-			Ui.text(g, font, Ui.elide(font, row.tab().label, w - 22), x + 12, ry + (row.height() - 8) / 2,
+			Ui.textElided(g, font, row.tab().label, w - 22, x + 12, ry + (row.height() - 8) / 2,
 					active || hover ? Ui.TEXT : Ui.TEXT_MUTED);
 		}
 		g.disableScissor();
@@ -2881,7 +2883,7 @@ public final class ConfigScreen extends Screen {
 		String tip = hoverTip.isEmpty()
 				? "Esc closes and saves  ·  right-click a cycle to go backwards  ·  the bot keeps walking"
 				: hoverTip;
-		Ui.text(g, font, Ui.elide(font, tip, panelW - 32), panelX + 12, y + 2,
+		Ui.textElided(g, font, tip, panelW - 32, panelX + 12, y + 2,
 				hoverTip.isEmpty() ? Ui.TEXT_FAINT : Ui.TEXT_MUTED);
 	}
 

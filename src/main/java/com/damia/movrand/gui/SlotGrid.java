@@ -84,7 +84,7 @@ public final class SlotGrid extends Widgets.Element {
 	@Override
 	public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
 		if (contents != null) {
-			Ui.text(g, f, Ui.elide(f, caption, w - (gridX() - x)), gridX(), y, Ui.TEXT_MUTED);
+			Ui.textElided(g, f, caption, w - (gridX() - x), gridX(), y, Ui.TEXT_MUTED);
 			int hovered = slotAt(mx, my);
 			tip = "";
 			for (int slot = 0; slot < slots; slot++) {

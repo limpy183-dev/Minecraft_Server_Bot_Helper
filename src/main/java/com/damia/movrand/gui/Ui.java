@@ -113,6 +113,55 @@ public final class Ui {
 
 	// ---------------------------------------------------------------- text
 
+	private static GuiGraphicsExtractor hoverGraphics;
+	private static int hoverX, hoverY;
+
+	/** Scope hover detection to the current screen frame, including its active scissors. */
+	public static void beginTextHover(GuiGraphicsExtractor g, int mx, int my) {
+		hoverGraphics = g;
+		hoverX = mx;
+		hoverY = my;
+	}
+
+	public static void endTextHover() {
+		hoverGraphics = null;
+	}
+
+	public static void textElided(GuiGraphicsExtractor g, Font f, String s, int maxWidth,
+	                             int x, int y, int colour) {
+		drawElided(g, f, s, maxWidth, x, y, colour, 0);
+	}
+
+	public static void textRightElided(GuiGraphicsExtractor g, Font f, String s, int maxWidth,
+	                                  int right, int y, int colour) {
+		drawElided(g, f, s, maxWidth, right, y, colour, 1);
+	}
+
+	public static void textCentreElided(GuiGraphicsExtractor g, Font f, String s, int maxWidth,
+	                                   int centre, int y, int colour) {
+		drawElided(g, f, s, maxWidth, centre, y, colour, 2);
+	}
+
+	private static void drawElided(GuiGraphicsExtractor g, Font f, String s, int maxWidth,
+	                              int x, int y, int colour, int alignment) {
+		String visible = elide(f, s, maxWidth);
+		int textWidth = f.width(visible);
+		if (alignment == 1) x -= textWidth;
+		else if (alignment == 2) x -= textWidth / 2;
+		text(g, f, visible, x, y, colour);
+		if (g == hoverGraphics && textHoverHit(!visible.equals(s),
+				g.containsPointInScissor(hoverX, hoverY), hoverX, hoverY, x, y, textWidth, f.lineHeight)) {
+			// Vanilla positions the wrapped overlay inside the window, after scissored content.
+			g.setTooltipForNextFrame(f, f.split(net.minecraft.network.chat.Component.literal(s),
+					Math.max(1, Math.min(360, g.guiWidth() - 24))), hoverX, hoverY);
+		}
+	}
+
+	static boolean textHoverHit(boolean clipped, boolean inScissor, int mx, int my,
+	                            int x, int y, int w, int h) {
+		return clipped && inScissor && mx >= x && mx < x + w && my >= y && my < y + h;
+	}
+
 	public static void text(GuiGraphicsExtractor g, Font f, String s, int x, int y, int colour) {
 		g.text(f, s, x, y, colour, false);
 	}

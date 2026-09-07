@@ -59,9 +59,19 @@ final class StorageGameTest {
         test.runOnClient(mc -> {
             var t = MovRand.controller().storage.selectShulker(mc, 9, false);
             t.items.add("minecraft:diamond"); t.slots = new ArrayList<>(List.of(4));
+            // The entire initial 16-block scan is inside this player's exclusion radius.
+            var other = new net.minecraft.client.player.RemotePlayer(mc.level,
+                    new com.mojang.authlib.GameProfile(java.util.UUID.randomUUID(), "StorageSearch"));
+            other.setId(999997); other.setPos(0.5, 1, 0.5); mc.level.addEntity(other);
             MovRand.controller().start(mc); MovRand.controller().storage.storeNow(mc);
         });
-        finish(test, "bag shulker recovery", 1200);
+        test.waitFor(mc -> {
+            require(!MovRand.controller().storage.failed() && MovRand.config().movementEnabled,
+                    "No nearby safe site stopped movement: " + MovRand.controller().storage.status);
+            return mc.player.position().distanceToSqr(new net.minecraft.world.phys.Vec3(0.5, 1, 0.5)) > 16;
+        }, 600);
+        finish(test, "find a distant safe site and recover bag shulker", 1800);
+        test.runOnClient(mc -> mc.level.removeEntity(999997, net.minecraft.world.entity.Entity.RemovalReason.DISCARDED));
         world.getServer().runOnServer(server -> {
             var inv = server.getPlayerList().getPlayers().getFirst().getInventory();
             require(inv.contains(s -> s.is(Items.DYED_SHULKER_BOX.red()) && Storage.contents(s).get(4).getCount() == 16), "Filled bag shulker not recovered");
