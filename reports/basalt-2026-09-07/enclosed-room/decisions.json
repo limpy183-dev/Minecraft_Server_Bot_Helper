@@ -1,0 +1,32 @@
+[
+  {
+    "tick": 0,
+    "pos": [
+      1146,
+      62,
+      121
+    ],
+    "distance": 6.478765317503898,
+    "nearest_same_priority": 6.478765317503898,
+    "extra_distance": 0.0,
+    "global_nearest": 6.478765317503898,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1072,
+    "pos": [
+      1146,
+      62,
+      121
+    ],
+    "distance": 7.252429678717778,
+    "nearest_same_priority": 7.252429678717778,
+    "extra_distance": 0.0,
+    "global_nearest": 7.252429678717778,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  }
+]

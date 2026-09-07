@@ -1,0 +1,13 @@
+{
+  "archive": "C:\\Users\\damia\\AppData\\Roaming\\ModrinthApp\\profiles\\Fabric 26.2\\saves\\New World.rar",
+  "archive_sha256": "46f7a05aa23f8bf203eae3c3e24541c56e80e57ea1778493ccfbe9f5511aedbd",
+  "archive_bytes": 71920266,
+  "source_commit": "0d8da3b41ab2393eef7c63dfd8f4bd95ca8befbe",
+  "minecraft": "26.2",
+  "data_version": 4903,
+  "self_checks": "28 production self-checks passed; run/basalt-selfchecks.log",
+  "note": "Test observers added only under src/gametest. The interrupted matrix process returned BUILD SUCCESSFUL despite a client-shutdown test exception; only cases with complete evidence are counted.",
+  "archive_hash_reverified_after_tests": "46f7a05aa23f8bf203eae3c3e24541c56e80e57ea1778493ccfbe9f5511aedbd",
+  "installed_tested_copy": "C:/Users/damia/AppData/Roaming/ModrinthApp/profiles/Fabric 26.2/saves/New World - Basalt Destroyer Test 2026-09-07",
+  "installed_copy_changes": "Full-redstone final save copied; LevelName renamed for identification; session.lock and Baritone cache excluded. Original terrain and final player data retained."
+}

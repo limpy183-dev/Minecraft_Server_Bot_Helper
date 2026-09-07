@@ -1,0 +1,272 @@
+[
+  {
+    "tick": 0,
+    "pos": [
+      1133,
+      75,
+      133
+    ],
+    "distance": 11.952171347303958,
+    "nearest_same_priority": 11.952171347303958,
+    "extra_distance": 0.0,
+    "global_nearest": 11.952171347303958,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 200,
+    "pos": [
+      1134,
+      75,
+      133
+    ],
+    "distance": 1.2933863054136903,
+    "nearest_same_priority": 1.2933863054136903,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2933863054136903,
+    "reachable": true,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 235,
+    "pos": [
+      1138,
+      70,
+      124
+    ],
+    "distance": 12.222451080132561,
+    "nearest_same_priority": 12.222451080132561,
+    "extra_distance": 0.0,
+    "global_nearest": 12.222451080132561,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 344,
+    "pos": [
+      1154,
+      70,
+      125
+    ],
+    "distance": 16.951612882179504,
+    "nearest_same_priority": 16.951612882179504,
+    "extra_distance": 0.0,
+    "global_nearest": 16.951612882179504,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 532,
+    "pos": [
+      1158,
+      75,
+      133
+    ],
+    "distance": 9.476570689573148,
+    "nearest_same_priority": 9.476570689573148,
+    "extra_distance": 0.0,
+    "global_nearest": 9.476570689573148,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 667,
+    "pos": [
+      1159,
+      75,
+      133
+    ],
+    "distance": 2.508584724364852,
+    "nearest_same_priority": 2.508584724364852,
+    "extra_distance": 0.0,
+    "global_nearest": 2.508584724364852,
+    "reachable": true,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 716,
+    "pos": [
+      1162,
+      77,
+      135
+    ],
+    "distance": 4.2994910859287545,
+    "nearest_same_priority": 4.2994910859287545,
+    "extra_distance": 0.0,
+    "global_nearest": 4.2994910859287545,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 756,
+    "pos": [
+      1163,
+      76,
+      135
+    ],
+    "distance": 4.717833834543462,
+    "nearest_same_priority": 4.717833834543462,
+    "extra_distance": 0.0,
+    "global_nearest": 4.717833834543462,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 859,
+    "pos": [
+      1174,
+      70,
+      129
+    ],
+    "distance": 14.267575642341871,
+    "nearest_same_priority": 14.267575642341871,
+    "extra_distance": 0.0,
+    "global_nearest": 14.267575642341871,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1037,
+    "pos": [
+      1170,
+      70,
+      117
+    ],
+    "distance": 14.049705694488607,
+    "nearest_same_priority": 14.049705694488607,
+    "extra_distance": 0.0,
+    "global_nearest": 14.049705694488607,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1160,
+    "pos": [
+      1154,
+      70,
+      93
+    ],
+    "distance": 29.281355102459298,
+    "nearest_same_priority": 29.281355102459298,
+    "extra_distance": 0.0,
+    "global_nearest": 29.281355102459298,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1350,
+    "pos": [
+      1134,
+      75,
+      101
+    ],
+    "distance": 23.139732736576818,
+    "nearest_same_priority": 23.139732736576818,
+    "extra_distance": 0.0,
+    "global_nearest": 23.139732736576818,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1730,
+    "pos": [
+      1133,
+      75,
+      101
+    ],
+    "distance": 1.3616143316222902,
+    "nearest_same_priority": 1.3616143316222902,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3616143316222902,
+    "reachable": true,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1757,
+    "pos": [
+      1122,
+      70,
+      117
+    ],
+    "distance": 19.827875042702807,
+    "nearest_same_priority": 19.827875042702807,
+    "extra_distance": 0.0,
+    "global_nearest": 19.827875042702807,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1768,
+    "pos": [
+      1118,
+      70,
+      129
+    ],
+    "distance": 31.755871144624955,
+    "nearest_same_priority": 31.755871144624955,
+    "extra_distance": 0.0,
+    "global_nearest": 31.755871144624955,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 1772,
+    "pos": [
+      1161,
+      77,
+      135
+    ],
+    "distance": 42.732345250250006,
+    "nearest_same_priority": 42.732345250250006,
+    "extra_distance": 0.0,
+    "global_nearest": 42.732345250250006,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 2102,
+    "pos": [
+      1122,
+      70,
+      117
+    ],
+    "distance": 42.85125453204152,
+    "nearest_same_priority": 42.85125453204152,
+    "extra_distance": 0.0,
+    "global_nearest": 42.85125453204152,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  },
+  {
+    "tick": 2112,
+    "pos": [
+      1118,
+      70,
+      129
+    ],
+    "distance": 43.81946675189444,
+    "nearest_same_priority": 43.81946675189444,
+    "extra_distance": 0.0,
+    "global_nearest": 43.81946675189444,
+    "reachable": false,
+    "violated": false,
+    "global_audit": null
+  }
+]

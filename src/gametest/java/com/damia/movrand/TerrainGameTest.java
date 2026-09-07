@@ -10,6 +10,10 @@ import net.minecraft.world.level.block.Blocks;
 /** Real server physics, survival inventory, production controller and Baritone executor. */
 public final class TerrainGameTest implements FabricClientGameTest {
 	@Override public void runTest(ClientGameTestContext test) {
+		if (System.getenv("MOVRAND_BASALT_SOURCE") != null) {
+			new BasaltFarmGameTest().runTest(test);
+			return;
+		}
 		try (var world = test.worldBuilder().create()) {
 			miningAimPoints(test, world);
 			if (!Boolean.parseBoolean(System.getenv("MOVRAND_TERRAIN_ONLY"))) {

@@ -1,0 +1,191 @@
+{
+  "case": "north-selected",
+  "frames": 2400,
+  "seconds": 120.0,
+  "travel_blocks": 379.4275731513653,
+  "damage": 0,
+  "min_health": 20,
+  "end": {
+    "state": "Looking for blocks \u00e2\u20ac\u201d waiting for the next block scan",
+    "ticks": 2400,
+    "reason": "Looking for blocks \u00e2\u20ac\u201d waiting for the next block scan",
+    "inventory": {
+      "minecraft:cobblestone": 245,
+      "minecraft:cooked_beef": 63,
+      "minecraft:diamond_axe": 1,
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:diamond_sword": 1,
+      "minecraft:gray_concrete": 3,
+      "minecraft:netherrack": 4,
+      "minecraft:note_block": 3,
+      "minecraft:piston": 2,
+      "minecraft:redstone": 3,
+      "minecraft:redstone_block": 13,
+      "minecraft:slime_block": 1
+    },
+    "position": [
+      1170.7448485679442,
+      70.0,
+      117.48681068792037
+    ],
+    "health": 20.0
+  },
+  "phases": {
+    "PLANNING": 81,
+    "WALKING": 1440,
+    "COLLECTING": 424,
+    "MINING": 360,
+    "WAITING": 10,
+    "SCANNING": 83,
+    "PREPARING": 2
+  },
+  "events": {
+    "selection": 19,
+    "break": 28,
+    "place": 12,
+    "retry": 5,
+    "stuck": 1
+  },
+  "breaks": {
+    "minecraft:netherrack": 4,
+    "minecraft:redstone_block": 13,
+    "minecraft:gray_concrete": 3,
+    "minecraft:note_block": 3,
+    "minecraft:piston": 2,
+    "minecraft:slime_block": 1,
+    "minecraft:redstone_wire": 1,
+    "minecraft:cobblestone": 1
+  },
+  "placements": {
+    "minecraft:cobblestone": 12
+  },
+  "pickups": {
+    "minecraft:netherrack": 4,
+    "minecraft:redstone_block": 13,
+    "minecraft:gray_concrete": 3,
+    "minecraft:note_block": 3,
+    "minecraft:piston": 2,
+    "minecraft:slime_block": 1,
+    "minecraft:redstone": 3,
+    "minecraft:cobblestone": 1
+  },
+  "inventory_decreases": {
+    "minecraft:cobblestone": 12,
+    "minecraft:cooked_beef": 1
+  },
+  "original_redstone": 2954,
+  "remaining_redstone": 2930,
+  "remaining_selected": [
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1118,
+        70,
+        129
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1122,
+        70,
+        117
+      ]
+    }
+  ],
+  "retries": [
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "observed_tick": 162
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1118,
+        70,
+        129
+      ],
+      "observed_tick": 1665
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "observed_tick": 1666
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "observed_tick": 2311
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1118,
+        70,
+        129
+      ],
+      "observed_tick": 2321
+    }
+  ],
+  "stuck": [
+    {
+      "kind": "stuck",
+      "detail": "route stopped making progress",
+      "pos": [
+        1147,
+        74,
+        136
+      ],
+      "observed_tick": 1828
+    }
+  ],
+  "immediate_cell_reversals": 11,
+  "repeated_cell_entries": 45,
+  "route_count": 52,
+  "decisions": 19,
+  "priority_violations": 0,
+  "max_same_priority_extra": 0.0,
+  "global_audited_decisions": 0,
+  "global_priority_misses": [],
+  "oscillation_sequences": [
+    {
+      "start_tick": 73,
+      "end_tick": 98,
+      "cells": [
+        [
+          1134,
+          74,
+          102
+        ],
+        [
+          1134,
+          73,
+          102
+        ]
+      ],
+      "target": [
+        1134,
+        75,
+        101
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9266 @@
+[
+  {
+    "tick": 0,
+    "pos": [
+      1128,
+      67,
+      125
+    ],
+    "distance": 2.402998125593873,
+    "nearest_same_priority": 2.1850400434792188,
+    "extra_distance": 0.21795808211465406,
+    "global_nearest": 2.1850400434792188,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2954,
+      "nearest": [
+        1128,
+        67,
+        126
+      ],
+      "distance": 2.1850400434792188,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 20,
+    "pos": [
+      1127,
+      68,
+      126
+    ],
+    "distance": 1.011778930551328,
+    "nearest_same_priority": 1.011778930551328,
+    "extra_distance": 0.0,
+    "global_nearest": 1.011778930551328,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2953,
+      "nearest": [
+        1127,
+        68,
+        126
+      ],
+      "distance": 1.011778930551328,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 53,
+    "pos": [
+      1128,
+      67,
+      126
+    ],
+    "distance": 1.123353447766875,
+    "nearest_same_priority": 1.123353447766875,
+    "extra_distance": 0.0,
+    "global_nearest": 1.123353447766875,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2952,
+      "nearest": [
+        1128,
+        67,
+        126
+      ],
+      "distance": 1.123353447766875,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 73,
+    "pos": [
+      1128,
+      68,
+      125
+    ],
+    "distance": 1.5430287405007752,
+    "nearest_same_priority": 1.5430287405007752,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5430287405007752,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2951,
+      "nearest": [
+        1128,
+        68,
+        125
+      ],
+      "distance": 1.5430287405007752,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 115,
+    "pos": [
+      1128,
+      69,
+      125
+    ],
+    "distance": 1.6058583721136592,
+    "nearest_same_priority": 1.6058583721136592,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6058583721136592,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2950,
+      "nearest": [
+        1128,
+        69,
+        125
+      ],
+      "distance": 1.6058583721136592,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 197,
+    "pos": [
+      1127,
+      69,
+      123
+    ],
+    "distance": 1.0340073020922325,
+    "nearest_same_priority": 1.0340073020922325,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0340073020922325,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2949,
+      "nearest": [
+        1127,
+        69,
+        123
+      ],
+      "distance": 1.0340073020922325,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 263,
+    "pos": [
+      1127,
+      68,
+      124
+    ],
+    "distance": 1.7728268777648564,
+    "nearest_same_priority": 1.7728268777648564,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7728268777648564,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2948,
+      "nearest": [
+        1127,
+        68,
+        124
+      ],
+      "distance": 1.7728268777648564,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 270,
+    "pos": [
+      1128,
+      69,
+      123
+    ],
+    "distance": 1.739105035743206,
+    "nearest_same_priority": 1.739105035743206,
+    "extra_distance": 0.0,
+    "global_nearest": 1.739105035743206,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2947,
+      "nearest": [
+        1128,
+        69,
+        123
+      ],
+      "distance": 1.739105035743206,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 301,
+    "pos": [
+      1128,
+      68,
+      124
+    ],
+    "distance": 1.987790358426405,
+    "nearest_same_priority": 1.987790358426405,
+    "extra_distance": 0.0,
+    "global_nearest": 1.895040059299892,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2946,
+      "nearest": [
+        1128,
+        68,
+        124
+      ],
+      "distance": 1.987790358426405,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 316,
+    "pos": [
+      1127,
+      70,
+      122
+    ],
+    "distance": 1.5270023049922574,
+    "nearest_same_priority": 1.5270023049922574,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5270023049922574,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2945,
+      "nearest": [
+        1127,
+        70,
+        122
+      ],
+      "distance": 1.5270023049922574,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 336,
+    "pos": [
+      1127,
+      71,
+      122
+    ],
+    "distance": 1.215497086180739,
+    "nearest_same_priority": 1.215497086180739,
+    "extra_distance": 0.0,
+    "global_nearest": 1.215497086180739,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2944,
+      "nearest": [
+        1127,
+        71,
+        122
+      ],
+      "distance": 1.215497086180739,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 370,
+    "pos": [
+      1128,
+      70,
+      122
+    ],
+    "distance": 1.7117266359860401,
+    "nearest_same_priority": 1.7117266359860401,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3582100810408335,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2943,
+      "nearest": [
+        1128,
+        70,
+        122
+      ],
+      "distance": 1.7117266359860401,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 381,
+    "pos": [
+      1125,
+      71,
+      123
+    ],
+    "distance": 2.0237505271789766,
+    "nearest_same_priority": 2.0237505271789766,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3582100810408335,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2942,
+      "nearest": [
+        1125,
+        71,
+        123
+      ],
+      "distance": 2.0237505271789766,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 547,
+    "pos": [
+      1124,
+      72,
+      124
+    ],
+    "distance": 0.9935472630160006,
+    "nearest_same_priority": 0.9935472630160006,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9935472630160006,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2937,
+      "nearest": [
+        1124,
+        72,
+        124
+      ],
+      "distance": 0.9935472630160006,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 557,
+    "pos": [
+      1125,
+      72,
+      125
+    ],
+    "distance": 1.1817205408190963,
+    "nearest_same_priority": 1.1817205408190963,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1817205408190963,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2936,
+      "nearest": [
+        1125,
+        72,
+        125
+      ],
+      "distance": 1.1817205408190963,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 571,
+    "pos": [
+      1124,
+      72,
+      123
+    ],
+    "distance": 1.3935524943322062,
+    "nearest_same_priority": 1.3935524943322062,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3935524943322062,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2935,
+      "nearest": [
+        1124,
+        72,
+        123
+      ],
+      "distance": 1.3935524943322062,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 578,
+    "pos": [
+      1124,
+      72,
+      125
+    ],
+    "distance": 1.4255819068835218,
+    "nearest_same_priority": 1.4255819068835218,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4255819068835218,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2934,
+      "nearest": [
+        1124,
+        72,
+        125
+      ],
+      "distance": 1.4255819068835218,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 593,
+    "pos": [
+      1125,
+      74,
+      122
+    ],
+    "distance": 2.3426117133697746,
+    "nearest_same_priority": 2.3426117133697746,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1137895150010366,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2933,
+      "nearest": [
+        1125,
+        74,
+        122
+      ],
+      "distance": 2.3426117133697746,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 652,
+    "pos": [
+      1124,
+      74,
+      122
+    ],
+    "distance": 1.7121342555467816,
+    "nearest_same_priority": 1.7121342555467816,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7121342555467816,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2932,
+      "nearest": [
+        1124,
+        74,
+        122
+      ],
+      "distance": 1.7121342555467816,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 754,
+    "pos": [
+      1127,
+      66,
+      123
+    ],
+    "distance": 1.4001799064699187,
+    "nearest_same_priority": 1.4001799064699187,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4001799064699187,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2931,
+      "nearest": [
+        1127,
+        66,
+        123
+      ],
+      "distance": 1.4001799064699187,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 755,
+    "pos": [
+      1128,
+      66,
+      122
+    ],
+    "distance": 1.9955690779264077,
+    "nearest_same_priority": 1.9955690779264077,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4487501456541836,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2930,
+      "nearest": [
+        1128,
+        66,
+        122
+      ],
+      "distance": 1.9955690779264077,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 882,
+    "pos": [
+      1127,
+      67,
+      123
+    ],
+    "distance": 1.4265760293912817,
+    "nearest_same_priority": 1.4265760293912817,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4265760293912817,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2929,
+      "nearest": [
+        1127,
+        67,
+        123
+      ],
+      "distance": 1.4265760293912817,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 915,
+    "pos": [
+      1126,
+      68,
+      122
+    ],
+    "distance": 1.2316706438259444,
+    "nearest_same_priority": 1.2316706438259444,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2316706438259444,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2928,
+      "nearest": [
+        1126,
+        68,
+        122
+      ],
+      "distance": 1.2316706438259444,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 980,
+    "pos": [
+      1125,
+      68,
+      122
+    ],
+    "distance": 1.5457037624177292,
+    "nearest_same_priority": 1.5457037624177292,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5457037624177292,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2927,
+      "nearest": [
+        1125,
+        68,
+        122
+      ],
+      "distance": 1.5457037624177292,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1013,
+    "pos": [
+      1128,
+      69,
+      122
+    ],
+    "distance": 2.283036601456648,
+    "nearest_same_priority": 2.283036601456648,
+    "extra_distance": 0.0,
+    "global_nearest": 2.283036601456648,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2926,
+      "nearest": [
+        1128,
+        69,
+        122
+      ],
+      "distance": 2.283036601456648,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1087,
+    "pos": [
+      1128,
+      70,
+      120
+    ],
+    "distance": 1.3809712999050991,
+    "nearest_same_priority": 1.3809712999050991,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3809712999050991,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2925,
+      "nearest": [
+        1128,
+        70,
+        120
+      ],
+      "distance": 1.3809712999050991,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1146,
+    "pos": [
+      1129,
+      69,
+      120
+    ],
+    "distance": 1.5918979796703787,
+    "nearest_same_priority": 1.5918979796703787,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4339583172018124,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2924,
+      "nearest": [
+        1129,
+        69,
+        120
+      ],
+      "distance": 1.5918979796703787,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1162,
+    "pos": [
+      1128,
+      69,
+      119
+    ],
+    "distance": 1.8000757505581937,
+    "nearest_same_priority": 1.8000757505581937,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4339583172018124,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2923,
+      "nearest": [
+        1128,
+        69,
+        119
+      ],
+      "distance": 1.8000757505581937,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1182,
+    "pos": [
+      1129,
+      69,
+      119
+    ],
+    "distance": 1.8388793456971004,
+    "nearest_same_priority": 1.8388793456971004,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4339583172018124,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2922,
+      "nearest": [
+        1129,
+        69,
+        119
+      ],
+      "distance": 1.8388793456971004,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1199,
+    "pos": [
+      1130,
+      69,
+      120
+    ],
+    "distance": 1.9092248165585248,
+    "nearest_same_priority": 1.9092248165585248,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4684044083531704,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2921,
+      "nearest": [
+        1130,
+        69,
+        120
+      ],
+      "distance": 1.9092248165585248,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1204,
+    "pos": [
+      1127,
+      71,
+      120
+    ],
+    "distance": 2.3188405405569097,
+    "nearest_same_priority": 2.3188405405569097,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4684044083531704,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2920,
+      "nearest": [
+        1127,
+        71,
+        120
+      ],
+      "distance": 2.3188405405569097,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1275,
+    "pos": [
+      1125,
+      71,
+      119
+    ],
+    "distance": 1.935834231021297,
+    "nearest_same_priority": 1.935834231021297,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5388423895073151,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2919,
+      "nearest": [
+        1125,
+        71,
+        119
+      ],
+      "distance": 1.935834231021297,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1315,
+    "pos": [
+      1125,
+      72,
+      117
+    ],
+    "distance": 1.041780463699414,
+    "nearest_same_priority": 1.041780463699414,
+    "extra_distance": 0.0,
+    "global_nearest": 1.041780463699414,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2918,
+      "nearest": [
+        1125,
+        72,
+        117
+      ],
+      "distance": 1.041780463699414,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1327,
+    "pos": [
+      1124,
+      72,
+      118
+    ],
+    "distance": 1.2120583335622537,
+    "nearest_same_priority": 1.2120583335622537,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2120583335622537,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2917,
+      "nearest": [
+        1124,
+        72,
+        118
+      ],
+      "distance": 1.2120583335622537,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1363,
+    "pos": [
+      1124,
+      72,
+      117
+    ],
+    "distance": 1.8948337254200442,
+    "nearest_same_priority": 1.8948337254200442,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8948337254200442,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2917,
+      "nearest": [
+        1124,
+        72,
+        117
+      ],
+      "distance": 1.8948337254200442,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1375,
+    "pos": [
+      1124,
+      72,
+      116
+    ],
+    "distance": 2.360390482165901,
+    "nearest_same_priority": 2.360390482165901,
+    "extra_distance": 0.0,
+    "global_nearest": 2.360390482165901,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2916,
+      "nearest": [
+        1124,
+        72,
+        116
+      ],
+      "distance": 2.360390482165901,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1384,
+    "pos": [
+      1124,
+      72,
+      119
+    ],
+    "distance": 2.6908594777142154,
+    "nearest_same_priority": 2.6908594777142154,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6908594777142154,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2915,
+      "nearest": [
+        1124,
+        72,
+        119
+      ],
+      "distance": 2.6908594777142154,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1404,
+    "pos": [
+      1128,
+      72,
+      117
+    ],
+    "distance": 3.2903448374347084,
+    "nearest_same_priority": 3.2903448374347084,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1818769420382385,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2913,
+      "nearest": [
+        1128,
+        72,
+        117
+      ],
+      "distance": 3.2903448374347084,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1450,
+    "pos": [
+      1129,
+      72,
+      118
+    ],
+    "distance": 0.9932919639206936,
+    "nearest_same_priority": 0.9932919639206936,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9932919639206936,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2912,
+      "nearest": [
+        1129,
+        72,
+        118
+      ],
+      "distance": 0.9932919639206936,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1508,
+    "pos": [
+      1130,
+      68,
+      118
+    ],
+    "distance": 1.2773680290077822,
+    "nearest_same_priority": 1.2773680290077822,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2773680290077822,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2911,
+      "nearest": [
+        1130,
+        68,
+        118
+      ],
+      "distance": 1.2773680290077822,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1509,
+    "pos": [
+      1130,
+      69,
+      117
+    ],
+    "distance": 1.2598437772683102,
+    "nearest_same_priority": 1.2598437772683102,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2598437772683102,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2910,
+      "nearest": [
+        1130,
+        69,
+        117
+      ],
+      "distance": 1.2598437772683102,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1523,
+    "pos": [
+      1129,
+      70,
+      116
+    ],
+    "distance": 1.9162791891556454,
+    "nearest_same_priority": 1.9162791891556454,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7594039686694847,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2909,
+      "nearest": [
+        1129,
+        70,
+        116
+      ],
+      "distance": 1.9162791891556454,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1552,
+    "pos": [
+      1129,
+      71,
+      116
+    ],
+    "distance": 1.449451182519188,
+    "nearest_same_priority": 1.449451182519188,
+    "extra_distance": 0.0,
+    "global_nearest": 1.449451182519188,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2908,
+      "nearest": [
+        1129,
+        71,
+        116
+      ],
+      "distance": 1.449451182519188,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1630,
+    "pos": [
+      1127,
+      68,
+      115
+    ],
+    "distance": 3.277212656760768,
+    "nearest_same_priority": 3.277212656760768,
+    "extra_distance": 0.0,
+    "global_nearest": 2.340492546945573,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2908,
+      "nearest": [
+        1129,
+        71,
+        114
+      ],
+      "distance": 1.3388915950921816,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1706,
+    "pos": [
+      1127,
+      68,
+      116
+    ],
+    "distance": 2.303132857925028,
+    "nearest_same_priority": 2.303132857925028,
+    "extra_distance": 0.0,
+    "global_nearest": 2.303132857925028,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2906,
+      "nearest": [
+        1127,
+        68,
+        114
+      ],
+      "distance": 1.0528938608073468,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1744,
+    "pos": [
+      1124,
+      69,
+      116
+    ],
+    "distance": 2.2250307515639585,
+    "nearest_same_priority": 2.2250307515639585,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2250307515639585,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2905,
+      "nearest": [
+        1127,
+        68,
+        114
+      ],
+      "distance": 1.8345709307760016,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1781,
+    "pos": [
+      1124,
+      70,
+      116
+    ],
+    "distance": 1.604981328157908,
+    "nearest_same_priority": 1.604981328157908,
+    "extra_distance": 0.0,
+    "global_nearest": 1.604981328157908,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2904,
+      "nearest": [
+        1124,
+        70,
+        116
+      ],
+      "distance": 1.604981328157908,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1807,
+    "pos": [
+      1123,
+      69,
+      115
+    ],
+    "distance": 2.009302856593982,
+    "nearest_same_priority": 2.009302856593982,
+    "extra_distance": 0.0,
+    "global_nearest": 2.009302856593982,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2903,
+      "nearest": [
+        1125,
+        71,
+        115
+      ],
+      "distance": 1.1692435280387827,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1826,
+    "pos": [
+      1123,
+      69,
+      116
+    ],
+    "distance": 1.7629737754636707,
+    "nearest_same_priority": 1.7629737754636707,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7629737754636707,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2902,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 1.133788195728574,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1844,
+    "pos": [
+      1122,
+      70,
+      116
+    ],
+    "distance": 1.2071174610137003,
+    "nearest_same_priority": 1.2071174610137003,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2071174610137003,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2901,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 1.0008171646931021,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1845,
+    "pos": [
+      1123,
+      69,
+      117
+    ],
+    "distance": 1.8727888585899808,
+    "nearest_same_priority": 1.5703903684685372,
+    "extra_distance": 0.3023984901214436,
+    "global_nearest": 1.5703903684685372,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2900,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 1.0012400303191804,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1848,
+    "pos": [
+      1122,
+      70,
+      117
+    ],
+    "distance": 1.5584249709204314,
+    "nearest_same_priority": 1.5584249709204314,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5584249709204314,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2899,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 1.0017991177197176,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1858,
+    "pos": [
+      1124,
+      70,
+      118
+    ],
+    "distance": 1.857817772259734,
+    "nearest_same_priority": 1.857817772259734,
+    "extra_distance": 0.0,
+    "global_nearest": 1.857817772259734,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2898,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 1.4017399534563302,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1874,
+    "pos": [
+      1123,
+      69,
+      118
+    ],
+    "distance": 1.7732385657517529,
+    "nearest_same_priority": 1.7732385657517529,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7732385657517529,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2897,
+      "nearest": [
+        1123,
+        69,
+        118
+      ],
+      "distance": 1.7732385657517529,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 1890,
+    "pos": [
+      1122,
+      69,
+      117
+    ],
+    "distance": 1.882567608984255,
+    "nearest_same_priority": 1.7859801413991534,
+    "extra_distance": 0.0965874675851015,
+    "global_nearest": 1.7859801413991534,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2896,
+      "nearest": [
+        1123,
+        70,
+        119
+      ],
+      "distance": 1.7859801413991534,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2029,
+    "pos": [
+      1122,
+      70,
+      119
+    ],
+    "distance": 1.3092489066189896,
+    "nearest_same_priority": 1.3092489066189896,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3092489066189896,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2895,
+      "nearest": [
+        1122,
+        70,
+        119
+      ],
+      "distance": 1.3092489066189896,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2087,
+    "pos": [
+      1122,
+      69,
+      118
+    ],
+    "distance": 2.0401396506285083,
+    "nearest_same_priority": 2.0401396506285083,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0401396506285083,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2893,
+      "nearest": [
+        1122,
+        69,
+        118
+      ],
+      "distance": 2.0401396506285083,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2094,
+    "pos": [
+      1122,
+      69,
+      116
+    ],
+    "distance": 2.0264402838409876,
+    "nearest_same_priority": 2.0264402838409876,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0264402838409876,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2892,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 1.8123891305713358,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2120,
+    "pos": [
+      1123,
+      71,
+      119
+    ],
+    "distance": 3.176485247159777,
+    "nearest_same_priority": 3.176485247159777,
+    "extra_distance": 0.0,
+    "global_nearest": 2.9422679804814997,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2891,
+      "nearest": [
+        1123,
+        71,
+        119
+      ],
+      "distance": 3.176485247159777,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2155,
+    "pos": [
+      1123,
+      68,
+      117
+    ],
+    "distance": 3.604448903041144,
+    "nearest_same_priority": 3.604448903041144,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5819691165532255,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2890,
+      "nearest": [
+        1123,
+        68,
+        117
+      ],
+      "distance": 3.604448903041144,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2202,
+    "pos": [
+      1127,
+      68,
+      117
+    ],
+    "distance": 4.394596019867232,
+    "nearest_same_priority": 4.394596019867232,
+    "extra_distance": 0.0,
+    "global_nearest": 2.876212673498889,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2889,
+      "nearest": [
+        1123,
+        70,
+        115
+      ],
+      "distance": 2.1785010038306565,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2262,
+    "pos": [
+      1128,
+      68,
+      117
+    ],
+    "distance": 2.526902172592105,
+    "nearest_same_priority": 2.526902172592105,
+    "extra_distance": 0.0,
+    "global_nearest": 2.526902172592105,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2888,
+      "nearest": [
+        1125,
+        71,
+        115
+      ],
+      "distance": 2.318401925816345,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2300,
+    "pos": [
+      1127,
+      68,
+      118
+    ],
+    "distance": 1.9282597962833385,
+    "nearest_same_priority": 1.9282597962833385,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9282597962833385,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2887,
+      "nearest": [
+        1127,
+        68,
+        118
+      ],
+      "distance": 1.9282597962833385,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2318,
+    "pos": [
+      1128,
+      68,
+      118
+    ],
+    "distance": 1.897851733022382,
+    "nearest_same_priority": 1.897851733022382,
+    "extra_distance": 0.0,
+    "global_nearest": 1.897851733022382,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2886,
+      "nearest": [
+        1128,
+        68,
+        118
+      ],
+      "distance": 1.897851733022382,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2323,
+    "pos": [
+      1129,
+      68,
+      118
+    ],
+    "distance": 2.042731826620318,
+    "nearest_same_priority": 2.042731826620318,
+    "extra_distance": 0.0,
+    "global_nearest": 2.042731826620318,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2885,
+      "nearest": [
+        1129,
+        68,
+        118
+      ],
+      "distance": 2.042731826620318,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2335,
+    "pos": [
+      1128,
+      67,
+      117
+    ],
+    "distance": 2.1245208984839308,
+    "nearest_same_priority": 2.1245208984839308,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1245208984839308,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2884,
+      "nearest": [
+        1128,
+        67,
+        117
+      ],
+      "distance": 2.1245208984839308,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2361,
+    "pos": [
+      1127,
+      67,
+      117
+    ],
+    "distance": 1.3908271010396178,
+    "nearest_same_priority": 1.3908271010396178,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3908271010396178,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2883,
+      "nearest": [
+        1127,
+        67,
+        117
+      ],
+      "distance": 1.3908271010396178,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2383,
+    "pos": [
+      1128,
+      67,
+      116
+    ],
+    "distance": 1.6536021218245192,
+    "nearest_same_priority": 1.6536021218245192,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6536021218245192,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2882,
+      "nearest": [
+        1128,
+        67,
+        116
+      ],
+      "distance": 1.6536021218245192,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2398,
+    "pos": [
+      1129,
+      67,
+      117
+    ],
+    "distance": 2.5950722489561926,
+    "nearest_same_priority": 2.5950722489561926,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5950722489561926,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2881,
+      "nearest": [
+        1127,
+        68,
+        114
+      ],
+      "distance": 2.2123290767704407,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2428,
+    "pos": [
+      1129,
+      67,
+      118
+    ],
+    "distance": 2.5050209247534116,
+    "nearest_same_priority": 2.5050209247534116,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9026229091603004,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2880,
+      "nearest": [
+        1129,
+        67,
+        118
+      ],
+      "distance": 2.5050209247534116,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2521,
+    "pos": [
+      1130,
+      68,
+      119
+    ],
+    "distance": 1.067640983608999,
+    "nearest_same_priority": 1.067640983608999,
+    "extra_distance": 0.0,
+    "global_nearest": 1.067640983608999,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2878,
+      "nearest": [
+        1130,
+        68,
+        119
+      ],
+      "distance": 1.067640983608999,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2531,
+    "pos": [
+      1128,
+      68,
+      119
+    ],
+    "distance": 1.1084182646956682,
+    "nearest_same_priority": 1.1084182646956682,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1084182646956682,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2877,
+      "nearest": [
+        1128,
+        68,
+        119
+      ],
+      "distance": 1.1084182646956682,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2544,
+    "pos": [
+      1129,
+      66,
+      119
+    ],
+    "distance": 2.1208750305674746,
+    "nearest_same_priority": 2.1208750305674746,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7696744271378488,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2876,
+      "nearest": [
+        1129,
+        66,
+        119
+      ],
+      "distance": 2.1208750305674746,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2585,
+    "pos": [
+      1130,
+      67,
+      117
+    ],
+    "distance": 1.632070385931939,
+    "nearest_same_priority": 1.632070385931939,
+    "extra_distance": 0.0,
+    "global_nearest": 1.632070385931939,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2875,
+      "nearest": [
+        1130,
+        67,
+        117
+      ],
+      "distance": 1.632070385931939,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2620,
+    "pos": [
+      1130,
+      67,
+      116
+    ],
+    "distance": 2.1567320620597497,
+    "nearest_same_priority": 2.1567320620597497,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1567320620597497,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2874,
+      "nearest": [
+        1130,
+        67,
+        116
+      ],
+      "distance": 2.1567320620597497,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2641,
+    "pos": [
+      1131,
+      67,
+      117
+    ],
+    "distance": 2.3033773453772772,
+    "nearest_same_priority": 2.3033773453772772,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1546750663597947,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2873,
+      "nearest": [
+        1131,
+        67,
+        117
+      ],
+      "distance": 2.3033773453772772,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2676,
+    "pos": [
+      1132,
+      67,
+      117
+    ],
+    "distance": 2.16715010089512,
+    "nearest_same_priority": 2.16715010089512,
+    "extra_distance": 0.0,
+    "global_nearest": 1.345594951358599,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2872,
+      "nearest": [
+        1132,
+        67,
+        117
+      ],
+      "distance": 2.16715010089512,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2707,
+    "pos": [
+      1132,
+      68,
+      117
+    ],
+    "distance": 1.427711133295862,
+    "nearest_same_priority": 1.427711133295862,
+    "extra_distance": 0.0,
+    "global_nearest": 1.427711133295862,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2873,
+      "nearest": [
+        1132,
+        68,
+        117
+      ],
+      "distance": 1.427711133295862,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2771,
+    "pos": [
+      1132,
+      68,
+      118
+    ],
+    "distance": 1.5843265411642522,
+    "nearest_same_priority": 1.2516303510630198,
+    "extra_distance": 0.3326961901012324,
+    "global_nearest": 1.2516303510630198,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2872,
+      "nearest": [
+        1132,
+        69,
+        117
+      ],
+      "distance": 1.2516303510630198,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2789,
+    "pos": [
+      1132,
+      69,
+      117
+    ],
+    "distance": 1.2649739874957016,
+    "nearest_same_priority": 1.2649739874957016,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2649739874957016,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2871,
+      "nearest": [
+        1132,
+        69,
+        117
+      ],
+      "distance": 1.2649739874957016,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2808,
+    "pos": [
+      1133,
+      68,
+      117
+    ],
+    "distance": 1.240974348614323,
+    "nearest_same_priority": 1.240974348614323,
+    "extra_distance": 0.0,
+    "global_nearest": 1.240974348614323,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2870,
+      "nearest": [
+        1133,
+        68,
+        117
+      ],
+      "distance": 1.240974348614323,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2840,
+    "pos": [
+      1133,
+      68,
+      118
+    ],
+    "distance": 1.590354700491061,
+    "nearest_same_priority": 1.5050410444249407,
+    "extra_distance": 0.08531365606612029,
+    "global_nearest": 1.5050410444249407,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2869,
+      "nearest": [
+        1133,
+        68,
+        116
+      ],
+      "distance": 1.4894265056030724,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 2891,
+    "pos": [
+      1133,
+      67,
+      117
+    ],
+    "distance": 1.3955179892117495,
+    "nearest_same_priority": 1.3955179892117495,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3955179892117495,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2868,
+      "nearest": [
+        1133,
+        68,
+        116
+      ],
+      "distance": 1.301139699743418,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3007,
+    "pos": [
+      1132,
+      67,
+      116
+    ],
+    "distance": 2.459205871306372,
+    "nearest_same_priority": 2.459205871306372,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3804546788964567,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2867,
+      "nearest": [
+        1133,
+        68,
+        116
+      ],
+      "distance": 1.378133641729023,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3068,
+    "pos": [
+      1133,
+      65,
+      117
+    ],
+    "distance": 1.6834930073192713,
+    "nearest_same_priority": 1.6834930073192713,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6834930073192713,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2866,
+      "nearest": [
+        1133,
+        65,
+        117
+      ],
+      "distance": 1.6834930073192713,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3089,
+    "pos": [
+      1132,
+      65,
+      117
+    ],
+    "distance": 1.8603386142724299,
+    "nearest_same_priority": 1.8603386142724299,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8603386142724299,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2865,
+      "nearest": [
+        1132,
+        65,
+        117
+      ],
+      "distance": 1.8603386142724299,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3102,
+    "pos": [
+      1133,
+      67,
+      119
+    ],
+    "distance": 2.1864335772699968,
+    "nearest_same_priority": 2.1864335772699968,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1864335772699968,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2864,
+      "nearest": [
+        1133,
+        67,
+        119
+      ],
+      "distance": 2.1864335772699968,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3173,
+    "pos": [
+      1132,
+      67,
+      120
+    ],
+    "distance": 1.007447430481018,
+    "nearest_same_priority": 1.007447430481018,
+    "extra_distance": 0.0,
+    "global_nearest": 1.007447430481018,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2863,
+      "nearest": [
+        1132,
+        67,
+        120
+      ],
+      "distance": 1.007447430481018,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3184,
+    "pos": [
+      1134,
+      68,
+      120
+    ],
+    "distance": 1.1055980948342987,
+    "nearest_same_priority": 1.1055980948342987,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1055980948342987,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2862,
+      "nearest": [
+        1134,
+        68,
+        120
+      ],
+      "distance": 1.1055980948342987,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3322,
+    "pos": [
+      1133,
+      64,
+      120
+    ],
+    "distance": 1.911694974631411,
+    "nearest_same_priority": 1.911694974631411,
+    "extra_distance": 0.0,
+    "global_nearest": 1.911694974631411,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2860,
+      "nearest": [
+        1133,
+        64,
+        120
+      ],
+      "distance": 1.911694974631411,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3442,
+    "pos": [
+      1135,
+      64,
+      120
+    ],
+    "distance": 1.8806203254566476,
+    "nearest_same_priority": 1.7341424839261854,
+    "extra_distance": 0.14647784153046217,
+    "global_nearest": 1.7341424839261854,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2859,
+      "nearest": [
+        1133,
+        64,
+        122
+      ],
+      "distance": 1.7341424839261854,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3534,
+    "pos": [
+      1133,
+      64,
+      122
+    ],
+    "distance": 1.7905542620111292,
+    "nearest_same_priority": 1.7905542620111292,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7905542620111292,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2858,
+      "nearest": [
+        1133,
+        64,
+        122
+      ],
+      "distance": 1.7905542620111292,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3633,
+    "pos": [
+      1132,
+      67,
+      122
+    ],
+    "distance": 3.2244015124838845,
+    "nearest_same_priority": 3.2244015124838845,
+    "extra_distance": 0.0,
+    "global_nearest": 2.028670771481967,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2858,
+      "nearest": [
+        1132,
+        67,
+        122
+      ],
+      "distance": 3.2244015124838845,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3707,
+    "pos": [
+      1130,
+      67,
+      122
+    ],
+    "distance": 1.3369622042779414,
+    "nearest_same_priority": 1.3369622042779414,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3369622042779414,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2857,
+      "nearest": [
+        1130,
+        67,
+        122
+      ],
+      "distance": 1.3369622042779414,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3736,
+    "pos": [
+      1131,
+      66,
+      123
+    ],
+    "distance": 1.1260881762560075,
+    "nearest_same_priority": 1.1260881762560075,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1260881762560075,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2856,
+      "nearest": [
+        1131,
+        66,
+        123
+      ],
+      "distance": 1.1260881762560075,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3765,
+    "pos": [
+      1136,
+      65,
+      120
+    ],
+    "distance": 1.9974491777129821,
+    "nearest_same_priority": 1.9974491777129821,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9974491777129821,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2855,
+      "nearest": [
+        1136,
+        65,
+        120
+      ],
+      "distance": 1.9974491777129821,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3804,
+    "pos": [
+      1137,
+      67,
+      122
+    ],
+    "distance": 3.608433679979527,
+    "nearest_same_priority": 3.5869300335212824,
+    "extra_distance": 0.021503646458244763,
+    "global_nearest": 1.74824312621819,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2854,
+      "nearest": [
+        1137,
+        67,
+        120
+      ],
+      "distance": 2.382428774902796,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3840,
+    "pos": [
+      1137,
+      66,
+      122
+    ],
+    "distance": 1.4977795129328564,
+    "nearest_same_priority": 1.4977795129328564,
+    "extra_distance": 0.0,
+    "global_nearest": 1.356495101397526,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2853,
+      "nearest": [
+        1137,
+        67,
+        120
+      ],
+      "distance": 1.0597293171823723,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3866,
+    "pos": [
+      1137,
+      67,
+      123
+    ],
+    "distance": 2.0614837739068235,
+    "nearest_same_priority": 2.0614837739068235,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3731637663035237,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2852,
+      "nearest": [
+        1137,
+        67,
+        120
+      ],
+      "distance": 1.0592258794317748,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3889,
+    "pos": [
+      1137,
+      67,
+      124
+    ],
+    "distance": 2.2243518157216253,
+    "nearest_same_priority": 2.2243518157216253,
+    "extra_distance": 0.0,
+    "global_nearest": 2.133756008943797,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2851,
+      "nearest": [
+        1137,
+        67,
+        120
+      ],
+      "distance": 1.8592896289834522,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3953,
+    "pos": [
+      1136,
+      69,
+      124
+    ],
+    "distance": 1.7305192424654237,
+    "nearest_same_priority": 1.7305192424654237,
+    "extra_distance": 0.0,
+    "global_nearest": 1.238252341331902,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2850,
+      "nearest": [
+        1136,
+        69,
+        124
+      ],
+      "distance": 1.7305192424654237,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 3997,
+    "pos": [
+      1136,
+      69,
+      126
+    ],
+    "distance": 1.1403545016984913,
+    "nearest_same_priority": 1.1403545016984913,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1403545016984913,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2850,
+      "nearest": [
+        1136,
+        69,
+        126
+      ],
+      "distance": 1.1403545016984913,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4025,
+    "pos": [
+      1136,
+      70,
+      126
+    ],
+    "distance": 1.1840269787516744,
+    "nearest_same_priority": 1.1840269787516744,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1840269787516744,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2849,
+      "nearest": [
+        1136,
+        70,
+        126
+      ],
+      "distance": 1.1840269787516744,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4086,
+    "pos": [
+      1137,
+      69,
+      125
+    ],
+    "distance": 1.6825071926183062,
+    "nearest_same_priority": 1.6825071926183062,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6825071926183062,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2848,
+      "nearest": [
+        1138,
+        70,
+        125
+      ],
+      "distance": 1.0324027576583004,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4198,
+    "pos": [
+      1137,
+      69,
+      124
+    ],
+    "distance": 1.9500043153822495,
+    "nearest_same_priority": 1.8746191755944837,
+    "extra_distance": 0.07538513978776584,
+    "global_nearest": 1.8746191755944837,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2847,
+      "nearest": [
+        1138,
+        70,
+        125
+      ],
+      "distance": 0.8403581382833893,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4259,
+    "pos": [
+      1137,
+      69,
+      126
+    ],
+    "distance": 1.8349023129195332,
+    "nearest_same_priority": 1.8349023129195332,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8349023129195332,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2846,
+      "nearest": [
+        1138,
+        70,
+        125
+      ],
+      "distance": 0.8323738586976015,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4283,
+    "pos": [
+      1137,
+      68,
+      125
+    ],
+    "distance": 2.128145609497144,
+    "nearest_same_priority": 2.128145609497144,
+    "extra_distance": 0.0,
+    "global_nearest": 2.128145609497144,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2845,
+      "nearest": [
+        1138,
+        70,
+        125
+      ],
+      "distance": 0.8323738586976015,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4352,
+    "pos": [
+      1137,
+      67,
+      126
+    ],
+    "distance": 2.237736648751299,
+    "nearest_same_priority": 2.237736648751299,
+    "extra_distance": 0.0,
+    "global_nearest": 2.237736648751299,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2844,
+      "nearest": [
+        1138,
+        69,
+        125
+      ],
+      "distance": 2.2290510326474853,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4373,
+    "pos": [
+      1133,
+      68,
+      125
+    ],
+    "distance": 3.202531255569728,
+    "nearest_same_priority": 3.202531255569728,
+    "extra_distance": 0.0,
+    "global_nearest": 2.15427957378475,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2843,
+      "nearest": [
+        1138,
+        69,
+        125
+      ],
+      "distance": 1.8540800432413622,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4536,
+    "pos": [
+      1138,
+      65,
+      125
+    ],
+    "distance": 2.325062114409029,
+    "nearest_same_priority": 2.325062114409029,
+    "extra_distance": 0.0,
+    "global_nearest": 2.325062114409029,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2841,
+      "nearest": [
+        1138,
+        65,
+        125
+      ],
+      "distance": 2.325062114409029,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4540,
+    "pos": [
+      1138,
+      65,
+      126
+    ],
+    "distance": 2.042784618961072,
+    "nearest_same_priority": 2.042784618961072,
+    "extra_distance": 0.0,
+    "global_nearest": 2.042784618961072,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2840,
+      "nearest": [
+        1138,
+        65,
+        126
+      ],
+      "distance": 2.042784618961072,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4596,
+    "pos": [
+      1138,
+      65,
+      127
+    ],
+    "distance": 2.3535482753090315,
+    "nearest_same_priority": 2.3535482753090315,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3535482753090315,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2839,
+      "nearest": [
+        1138,
+        65,
+        127
+      ],
+      "distance": 2.3535482753090315,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4607,
+    "pos": [
+      1137,
+      67,
+      127
+    ],
+    "distance": 2.3792318719424497,
+    "nearest_same_priority": 2.3792318719424497,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3792318719424497,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2838,
+      "nearest": [
+        1137,
+        67,
+        127
+      ],
+      "distance": 2.3792318719424497,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4630,
+    "pos": [
+      1137,
+      66,
+      128
+    ],
+    "distance": 2.4573491421985048,
+    "nearest_same_priority": 2.4573491421985048,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9627925799927195,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2837,
+      "nearest": [
+        1137,
+        66,
+        128
+      ],
+      "distance": 2.4573491421985048,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4662,
+    "pos": [
+      1138,
+      66,
+      128
+    ],
+    "distance": 0.9959367567589585,
+    "nearest_same_priority": 0.9959367567589585,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9959367567589585,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2836,
+      "nearest": [
+        1138,
+        66,
+        128
+      ],
+      "distance": 0.9959367567589585,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4679,
+    "pos": [
+      1137,
+      64,
+      128
+    ],
+    "distance": 2.506942871855945,
+    "nearest_same_priority": 2.506942871855945,
+    "extra_distance": 0.0,
+    "global_nearest": 2.506942871855945,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2836,
+      "nearest": [
+        1142,
+        65,
+        129
+      ],
+      "distance": 4.463100619652354,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4785,
+    "pos": [
+      1137,
+      69,
+      127
+    ],
+    "distance": 2.6465995273546974,
+    "nearest_same_priority": 2.6465995273546974,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6465995273546974,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2835,
+      "nearest": [
+        1142,
+        65,
+        129
+      ],
+      "distance": 4.463100619652354,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 4847,
+    "pos": [
+      1135,
+      71,
+      129
+    ],
+    "distance": 3.783124710128842,
+    "nearest_same_priority": 3.783124710128842,
+    "extra_distance": 0.0,
+    "global_nearest": 3.6497556610415893,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2833,
+      "nearest": [
+        1138,
+        70,
+        126
+      ],
+      "distance": 1.0198245154987298,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5120,
+    "pos": [
+      1133,
+      68,
+      129
+    ],
+    "distance": 3.458906487923239,
+    "nearest_same_priority": 3.458906487923239,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2948719653803886,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2834,
+      "nearest": [
+        1137,
+        72,
+        131
+      ],
+      "distance": 3.1564845980634804,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5188,
+    "pos": [
+      1134,
+      67,
+      130
+    ],
+    "distance": 1.4633359379027748,
+    "nearest_same_priority": 1.4633359379027748,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4633359379027748,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2833,
+      "nearest": [
+        1134,
+        67,
+        130
+      ],
+      "distance": 1.4633359379027748,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5223,
+    "pos": [
+      1131,
+      68,
+      129
+    ],
+    "distance": 1.7308785543229046,
+    "nearest_same_priority": 1.7308785543229046,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7308785543229046,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2833,
+      "nearest": [
+        1131,
+        68,
+        129
+      ],
+      "distance": 1.7308785543229046,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5292,
+    "pos": [
+      1132,
+      65,
+      128
+    ],
+    "distance": 1.5707697157035028,
+    "nearest_same_priority": 1.5707697157035028,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5707697157035028,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2832,
+      "nearest": [
+        1132,
+        65,
+        128
+      ],
+      "distance": 1.5707697157035028,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5302,
+    "pos": [
+      1131,
+      65,
+      128
+    ],
+    "distance": 2.066297449178723,
+    "nearest_same_priority": 2.066297449178723,
+    "extra_distance": 0.0,
+    "global_nearest": 2.066297449178723,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2831,
+      "nearest": [
+        1131,
+        65,
+        128
+      ],
+      "distance": 2.066297449178723,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5314,
+    "pos": [
+      1133,
+      65,
+      128
+    ],
+    "distance": 2.1448892682122125,
+    "nearest_same_priority": 2.1315865635494737,
+    "extra_distance": 0.013302704662738751,
+    "global_nearest": 2.1315865635494737,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2830,
+      "nearest": [
+        1132,
+        68,
+        128
+      ],
+      "distance": 2.1315865635494737,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5318,
+    "pos": [
+      1132,
+      68,
+      128
+    ],
+    "distance": 2.1315865635494737,
+    "nearest_same_priority": 2.1315865635494737,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1315865635494737,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2829,
+      "nearest": [
+        1132,
+        68,
+        128
+      ],
+      "distance": 2.1315865635494737,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5362,
+    "pos": [
+      1131,
+      69,
+      129
+    ],
+    "distance": 1.3182322776184467,
+    "nearest_same_priority": 1.3182322776184467,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3182322776184467,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2828,
+      "nearest": [
+        1131,
+        69,
+        129
+      ],
+      "distance": 1.3182322776184467,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5413,
+    "pos": [
+      1131,
+      69,
+      128
+    ],
+    "distance": 2.1480124218116887,
+    "nearest_same_priority": 2.1480124218116887,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1480124218116887,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2828,
+      "nearest": [
+        1131,
+        69,
+        128
+      ],
+      "distance": 2.1480124218116887,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5447,
+    "pos": [
+      1131,
+      70,
+      128
+    ],
+    "distance": 1.1596713638874772,
+    "nearest_same_priority": 1.1596713638874772,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1596713638874772,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2828,
+      "nearest": [
+        1131,
+        70,
+        128
+      ],
+      "distance": 1.1596713638874772,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5465,
+    "pos": [
+      1131,
+      71,
+      128
+    ],
+    "distance": 0.8811962467780292,
+    "nearest_same_priority": 0.8811962467780292,
+    "extra_distance": 0.0,
+    "global_nearest": 0.8811962467780292,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2827,
+      "nearest": [
+        1131,
+        71,
+        128
+      ],
+      "distance": 0.8811962467780292,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5481,
+    "pos": [
+      1131,
+      70,
+      127
+    ],
+    "distance": 1.0354328341675407,
+    "nearest_same_priority": 1.0354328341675407,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0354328341675407,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2826,
+      "nearest": [
+        1131,
+        70,
+        127
+      ],
+      "distance": 1.0354328341675407,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5513,
+    "pos": [
+      1129,
+      71,
+      128
+    ],
+    "distance": 1.0516693319538595,
+    "nearest_same_priority": 1.0516693319538595,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0516693319538595,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2825,
+      "nearest": [
+        1129,
+        71,
+        128
+      ],
+      "distance": 1.0516693319538595,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5530,
+    "pos": [
+      1129,
+      70,
+      128
+    ],
+    "distance": 1.5316684998096095,
+    "nearest_same_priority": 1.5316684998096095,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5048407333780311,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2824,
+      "nearest": [
+        1129,
+        70,
+        128
+      ],
+      "distance": 1.5316684998096095,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5611,
+    "pos": [
+      1128,
+      68,
+      128
+    ],
+    "distance": 1.486255792658929,
+    "nearest_same_priority": 1.486255792658929,
+    "extra_distance": 0.0,
+    "global_nearest": 1.486255792658929,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2822,
+      "nearest": [
+        1128,
+        68,
+        128
+      ],
+      "distance": 1.486255792658929,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5648,
+    "pos": [
+      1129,
+      68,
+      129
+    ],
+    "distance": 1.0106426495792273,
+    "nearest_same_priority": 1.0106426495792273,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0106426495792273,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2821,
+      "nearest": [
+        1129,
+        68,
+        129
+      ],
+      "distance": 1.0106426495792273,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5659,
+    "pos": [
+      1129,
+      69,
+      129
+    ],
+    "distance": 1.0097980454031563,
+    "nearest_same_priority": 1.0097980454031563,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0097980454031563,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2820,
+      "nearest": [
+        1129,
+        69,
+        129
+      ],
+      "distance": 1.0097980454031563,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5671,
+    "pos": [
+      1129,
+      70,
+      127
+    ],
+    "distance": 1.0079089868674749,
+    "nearest_same_priority": 1.0079089868674749,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0079089868674749,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2819,
+      "nearest": [
+        1129,
+        70,
+        127
+      ],
+      "distance": 1.0079089868674749,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5692,
+    "pos": [
+      1128,
+      71,
+      126
+    ],
+    "distance": 1.339414394165719,
+    "nearest_same_priority": 1.339414394165719,
+    "extra_distance": 0.0,
+    "global_nearest": 1.339414394165719,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2818,
+      "nearest": [
+        1128,
+        71,
+        126
+      ],
+      "distance": 1.339414394165719,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5727,
+    "pos": [
+      1129,
+      71,
+      126
+    ],
+    "distance": 1.4262297936603139,
+    "nearest_same_priority": 1.4262297936603139,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0813521469387974,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2817,
+      "nearest": [
+        1129,
+        71,
+        126
+      ],
+      "distance": 1.4262297936603139,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5749,
+    "pos": [
+      1129,
+      72,
+      126
+    ],
+    "distance": 1.5443951779612841,
+    "nearest_same_priority": 1.5443951779612841,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0813521469387974,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2816,
+      "nearest": [
+        1129,
+        72,
+        126
+      ],
+      "distance": 1.5443951779612841,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5759,
+    "pos": [
+      1129,
+      70,
+      126
+    ],
+    "distance": 1.7932232539256077,
+    "nearest_same_priority": 1.7932232539256077,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0814992695453263,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2815,
+      "nearest": [
+        1129,
+        70,
+        126
+      ],
+      "distance": 1.7932232539256077,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5769,
+    "pos": [
+      1129,
+      72,
+      125
+    ],
+    "distance": 2.2304189622890864,
+    "nearest_same_priority": 2.1400666150709378,
+    "extra_distance": 0.09035234721814867,
+    "global_nearest": 1.082454473547067,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2814,
+      "nearest": [
+        1128,
+        72,
+        125
+      ],
+      "distance": 2.1400666150709378,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5807,
+    "pos": [
+      1131,
+      72,
+      126
+    ],
+    "distance": 1.0299836676187353,
+    "nearest_same_priority": 1.0299836676187353,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0299836676187353,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2813,
+      "nearest": [
+        1131,
+        72,
+        126
+      ],
+      "distance": 1.0299836676187353,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5826,
+    "pos": [
+      1129,
+      72,
+      127
+    ],
+    "distance": 1.2123578867275415,
+    "nearest_same_priority": 1.2123578867275415,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2123578867275415,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2812,
+      "nearest": [
+        1129,
+        72,
+        127
+      ],
+      "distance": 1.2123578867275415,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5830,
+    "pos": [
+      1130,
+      71,
+      126
+    ],
+    "distance": 1.6322065760237245,
+    "nearest_same_priority": 1.6322065760237245,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4416714972232678,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2811,
+      "nearest": [
+        1130,
+        71,
+        126
+      ],
+      "distance": 1.6322065760237245,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5841,
+    "pos": [
+      1128,
+      72,
+      125
+    ],
+    "distance": 1.826222087976181,
+    "nearest_same_priority": 1.826222087976181,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5046168121966803,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2810,
+      "nearest": [
+        1128,
+        72,
+        125
+      ],
+      "distance": 1.826222087976181,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5871,
+    "pos": [
+      1131,
+      71,
+      126
+    ],
+    "distance": 2.272133760508986,
+    "nearest_same_priority": 2.272133760508986,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7166515820429367,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2809,
+      "nearest": [
+        1131,
+        71,
+        126
+      ],
+      "distance": 2.272133760508986,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5909,
+    "pos": [
+      1131,
+      72,
+      125
+    ],
+    "distance": 1.6297595726830802,
+    "nearest_same_priority": 1.6297595726830802,
+    "extra_distance": 0.0,
+    "global_nearest": 1.418139274479758,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2808,
+      "nearest": [
+        1131,
+        72,
+        125
+      ],
+      "distance": 1.6297595726830802,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5926,
+    "pos": [
+      1132,
+      72,
+      125
+    ],
+    "distance": 2.1868780970233654,
+    "nearest_same_priority": 2.1868780970233654,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4134568146199666,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2807,
+      "nearest": [
+        1132,
+        72,
+        125
+      ],
+      "distance": 2.1868780970233654,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5945,
+    "pos": [
+      1132,
+      71,
+      126
+    ],
+    "distance": 1.5620899437576081,
+    "nearest_same_priority": 1.5620899437576081,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5620899437576081,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2806,
+      "nearest": [
+        1132,
+        71,
+        126
+      ],
+      "distance": 1.5620899437576081,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5959,
+    "pos": [
+      1132,
+      70,
+      126
+    ],
+    "distance": 2.383301282239698,
+    "nearest_same_priority": 2.089972067825769,
+    "extra_distance": 0.29332921441392923,
+    "global_nearest": 1.6798012627113565,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2805,
+      "nearest": [
+        1131,
+        72,
+        124
+      ],
+      "distance": 2.089972067825769,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 5993,
+    "pos": [
+      1131,
+      69,
+      127
+    ],
+    "distance": 2.3442684825514295,
+    "nearest_same_priority": 2.0419184057553594,
+    "extra_distance": 0.30235007679607007,
+    "global_nearest": 2.0419184057553594,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2803,
+      "nearest": [
+        1130,
+        70,
+        127
+      ],
+      "distance": 2.0419184057553594,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6003,
+    "pos": [
+      1130,
+      70,
+      127
+    ],
+    "distance": 2.1438356612205856,
+    "nearest_same_priority": 2.1438356612205856,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0489818347049185,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2802,
+      "nearest": [
+        1130,
+        70,
+        127
+      ],
+      "distance": 2.1438356612205856,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6015,
+    "pos": [
+      1132,
+      69,
+      125
+    ],
+    "distance": 2.5047725589765886,
+    "nearest_same_priority": 2.5047725589765886,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0489818347049185,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2801,
+      "nearest": [
+        1132,
+        69,
+        125
+      ],
+      "distance": 2.5047725589765886,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6053,
+    "pos": [
+      1133,
+      68,
+      126
+    ],
+    "distance": 1.3312292279829085,
+    "nearest_same_priority": 1.3312292279829085,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3312292279829085,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2800,
+      "nearest": [
+        1133,
+        68,
+        126
+      ],
+      "distance": 1.3312292279829085,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6073,
+    "pos": [
+      1133,
+      68,
+      125
+    ],
+    "distance": 1.7536021965355582,
+    "nearest_same_priority": 1.5188023857737185,
+    "extra_distance": 0.23479981076183964,
+    "global_nearest": 1.5188023857737185,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2799,
+      "nearest": [
+        1132,
+        68,
+        125
+      ],
+      "distance": 1.5188023857737185,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6161,
+    "pos": [
+      1133,
+      67,
+      125
+    ],
+    "distance": 1.7320459047792163,
+    "nearest_same_priority": 1.7320459047792163,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7320459047792163,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2798,
+      "nearest": [
+        1133,
+        67,
+        125
+      ],
+      "distance": 1.7320459047792163,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6184,
+    "pos": [
+      1133,
+      68,
+      124
+    ],
+    "distance": 2.276567271660937,
+    "nearest_same_priority": 2.276567271660937,
+    "extra_distance": 0.0,
+    "global_nearest": 2.276567271660937,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2798,
+      "nearest": [
+        1133,
+        68,
+        124
+      ],
+      "distance": 2.276567271660937,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6192,
+    "pos": [
+      1132,
+      68,
+      125
+    ],
+    "distance": 2.266561168559686,
+    "nearest_same_priority": 2.266561168559686,
+    "extra_distance": 0.0,
+    "global_nearest": 2.266561168559686,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2797,
+      "nearest": [
+        1132,
+        68,
+        125
+      ],
+      "distance": 2.266561168559686,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6226,
+    "pos": [
+      1133,
+      69,
+      123
+    ],
+    "distance": 1.1932464397388725,
+    "nearest_same_priority": 1.1932464397388725,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1932464397388725,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2796,
+      "nearest": [
+        1133,
+        69,
+        123
+      ],
+      "distance": 1.1932464397388725,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6266,
+    "pos": [
+      1132,
+      69,
+      123
+    ],
+    "distance": 1.2047605259149872,
+    "nearest_same_priority": 1.2047605259149872,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2047605259149872,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2795,
+      "nearest": [
+        1132,
+        69,
+        123
+      ],
+      "distance": 1.2047605259149872,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6289,
+    "pos": [
+      1133,
+      70,
+      122
+    ],
+    "distance": 1.5893544671724702,
+    "nearest_same_priority": 1.5893544671724702,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5893544671724702,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2794,
+      "nearest": [
+        1133,
+        70,
+        122
+      ],
+      "distance": 1.5893544671724702,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6330,
+    "pos": [
+      1133,
+      71,
+      122
+    ],
+    "distance": 1.4250539766254673,
+    "nearest_same_priority": 1.4250539766254673,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4250539766254673,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2794,
+      "nearest": [
+        1133,
+        71,
+        122
+      ],
+      "distance": 1.4250539766254673,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6427,
+    "pos": [
+      1132,
+      70,
+      122
+    ],
+    "distance": 1.7186655693270443,
+    "nearest_same_priority": 1.7186655693270443,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3669447271514368,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2793,
+      "nearest": [
+        1132,
+        70,
+        122
+      ],
+      "distance": 1.7186655693270443,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6470,
+    "pos": [
+      1133,
+      70,
+      120
+    ],
+    "distance": 2.0816174157340477,
+    "nearest_same_priority": 2.0816174157340477,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0816174157340477,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2793,
+      "nearest": [
+        1133,
+        70,
+        120
+      ],
+      "distance": 2.0816174157340477,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6523,
+    "pos": [
+      1133,
+      71,
+      120
+    ],
+    "distance": 1.3298002357108298,
+    "nearest_same_priority": 1.3298002357108298,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3298002357108298,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2792,
+      "nearest": [
+        1133,
+        71,
+        120
+      ],
+      "distance": 1.3298002357108298,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6589,
+    "pos": [
+      1132,
+      72,
+      120
+    ],
+    "distance": 2.1365696403047143,
+    "nearest_same_priority": 2.1365696403047143,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1365696403047143,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2791,
+      "nearest": [
+        1135,
+        71,
+        119
+      ],
+      "distance": 1.2109835433378016,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6624,
+    "pos": [
+      1131,
+      72,
+      119
+    ],
+    "distance": 2.1512899565307477,
+    "nearest_same_priority": 2.1512899565307477,
+    "extra_distance": 0.0,
+    "global_nearest": 2.036730841390296,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2790,
+      "nearest": [
+        1131,
+        72,
+        119
+      ],
+      "distance": 2.1512899565307477,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6649,
+    "pos": [
+      1131,
+      74,
+      120
+    ],
+    "distance": 1.353575344066579,
+    "nearest_same_priority": 1.353575344066579,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0994542966654497,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2789,
+      "nearest": [
+        1131,
+        74,
+        120
+      ],
+      "distance": 1.353575344066579,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6676,
+    "pos": [
+      1132,
+      74,
+      120
+    ],
+    "distance": 1.1648112199472629,
+    "nearest_same_priority": 1.1648112199472629,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1648112199472629,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2788,
+      "nearest": [
+        1132,
+        74,
+        120
+      ],
+      "distance": 1.1648112199472629,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6698,
+    "pos": [
+      1130,
+      74,
+      120
+    ],
+    "distance": 2.0397545839570004,
+    "nearest_same_priority": 2.0397545839570004,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0397545839570004,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2787,
+      "nearest": [
+        1130,
+        74,
+        120
+      ],
+      "distance": 2.0397545839570004,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6759,
+    "pos": [
+      1130,
+      74,
+      119
+    ],
+    "distance": 2.234030694359071,
+    "nearest_same_priority": 2.234030694359071,
+    "extra_distance": 0.0,
+    "global_nearest": 2.234030694359071,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2786,
+      "nearest": [
+        1130,
+        74,
+        119
+      ],
+      "distance": 2.234030694359071,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6765,
+    "pos": [
+      1129,
+      74,
+      120
+    ],
+    "distance": 2.669815006580891,
+    "nearest_same_priority": 2.501152776043064,
+    "extra_distance": 0.16866223053782736,
+    "global_nearest": 2.501152776043064,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2785,
+      "nearest": [
+        1133,
+        74,
+        120
+      ],
+      "distance": 2.4255735083187635,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6788,
+    "pos": [
+      1128,
+      74,
+      120
+    ],
+    "distance": 2.668657118483672,
+    "nearest_same_priority": 2.668657118483672,
+    "extra_distance": 0.0,
+    "global_nearest": 2.668657118483672,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2784,
+      "nearest": [
+        1130,
+        74,
+        118
+      ],
+      "distance": 2.4360805712387688,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6808,
+    "pos": [
+      1127,
+      74,
+      120
+    ],
+    "distance": 2.455004161506894,
+    "nearest_same_priority": 2.455004161506894,
+    "extra_distance": 0.0,
+    "global_nearest": 2.455004161506894,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2783,
+      "nearest": [
+        1127,
+        74,
+        120
+      ],
+      "distance": 2.455004161506894,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6824,
+    "pos": [
+      1128,
+      74,
+      122
+    ],
+    "distance": 2.556721325676446,
+    "nearest_same_priority": 2.556721325676446,
+    "extra_distance": 0.0,
+    "global_nearest": 2.556721325676446,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2782,
+      "nearest": [
+        1128,
+        74,
+        122
+      ],
+      "distance": 2.556721325676446,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6856,
+    "pos": [
+      1129,
+      74,
+      122
+    ],
+    "distance": 1.9271877485642936,
+    "nearest_same_priority": 1.9271877485642936,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9271877485642936,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2781,
+      "nearest": [
+        1129,
+        74,
+        122
+      ],
+      "distance": 1.9271877485642936,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6868,
+    "pos": [
+      1127,
+      74,
+      122
+    ],
+    "distance": 1.952766491354876,
+    "nearest_same_priority": 1.952766491354876,
+    "extra_distance": 0.0,
+    "global_nearest": 1.952766491354876,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2780,
+      "nearest": [
+        1127,
+        74,
+        122
+      ],
+      "distance": 1.952766491354876,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6874,
+    "pos": [
+      1130,
+      74,
+      123
+    ],
+    "distance": 2.596028958232391,
+    "nearest_same_priority": 2.596028958232391,
+    "extra_distance": 0.0,
+    "global_nearest": 2.596028958232391,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2779,
+      "nearest": [
+        1130,
+        74,
+        123
+      ],
+      "distance": 2.596028958232391,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6895,
+    "pos": [
+      1130,
+      74,
+      122
+    ],
+    "distance": 1.8879738847261451,
+    "nearest_same_priority": 1.8879738847261451,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8879738847261451,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2779,
+      "nearest": [
+        1130,
+        74,
+        122
+      ],
+      "distance": 1.8879738847261451,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6907,
+    "pos": [
+      1131,
+      74,
+      122
+    ],
+    "distance": 1.8082660240214095,
+    "nearest_same_priority": 1.8082660240214095,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8082660240214095,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2778,
+      "nearest": [
+        1131,
+        74,
+        122
+      ],
+      "distance": 1.8082660240214095,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6914,
+    "pos": [
+      1132,
+      74,
+      122
+    ],
+    "distance": 2.475342737064851,
+    "nearest_same_priority": 2.475342737064851,
+    "extra_distance": 0.0,
+    "global_nearest": 2.475342737064851,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2777,
+      "nearest": [
+        1132,
+        74,
+        122
+      ],
+      "distance": 2.475342737064851,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6927,
+    "pos": [
+      1133,
+      74,
+      122
+    ],
+    "distance": 2.6121141717948153,
+    "nearest_same_priority": 2.6121141717948153,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6121141717948153,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2776,
+      "nearest": [
+        1133,
+        74,
+        122
+      ],
+      "distance": 2.6121141717948153,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6944,
+    "pos": [
+      1130,
+      74,
+      124
+    ],
+    "distance": 3.2252949512463642,
+    "nearest_same_priority": 3.2252949512463642,
+    "extra_distance": 0.0,
+    "global_nearest": 3.2252949512463642,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2775,
+      "nearest": [
+        1134,
+        74,
+        122
+      ],
+      "distance": 2.578302310634368,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6969,
+    "pos": [
+      1130,
+      74,
+      125
+    ],
+    "distance": 2.653460911692453,
+    "nearest_same_priority": 2.653460911692453,
+    "extra_distance": 0.0,
+    "global_nearest": 2.653460911692453,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2774,
+      "nearest": [
+        1130,
+        74,
+        125
+      ],
+      "distance": 2.653460911692453,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6986,
+    "pos": [
+      1130,
+      74,
+      126
+    ],
+    "distance": 2.623532712373742,
+    "nearest_same_priority": 2.623532712373742,
+    "extra_distance": 0.0,
+    "global_nearest": 2.623532712373742,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2773,
+      "nearest": [
+        1130,
+        74,
+        126
+      ],
+      "distance": 2.623532712373742,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 6999,
+    "pos": [
+      1130,
+      74,
+      127
+    ],
+    "distance": 2.4970723141208224,
+    "nearest_same_priority": 2.4970723141208224,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4970723141208224,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2772,
+      "nearest": [
+        1130,
+        74,
+        127
+      ],
+      "distance": 2.4970723141208224,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7015,
+    "pos": [
+      1130,
+      74,
+      128
+    ],
+    "distance": 2.653187702914632,
+    "nearest_same_priority": 2.653187702914632,
+    "extra_distance": 0.0,
+    "global_nearest": 2.653187702914632,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2771,
+      "nearest": [
+        1130,
+        74,
+        128
+      ],
+      "distance": 2.653187702914632,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7035,
+    "pos": [
+      1130,
+      74,
+      129
+    ],
+    "distance": 2.600615527698949,
+    "nearest_same_priority": 2.600615527698949,
+    "extra_distance": 0.0,
+    "global_nearest": 2.600615527698949,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2770,
+      "nearest": [
+        1130,
+        74,
+        129
+      ],
+      "distance": 2.600615527698949,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7053,
+    "pos": [
+      1130,
+      74,
+      130
+    ],
+    "distance": 2.6948455106101994,
+    "nearest_same_priority": 2.6948455106101994,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6948455106101994,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2770,
+      "nearest": [
+        1130,
+        74,
+        130
+      ],
+      "distance": 2.6948455106101994,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7071,
+    "pos": [
+      1130,
+      74,
+      131
+    ],
+    "distance": 2.619950662783718,
+    "nearest_same_priority": 2.619950662783718,
+    "extra_distance": 0.0,
+    "global_nearest": 2.619950662783718,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2769,
+      "nearest": [
+        1130,
+        74,
+        131
+      ],
+      "distance": 2.619950662783718,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7091,
+    "pos": [
+      1130,
+      74,
+      132
+    ],
+    "distance": 2.59499408114389,
+    "nearest_same_priority": 2.59499408114389,
+    "extra_distance": 0.0,
+    "global_nearest": 2.59499408114389,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2768,
+      "nearest": [
+        1130,
+        74,
+        132
+      ],
+      "distance": 2.59499408114389,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7107,
+    "pos": [
+      1130,
+      74,
+      133
+    ],
+    "distance": 2.5423062670154106,
+    "nearest_same_priority": 2.5423062670154106,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5423062670154106,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2767,
+      "nearest": [
+        1130,
+        74,
+        133
+      ],
+      "distance": 2.5423062670154106,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7124,
+    "pos": [
+      1129,
+      69,
+      129
+    ],
+    "distance": 6.816462403971141,
+    "nearest_same_priority": 6.816462403971141,
+    "extra_distance": 0.0,
+    "global_nearest": 6.816462403971141,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2766,
+      "nearest": [
+        1130,
+        74,
+        134
+      ],
+      "distance": 2.689513153854662,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7134,
+    "pos": [
+      1125,
+      71,
+      129
+    ],
+    "distance": 7.076218519248619,
+    "nearest_same_priority": 7.076218519248619,
+    "extra_distance": 0.0,
+    "global_nearest": 7.076218519248619,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2765,
+      "nearest": [
+        1130,
+        74,
+        134
+      ],
+      "distance": 2.6776053273439087,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7192,
+    "pos": [
+      1124,
+      72,
+      130
+    ],
+    "distance": 2.0267292025098502,
+    "nearest_same_priority": 2.0267292025098502,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0267292025098502,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2764,
+      "nearest": [
+        1124,
+        72,
+        130
+      ],
+      "distance": 2.0267292025098502,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7299,
+    "pos": [
+      1124,
+      64,
+      125
+    ],
+    "distance": 2.7604997287773765,
+    "nearest_same_priority": 2.6980655733041234,
+    "extra_distance": 0.06243415547325304,
+    "global_nearest": 2.6980655733041234,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2764,
+      "nearest": [
+        1123,
+        64,
+        128
+      ],
+      "distance": 2.6980655733041234,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7336,
+    "pos": [
+      1123,
+      64,
+      128
+    ],
+    "distance": 3.086082867864597,
+    "nearest_same_priority": 3.040188721052429,
+    "extra_distance": 0.04589414681216786,
+    "global_nearest": 3.040188721052429,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2763,
+      "nearest": [
+        1127,
+        64,
+        128
+      ],
+      "distance": 3.040188721052429,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7396,
+    "pos": [
+      1127,
+      64,
+      128
+    ],
+    "distance": 3.040188721052429,
+    "nearest_same_priority": 3.040188721052429,
+    "extra_distance": 0.0,
+    "global_nearest": 3.040188721052429,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2762,
+      "nearest": [
+        1127,
+        64,
+        128
+      ],
+      "distance": 3.040188721052429,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7443,
+    "pos": [
+      1129,
+      65,
+      128
+    ],
+    "distance": 3.194639158371716,
+    "nearest_same_priority": 3.194639158371716,
+    "extra_distance": 0.0,
+    "global_nearest": 2.9880508359221967,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2761,
+      "nearest": [
+        1129,
+        65,
+        128
+      ],
+      "distance": 3.194639158371716,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7469,
+    "pos": [
+      1127,
+      68,
+      128
+    ],
+    "distance": 2.3534476959863793,
+    "nearest_same_priority": 2.3534476959863793,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3534476959863793,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2760,
+      "nearest": [
+        1127,
+        68,
+        128
+      ],
+      "distance": 2.3534476959863793,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7535,
+    "pos": [
+      1127,
+      68,
+      129
+    ],
+    "distance": 2.066044006073834,
+    "nearest_same_priority": 2.066044006073834,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0446354092627703,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2759,
+      "nearest": [
+        1127,
+        68,
+        129
+      ],
+      "distance": 2.066044006073834,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7545,
+    "pos": [
+      1129,
+      68,
+      129
+    ],
+    "distance": 2.876808746153048,
+    "nearest_same_priority": 2.876808746153048,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0446354092627703,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2758,
+      "nearest": [
+        1129,
+        68,
+        129
+      ],
+      "distance": 2.876808746153048,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7599,
+    "pos": [
+      1127,
+      65,
+      131
+    ],
+    "distance": 1.626248985456627,
+    "nearest_same_priority": 1.626248985456627,
+    "extra_distance": 0.0,
+    "global_nearest": 1.626248985456627,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2757,
+      "nearest": [
+        1127,
+        65,
+        131
+      ],
+      "distance": 1.626248985456627,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7609,
+    "pos": [
+      1128,
+      65,
+      131
+    ],
+    "distance": 2.1147314072772017,
+    "nearest_same_priority": 2.1147314072772017,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1147314072772017,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2756,
+      "nearest": [
+        1128,
+        65,
+        131
+      ],
+      "distance": 2.1147314072772017,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7620,
+    "pos": [
+      1126,
+      65,
+      131
+    ],
+    "distance": 2.180087778577894,
+    "nearest_same_priority": 2.180087778577894,
+    "extra_distance": 0.0,
+    "global_nearest": 2.180087778577894,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2755,
+      "nearest": [
+        1126,
+        65,
+        131
+      ],
+      "distance": 2.180087778577894,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7634,
+    "pos": [
+      1128,
+      64,
+      131
+    ],
+    "distance": 2.2515259348150725,
+    "nearest_same_priority": 2.2515259348150725,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2515259348150725,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2754,
+      "nearest": [
+        1128,
+        64,
+        131
+      ],
+      "distance": 2.2515259348150725,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7670,
+    "pos": [
+      1126,
+      64,
+      131
+    ],
+    "distance": 1.6910444002889704,
+    "nearest_same_priority": 1.6910444002889704,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6910444002889704,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2753,
+      "nearest": [
+        1126,
+        64,
+        131
+      ],
+      "distance": 1.6910444002889704,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 7686,
+    "pos": [
+      1129,
+      65,
+      131
+    ],
+    "distance": 2.3736645984000084,
+    "nearest_same_priority": 2.3736645984000084,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3736645984000084,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2752,
+      "nearest": [
+        1129,
+        65,
+        131
+      ],
+      "distance": 2.3736645984000084,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8000,
+    "pos": [
+      1130,
+      65,
+      131
+    ],
+    "distance": 2.0317185194663905,
+    "nearest_same_priority": 2.0317185194663905,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0317185194663905,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2750,
+      "nearest": [
+        1130,
+        65,
+        131
+      ],
+      "distance": 2.0317185194663905,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8011,
+    "pos": [
+      1130,
+      64,
+      131
+    ],
+    "distance": 2.437575868058203,
+    "nearest_same_priority": 2.437575868058203,
+    "extra_distance": 0.0,
+    "global_nearest": 2.437575868058203,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2749,
+      "nearest": [
+        1130,
+        64,
+        131
+      ],
+      "distance": 2.437575868058203,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8053,
+    "pos": [
+      1130,
+      65,
+      128
+    ],
+    "distance": 2.175748914050649,
+    "nearest_same_priority": 2.175748914050649,
+    "extra_distance": 0.0,
+    "global_nearest": 2.175748914050649,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2748,
+      "nearest": [
+        1130,
+        65,
+        128
+      ],
+      "distance": 2.175748914050649,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8153,
+    "pos": [
+      1130,
+      68,
+      128
+    ],
+    "distance": 2.082220507493854,
+    "nearest_same_priority": 2.082220507493854,
+    "extra_distance": 0.0,
+    "global_nearest": 2.082220507493854,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2747,
+      "nearest": [
+        1130,
+        68,
+        128
+      ],
+      "distance": 2.082220507493854,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8190,
+    "pos": [
+      1131,
+      68,
+      129
+    ],
+    "distance": 1.0387377291361297,
+    "nearest_same_priority": 1.0387377291361297,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0387377291361297,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2746,
+      "nearest": [
+        1131,
+        68,
+        129
+      ],
+      "distance": 1.0387377291361297,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8205,
+    "pos": [
+      1130,
+      69,
+      128
+    ],
+    "distance": 1.2108991001585108,
+    "nearest_same_priority": 1.2108991001585108,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2108991001585108,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2745,
+      "nearest": [
+        1130,
+        69,
+        128
+      ],
+      "distance": 1.2108991001585108,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8253,
+    "pos": [
+      1131,
+      69,
+      127
+    ],
+    "distance": 2.1052773528123274,
+    "nearest_same_priority": 2.1052773528123274,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1052773528123274,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2744,
+      "nearest": [
+        1131,
+        69,
+        127
+      ],
+      "distance": 2.1052773528123274,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8281,
+    "pos": [
+      1129,
+      69,
+      129
+    ],
+    "distance": 2.5094513033433623,
+    "nearest_same_priority": 2.5094513033433623,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5094513033433623,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2744,
+      "nearest": [
+        1129,
+        69,
+        129
+      ],
+      "distance": 2.5094513033433623,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8322,
+    "pos": [
+      1129,
+      69,
+      128
+    ],
+    "distance": 1.6787846619090787,
+    "nearest_same_priority": 1.6787846619090787,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6787846619090787,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2743,
+      "nearest": [
+        1129,
+        69,
+        128
+      ],
+      "distance": 1.6787846619090787,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8339,
+    "pos": [
+      1129,
+      69,
+      127
+    ],
+    "distance": 1.9575575890038055,
+    "nearest_same_priority": 1.9575575890038055,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9575575890038055,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2742,
+      "nearest": [
+        1129,
+        69,
+        127
+      ],
+      "distance": 1.9575575890038055,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8342,
+    "pos": [
+      1125,
+      71,
+      127
+    ],
+    "distance": 3.707222552107428,
+    "nearest_same_priority": 3.707222552107428,
+    "extra_distance": 0.0,
+    "global_nearest": 2.9883853511242093,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2741,
+      "nearest": [
+        1125,
+        71,
+        127
+      ],
+      "distance": 3.707222552107428,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8419,
+    "pos": [
+      1124,
+      72,
+      126
+    ],
+    "distance": 0.9992302401060965,
+    "nearest_same_priority": 0.9992302401060965,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9992302401060965,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2740,
+      "nearest": [
+        1124,
+        72,
+        126
+      ],
+      "distance": 0.9992302401060965,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8437,
+    "pos": [
+      1124,
+      72,
+      127
+    ],
+    "distance": 1.437230741832285,
+    "nearest_same_priority": 1.437230741832285,
+    "extra_distance": 0.0,
+    "global_nearest": 1.437230741832285,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2740,
+      "nearest": [
+        1124,
+        72,
+        127
+      ],
+      "distance": 1.437230741832285,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8439,
+    "pos": [
+      1124,
+      72,
+      128
+    ],
+    "distance": 2.2289729367597717,
+    "nearest_same_priority": 2.2289729367597717,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8535984682905833,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2739,
+      "nearest": [
+        1124,
+        72,
+        128
+      ],
+      "distance": 2.2289729367597717,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8456,
+    "pos": [
+      1124,
+      72,
+      129
+    ],
+    "distance": 2.8489228560935453,
+    "nearest_same_priority": 2.8489228560935453,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2123389210610336,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2738,
+      "nearest": [
+        1124,
+        72,
+        129
+      ],
+      "distance": 2.8489228560935453,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8476,
+    "pos": [
+      1123,
+      71,
+      127
+    ],
+    "distance": 2.5707146216266046,
+    "nearest_same_priority": 2.420899252128666,
+    "extra_distance": 0.14981536949793872,
+    "global_nearest": 2.251046463977945,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2737,
+      "nearest": [
+        1122,
+        73,
+        127
+      ],
+      "distance": 2.420899252128666,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8557,
+    "pos": [
+      1123,
+      73,
+      125
+    ],
+    "distance": 1.4643405436148282,
+    "nearest_same_priority": 1.4643405436148282,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4643405436148282,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2736,
+      "nearest": [
+        1123,
+        73,
+        125
+      ],
+      "distance": 1.4643405436148282,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8612,
+    "pos": [
+      1122,
+      73,
+      126
+    ],
+    "distance": 1.242093734698036,
+    "nearest_same_priority": 1.242093734698036,
+    "extra_distance": 0.0,
+    "global_nearest": 1.242093734698036,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2735,
+      "nearest": [
+        1122,
+        73,
+        126
+      ],
+      "distance": 1.242093734698036,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8695,
+    "pos": [
+      1122,
+      73,
+      125
+    ],
+    "distance": 2.024833879305899,
+    "nearest_same_priority": 2.024833879305899,
+    "extra_distance": 0.0,
+    "global_nearest": 2.024833879305899,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2734,
+      "nearest": [
+        1122,
+        73,
+        125
+      ],
+      "distance": 2.024833879305899,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8706,
+    "pos": [
+      1122,
+      73,
+      127
+    ],
+    "distance": 2.209028117143413,
+    "nearest_same_priority": 2.209028117143413,
+    "extra_distance": 0.0,
+    "global_nearest": 2.209028117143413,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2733,
+      "nearest": [
+        1122,
+        73,
+        127
+      ],
+      "distance": 2.209028117143413,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8766,
+    "pos": [
+      1122,
+      73,
+      124
+    ],
+    "distance": 2.585981401409506,
+    "nearest_same_priority": 2.585981401409506,
+    "extra_distance": 0.0,
+    "global_nearest": 2.585981401409506,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2732,
+      "nearest": [
+        1122,
+        73,
+        124
+      ],
+      "distance": 2.585981401409506,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8787,
+    "pos": [
+      1123,
+      73,
+      124
+    ],
+    "distance": 2.1469640720337013,
+    "nearest_same_priority": 2.1469640720337013,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1469640720337013,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2731,
+      "nearest": [
+        1123,
+        73,
+        124
+      ],
+      "distance": 2.1469640720337013,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8799,
+    "pos": [
+      1122,
+      73,
+      123
+    ],
+    "distance": 2.439286265700653,
+    "nearest_same_priority": 2.439286265700653,
+    "extra_distance": 0.0,
+    "global_nearest": 2.439286265700653,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2730,
+      "nearest": [
+        1122,
+        73,
+        123
+      ],
+      "distance": 2.439286265700653,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8815,
+    "pos": [
+      1122,
+      74,
+      122
+    ],
+    "distance": 2.197188644755063,
+    "nearest_same_priority": 2.197188644755063,
+    "extra_distance": 0.0,
+    "global_nearest": 2.197188644755063,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2729,
+      "nearest": [
+        1122,
+        74,
+        122
+      ],
+      "distance": 2.197188644755063,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8861,
+    "pos": [
+      1123,
+      74,
+      122
+    ],
+    "distance": 1.0810559561819395,
+    "nearest_same_priority": 1.0810559561819395,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0810559561819395,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2728,
+      "nearest": [
+        1123,
+        74,
+        122
+      ],
+      "distance": 1.0810559561819395,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8884,
+    "pos": [
+      1122,
+      74,
+      120
+    ],
+    "distance": 3.063519867074076,
+    "nearest_same_priority": 3.063519867074076,
+    "extra_distance": 0.0,
+    "global_nearest": 3.063519867074076,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2727,
+      "nearest": [
+        1122,
+        74,
+        120
+      ],
+      "distance": 3.063519867074076,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8911,
+    "pos": [
+      1123,
+      74,
+      120
+    ],
+    "distance": 2.210023797344609,
+    "nearest_same_priority": 2.210023797344609,
+    "extra_distance": 0.0,
+    "global_nearest": 2.210023797344609,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2726,
+      "nearest": [
+        1123,
+        74,
+        120
+      ],
+      "distance": 2.210023797344609,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8945,
+    "pos": [
+      1122,
+      73,
+      119
+    ],
+    "distance": 2.107688753123918,
+    "nearest_same_priority": 2.107688753123918,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1589451778528757,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2725,
+      "nearest": [
+        1122,
+        73,
+        119
+      ],
+      "distance": 2.107688753123918,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8959,
+    "pos": [
+      1124,
+      74,
+      120
+    ],
+    "distance": 1.5065754527377442,
+    "nearest_same_priority": 1.5065754527377442,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5065754527377442,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2724,
+      "nearest": [
+        1124,
+        74,
+        120
+      ],
+      "distance": 1.5065754527377442,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8982,
+    "pos": [
+      1125,
+      74,
+      120
+    ],
+    "distance": 2.3497567895294917,
+    "nearest_same_priority": 2.3497567895294917,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3497567895294917,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2723,
+      "nearest": [
+        1125,
+        74,
+        120
+      ],
+      "distance": 2.3497567895294917,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 8990,
+    "pos": [
+      1126,
+      74,
+      120
+    ],
+    "distance": 2.6189521631276267,
+    "nearest_same_priority": 2.6189521631276267,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6189521631276267,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2722,
+      "nearest": [
+        1126,
+        74,
+        120
+      ],
+      "distance": 2.6189521631276267,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9010,
+    "pos": [
+      1126,
+      74,
+      122
+    ],
+    "distance": 2.6879445387508785,
+    "nearest_same_priority": 2.6879445387508785,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6879445387508785,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2721,
+      "nearest": [
+        1126,
+        74,
+        122
+      ],
+      "distance": 2.6879445387508785,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9029,
+    "pos": [
+      1128,
+      72,
+      120
+    ],
+    "distance": 4.726781606153539,
+    "nearest_same_priority": 4.726781606153539,
+    "extra_distance": 0.0,
+    "global_nearest": 4.726781606153539,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2720,
+      "nearest": [
+        1128,
+        72,
+        120
+      ],
+      "distance": 4.726781606153539,
+      "reachable": false
+    }
+  },
+  {
+    "tick": 9070,
+    "pos": [
+      1129,
+      72,
+      119
+    ],
+    "distance": 1.8981745249737192,
+    "nearest_same_priority": 1.8981745249737192,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8981745249737192,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2719,
+      "nearest": [
+        1129,
+        72,
+        119
+      ],
+      "distance": 1.8981745249737192,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9084,
+    "pos": [
+      1129,
+      72,
+      120
+    ],
+    "distance": 1.9277944250827281,
+    "nearest_same_priority": 1.9277944250827281,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9185384330378399,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2718,
+      "nearest": [
+        1129,
+        72,
+        120
+      ],
+      "distance": 1.9277944250827281,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9087,
+    "pos": [
+      1129,
+      72,
+      117
+    ],
+    "distance": 2.6779651848077215,
+    "nearest_same_priority": 2.6779651848077215,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7949506341621297,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2717,
+      "nearest": [
+        1129,
+        72,
+        117
+      ],
+      "distance": 2.6779651848077215,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9106,
+    "pos": [
+      1130,
+      74,
+      120
+    ],
+    "distance": 2.214873740740691,
+    "nearest_same_priority": 2.214873740740691,
+    "extra_distance": 0.0,
+    "global_nearest": 2.214873740740691,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2716,
+      "nearest": [
+        1129,
+        72,
+        115
+      ],
+      "distance": 3.4716890789210644,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9142,
+    "pos": [
+      1131,
+      72,
+      118
+    ],
+    "distance": 3.3617192834862006,
+    "nearest_same_priority": 3.3617192834862006,
+    "extra_distance": 0.0,
+    "global_nearest": 3.3617192834862006,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2715,
+      "nearest": [
+        1130,
+        74,
+        118
+      ],
+      "distance": 1.4044883591155997,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9180,
+    "pos": [
+      1131,
+      72,
+      120
+    ],
+    "distance": 1.8879983660185269,
+    "nearest_same_priority": 1.8879983660185269,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8879983660185269,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2714,
+      "nearest": [
+        1131,
+        72,
+        120
+      ],
+      "distance": 1.8879983660185269,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9197,
+    "pos": [
+      1131,
+      72,
+      122
+    ],
+    "distance": 3.301809598305334,
+    "nearest_same_priority": 3.301809598305334,
+    "extra_distance": 0.0,
+    "global_nearest": 3.301809598305334,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2713,
+      "nearest": [
+        1132,
+        72,
+        117
+      ],
+      "distance": 2.6523187253924836,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9223,
+    "pos": [
+      1132,
+      72,
+      122
+    ],
+    "distance": 2.193898685538388,
+    "nearest_same_priority": 2.193898685538388,
+    "extra_distance": 0.0,
+    "global_nearest": 2.193898685538388,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2712,
+      "nearest": [
+        1132,
+        72,
+        122
+      ],
+      "distance": 2.193898685538388,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9235,
+    "pos": [
+      1129,
+      72,
+      122
+    ],
+    "distance": 2.654959236513874,
+    "nearest_same_priority": 2.654959236513874,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4010351855738965,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2711,
+      "nearest": [
+        1129,
+        72,
+        122
+      ],
+      "distance": 2.654959236513874,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9253,
+    "pos": [
+      1128,
+      72,
+      122
+    ],
+    "distance": 2.72786376027061,
+    "nearest_same_priority": 2.72786376027061,
+    "extra_distance": 0.0,
+    "global_nearest": 2.7015607737941902,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2710,
+      "nearest": [
+        1128,
+        72,
+        122
+      ],
+      "distance": 2.72786376027061,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9270,
+    "pos": [
+      1131,
+      72,
+      123
+    ],
+    "distance": 3.155545157411052,
+    "nearest_same_priority": 3.155545157411052,
+    "extra_distance": 0.0,
+    "global_nearest": 3.155545157411052,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2709,
+      "nearest": [
+        1131,
+        72,
+        123
+      ],
+      "distance": 3.155545157411052,
+      "reachable": false
+    }
+  },
+  {
+    "tick": 9310,
+    "pos": [
+      1131,
+      72,
+      124
+    ],
+    "distance": 2.597815086254381,
+    "nearest_same_priority": 2.597815086254381,
+    "extra_distance": 0.0,
+    "global_nearest": 2.597815086254381,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2708,
+      "nearest": [
+        1131,
+        72,
+        124
+      ],
+      "distance": 2.597815086254381,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9329,
+    "pos": [
+      1135,
+      71,
+      123
+    ],
+    "distance": 4.527324116357627,
+    "nearest_same_priority": 4.440967715558568,
+    "extra_distance": 0.08635640079905915,
+    "global_nearest": 4.440967715558568,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2707,
+      "nearest": [
+        1134,
+        74,
+        122
+      ],
+      "distance": 3.1885054579057273,
+      "reachable": false
+    }
+  },
+  {
+    "tick": 9391,
+    "pos": [
+      1136,
+      70,
+      126
+    ],
+    "distance": 3.0573426579323817,
+    "nearest_same_priority": 3.0573426579323817,
+    "extra_distance": 0.0,
+    "global_nearest": 3.0573426579323817,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2706,
+      "nearest": [
+        1136,
+        72,
+        123
+      ],
+      "distance": 1.4875973330115693,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9600,
+    "pos": [
+      1137,
+      69,
+      124
+    ],
+    "distance": 2.4099613872617485,
+    "nearest_same_priority": 2.4099613872617485,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4099613872617485,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2705,
+      "nearest": [
+        1138,
+        70,
+        126
+      ],
+      "distance": 0.9047425515243758,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9624,
+    "pos": [
+      1136,
+      65,
+      125
+    ],
+    "distance": 4.668778441793309,
+    "nearest_same_priority": 4.668778441793309,
+    "extra_distance": 0.0,
+    "global_nearest": 4.668778441793309,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2704,
+      "nearest": [
+        1138,
+        70,
+        125
+      ],
+      "distance": 1.3333992214343922,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9719,
+    "pos": [
+      1135,
+      65,
+      125
+    ],
+    "distance": 1.8296284623280221,
+    "nearest_same_priority": 1.8296284623280221,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8296284623280221,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2703,
+      "nearest": [
+        1135,
+        65,
+        125
+      ],
+      "distance": 1.8296284623280221,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9737,
+    "pos": [
+      1134,
+      65,
+      125
+    ],
+    "distance": 1.88553732208836,
+    "nearest_same_priority": 1.88553732208836,
+    "extra_distance": 0.0,
+    "global_nearest": 1.88553732208836,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2702,
+      "nearest": [
+        1134,
+        65,
+        125
+      ],
+      "distance": 1.88553732208836,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9744,
+    "pos": [
+      1133,
+      65,
+      125
+    ],
+    "distance": 2.5567764035068334,
+    "nearest_same_priority": 2.369266583766104,
+    "extra_distance": 0.18750981974072944,
+    "global_nearest": 2.369266583766104,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2701,
+      "nearest": [
+        1134,
+        64,
+        125
+      ],
+      "distance": 2.369266583766104,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9764,
+    "pos": [
+      1134,
+      64,
+      125
+    ],
+    "distance": 2.12163479109045,
+    "nearest_same_priority": 2.12163479109045,
+    "extra_distance": 0.0,
+    "global_nearest": 2.12163479109045,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2700,
+      "nearest": [
+        1134,
+        64,
+        125
+      ],
+      "distance": 2.12163479109045,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9804,
+    "pos": [
+      1132,
+      65,
+      125
+    ],
+    "distance": 1.4039741038799143,
+    "nearest_same_priority": 1.4039741038799143,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4039741038799143,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2699,
+      "nearest": [
+        1132,
+        65,
+        125
+      ],
+      "distance": 1.4039741038799143,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9814,
+    "pos": [
+      1132,
+      64,
+      125
+    ],
+    "distance": 1.7072600972698406,
+    "nearest_same_priority": 1.7072600972698406,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7072600972698406,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2698,
+      "nearest": [
+        1132,
+        64,
+        125
+      ],
+      "distance": 1.7072600972698406,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9874,
+    "pos": [
+      1130,
+      64,
+      125
+    ],
+    "distance": 2.0841567042321336,
+    "nearest_same_priority": 2.0841567042321336,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0841567042321336,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2697,
+      "nearest": [
+        1130,
+        64,
+        125
+      ],
+      "distance": 2.0841567042321336,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 9991,
+    "pos": [
+      1130,
+      67,
+      126
+    ],
+    "distance": 1.8915039596135732,
+    "nearest_same_priority": 1.8915039596135732,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8915039596135732,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2696,
+      "nearest": [
+        1130,
+        67,
+        126
+      ],
+      "distance": 1.8915039596135732,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10040,
+    "pos": [
+      1132,
+      67,
+      126
+    ],
+    "distance": 1.0049626737981192,
+    "nearest_same_priority": 1.0049626737981192,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0049626737981192,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2695,
+      "nearest": [
+        1132,
+        67,
+        126
+      ],
+      "distance": 1.0049626737981192,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10058,
+    "pos": [
+      1130,
+      68,
+      126
+    ],
+    "distance": 1.3341306002890572,
+    "nearest_same_priority": 1.0298442979624325,
+    "extra_distance": 0.3042863023266247,
+    "global_nearest": 1.0298442979624325,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2694,
+      "nearest": [
+        1131,
+        67,
+        125
+      ],
+      "distance": 1.0298442979624325,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10094,
+    "pos": [
+      1130,
+      67,
+      125
+    ],
+    "distance": 1.0461467798206907,
+    "nearest_same_priority": 1.0461467798206907,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0461467798206907,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2693,
+      "nearest": [
+        1130,
+        67,
+        125
+      ],
+      "distance": 1.0461467798206907,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10152,
+    "pos": [
+      1128,
+      64,
+      125
+    ],
+    "distance": 2.101057572482007,
+    "nearest_same_priority": 2.101057572482007,
+    "extra_distance": 0.0,
+    "global_nearest": 2.101057572482007,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2691,
+      "nearest": [
+        1128,
+        64,
+        125
+      ],
+      "distance": 2.101057572482007,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10250,
+    "pos": [
+      1129,
+      67,
+      125
+    ],
+    "distance": 2.4727730912001027,
+    "nearest_same_priority": 2.4727730912001027,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4727730912001027,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2690,
+      "nearest": [
+        1129,
+        67,
+        125
+      ],
+      "distance": 2.4727730912001027,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10338,
+    "pos": [
+      1129,
+      67,
+      124
+    ],
+    "distance": 2.0884969429459224,
+    "nearest_same_priority": 2.0884969429459224,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0752010082560424,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2689,
+      "nearest": [
+        1129,
+        67,
+        124
+      ],
+      "distance": 2.0884969429459224,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10374,
+    "pos": [
+      1129,
+      68,
+      124
+    ],
+    "distance": 1.1401370231251369,
+    "nearest_same_priority": 1.1401370231251369,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1401370231251369,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2688,
+      "nearest": [
+        1129,
+        68,
+        124
+      ],
+      "distance": 1.1401370231251369,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10389,
+    "pos": [
+      1129,
+      67,
+      123
+    ],
+    "distance": 1.7731631503638925,
+    "nearest_same_priority": 1.7731631503638925,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6055313980812687,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2687,
+      "nearest": [
+        1129,
+        67,
+        123
+      ],
+      "distance": 1.7731631503638925,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10406,
+    "pos": [
+      1130,
+      68,
+      123
+    ],
+    "distance": 1.6970506407211912,
+    "nearest_same_priority": 1.469264808252229,
+    "extra_distance": 0.2277858324689621,
+    "global_nearest": 1.4064321504695487,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2686,
+      "nearest": [
+        1129,
+        66,
+        123
+      ],
+      "distance": 1.469264808252229,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10416,
+    "pos": [
+      1129,
+      66,
+      123
+    ],
+    "distance": 1.469264808252229,
+    "nearest_same_priority": 1.469264808252229,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4064321504695487,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2685,
+      "nearest": [
+        1129,
+        66,
+        123
+      ],
+      "distance": 1.469264808252229,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10468,
+    "pos": [
+      1131,
+      66,
+      123
+    ],
+    "distance": 1.0421391223900143,
+    "nearest_same_priority": 1.0421391223900143,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0421391223900143,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2683,
+      "nearest": [
+        1131,
+        66,
+        123
+      ],
+      "distance": 1.0421391223900143,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10493,
+    "pos": [
+      1131,
+      67,
+      124
+    ],
+    "distance": 1.484547436826835,
+    "nearest_same_priority": 1.4681657559723866,
+    "extra_distance": 0.016381680854448355,
+    "global_nearest": 1.4681657559723866,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2682,
+      "nearest": [
+        1131,
+        67,
+        123
+      ],
+      "distance": 1.4681657559723866,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10538,
+    "pos": [
+      1131,
+      68,
+      124
+    ],
+    "distance": 1.4584081354500986,
+    "nearest_same_priority": 1.4584081354500986,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4584081354500986,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2681,
+      "nearest": [
+        1131,
+        68,
+        124
+      ],
+      "distance": 1.4584081354500986,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10548,
+    "pos": [
+      1131,
+      67,
+      125
+    ],
+    "distance": 1.461758106218244,
+    "nearest_same_priority": 1.461758106218244,
+    "extra_distance": 0.0,
+    "global_nearest": 1.461758106218244,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2680,
+      "nearest": [
+        1131,
+        67,
+        125
+      ],
+      "distance": 1.461758106218244,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10561,
+    "pos": [
+      1131,
+      67,
+      123
+    ],
+    "distance": 1.469840948309305,
+    "nearest_same_priority": 1.469840948309305,
+    "extra_distance": 0.0,
+    "global_nearest": 1.469840948309305,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2679,
+      "nearest": [
+        1131,
+        67,
+        123
+      ],
+      "distance": 1.469840948309305,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10581,
+    "pos": [
+      1132,
+      67,
+      125
+    ],
+    "distance": 2.2424725621118213,
+    "nearest_same_priority": 2.2424725621118213,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7268529577341263,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2678,
+      "nearest": [
+        1132,
+        67,
+        125
+      ],
+      "distance": 2.2424725621118213,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10607,
+    "pos": [
+      1130,
+      66,
+      122
+    ],
+    "distance": 2.438523703889109,
+    "nearest_same_priority": 2.438523703889109,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2406572986181637,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2677,
+      "nearest": [
+        1130,
+        66,
+        122
+      ],
+      "distance": 2.438523703889109,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10659,
+    "pos": [
+      1131,
+      65,
+      122
+    ],
+    "distance": 2.737204029019304,
+    "nearest_same_priority": 2.737204029019304,
+    "extra_distance": 0.0,
+    "global_nearest": 1.268970182770032,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2676,
+      "nearest": [
+        1131,
+        65,
+        122
+      ],
+      "distance": 2.737204029019304,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10688,
+    "pos": [
+      1130,
+      65,
+      122
+    ],
+    "distance": 1.9002662722774808,
+    "nearest_same_priority": 1.9002662722774808,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9002662722774808,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2675,
+      "nearest": [
+        1130,
+        65,
+        122
+      ],
+      "distance": 1.9002662722774808,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10703,
+    "pos": [
+      1130,
+      66,
+      120
+    ],
+    "distance": 2.405072538472577,
+    "nearest_same_priority": 2.1278869431558967,
+    "extra_distance": 0.2771855953166802,
+    "global_nearest": 2.1278869431558967,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2674,
+      "nearest": [
+        1131,
+        64,
+        122
+      ],
+      "distance": 2.1278869431558967,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10704,
+    "pos": [
+      1133,
+      67,
+      123
+    ],
+    "distance": 2.3309030170085543,
+    "nearest_same_priority": 2.1278869431558967,
+    "extra_distance": 0.20301607385265763,
+    "global_nearest": 2.1278869431558967,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2673,
+      "nearest": [
+        1131,
+        64,
+        122
+      ],
+      "distance": 2.1278869431558967,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10746,
+    "pos": [
+      1132,
+      68,
+      124
+    ],
+    "distance": 2.345279151503502,
+    "nearest_same_priority": 2.345279151503502,
+    "extra_distance": 0.0,
+    "global_nearest": 2.345279151503502,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2672,
+      "nearest": [
+        1137,
+        70,
+        123
+      ],
+      "distance": 4.070219216776888,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10804,
+    "pos": [
+      1133,
+      68,
+      128
+    ],
+    "distance": 4.135543250788933,
+    "nearest_same_priority": 4.135543250788933,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9130407986825895,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2671,
+      "nearest": [
+        1137,
+        70,
+        123
+      ],
+      "distance": 4.064279264789707,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10904,
+    "pos": [
+      1136,
+      69,
+      130
+    ],
+    "distance": 2.3284771431292777,
+    "nearest_same_priority": 2.3284771431292777,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3284771431292777,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2670,
+      "nearest": [
+        1136,
+        69,
+        130
+      ],
+      "distance": 2.3284771431292777,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 10992,
+    "pos": [
+      1136,
+      70,
+      130
+    ],
+    "distance": 1.393321107830738,
+    "nearest_same_priority": 1.393321107830738,
+    "extra_distance": 0.0,
+    "global_nearest": 1.393321107830738,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2671,
+      "nearest": [
+        1137,
+        70,
+        129
+      ],
+      "distance": 1.3087794067726406,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11016,
+    "pos": [
+      1134,
+      66,
+      130
+    ],
+    "distance": 4.608065348732993,
+    "nearest_same_priority": 4.608065348732993,
+    "extra_distance": 0.0,
+    "global_nearest": 4.608065348732993,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2670,
+      "nearest": [
+        1137,
+        70,
+        129
+      ],
+      "distance": 1.135129211183666,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11177,
+    "pos": [
+      1134,
+      65,
+      131
+    ],
+    "distance": 1.68338637178725,
+    "nearest_same_priority": 1.68338637178725,
+    "extra_distance": 0.0,
+    "global_nearest": 1.68338637178725,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2669,
+      "nearest": [
+        1134,
+        65,
+        131
+      ],
+      "distance": 1.68338637178725,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11196,
+    "pos": [
+      1132,
+      65,
+      131
+    ],
+    "distance": 3.2869043115746153,
+    "nearest_same_priority": 3.2869043115746153,
+    "extra_distance": 0.0,
+    "global_nearest": 3.2869043115746153,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2668,
+      "nearest": [
+        1132,
+        65,
+        131
+      ],
+      "distance": 3.2869043115746153,
+      "reachable": false
+    }
+  },
+  {
+    "tick": 11268,
+    "pos": [
+      1131,
+      65,
+      131
+    ],
+    "distance": 1.8471765008797925,
+    "nearest_same_priority": 1.8471765008797925,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8471765008797925,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2666,
+      "nearest": [
+        1131,
+        65,
+        131
+      ],
+      "distance": 1.8471765008797925,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11284,
+    "pos": [
+      1132,
+      64,
+      131
+    ],
+    "distance": 2.1219085726179285,
+    "nearest_same_priority": 2.1219085726179285,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1219085726179285,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2665,
+      "nearest": [
+        1132,
+        64,
+        131
+      ],
+      "distance": 2.1219085726179285,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11313,
+    "pos": [
+      1131,
+      64,
+      128
+    ],
+    "distance": 2.3624119111733486,
+    "nearest_same_priority": 2.3624119111733486,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3624119111733486,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2665,
+      "nearest": [
+        1131,
+        64,
+        128
+      ],
+      "distance": 2.3624119111733486,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11431,
+    "pos": [
+      1133,
+      64,
+      128
+    ],
+    "distance": 2.4700522491436523,
+    "nearest_same_priority": 2.4700522491436523,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4700522491436523,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2663,
+      "nearest": [
+        1133,
+        64,
+        128
+      ],
+      "distance": 2.4700522491436523,
+      "reachable": false
+    }
+  },
+  {
+    "tick": 11503,
+    "pos": [
+      1135,
+      64,
+      128
+    ],
+    "distance": 3.3364297641359872,
+    "nearest_same_priority": 3.3364297641359872,
+    "extra_distance": 0.0,
+    "global_nearest": 3.3364297641359872,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2662,
+      "nearest": [
+        1135,
+        64,
+        128
+      ],
+      "distance": 3.3364297641359872,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11573,
+    "pos": [
+      1130,
+      69,
+      125
+    ],
+    "distance": 4.430487662654371,
+    "nearest_same_priority": 4.430487662654371,
+    "extra_distance": 0.0,
+    "global_nearest": 4.430487662654371,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2661,
+      "nearest": [
+        1130,
+        69,
+        125
+      ],
+      "distance": 4.430487662654371,
+      "reachable": false
+    }
+  },
+  {
+    "tick": 11629,
+    "pos": [
+      1127,
+      72,
+      125
+    ],
+    "distance": 3.517228964834799,
+    "nearest_same_priority": 3.517228964834799,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5218509253968793,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2661,
+      "nearest": [
+        1127,
+        72,
+        125
+      ],
+      "distance": 3.517228964834799,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11693,
+    "pos": [
+      1130,
+      69,
+      122
+    ],
+    "distance": 4.484435437185038,
+    "nearest_same_priority": 4.484435437185038,
+    "extra_distance": 0.0,
+    "global_nearest": 4.484435437185038,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2661,
+      "nearest": [
+        1130,
+        69,
+        122
+      ],
+      "distance": 4.484435437185038,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11732,
+    "pos": [
+      1130,
+      68,
+      123
+    ],
+    "distance": 2.3432886453329567,
+    "nearest_same_priority": 2.3432886453329567,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3432886453329567,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2659,
+      "nearest": [
+        1130,
+        68,
+        123
+      ],
+      "distance": 2.3432886453329567,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11742,
+    "pos": [
+      1131,
+      69,
+      122
+    ],
+    "distance": 2.0473605860330353,
+    "nearest_same_priority": 2.0473605860330353,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0473605860330353,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2658,
+      "nearest": [
+        1131,
+        69,
+        122
+      ],
+      "distance": 2.0473605860330353,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11745,
+    "pos": [
+      1131,
+      69,
+      123
+    ],
+    "distance": 2.1486165326166278,
+    "nearest_same_priority": 2.1486165326166278,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1486165326166278,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2657,
+      "nearest": [
+        1131,
+        69,
+        123
+      ],
+      "distance": 2.1486165326166278,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11758,
+    "pos": [
+      1132,
+      70,
+      120
+    ],
+    "distance": 3.0283791840930383,
+    "nearest_same_priority": 3.0283791840930383,
+    "extra_distance": 0.0,
+    "global_nearest": 3.0283791840930383,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2656,
+      "nearest": [
+        1132,
+        70,
+        120
+      ],
+      "distance": 3.0283791840930383,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11778,
+    "pos": [
+      1131,
+      69,
+      120
+    ],
+    "distance": 1.9902781023327774,
+    "nearest_same_priority": 1.8704515002239204,
+    "extra_distance": 0.11982660210885698,
+    "global_nearest": 1.8704515002239204,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2655,
+      "nearest": [
+        1132,
+        69,
+        120
+      ],
+      "distance": 1.8704515002239204,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11825,
+    "pos": [
+      1131,
+      69,
+      119
+    ],
+    "distance": 1.7145484701228513,
+    "nearest_same_priority": 1.7145484701228513,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7145484701228513,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2655,
+      "nearest": [
+        1131,
+        69,
+        119
+      ],
+      "distance": 1.7145484701228513,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11838,
+    "pos": [
+      1132,
+      69,
+      119
+    ],
+    "distance": 2.154911660827994,
+    "nearest_same_priority": 2.154911660827994,
+    "extra_distance": 0.0,
+    "global_nearest": 2.154911660827994,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2654,
+      "nearest": [
+        1132,
+        69,
+        119
+      ],
+      "distance": 2.154911660827994,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11887,
+    "pos": [
+      1132,
+      69,
+      120
+    ],
+    "distance": 1.4791495943858395,
+    "nearest_same_priority": 1.4791495943858395,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4791495943858395,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2653,
+      "nearest": [
+        1132,
+        69,
+        120
+      ],
+      "distance": 1.4791495943858395,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 11907,
+    "pos": [
+      1131,
+      67,
+      119
+    ],
+    "distance": 2.1213776991058566,
+    "nearest_same_priority": 1.918869538965759,
+    "extra_distance": 0.20250816014009754,
+    "global_nearest": 1.918869538965759,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2652,
+      "nearest": [
+        1132,
+        68,
+        119
+      ],
+      "distance": 1.918869538965759,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12025,
+    "pos": [
+      1132,
+      68,
+      119
+    ],
+    "distance": 1.7854205859414014,
+    "nearest_same_priority": 1.7854205859414014,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7854205859414014,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2650,
+      "nearest": [
+        1132,
+        68,
+        119
+      ],
+      "distance": 1.7854205859414014,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12036,
+    "pos": [
+      1130,
+      67,
+      120
+    ],
+    "distance": 1.8300727851602583,
+    "nearest_same_priority": 1.8300727851602583,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8300727851602583,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2649,
+      "nearest": [
+        1130,
+        67,
+        120
+      ],
+      "distance": 1.8300727851602583,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12107,
+    "pos": [
+      1130,
+      66,
+      120
+    ],
+    "distance": 1.5474057727688701,
+    "nearest_same_priority": 1.5474057727688701,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5474057727688701,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2647,
+      "nearest": [
+        1130,
+        66,
+        120
+      ],
+      "distance": 1.5474057727688701,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12120,
+    "pos": [
+      1130,
+      65,
+      120
+    ],
+    "distance": 2.7714384152110423,
+    "nearest_same_priority": 2.7714384152110423,
+    "extra_distance": 0.0,
+    "global_nearest": 2.666856412274106,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2646,
+      "nearest": [
+        1130,
+        65,
+        120
+      ],
+      "distance": 2.7714384152110423,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12149,
+    "pos": [
+      1129,
+      65,
+      122
+    ],
+    "distance": 2.1922007258263583,
+    "nearest_same_priority": 2.1922007258263583,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1922007258263583,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2645,
+      "nearest": [
+        1129,
+        65,
+        122
+      ],
+      "distance": 2.1922007258263583,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12171,
+    "pos": [
+      1128,
+      67,
+      122
+    ],
+    "distance": 1.2941819552069174,
+    "nearest_same_priority": 1.2941819552069174,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2941819552069174,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2644,
+      "nearest": [
+        1128,
+        67,
+        122
+      ],
+      "distance": 1.2941819552069174,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12195,
+    "pos": [
+      1128,
+      67,
+      120
+    ],
+    "distance": 1.8403805859454374,
+    "nearest_same_priority": 1.8403805859454374,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8403805859454374,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2643,
+      "nearest": [
+        1128,
+        67,
+        120
+      ],
+      "distance": 1.8403805859454374,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12248,
+    "pos": [
+      1128,
+      66,
+      120
+    ],
+    "distance": 1.7431863059277026,
+    "nearest_same_priority": 1.7431863059277026,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7431863059277026,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2642,
+      "nearest": [
+        1128,
+        66,
+        120
+      ],
+      "distance": 1.7431863059277026,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12271,
+    "pos": [
+      1127,
+      67,
+      119
+    ],
+    "distance": 1.856965336550615,
+    "nearest_same_priority": 1.856965336550615,
+    "extra_distance": 0.0,
+    "global_nearest": 1.856965336550615,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2641,
+      "nearest": [
+        1127,
+        67,
+        119
+      ],
+      "distance": 1.856965336550615,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12285,
+    "pos": [
+      1127,
+      66,
+      119
+    ],
+    "distance": 1.6630304197049033,
+    "nearest_same_priority": 1.6630304197049033,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6630304197049033,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2641,
+      "nearest": [
+        1127,
+        66,
+        119
+      ],
+      "distance": 1.6630304197049033,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12331,
+    "pos": [
+      1127,
+      69,
+      119
+    ],
+    "distance": 3.061066323060503,
+    "nearest_same_priority": 3.061066323060503,
+    "extra_distance": 0.0,
+    "global_nearest": 2.444476436199396,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2640,
+      "nearest": [
+        1127,
+        69,
+        119
+      ],
+      "distance": 3.061066323060503,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12420,
+    "pos": [
+      1124,
+      68,
+      122
+    ],
+    "distance": 3.281059654262862,
+    "nearest_same_priority": 3.281059654262862,
+    "extra_distance": 0.0,
+    "global_nearest": 3.281059654262862,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2639,
+      "nearest": [
+        1124,
+        68,
+        122
+      ],
+      "distance": 3.281059654262862,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12449,
+    "pos": [
+      1123,
+      70,
+      123
+    ],
+    "distance": 3.0578159367941358,
+    "nearest_same_priority": 3.0578159367941358,
+    "extra_distance": 0.0,
+    "global_nearest": 3.0578159367941358,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2638,
+      "nearest": [
+        1123,
+        70,
+        123
+      ],
+      "distance": 3.0578159367941358,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12483,
+    "pos": [
+      1123,
+      71,
+      123
+    ],
+    "distance": 1.2225885324603813,
+    "nearest_same_priority": 1.2225885324603813,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2225885324603813,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2637,
+      "nearest": [
+        1123,
+        71,
+        123
+      ],
+      "distance": 1.2225885324603813,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12523,
+    "pos": [
+      1122,
+      71,
+      124
+    ],
+    "distance": 2.207057661859375,
+    "nearest_same_priority": 2.207057661859375,
+    "extra_distance": 0.0,
+    "global_nearest": 2.207057661859375,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2636,
+      "nearest": [
+        1122,
+        71,
+        124
+      ],
+      "distance": 2.207057661859375,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12630,
+    "pos": [
+      1124,
+      70,
+      124
+    ],
+    "distance": 1.8360292850311353,
+    "nearest_same_priority": 1.8360292850311353,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8360292850311353,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2633,
+      "nearest": [
+        1124,
+        70,
+        124
+      ],
+      "distance": 1.8360292850311353,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12683,
+    "pos": [
+      1122,
+      71,
+      125
+    ],
+    "distance": 2.1715544678836607,
+    "nearest_same_priority": 2.1715544678836607,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1715544678836607,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2633,
+      "nearest": [
+        1122,
+        71,
+        125
+      ],
+      "distance": 2.1715544678836607,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12758,
+    "pos": [
+      1122,
+      67,
+      124
+    ],
+    "distance": 1.380187009077194,
+    "nearest_same_priority": 1.2473398872034065,
+    "extra_distance": 0.13284712187378744,
+    "global_nearest": 1.2473398872034065,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2631,
+      "nearest": [
+        1122,
+        67,
+        125
+      ],
+      "distance": 1.2473398872034065,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12792,
+    "pos": [
+      1122,
+      67,
+      125
+    ],
+    "distance": 1.7368387993106613,
+    "nearest_same_priority": 1.7368387993106613,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7368387993106613,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2630,
+      "nearest": [
+        1122,
+        67,
+        125
+      ],
+      "distance": 1.7368387993106613,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12808,
+    "pos": [
+      1122,
+      67,
+      126
+    ],
+    "distance": 2.0152890820616935,
+    "nearest_same_priority": 2.0152890820616935,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0152890820616935,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2629,
+      "nearest": [
+        1122,
+        67,
+        126
+      ],
+      "distance": 2.0152890820616935,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12824,
+    "pos": [
+      1122,
+      67,
+      127
+    ],
+    "distance": 2.665740263747244,
+    "nearest_same_priority": 2.665740263747244,
+    "extra_distance": 0.0,
+    "global_nearest": 2.665740263747244,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2628,
+      "nearest": [
+        1122,
+        67,
+        127
+      ],
+      "distance": 2.665740263747244,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12843,
+    "pos": [
+      1122,
+      67,
+      128
+    ],
+    "distance": 2.4396304620699576,
+    "nearest_same_priority": 2.4396304620699576,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4396304620699576,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2627,
+      "nearest": [
+        1122,
+        67,
+        128
+      ],
+      "distance": 2.4396304620699576,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12863,
+    "pos": [
+      1123,
+      70,
+      127
+    ],
+    "distance": 2.1232966402139137,
+    "nearest_same_priority": 2.1232966402139137,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1232966402139137,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2626,
+      "nearest": [
+        1123,
+        70,
+        127
+      ],
+      "distance": 2.1232966402139137,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12916,
+    "pos": [
+      1123,
+      70,
+      129
+    ],
+    "distance": 0.9893365967116486,
+    "nearest_same_priority": 0.9893365967116486,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9893365967116486,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2625,
+      "nearest": [
+        1123,
+        70,
+        129
+      ],
+      "distance": 0.9893365967116486,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12938,
+    "pos": [
+      1123,
+      71,
+      129
+    ],
+    "distance": 1.3186306882733483,
+    "nearest_same_priority": 1.3186306882733483,
+    "extra_distance": 0.0,
+    "global_nearest": 1.215572539030208,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2624,
+      "nearest": [
+        1123,
+        71,
+        129
+      ],
+      "distance": 1.3186306882733483,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 12983,
+    "pos": [
+      1122,
+      71,
+      128
+    ],
+    "distance": 1.160031384505898,
+    "nearest_same_priority": 1.160031384505898,
+    "extra_distance": 0.0,
+    "global_nearest": 1.160031384505898,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2623,
+      "nearest": [
+        1122,
+        71,
+        128
+      ],
+      "distance": 1.160031384505898,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13002,
+    "pos": [
+      1122,
+      72,
+      128
+    ],
+    "distance": 1.373816917004978,
+    "nearest_same_priority": 1.373816917004978,
+    "extra_distance": 0.0,
+    "global_nearest": 1.373816917004978,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2622,
+      "nearest": [
+        1122,
+        72,
+        128
+      ],
+      "distance": 1.373816917004978,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13016,
+    "pos": [
+      1122,
+      71,
+      127
+    ],
+    "distance": 1.878125306953381,
+    "nearest_same_priority": 1.878125306953381,
+    "extra_distance": 0.0,
+    "global_nearest": 1.878125306953381,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2621,
+      "nearest": [
+        1122,
+        71,
+        127
+      ],
+      "distance": 1.878125306953381,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13027,
+    "pos": [
+      1122,
+      71,
+      130
+    ],
+    "distance": 2.2921409217544237,
+    "nearest_same_priority": 2.2921409217544237,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2663971477728473,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2620,
+      "nearest": [
+        1122,
+        71,
+        130
+      ],
+      "distance": 2.2921409217544237,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13058,
+    "pos": [
+      1120,
+      72,
+      129
+    ],
+    "distance": 2.0826175326789027,
+    "nearest_same_priority": 2.0826175326789027,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0826175326789027,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2619,
+      "nearest": [
+        1120,
+        72,
+        129
+      ],
+      "distance": 2.0826175326789027,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13112,
+    "pos": [
+      1120,
+      73,
+      129
+    ],
+    "distance": 0.8699871176388666,
+    "nearest_same_priority": 0.8699871176388666,
+    "extra_distance": 0.0,
+    "global_nearest": 0.8699871176388666,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2618,
+      "nearest": [
+        1120,
+        73,
+        129
+      ],
+      "distance": 0.8699871176388666,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13123,
+    "pos": [
+      1119,
+      72,
+      129
+    ],
+    "distance": 2.006981889968929,
+    "nearest_same_priority": 2.006981889968929,
+    "extra_distance": 0.0,
+    "global_nearest": 2.006981889968929,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2617,
+      "nearest": [
+        1119,
+        72,
+        129
+      ],
+      "distance": 2.006981889968929,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13158,
+    "pos": [
+      1120,
+      71,
+      130
+    ],
+    "distance": 2.9191273942283806,
+    "nearest_same_priority": 2.9191273942283806,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1803187246445392,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2616,
+      "nearest": [
+        1120,
+        71,
+        130
+      ],
+      "distance": 2.9191273942283806,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13181,
+    "pos": [
+      1119,
+      72,
+      131
+    ],
+    "distance": 2.0928666147879884,
+    "nearest_same_priority": 1.839113218389028,
+    "extra_distance": 0.25375339639896044,
+    "global_nearest": 1.839113218389028,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2615,
+      "nearest": [
+        1120,
+        72,
+        131
+      ],
+      "distance": 1.839113218389028,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13199,
+    "pos": [
+      1120,
+      72,
+      131
+    ],
+    "distance": 1.8016252979483227,
+    "nearest_same_priority": 1.8016252979483227,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8016252979483227,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2616,
+      "nearest": [
+        1120,
+        72,
+        131
+      ],
+      "distance": 1.8016252979483227,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13205,
+    "pos": [
+      1121,
+      72,
+      131
+    ],
+    "distance": 1.877424616499744,
+    "nearest_same_priority": 1.877424616499744,
+    "extra_distance": 0.0,
+    "global_nearest": 1.877424616499744,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2615,
+      "nearest": [
+        1121,
+        72,
+        131
+      ],
+      "distance": 1.877424616499744,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13217,
+    "pos": [
+      1122,
+      72,
+      131
+    ],
+    "distance": 2.554439732888146,
+    "nearest_same_priority": 2.342751944723714,
+    "extra_distance": 0.2116877881644319,
+    "global_nearest": 2.342751944723714,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2614,
+      "nearest": [
+        1120,
+        71,
+        132
+      ],
+      "distance": 2.342751944723714,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13226,
+    "pos": [
+      1120,
+      71,
+      132
+    ],
+    "distance": 2.4855561373622868,
+    "nearest_same_priority": 2.4855561373622868,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4855561373622868,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2611,
+      "nearest": [
+        1120,
+        71,
+        132
+      ],
+      "distance": 2.4855561373622868,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13267,
+    "pos": [
+      1118,
+      72,
+      132
+    ],
+    "distance": 1.2159395809059812,
+    "nearest_same_priority": 1.2159395809059812,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2159395809059812,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2612,
+      "nearest": [
+        1118,
+        72,
+        132
+      ],
+      "distance": 1.2159395809059812,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13287,
+    "pos": [
+      1118,
+      72,
+      131
+    ],
+    "distance": 1.4967618316703424,
+    "nearest_same_priority": 1.4967618316703424,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4967618316703424,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2611,
+      "nearest": [
+        1118,
+        72,
+        131
+      ],
+      "distance": 1.4967618316703424,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13300,
+    "pos": [
+      1122,
+      71,
+      132
+    ],
+    "distance": 3.6220150883211373,
+    "nearest_same_priority": 3.6220150883211373,
+    "extra_distance": 0.0,
+    "global_nearest": 3.0078601030788215,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2610,
+      "nearest": [
+        1116,
+        72,
+        131
+      ],
+      "distance": 3.317464940461772,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13418,
+    "pos": [
+      1123,
+      72,
+      131
+    ],
+    "distance": 1.1651929313797775,
+    "nearest_same_priority": 1.1651929313797775,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1651929313797775,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2609,
+      "nearest": [
+        1123,
+        72,
+        131
+      ],
+      "distance": 1.1651929313797775,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13428,
+    "pos": [
+      1119,
+      70,
+      131
+    ],
+    "distance": 4.4615522091317015,
+    "nearest_same_priority": 4.4615522091317015,
+    "extra_distance": 0.0,
+    "global_nearest": 2.346369114065504,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2608,
+      "nearest": [
+        1119,
+        70,
+        131
+      ],
+      "distance": 4.4615522091317015,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13520,
+    "pos": [
+      1118,
+      70,
+      129
+    ],
+    "distance": 0.9965766727706269,
+    "nearest_same_priority": 0.9965766727706269,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9965766727706269,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2605,
+      "nearest": [
+        1118,
+        70,
+        129
+      ],
+      "distance": 0.9965766727706269,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13563,
+    "pos": [
+      1121,
+      65,
+      131
+    ],
+    "distance": 2.6016591818277686,
+    "nearest_same_priority": 2.6016591818277686,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5725100293815488,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2604,
+      "nearest": [
+        1121,
+        65,
+        131
+      ],
+      "distance": 2.6016591818277686,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13594,
+    "pos": [
+      1121,
+      65,
+      132
+    ],
+    "distance": 2.0380438400251304,
+    "nearest_same_priority": 2.0380438400251304,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0871293063039025,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2603,
+      "nearest": [
+        1121,
+        65,
+        132
+      ],
+      "distance": 2.0380438400251304,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13606,
+    "pos": [
+      1122,
+      66,
+      130
+    ],
+    "distance": 2.178619040965076,
+    "nearest_same_priority": 2.178619040965076,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0871293063039025,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2602,
+      "nearest": [
+        1122,
+        66,
+        130
+      ],
+      "distance": 2.178619040965076,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13612,
+    "pos": [
+      1121,
+      66,
+      129
+    ],
+    "distance": 2.084539226531842,
+    "nearest_same_priority": 2.084539226531842,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4428905638251026,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2601,
+      "nearest": [
+        1121,
+        66,
+        129
+      ],
+      "distance": 2.084539226531842,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13622,
+    "pos": [
+      1120,
+      67,
+      130
+    ],
+    "distance": 1.7720545697505472,
+    "nearest_same_priority": 1.7720545697505472,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7720545697505472,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2600,
+      "nearest": [
+        1120,
+        67,
+        130
+      ],
+      "distance": 1.7720545697505472,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13638,
+    "pos": [
+      1122,
+      66,
+      129
+    ],
+    "distance": 2.498015016541564,
+    "nearest_same_priority": 2.498015016541564,
+    "extra_distance": 0.0,
+    "global_nearest": 2.498015016541564,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2599,
+      "nearest": [
+        1122,
+        66,
+        129
+      ],
+      "distance": 2.498015016541564,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13665,
+    "pos": [
+      1123,
+      66,
+      131
+    ],
+    "distance": 2.9659848314745934,
+    "nearest_same_priority": 2.9659848314745934,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4039803456497726,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2600,
+      "nearest": [
+        1123,
+        66,
+        131
+      ],
+      "distance": 2.9659848314745934,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13695,
+    "pos": [
+      1123,
+      66,
+      133
+    ],
+    "distance": 2.1569360290179405,
+    "nearest_same_priority": 2.1569360290179405,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1569360290179405,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2599,
+      "nearest": [
+        1123,
+        66,
+        133
+      ],
+      "distance": 2.1569360290179405,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13738,
+    "pos": [
+      1121,
+      65,
+      133
+    ],
+    "distance": 2.557930490706773,
+    "nearest_same_priority": 2.3735143712129827,
+    "extra_distance": 0.1844161194937901,
+    "global_nearest": 2.3735143712129827,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2598,
+      "nearest": [
+        1121,
+        64,
+        132
+      ],
+      "distance": 2.3735143712129827,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13781,
+    "pos": [
+      1121,
+      64,
+      132
+    ],
+    "distance": 2.1219490552394116,
+    "nearest_same_priority": 2.1219490552394116,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1219490552394116,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2597,
+      "nearest": [
+        1121,
+        64,
+        132
+      ],
+      "distance": 2.1219490552394116,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13833,
+    "pos": [
+      1121,
+      65,
+      134
+    ],
+    "distance": 1.401459685639212,
+    "nearest_same_priority": 1.401459685639212,
+    "extra_distance": 0.0,
+    "global_nearest": 1.401459685639212,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2596,
+      "nearest": [
+        1121,
+        65,
+        134
+      ],
+      "distance": 1.401459685639212,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13852,
+    "pos": [
+      1120,
+      68,
+      134
+    ],
+    "distance": 1.8138914485275521,
+    "nearest_same_priority": 1.8138914485275521,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8138914485275521,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2595,
+      "nearest": [
+        1120,
+        68,
+        134
+      ],
+      "distance": 1.8138914485275521,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13907,
+    "pos": [
+      1119,
+      68,
+      134
+    ],
+    "distance": 1.0475929326501787,
+    "nearest_same_priority": 1.0475929326501787,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0475929326501787,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2594,
+      "nearest": [
+        1119,
+        68,
+        134
+      ],
+      "distance": 1.0475929326501787,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13927,
+    "pos": [
+      1121,
+      68,
+      134
+    ],
+    "distance": 2.208821730298996,
+    "nearest_same_priority": 2.208821730298996,
+    "extra_distance": 0.0,
+    "global_nearest": 2.208821730298996,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2593,
+      "nearest": [
+        1121,
+        68,
+        134
+      ],
+      "distance": 2.208821730298996,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13977,
+    "pos": [
+      1121,
+      68,
+      135
+    ],
+    "distance": 1.4541695369745522,
+    "nearest_same_priority": 1.4541695369745522,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4541695369745522,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2592,
+      "nearest": [
+        1121,
+        68,
+        135
+      ],
+      "distance": 1.4541695369745522,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 13990,
+    "pos": [
+      1122,
+      68,
+      134
+    ],
+    "distance": 2.004362541878052,
+    "nearest_same_priority": 2.004362541878052,
+    "extra_distance": 0.0,
+    "global_nearest": 2.004362541878052,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2591,
+      "nearest": [
+        1122,
+        68,
+        134
+      ],
+      "distance": 2.004362541878052,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14000,
+    "pos": [
+      1120,
+      69,
+      136
+    ],
+    "distance": 2.0765136009899514,
+    "nearest_same_priority": 2.0765136009899514,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0765136009899514,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2590,
+      "nearest": [
+        1119,
+        70,
+        135
+      ],
+      "distance": 1.6381651863927402,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14041,
+    "pos": [
+      1121,
+      65,
+      136
+    ],
+    "distance": 2.5413681130654555,
+    "nearest_same_priority": 2.5413681130654555,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5413681130654555,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2589,
+      "nearest": [
+        1118,
+        67,
+        136
+      ],
+      "distance": 1.3528998720796515,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14074,
+    "pos": [
+      1121,
+      65,
+      137
+    ],
+    "distance": 2.0133570851065854,
+    "nearest_same_priority": 2.0133570851065854,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0133570851065854,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2588,
+      "nearest": [
+        1121,
+        65,
+        137
+      ],
+      "distance": 2.0133570851065854,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14184,
+    "pos": [
+      1121,
+      65,
+      135
+    ],
+    "distance": 2.039925071660339,
+    "nearest_same_priority": 2.039925071660339,
+    "extra_distance": 0.0,
+    "global_nearest": 2.039925071660339,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2587,
+      "nearest": [
+        1121,
+        65,
+        135
+      ],
+      "distance": 2.039925071660339,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14188,
+    "pos": [
+      1121,
+      64,
+      136
+    ],
+    "distance": 2.2750921476795356,
+    "nearest_same_priority": 2.2750921476795356,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2750921476795356,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2586,
+      "nearest": [
+        1121,
+        68,
+        137
+      ],
+      "distance": 2.2720476380054913,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14321,
+    "pos": [
+      1121,
+      64,
+      134
+    ],
+    "distance": 1.2197839105470802,
+    "nearest_same_priority": 1.2197839105470802,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2197839105470802,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2585,
+      "nearest": [
+        1121,
+        64,
+        134
+      ],
+      "distance": 1.2197839105470802,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14409,
+    "pos": [
+      1122,
+      62,
+      135
+    ],
+    "distance": 1.5091699145133461,
+    "nearest_same_priority": 1.5091699145133461,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5091699145133461,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2584,
+      "nearest": [
+        1122,
+        62,
+        135
+      ],
+      "distance": 1.5091699145133461,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14420,
+    "pos": [
+      1121,
+      62,
+      135
+    ],
+    "distance": 1.5963249209720398,
+    "nearest_same_priority": 1.5963249209720398,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5963249209720398,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2583,
+      "nearest": [
+        1121,
+        62,
+        135
+      ],
+      "distance": 1.5963249209720398,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14437,
+    "pos": [
+      1121,
+      62,
+      134
+    ],
+    "distance": 1.8686490696565456,
+    "nearest_same_priority": 1.6359256160266562,
+    "extra_distance": 0.23272345362988944,
+    "global_nearest": 1.6359256160266562,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2582,
+      "nearest": [
+        1122,
+        62,
+        134
+      ],
+      "distance": 1.6359256160266562,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14444,
+    "pos": [
+      1122,
+      62,
+      134
+    ],
+    "distance": 1.6359256160266562,
+    "nearest_same_priority": 1.6359256160266562,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6359256160266562,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2581,
+      "nearest": [
+        1122,
+        62,
+        134
+      ],
+      "distance": 1.6359256160266562,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14461,
+    "pos": [
+      1122,
+      62,
+      133
+    ],
+    "distance": 2.3333883511090208,
+    "nearest_same_priority": 2.3333883511090208,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7718226404846602,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2580,
+      "nearest": [
+        1122,
+        62,
+        133
+      ],
+      "distance": 2.3333883511090208,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14484,
+    "pos": [
+      1120,
+      62,
+      133
+    ],
+    "distance": 1.8788735539427672,
+    "nearest_same_priority": 1.8438797201872281,
+    "extra_distance": 0.034993833755539105,
+    "global_nearest": 1.8438797201872281,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2579,
+      "nearest": [
+        1121,
+        62,
+        133
+      ],
+      "distance": 1.8438797201872281,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14498,
+    "pos": [
+      1121,
+      62,
+      133
+    ],
+    "distance": 1.8438797201872281,
+    "nearest_same_priority": 1.8438797201872281,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8438797201872281,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2578,
+      "nearest": [
+        1121,
+        62,
+        133
+      ],
+      "distance": 1.8438797201872281,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14517,
+    "pos": [
+      1122,
+      62,
+      132
+    ],
+    "distance": 1.8947196786618963,
+    "nearest_same_priority": 1.8947196786618963,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8947196786618963,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2578,
+      "nearest": [
+        1122,
+        62,
+        132
+      ],
+      "distance": 1.8947196786618963,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14535,
+    "pos": [
+      1121,
+      62,
+      132
+    ],
+    "distance": 1.8600239921895754,
+    "nearest_same_priority": 1.8600239921895754,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8600239921895754,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2577,
+      "nearest": [
+        1121,
+        62,
+        132
+      ],
+      "distance": 1.8600239921895754,
+      "reachable": true
+    }
+  },
+  {
+    "tick": 14579,
+    "pos": [
+      1120,
+      62,
+      131
+    ],
+    "distance": 2.53327307354456,
+    "nearest_same_priority": 2.53327307354456,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1010469278386186,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2576,
+      "nearest": [
+        1120,
+        62,
+        131
+      ],
+      "distance": 2.53327307354456,
+      "reachable": true
+    }
+  }
+]

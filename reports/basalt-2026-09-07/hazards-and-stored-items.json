@@ -1,0 +1,38 @@
+{
+  "fluid_blocks": {
+    "minecraft:lava:source": 307,
+    "minecraft:lava:flowing": 505,
+    "minecraft:water:flowing": 583,
+    "minecraft:water:source": 42
+  },
+  "waterlogged_blocks": {
+    "minecraft:iron_trapdoor": 11,
+    "minecraft:blackstone_wall": 2,
+    "minecraft:polished_blackstone_stairs": 2,
+    "minecraft:oak_leaves": 3
+  },
+  "stored_items_by_container_type": {
+    "minecraft:hopper": {
+      "minecraft:redstone": 5,
+      "minecraft:piston": 1,
+      "minecraft:observer": 1,
+      "minecraft:basalt": 6876
+    },
+    "minecraft:shulker_box": {
+      "minecraft:netherrack": 256,
+      "minecraft:ender_chest": 64,
+      "minecraft:diamond_sword": 1,
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:diamond_axe": 1,
+      "minecraft:diamond_shovel": 1,
+      "minecraft:diamond_helmet": 1,
+      "minecraft:diamond_chestplate": 1,
+      "minecraft:diamond_leggings": 1,
+      "minecraft:diamond_boots": 1,
+      "minecraft:enchanted_golden_apple": 64
+    },
+    "minecraft:chest": {
+      "minecraft:basalt": 63936
+    }
+  }
+}

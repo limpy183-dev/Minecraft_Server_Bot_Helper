@@ -1,0 +1,227 @@
+{
+  "1120,54,132": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1121,54,132": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1122,54,132": {
+    "Name": "minecraft:air"
+  },
+  "1123,54,132": {
+    "Name": "minecraft:air"
+  },
+  "1120,54,133": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1121,54,133": {
+    "Name": "minecraft:air"
+  },
+  "1122,54,133": {
+    "Name": "minecraft:air"
+  },
+  "1123,54,133": {
+    "Name": "minecraft:crimson_nylium"
+  },
+  "1120,54,134": {
+    "Name": "minecraft:crimson_nylium"
+  },
+  "1121,54,134": {
+    "Name": "minecraft:crimson_nylium"
+  },
+  "1122,54,134": {
+    "Name": "minecraft:netherrack"
+  },
+  "1123,54,134": {
+    "Name": "minecraft:netherrack"
+  },
+  "1120,55,132": {
+    "Name": "minecraft:air"
+  },
+  "1121,55,132": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1122,55,132": {
+    "Name": "minecraft:air"
+  },
+  "1123,55,132": {
+    "Name": "minecraft:air"
+  },
+  "1120,55,133": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1121,55,133": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1122,55,133": {
+    "Name": "minecraft:air"
+  },
+  "1123,55,133": {
+    "Name": "minecraft:air"
+  },
+  "1120,55,134": {
+    "Properties": {
+      "level": "1"
+    },
+    "Name": "minecraft:lava"
+  },
+  "1121,55,134": {
+    "Properties": {
+      "level": "8"
+    },
+    "Name": "minecraft:lava"
+  },
+  "1122,55,134": {
+    "Name": "minecraft:crimson_nylium"
+  },
+  "1123,55,134": {
+    "Name": "minecraft:crimson_nylium"
+  },
+  "1120,56,132": {
+    "Name": "minecraft:air"
+  },
+  "1121,56,132": {
+    "Name": "minecraft:cobblestone"
+  },
+  "1122,56,132": {
+    "Name": "minecraft:air"
+  },
+  "1123,56,132": {
+    "Name": "minecraft:air"
+  },
+  "1120,56,133": {
+    "Name": "minecraft:air"
+  },
+  "1121,56,133": {
+    "Name": "minecraft:air"
+  },
+  "1122,56,133": {
+    "Name": "minecraft:air"
+  },
+  "1123,56,133": {
+    "Name": "minecraft:air"
+  },
+  "1120,56,134": {
+    "Name": "minecraft:air"
+  },
+  "1121,56,134": {
+    "Properties": {
+      "level": "1"
+    },
+    "Name": "minecraft:lava"
+  },
+  "1122,56,134": {
+    "Name": "minecraft:air"
+  },
+  "1123,56,134": {
+    "Name": "minecraft:air"
+  },
+  "1120,57,132": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1121,57,132": {
+    "Name": "minecraft:air"
+  },
+  "1122,57,132": {
+    "Name": "minecraft:air"
+  },
+  "1123,57,132": {
+    "Name": "minecraft:air"
+  },
+  "1120,57,133": {
+    "Name": "minecraft:air"
+  },
+  "1121,57,133": {
+    "Name": "minecraft:air"
+  },
+  "1122,57,133": {
+    "Name": "minecraft:air"
+  },
+  "1123,57,133": {
+    "Name": "minecraft:air"
+  },
+  "1120,57,134": {
+    "Name": "minecraft:air"
+  },
+  "1121,57,134": {
+    "Name": "minecraft:air"
+  },
+  "1122,57,134": {
+    "Name": "minecraft:air"
+  },
+  "1123,57,134": {
+    "Name": "minecraft:air"
+  },
+  "1120,58,132": {
+    "Name": "minecraft:cobblestone"
+  },
+  "1121,58,132": {
+    "Name": "minecraft:air"
+  },
+  "1122,58,132": {
+    "Name": "minecraft:air"
+  },
+  "1123,58,132": {
+    "Name": "minecraft:air"
+  },
+  "1120,58,133": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1121,58,133": {
+    "Name": "minecraft:air"
+  },
+  "1122,58,133": {
+    "Name": "minecraft:air"
+  },
+  "1123,58,133": {
+    "Name": "minecraft:air"
+  },
+  "1120,58,134": {
+    "Name": "minecraft:air"
+  },
+  "1121,58,134": {
+    "Name": "minecraft:air"
+  },
+  "1122,58,134": {
+    "Name": "minecraft:air"
+  },
+  "1123,58,134": {
+    "Name": "minecraft:air"
+  },
+  "1120,59,132": {
+    "Name": "minecraft:cobblestone"
+  },
+  "1121,59,132": {
+    "Name": "minecraft:air"
+  },
+  "1122,59,132": {
+    "Name": "minecraft:air"
+  },
+  "1123,59,132": {
+    "Name": "minecraft:air"
+  },
+  "1120,59,133": {
+    "Name": "minecraft:nether_wart_block"
+  },
+  "1121,59,133": {
+    "Name": "minecraft:air"
+  },
+  "1122,59,133": {
+    "Name": "minecraft:air"
+  },
+  "1123,59,133": {
+    "Name": "minecraft:air"
+  },
+  "1120,59,134": {
+    "Name": "minecraft:air"
+  },
+  "1121,59,134": {
+    "Name": "minecraft:air"
+  },
+  "1122,59,134": {
+    "Name": "minecraft:air"
+  },
+  "1123,59,134": {
+    "Name": "minecraft:air"
+  }
+}

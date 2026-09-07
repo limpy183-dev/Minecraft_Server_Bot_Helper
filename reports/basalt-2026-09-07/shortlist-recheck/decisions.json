@@ -1,0 +1,2502 @@
+[
+  {
+    "tick": 0,
+    "pos": [
+      1128,
+      67,
+      126
+    ],
+    "distance": 2.1850400434792188,
+    "nearest_same_priority": 2.1850400434792188,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1850400434792188,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2954,
+      "nearest": [
+        1128,
+        67,
+        126
+      ],
+      "distance": 2.1850400434792188,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 23,
+    "pos": [
+      1127,
+      68,
+      126
+    ],
+    "distance": 1.011778930551328,
+    "nearest_same_priority": 1.011778930551328,
+    "extra_distance": 0.0,
+    "global_nearest": 1.011778930551328,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2953,
+      "nearest": [
+        1127,
+        68,
+        126
+      ],
+      "distance": 1.011778930551328,
+      "reachable": true,
+      "block": "Block{minecraft:hopper}[enabled=true,facing=south]"
+    }
+  },
+  {
+    "tick": 71,
+    "pos": [
+      1128,
+      68,
+      125
+    ],
+    "distance": 1.0096214313530405,
+    "nearest_same_priority": 1.0096214313530405,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0096214313530405,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2952,
+      "nearest": [
+        1128,
+        68,
+        125
+      ],
+      "distance": 1.0096214313530405,
+      "reachable": true,
+      "block": "Block{minecraft:target}[power=0]"
+    }
+  },
+  {
+    "tick": 95,
+    "pos": [
+      1128,
+      69,
+      125
+    ],
+    "distance": 1.3339173231915908,
+    "nearest_same_priority": 1.3339173231915908,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3339173231915908,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2951,
+      "nearest": [
+        1128,
+        69,
+        125
+      ],
+      "distance": 1.3339173231915908,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 118,
+    "pos": [
+      1129,
+      67,
+      125
+    ],
+    "distance": 1.8346149671696934,
+    "nearest_same_priority": 1.503108593609958,
+    "extra_distance": 0.33150637355973545,
+    "global_nearest": 1.503108593609958,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2950,
+      "nearest": [
+        1128,
+        67,
+        125
+      ],
+      "distance": 1.503108593609958,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=harp,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 128,
+    "pos": [
+      1128,
+      67,
+      125
+    ],
+    "distance": 1.503108593609958,
+    "nearest_same_priority": 1.503108593609958,
+    "extra_distance": 0.0,
+    "global_nearest": 1.503108593609958,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2949,
+      "nearest": [
+        1128,
+        67,
+        125
+      ],
+      "distance": 1.503108593609958,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=harp,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 138,
+    "pos": [
+      1128,
+      70,
+      126
+    ],
+    "distance": 1.8807539453524338,
+    "nearest_same_priority": 1.8807539453524338,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8121742373940388,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2948,
+      "nearest": [
+        1128,
+        70,
+        126
+      ],
+      "distance": 1.8807539453524338,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 199,
+    "pos": [
+      1129,
+      70,
+      126
+    ],
+    "distance": 1.3758361638854129,
+    "nearest_same_priority": 1.3758361638854129,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3758361638854129,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2947,
+      "nearest": [
+        1129,
+        70,
+        126
+      ],
+      "distance": 1.3758361638854129,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=basedrum,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 218,
+    "pos": [
+      1129,
+      70,
+      127
+    ],
+    "distance": 1.010604510639119,
+    "nearest_same_priority": 1.010604510639119,
+    "extra_distance": 0.0,
+    "global_nearest": 1.010604510639119,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2946,
+      "nearest": [
+        1129,
+        70,
+        127
+      ],
+      "distance": 1.010604510639119,
+      "reachable": true,
+      "block": "Block{minecraft:hopper}[enabled=true,facing=south]"
+    }
+  },
+  {
+    "tick": 246,
+    "pos": [
+      1128,
+      71,
+      126
+    ],
+    "distance": 1.2585353252881488,
+    "nearest_same_priority": 1.2585353252881488,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2585353252881488,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2945,
+      "nearest": [
+        1128,
+        71,
+        126
+      ],
+      "distance": 1.2585353252881488,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 288,
+    "pos": [
+      1129,
+      71,
+      126
+    ],
+    "distance": 1.3215121799973886,
+    "nearest_same_priority": 1.3215121799973886,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9802934838931654,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2944,
+      "nearest": [
+        1129,
+        71,
+        126
+      ],
+      "distance": 1.3215121799973886,
+      "reachable": true,
+      "block": "Block{minecraft:target}[power=0]"
+    }
+  },
+  {
+    "tick": 319,
+    "pos": [
+      1129,
+      71,
+      128
+    ],
+    "distance": 1.3660538321669973,
+    "nearest_same_priority": 1.3660538321669973,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9802934838931654,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2943,
+      "nearest": [
+        1129,
+        71,
+        128
+      ],
+      "distance": 1.3660538321669973,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 368,
+    "pos": [
+      1129,
+      70,
+      128
+    ],
+    "distance": 1.915677542555969,
+    "nearest_same_priority": 1.915677542555969,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1214987811778385,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2941,
+      "nearest": [
+        1129,
+        70,
+        128
+      ],
+      "distance": 1.915677542555969,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 405,
+    "pos": [
+      1130,
+      70,
+      127
+    ],
+    "distance": 1.5937334772489173,
+    "nearest_same_priority": 1.5937334772489173,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1913650744912128,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2940,
+      "nearest": [
+        1130,
+        70,
+        127
+      ],
+      "distance": 1.5937334772489173,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=up,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 423,
+    "pos": [
+      1130,
+      69,
+      128
+    ],
+    "distance": 1.3770065863158185,
+    "nearest_same_priority": 1.3770065863158185,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3770065863158185,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2939,
+      "nearest": [
+        1130,
+        69,
+        128
+      ],
+      "distance": 1.3770065863158185,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=harp,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 438,
+    "pos": [
+      1129,
+      69,
+      127
+    ],
+    "distance": 1.6443274787034359,
+    "nearest_same_priority": 1.6443274787034359,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4735375219548936,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2938,
+      "nearest": [
+        1129,
+        69,
+        127
+      ],
+      "distance": 1.6443274787034359,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 446,
+    "pos": [
+      1129,
+      69,
+      128
+    ],
+    "distance": 1.6952526566708144,
+    "nearest_same_priority": 1.6952526566708144,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4735375219548936,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2937,
+      "nearest": [
+        1129,
+        69,
+        128
+      ],
+      "distance": 1.6952526566708144,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 462,
+    "pos": [
+      1129,
+      69,
+      129
+    ],
+    "distance": 1.9427361415563775,
+    "nearest_same_priority": 1.9427361415563775,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4735375219548936,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2936,
+      "nearest": [
+        1129,
+        69,
+        129
+      ],
+      "distance": 1.9427361415563775,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 463,
+    "pos": [
+      1131,
+      70,
+      127
+    ],
+    "distance": 1.957942004192478,
+    "nearest_same_priority": 1.957942004192478,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4735375219548936,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2935,
+      "nearest": [
+        1131,
+        70,
+        127
+      ],
+      "distance": 1.957942004192478,
+      "reachable": true,
+      "block": "Block{minecraft:hopper}[enabled=true,facing=south]"
+    }
+  },
+  {
+    "tick": 490,
+    "pos": [
+      1131,
+      70,
+      128
+    ],
+    "distance": 1.0564875712336597,
+    "nearest_same_priority": 1.0564875712336597,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0564875712336597,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2934,
+      "nearest": [
+        1131,
+        70,
+        128
+      ],
+      "distance": 1.0564875712336597,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 503,
+    "pos": [
+      1131,
+      71,
+      128
+    ],
+    "distance": 1.3697320827937316,
+    "nearest_same_priority": 1.3697320827937316,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3697320827937316,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2933,
+      "nearest": [
+        1131,
+        71,
+        128
+      ],
+      "distance": 1.3697320827937316,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 541,
+    "pos": [
+      1131,
+      69,
+      127
+    ],
+    "distance": 2.779530050333253,
+    "nearest_same_priority": 2.447431585113102,
+    "extra_distance": 0.3320984652201511,
+    "global_nearest": 1.1042125344149194,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2932,
+      "nearest": [
+        1129,
+        72,
+        125
+      ],
+      "distance": 2.447431585113102,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 573,
+    "pos": [
+      1131,
+      69,
+      128
+    ],
+    "distance": 1.848603112046138,
+    "nearest_same_priority": 1.6661300866425721,
+    "extra_distance": 0.1824730254035658,
+    "global_nearest": 1.6661300866425721,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2931,
+      "nearest": [
+        1131,
+        69,
+        129
+      ],
+      "distance": 1.6661300866425721,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 599,
+    "pos": [
+      1131,
+      69,
+      129
+    ],
+    "distance": 1.6396306180217202,
+    "nearest_same_priority": 1.6396306180217202,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6396306180217202,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2930,
+      "nearest": [
+        1131,
+        69,
+        129
+      ],
+      "distance": 1.6396306180217202,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 600,
+    "pos": [
+      1131,
+      70,
+      126
+    ],
+    "distance": 1.8239560860139494,
+    "nearest_same_priority": 1.8239560860139494,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8239560860139494,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2929,
+      "nearest": [
+        1131,
+        70,
+        126
+      ],
+      "distance": 1.8239560860139494,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=basedrum,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 611,
+    "pos": [
+      1131,
+      71,
+      126
+    ],
+    "distance": 1.362458320944322,
+    "nearest_same_priority": 1.362458320944322,
+    "extra_distance": 0.0,
+    "global_nearest": 1.362458320944322,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2928,
+      "nearest": [
+        1131,
+        71,
+        126
+      ],
+      "distance": 1.362458320944322,
+      "reachable": true,
+      "block": "Block{minecraft:target}[power=0]"
+    }
+  },
+  {
+    "tick": 714,
+    "pos": [
+      1130,
+      71,
+      126
+    ],
+    "distance": 1.208451044783126,
+    "nearest_same_priority": 1.208451044783126,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0913989381892868,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2925,
+      "nearest": [
+        1130,
+        71,
+        126
+      ],
+      "distance": 1.208451044783126,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 732,
+    "pos": [
+      1129,
+      72,
+      125
+    ],
+    "distance": 1.3253694930222466,
+    "nearest_same_priority": 1.3253694930222466,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3253694930222466,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2923,
+      "nearest": [
+        1129,
+        72,
+        125
+      ],
+      "distance": 1.3253694930222466,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 738,
+    "pos": [
+      1129,
+      72,
+      127
+    ],
+    "distance": 1.6376710968951056,
+    "nearest_same_priority": 1.6376710968951056,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4196653479287769,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2922,
+      "nearest": [
+        1129,
+        72,
+        127
+      ],
+      "distance": 1.6376710968951056,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 752,
+    "pos": [
+      1128,
+      72,
+      125
+    ],
+    "distance": 1.6071692376883409,
+    "nearest_same_priority": 1.6071692376883409,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5821427884657864,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2921,
+      "nearest": [
+        1128,
+        72,
+        125
+      ],
+      "distance": 1.6071692376883409,
+      "reachable": true,
+      "block": "Block{minecraft:observer}[facing=east,powered=false]"
+    }
+  },
+  {
+    "tick": 767,
+    "pos": [
+      1129,
+      72,
+      124
+    ],
+    "distance": 2.0843750085039123,
+    "nearest_same_priority": 2.0843750085039123,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7254967892985946,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2920,
+      "nearest": [
+        1129,
+        72,
+        124
+      ],
+      "distance": 2.0843750085039123,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 795,
+    "pos": [
+      1127,
+      72,
+      125
+    ],
+    "distance": 2.292422599761048,
+    "nearest_same_priority": 2.292422599761048,
+    "extra_distance": 0.0,
+    "global_nearest": 1.083010171366704,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2919,
+      "nearest": [
+        1127,
+        72,
+        125
+      ],
+      "distance": 2.292422599761048,
+      "reachable": true,
+      "block": "Block{minecraft:observer}[facing=east,powered=false]"
+    }
+  },
+  {
+    "tick": 833,
+    "pos": [
+      1129,
+      72,
+      123
+    ],
+    "distance": 2.059562317474766,
+    "nearest_same_priority": 2.059562317474766,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8744861989711898,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2918,
+      "nearest": [
+        1129,
+        72,
+        123
+      ],
+      "distance": 2.059562317474766,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 897,
+    "pos": [
+      1127,
+      68,
+      124
+    ],
+    "distance": 2.0162531587690298,
+    "nearest_same_priority": 2.0162531587690298,
+    "extra_distance": 0.0,
+    "global_nearest": 2.0162531587690298,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2917,
+      "nearest": [
+        1127,
+        68,
+        124
+      ],
+      "distance": 2.0162531587690298,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=2,facing=east,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 967,
+    "pos": [
+      1127,
+      69,
+      123
+    ],
+    "distance": 1.2264898224975835,
+    "nearest_same_priority": 1.2264898224975835,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2264898224975835,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2916,
+      "nearest": [
+        1127,
+        69,
+        123
+      ],
+      "distance": 1.2264898224975835,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 990,
+    "pos": [
+      1128,
+      69,
+      123
+    ],
+    "distance": 1.345798834134062,
+    "nearest_same_priority": 1.345798834134062,
+    "extra_distance": 0.0,
+    "global_nearest": 1.345798834134062,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2915,
+      "nearest": [
+        1128,
+        69,
+        123
+      ],
+      "distance": 1.345798834134062,
+      "reachable": true,
+      "block": "Block{minecraft:target}[power=0]"
+    }
+  },
+  {
+    "tick": 1012,
+    "pos": [
+      1128,
+      68,
+      124
+    ],
+    "distance": 1.9126868063001952,
+    "nearest_same_priority": 1.9126868063001952,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7543067258395433,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2914,
+      "nearest": [
+        1128,
+        68,
+        124
+      ],
+      "distance": 1.9126868063001952,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=none,west=none]"
+    }
+  },
+  {
+    "tick": 1057,
+    "pos": [
+      1127,
+      66,
+      123
+    ],
+    "distance": 1.8981471079746994,
+    "nearest_same_priority": 1.8981471079746994,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8981471079746994,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2913,
+      "nearest": [
+        1127,
+        66,
+        123
+      ],
+      "distance": 1.8981471079746994,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1060,
+    "pos": [
+      1128,
+      64,
+      125
+    ],
+    "distance": 2.364105582411205,
+    "nearest_same_priority": 2.364105582411205,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1152264506088896,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2912,
+      "nearest": [
+        1128,
+        64,
+        125
+      ],
+      "distance": 2.364105582411205,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 1076,
+    "pos": [
+      1129,
+      66,
+      123
+    ],
+    "distance": 2.8102115901367077,
+    "nearest_same_priority": 2.8102115901367077,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1179780972148516,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2911,
+      "nearest": [
+        1129,
+        66,
+        123
+      ],
+      "distance": 2.8102115901367077,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1128,
+    "pos": [
+      1130,
+      64,
+      125
+    ],
+    "distance": 2.073469757150729,
+    "nearest_same_priority": 2.073469757150729,
+    "extra_distance": 0.0,
+    "global_nearest": 2.073469757150729,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2911,
+      "nearest": [
+        1130,
+        64,
+        125
+      ],
+      "distance": 2.073469757150729,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 1194,
+    "pos": [
+      1130,
+      67,
+      126
+    ],
+    "distance": 1.8909549846313014,
+    "nearest_same_priority": 1.8909549846313014,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8909549846313014,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2909,
+      "nearest": [
+        1130,
+        67,
+        126
+      ],
+      "distance": 1.8909549846313014,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1289,
+    "pos": [
+      1130,
+      67,
+      125
+    ],
+    "distance": 1.0582095158885751,
+    "nearest_same_priority": 1.0056075641626925,
+    "extra_distance": 0.05260195172588267,
+    "global_nearest": 1.0056075641626925,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2908,
+      "nearest": [
+        1129,
+        67,
+        124
+      ],
+      "distance": 1.0056075641626925,
+      "reachable": true,
+      "block": "Block{minecraft:hopper}[enabled=true,facing=south]"
+    }
+  },
+  {
+    "tick": 1318,
+    "pos": [
+      1131,
+      67,
+      125
+    ],
+    "distance": 1.7698418127160274,
+    "nearest_same_priority": 1.7698418127160274,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7698418127160274,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2907,
+      "nearest": [
+        1131,
+        67,
+        125
+      ],
+      "distance": 1.7698418127160274,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1358,
+    "pos": [
+      1132,
+      67,
+      126
+    ],
+    "distance": 0.9039952624257017,
+    "nearest_same_priority": 0.9039952624257017,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9039952624257017,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2906,
+      "nearest": [
+        1132,
+        67,
+        126
+      ],
+      "distance": 0.9039952624257017,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1373,
+    "pos": [
+      1130,
+      68,
+      126
+    ],
+    "distance": 1.411924534327122,
+    "nearest_same_priority": 1.3393485502732443,
+    "extra_distance": 0.07257598405387777,
+    "global_nearest": 1.3393485502732443,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2906,
+      "nearest": [
+        1132,
+        67,
+        125
+      ],
+      "distance": 1.3393485502732443,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=harp,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 1408,
+    "pos": [
+      1130,
+      69,
+      126
+    ],
+    "distance": 1.4227218007848985,
+    "nearest_same_priority": 1.4227218007848985,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4227218007848985,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2905,
+      "nearest": [
+        1130,
+        69,
+        126
+      ],
+      "distance": 1.4227218007848985,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 1418,
+    "pos": [
+      1132,
+      65,
+      125
+    ],
+    "distance": 4.011040573473441,
+    "nearest_same_priority": 3.932739431444464,
+    "extra_distance": 0.07830114202897676,
+    "global_nearest": 2.004011801537526,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2904,
+      "nearest": [
+        1130,
+        65,
+        128
+      ],
+      "distance": 3.932739431444464,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=3,facing=east,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 1450,
+    "pos": [
+      1131,
+      67,
+      124
+    ],
+    "distance": 1.285296415935077,
+    "nearest_same_priority": 1.285296415935077,
+    "extra_distance": 0.0,
+    "global_nearest": 1.285296415935077,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2903,
+      "nearest": [
+        1131,
+        67,
+        124
+      ],
+      "distance": 1.285296415935077,
+      "reachable": true,
+      "block": "Block{minecraft:hopper}[enabled=true,facing=south]"
+    }
+  },
+  {
+    "tick": 1518,
+    "pos": [
+      1132,
+      67,
+      125
+    ],
+    "distance": 0.9671961109234357,
+    "nearest_same_priority": 0.9671961109234357,
+    "extra_distance": 0.0,
+    "global_nearest": 0.9671961109234357,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2903,
+      "nearest": [
+        1132,
+        67,
+        125
+      ],
+      "distance": 0.9671961109234357,
+      "reachable": true,
+      "block": "Block{minecraft:note_block}[instrument=harp,note=0,powered=false]"
+    }
+  },
+  {
+    "tick": 1529,
+    "pos": [
+      1132,
+      68,
+      125
+    ],
+    "distance": 1.3021014966002749,
+    "nearest_same_priority": 1.3021014966002749,
+    "extra_distance": 0.0,
+    "global_nearest": 1.3021014966002749,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2901,
+      "nearest": [
+        1132,
+        68,
+        125
+      ],
+      "distance": 1.3021014966002749,
+      "reachable": true,
+      "block": "Block{minecraft:target}[power=0]"
+    }
+  },
+  {
+    "tick": 1591,
+    "pos": [
+      1132,
+      69,
+      125
+    ],
+    "distance": 1.2501097176048726,
+    "nearest_same_priority": 1.2501097176048726,
+    "extra_distance": 0.0,
+    "global_nearest": 1.2501097176048726,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2900,
+      "nearest": [
+        1132,
+        69,
+        125
+      ],
+      "distance": 1.2501097176048726,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1625,
+    "pos": [
+      1132,
+      70,
+      126
+    ],
+    "distance": 1.6011990736939077,
+    "nearest_same_priority": 1.6011990736939077,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6011990736939077,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2899,
+      "nearest": [
+        1132,
+        70,
+        126
+      ],
+      "distance": 1.6011990736939077,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1656,
+    "pos": [
+      1132,
+      71,
+      126
+    ],
+    "distance": 1.6601649784184964,
+    "nearest_same_priority": 1.6601649784184964,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6601649784184964,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2899,
+      "nearest": [
+        1132,
+        71,
+        126
+      ],
+      "distance": 1.6601649784184964,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 1737,
+    "pos": [
+      1132,
+      72,
+      125
+    ],
+    "distance": 1.5791325634394406,
+    "nearest_same_priority": 1.5791325634394406,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5791325634394406,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2897,
+      "nearest": [
+        1132,
+        72,
+        125
+      ],
+      "distance": 1.5791325634394406,
+      "reachable": true,
+      "block": "Block{minecraft:observer}[facing=west,powered=false]"
+    }
+  },
+  {
+    "tick": 1785,
+    "pos": [
+      1131,
+      72,
+      124
+    ],
+    "distance": 2.262104881669783,
+    "nearest_same_priority": 2.262104881669783,
+    "extra_distance": 0.0,
+    "global_nearest": 2.262104881669783,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2897,
+      "nearest": [
+        1131,
+        72,
+        124
+      ],
+      "distance": 2.262104881669783,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 1820,
+    "pos": [
+      1131,
+      72,
+      123
+    ],
+    "distance": 1.50062184411639,
+    "nearest_same_priority": 1.50062184411639,
+    "extra_distance": 0.0,
+    "global_nearest": 1.50062184411639,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2896,
+      "nearest": [
+        1131,
+        72,
+        123
+      ],
+      "distance": 1.50062184411639,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 1846,
+    "pos": [
+      1131,
+      74,
+      122
+    ],
+    "distance": 1.1373803246489895,
+    "nearest_same_priority": 1.1373803246489895,
+    "extra_distance": 0.0,
+    "global_nearest": 1.0408092107917852,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2896,
+      "nearest": [
+        1131,
+        74,
+        122
+      ],
+      "distance": 1.1373803246489895,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=1,facing=west,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 1863,
+    "pos": [
+      1132,
+      74,
+      122
+    ],
+    "distance": 1.06379543137339,
+    "nearest_same_priority": 1.06379543137339,
+    "extra_distance": 0.0,
+    "global_nearest": 1.06379543137339,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2895,
+      "nearest": [
+        1132,
+        74,
+        122
+      ],
+      "distance": 1.06379543137339,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 1874,
+    "pos": [
+      1133,
+      74,
+      122
+    ],
+    "distance": 1.4927405056346277,
+    "nearest_same_priority": 1.4927405056346277,
+    "extra_distance": 0.0,
+    "global_nearest": 1.4927405056346277,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2894,
+      "nearest": [
+        1133,
+        74,
+        122
+      ],
+      "distance": 1.4927405056346277,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 1886,
+    "pos": [
+      1130,
+      74,
+      123
+    ],
+    "distance": 2.041819373916409,
+    "nearest_same_priority": 2.041819373916409,
+    "extra_distance": 0.0,
+    "global_nearest": 2.041819373916409,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2893,
+      "nearest": [
+        1130,
+        74,
+        123
+      ],
+      "distance": 2.041819373916409,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 1902,
+    "pos": [
+      1130,
+      74,
+      124
+    ],
+    "distance": 1.8491238819171363,
+    "nearest_same_priority": 1.8491238819171363,
+    "extra_distance": 0.0,
+    "global_nearest": 1.8491238819171363,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2892,
+      "nearest": [
+        1130,
+        74,
+        124
+      ],
+      "distance": 1.8491238819171363,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 1920,
+    "pos": [
+      1129,
+      74,
+      122
+    ],
+    "distance": 2.3739328552400627,
+    "nearest_same_priority": 2.163450815740862,
+    "extra_distance": 0.21048203949920063,
+    "global_nearest": 2.163450815740862,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2891,
+      "nearest": [
+        1130,
+        74,
+        122
+      ],
+      "distance": 2.163450815740862,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 1929,
+    "pos": [
+      1130,
+      74,
+      122
+    ],
+    "distance": 1.932697500338278,
+    "nearest_same_priority": 1.932697500338278,
+    "extra_distance": 0.0,
+    "global_nearest": 1.932697500338278,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2890,
+      "nearest": [
+        1130,
+        74,
+        122
+      ],
+      "distance": 1.932697500338278,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 1941,
+    "pos": [
+      1128,
+      74,
+      122
+    ],
+    "distance": 2.5957074190029186,
+    "nearest_same_priority": 2.5957074190029186,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5957074190029186,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2889,
+      "nearest": [
+        1128,
+        74,
+        122
+      ],
+      "distance": 2.5957074190029186,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 1951,
+    "pos": [
+      1129,
+      74,
+      120
+    ],
+    "distance": 2.6177487458254616,
+    "nearest_same_priority": 2.6177487458254616,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6177487458254616,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2888,
+      "nearest": [
+        1129,
+        74,
+        120
+      ],
+      "distance": 2.6177487458254616,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=1,facing=east,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 2021,
+    "pos": [
+      1128,
+      74,
+      120
+    ],
+    "distance": 1.914807674468142,
+    "nearest_same_priority": 1.914807674468142,
+    "extra_distance": 0.0,
+    "global_nearest": 1.914807674468142,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2887,
+      "nearest": [
+        1128,
+        74,
+        120
+      ],
+      "distance": 1.914807674468142,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 2038,
+    "pos": [
+      1130,
+      74,
+      120
+    ],
+    "distance": 1.9592169576473546,
+    "nearest_same_priority": 1.9592169576473546,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9592169576473546,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2886,
+      "nearest": [
+        1130,
+        74,
+        120
+      ],
+      "distance": 1.9592169576473546,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=none,west=none]"
+    }
+  },
+  {
+    "tick": 2045,
+    "pos": [
+      1130,
+      74,
+      119
+    ],
+    "distance": 2.230422391085119,
+    "nearest_same_priority": 2.230422391085119,
+    "extra_distance": 0.0,
+    "global_nearest": 2.230422391085119,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2885,
+      "nearest": [
+        1130,
+        74,
+        119
+      ],
+      "distance": 2.230422391085119,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2057,
+    "pos": [
+      1131,
+      74,
+      120
+    ],
+    "distance": 2.1502048770101996,
+    "nearest_same_priority": 2.1502048770101996,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1502048770101996,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2884,
+      "nearest": [
+        1131,
+        74,
+        120
+      ],
+      "distance": 2.1502048770101996,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=1,facing=west,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 2066,
+    "pos": [
+      1132,
+      74,
+      120
+    ],
+    "distance": 2.4741348171299795,
+    "nearest_same_priority": 2.4741348171299795,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4741348171299795,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2883,
+      "nearest": [
+        1132,
+        74,
+        120
+      ],
+      "distance": 2.4741348171299795,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 2085,
+    "pos": [
+      1131,
+      72,
+      122
+    ],
+    "distance": 4.109025206905897,
+    "nearest_same_priority": 4.109025206905897,
+    "extra_distance": 0.0,
+    "global_nearest": 3.5900058077563024,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2882,
+      "nearest": [
+        1133,
+        74,
+        120
+      ],
+      "distance": 2.4787467902209834,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 2125,
+    "pos": [
+      1132,
+      72,
+      122
+    ],
+    "distance": 2.125573098667962,
+    "nearest_same_priority": 2.125573098667962,
+    "extra_distance": 0.0,
+    "global_nearest": 2.125573098667962,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2881,
+      "nearest": [
+        1132,
+        72,
+        122
+      ],
+      "distance": 2.125573098667962,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 2136,
+    "pos": [
+      1130,
+      74,
+      125
+    ],
+    "distance": 2.2704769467063883,
+    "nearest_same_priority": 2.2704769467063883,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2704769467063883,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2880,
+      "nearest": [
+        1130,
+        74,
+        125
+      ],
+      "distance": 2.2704769467063883,
+      "reachable": false,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2199,
+    "pos": [
+      1130,
+      74,
+      126
+    ],
+    "distance": 2.4143159261556475,
+    "nearest_same_priority": 2.4143159261556475,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4143159261556475,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2879,
+      "nearest": [
+        1130,
+        74,
+        126
+      ],
+      "distance": 2.4143159261556475,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2223,
+    "pos": [
+      1130,
+      74,
+      127
+    ],
+    "distance": 2.663992172107482,
+    "nearest_same_priority": 2.663992172107482,
+    "extra_distance": 0.0,
+    "global_nearest": 2.663992172107482,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2878,
+      "nearest": [
+        1130,
+        74,
+        127
+      ],
+      "distance": 2.663992172107482,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2240,
+    "pos": [
+      1130,
+      74,
+      128
+    ],
+    "distance": 2.6088748312142953,
+    "nearest_same_priority": 2.6088748312142953,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6088748312142953,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2877,
+      "nearest": [
+        1130,
+        74,
+        128
+      ],
+      "distance": 2.6088748312142953,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2257,
+    "pos": [
+      1130,
+      74,
+      129
+    ],
+    "distance": 2.6826744749900326,
+    "nearest_same_priority": 2.6826744749900326,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6826744749900326,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2876,
+      "nearest": [
+        1130,
+        74,
+        129
+      ],
+      "distance": 2.6826744749900326,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2276,
+    "pos": [
+      1130,
+      74,
+      130
+    ],
+    "distance": 2.4820042333084076,
+    "nearest_same_priority": 2.4820042333084076,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4820042333084076,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2875,
+      "nearest": [
+        1130,
+        74,
+        130
+      ],
+      "distance": 2.4820042333084076,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2295,
+    "pos": [
+      1130,
+      74,
+      131
+    ],
+    "distance": 2.491571991837729,
+    "nearest_same_priority": 2.491571991837729,
+    "extra_distance": 0.0,
+    "global_nearest": 2.491571991837729,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2874,
+      "nearest": [
+        1130,
+        74,
+        131
+      ],
+      "distance": 2.491571991837729,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2312,
+    "pos": [
+      1130,
+      74,
+      132
+    ],
+    "distance": 2.6318114754925674,
+    "nearest_same_priority": 2.6318114754925674,
+    "extra_distance": 0.0,
+    "global_nearest": 2.6318114754925674,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2873,
+      "nearest": [
+        1130,
+        74,
+        132
+      ],
+      "distance": 2.6318114754925674,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2332,
+    "pos": [
+      1130,
+      74,
+      133
+    ],
+    "distance": 2.5908176842397945,
+    "nearest_same_priority": 2.5908176842397945,
+    "extra_distance": 0.0,
+    "global_nearest": 2.5908176842397945,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2872,
+      "nearest": [
+        1130,
+        74,
+        133
+      ],
+      "distance": 2.5908176842397945,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=4,facing=south,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 2351,
+    "pos": [
+      1131,
+      69,
+      129
+    ],
+    "distance": 6.813579527516556,
+    "nearest_same_priority": 6.81357635862118,
+    "extra_distance": 3.1688953754382965e-06,
+    "global_nearest": 6.81357635862118,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2871,
+      "nearest": [
+        1130,
+        74,
+        134
+      ],
+      "distance": 2.694920322503838,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 2361,
+    "pos": [
+      1129,
+      69,
+      129
+    ],
+    "distance": 7.010596830885884,
+    "nearest_same_priority": 7.010596830885884,
+    "extra_distance": 0.0,
+    "global_nearest": 7.010596830885884,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2870,
+      "nearest": [
+        1130,
+        74,
+        134
+      ],
+      "distance": 2.3544614914856057,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 2365,
+    "pos": [
+      1135,
+      71,
+      129
+    ],
+    "distance": 7.236908114644737,
+    "nearest_same_priority": 7.236908114644737,
+    "extra_distance": 0.0,
+    "global_nearest": 7.236908114644737,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2869,
+      "nearest": [
+        1130,
+        74,
+        134
+      ],
+      "distance": 2.3544614914856057,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=none,power=0,south=none,west=side]"
+    }
+  },
+  {
+    "tick": 2443,
+    "pos": [
+      1136,
+      70,
+      130
+    ],
+    "distance": 2.4577322080643396,
+    "nearest_same_priority": 2.4577322080643396,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4577322080643396,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2868,
+      "nearest": [
+        1136,
+        72,
+        130
+      ],
+      "distance": 1.3757449452764405,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2586,
+    "pos": [
+      1136,
+      69,
+      130
+    ],
+    "distance": 1.5510643651112728,
+    "nearest_same_priority": 1.5510643651112728,
+    "extra_distance": 0.0,
+    "global_nearest": 1.5510643651112728,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2869,
+      "nearest": [
+        1137,
+        70,
+        129
+      ],
+      "distance": 0.9665866157123184,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=west]"
+    }
+  },
+  {
+    "tick": 2607,
+    "pos": [
+      1136,
+      70,
+      126
+    ],
+    "distance": 3.203788267881958,
+    "nearest_same_priority": 3.203788267881958,
+    "extra_distance": 0.0,
+    "global_nearest": 2.927895881017345,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2868,
+      "nearest": [
+        1137,
+        70,
+        129
+      ],
+      "distance": 1.12376499378427,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=west]"
+    }
+  },
+  {
+    "tick": 2656,
+    "pos": [
+      1137,
+      69,
+      127
+    ],
+    "distance": 1.6335794616086003,
+    "nearest_same_priority": 1.6335794616086003,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6335794616086003,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2867,
+      "nearest": [
+        1137,
+        69,
+        127
+      ],
+      "distance": 1.6335794616086003,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=none,north=side,power=0,south=side,west=none]"
+    }
+  },
+  {
+    "tick": 2675,
+    "pos": [
+      1136,
+      69,
+      126
+    ],
+    "distance": 1.6401095210000247,
+    "nearest_same_priority": 1.6401095210000247,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6401095210000247,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2866,
+      "nearest": [
+        1136,
+        69,
+        126
+      ],
+      "distance": 1.6401095210000247,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=west]"
+    }
+  },
+  {
+    "tick": 2719,
+    "pos": [
+      1137,
+      69,
+      126
+    ],
+    "distance": 1.9009165099248548,
+    "nearest_same_priority": 1.9009165099248548,
+    "extra_distance": 0.0,
+    "global_nearest": 1.9009165099248548,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2865,
+      "nearest": [
+        1138,
+        70,
+        126
+      ],
+      "distance": 1.6505787736147959,
+      "reachable": true,
+      "block": "Block{minecraft:sticky_piston}[extended=true,facing=north]"
+    }
+  },
+  {
+    "tick": 2737,
+    "pos": [
+      1137,
+      69,
+      125
+    ],
+    "distance": 1.842011285435805,
+    "nearest_same_priority": 1.842011285435805,
+    "extra_distance": 0.0,
+    "global_nearest": 1.842011285435805,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2864,
+      "nearest": [
+        1138,
+        70,
+        126
+      ],
+      "distance": 1.0108109401742829,
+      "reachable": true,
+      "block": "Block{minecraft:sticky_piston}[extended=true,facing=north]"
+    }
+  },
+  {
+    "tick": 2738,
+    "pos": [
+      1137,
+      68,
+      125
+    ],
+    "distance": 2.3343508872768455,
+    "nearest_same_priority": 2.3343508872768455,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3343508872768455,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2863,
+      "nearest": [
+        1138,
+        70,
+        126
+      ],
+      "distance": 1.0093911189686862,
+      "reachable": true,
+      "block": "Block{minecraft:sticky_piston}[extended=true,facing=north]"
+    }
+  },
+  {
+    "tick": 2778,
+    "pos": [
+      1136,
+      69,
+      124
+    ],
+    "distance": 1.301374242011641,
+    "nearest_same_priority": 1.301374242011641,
+    "extra_distance": 0.0,
+    "global_nearest": 1.301374242011641,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2862,
+      "nearest": [
+        1136,
+        69,
+        124
+      ],
+      "distance": 1.301374242011641,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=west]"
+    }
+  },
+  {
+    "tick": 2806,
+    "pos": [
+      1137,
+      69,
+      124
+    ],
+    "distance": 1.1593466119993299,
+    "nearest_same_priority": 1.1593466119993299,
+    "extra_distance": 0.0,
+    "global_nearest": 1.1593466119993299,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2861,
+      "nearest": [
+        1137,
+        69,
+        124
+      ],
+      "distance": 1.1593466119993299,
+      "reachable": true,
+      "block": "Block{minecraft:redstone_wire}[east=side,north=side,power=0,south=side,west=side]"
+    }
+  },
+  {
+    "tick": 2854,
+    "pos": [
+      1133,
+      68,
+      125
+    ],
+    "distance": 3.957924945339259,
+    "nearest_same_priority": 3.957924945339259,
+    "extra_distance": 0.0,
+    "global_nearest": 2.7326361194937245,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2860,
+      "nearest": [
+        1138,
+        69,
+        125
+      ],
+      "distance": 1.3377626130380162,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=4,facing=north,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 2896,
+    "pos": [
+      1133,
+      68,
+      126
+    ],
+    "distance": 1.7192584676645344,
+    "nearest_same_priority": 1.7192584676645344,
+    "extra_distance": 0.0,
+    "global_nearest": 1.7192584676645344,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2859,
+      "nearest": [
+        1133,
+        68,
+        126
+      ],
+      "distance": 1.7192584676645344,
+      "reachable": true,
+      "block": "Block{minecraft:hopper}[enabled=true,facing=south]"
+    }
+  },
+  {
+    "tick": 2916,
+    "pos": [
+      1133,
+      68,
+      124
+    ],
+    "distance": 2.1098699397447933,
+    "nearest_same_priority": 2.1098699397447933,
+    "extra_distance": 0.0,
+    "global_nearest": 2.1098699397447933,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2858,
+      "nearest": [
+        1133,
+        68,
+        124
+      ],
+      "distance": 2.1098699397447933,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=2,facing=west,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 2951,
+    "pos": [
+      1133,
+      65,
+      128
+    ],
+    "distance": 2.013527569513645,
+    "nearest_same_priority": 2.013527569513645,
+    "extra_distance": 0.0,
+    "global_nearest": 2.013527569513645,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2857,
+      "nearest": [
+        1133,
+        65,
+        128
+      ],
+      "distance": 2.013527569513645,
+      "reachable": true,
+      "block": "Block{minecraft:repeater}[delay=2,facing=east,locked=false,powered=false]"
+    }
+  },
+  {
+    "tick": 2959,
+    "pos": [
+      1133,
+      68,
+      128
+    ],
+    "distance": 2.3027976429064267,
+    "nearest_same_priority": 2.3027976429064267,
+    "extra_distance": 0.0,
+    "global_nearest": 2.3027976429064267,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2856,
+      "nearest": [
+        1133,
+        68,
+        128
+      ],
+      "distance": 2.3027976429064267,
+      "reachable": true,
+      "block": "Block{minecraft:observer}[facing=north,powered=false]"
+    }
+  }
+]

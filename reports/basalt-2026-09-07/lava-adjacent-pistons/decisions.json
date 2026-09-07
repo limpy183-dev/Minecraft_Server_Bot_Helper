@@ -1,0 +1,427 @@
+[
+  {
+    "tick": 0,
+    "pos": [
+      1130,
+      68,
+      96
+    ],
+    "distance": 2.352530548594624,
+    "nearest_same_priority": 2.3440136561500435,
+    "extra_distance": 0.008516892444580648,
+    "global_nearest": 2.3440136561500435,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 11,
+      "nearest": [
+        1129,
+        64,
+        96
+      ],
+      "distance": 2.3440136561500435,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 32,
+    "pos": [
+      1131,
+      68,
+      97
+    ],
+    "distance": 0.8089499491426498,
+    "nearest_same_priority": 0.8089499491426498,
+    "extra_distance": 0.0,
+    "global_nearest": 0.8089499491426498,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 10,
+      "nearest": [
+        1131,
+        68,
+        97
+      ],
+      "distance": 0.8089499491426498,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 106,
+    "pos": [
+      1129,
+      64,
+      96
+    ],
+    "distance": 2.322302732626329,
+    "nearest_same_priority": 2.322302732626329,
+    "extra_distance": 0.0,
+    "global_nearest": 2.322302732626329,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 9,
+      "nearest": [
+        1129,
+        64,
+        96
+      ],
+      "distance": 2.322302732626329,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 143,
+    "pos": [
+      1131,
+      64,
+      96
+    ],
+    "distance": 2.538497791056135,
+    "nearest_same_priority": 2.538497791056135,
+    "extra_distance": 0.0,
+    "global_nearest": 2.538497791056135,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 6,
+      "nearest": [
+        1131,
+        64,
+        96
+      ],
+      "distance": 2.538497791056135,
+      "reachable": false,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 218,
+    "pos": [
+      1132,
+      68,
+      96
+    ],
+    "distance": 3.2069669260138975,
+    "nearest_same_priority": 3.2069669260138975,
+    "extra_distance": 0.0,
+    "global_nearest": 3.2069669260138975,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 7,
+      "nearest": [
+        1132,
+        68,
+        96
+      ],
+      "distance": 3.2069669260138975,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 273,
+    "pos": [
+      1131,
+      70,
+      96
+    ],
+    "distance": 2.9893479361772477,
+    "nearest_same_priority": 2.9893479361772477,
+    "extra_distance": 0.0,
+    "global_nearest": 2.9893479361772477,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 10,
+      "nearest": [
+        1131,
+        70,
+        96
+      ],
+      "distance": 2.9893479361772477,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 408,
+    "pos": [
+      1131,
+      69,
+      97
+    ],
+    "distance": 2.515096373148157,
+    "nearest_same_priority": 2.515096373148157,
+    "extra_distance": 0.0,
+    "global_nearest": 2.515096373148157,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 5,
+      "nearest": [
+        1131,
+        71,
+        96
+      ],
+      "distance": 1.6670513537086054,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 464,
+    "pos": [
+      1132,
+      64,
+      99
+    ],
+    "distance": 6.896990377005875,
+    "nearest_same_priority": 6.896990377005875,
+    "extra_distance": 0.0,
+    "global_nearest": 6.896990377005875,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 5,
+      "nearest": [
+        1131,
+        71,
+        96
+      ],
+      "distance": 0.8822475543175406,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=south]"
+    }
+  },
+  {
+    "tick": 561,
+    "pos": [
+      1130,
+      64,
+      99
+    ],
+    "distance": 2.4654929839682995,
+    "nearest_same_priority": 2.4654929839682995,
+    "extra_distance": 0.0,
+    "global_nearest": 2.4654929839682995,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 4,
+      "nearest": [
+        1130,
+        64,
+        99
+      ],
+      "distance": 2.4654929839682995,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 622,
+    "pos": [
+      1136,
+      64,
+      101
+    ],
+    "distance": 6.004587161888252,
+    "nearest_same_priority": 6.004587161888252,
+    "extra_distance": 0.0,
+    "global_nearest": 6.004587161888252,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 1,
+      "nearest": [
+        1136,
+        64,
+        101
+      ],
+      "distance": 6.004587161888252,
+      "reachable": false,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 684,
+    "pos": [
+      1136,
+      64,
+      103
+    ],
+    "distance": 2.776078234726331,
+    "nearest_same_priority": 2.776078234726331,
+    "extra_distance": 0.0,
+    "global_nearest": 2.776078234726331,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 2,
+      "nearest": [
+        1136,
+        64,
+        103
+      ],
+      "distance": 2.776078234726331,
+      "reachable": false,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 767,
+    "pos": [
+      1136,
+      64,
+      105
+    ],
+    "distance": 2.422663105817006,
+    "nearest_same_priority": 2.422663105817006,
+    "extra_distance": 0.0,
+    "global_nearest": 2.422663105817006,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 8,
+      "nearest": [
+        1136,
+        64,
+        105
+      ],
+      "distance": 2.422663105817006,
+      "reachable": false,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 848,
+    "pos": [
+      1136,
+      64,
+      107
+    ],
+    "distance": 2.487529323756762,
+    "nearest_same_priority": 2.487529323756762,
+    "extra_distance": 0.0,
+    "global_nearest": 2.487529323756762,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 7,
+      "nearest": [
+        1136,
+        64,
+        107
+      ],
+      "distance": 2.487529323756762,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 868,
+    "pos": [
+      1139,
+      64,
+      108
+    ],
+    "distance": 3.15637662923094,
+    "nearest_same_priority": 3.15637662923094,
+    "extra_distance": 0.0,
+    "global_nearest": 3.15637662923094,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 6,
+      "nearest": [
+        1139,
+        64,
+        108
+      ],
+      "distance": 3.15637662923094,
+      "reachable": false,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 1026,
+    "pos": [
+      1141,
+      67,
+      107
+    ],
+    "distance": 4.485529007253318,
+    "nearest_same_priority": 4.485529007253318,
+    "extra_distance": 0.0,
+    "global_nearest": 4.485529007253318,
+    "reachable": false,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 9,
+      "nearest": [
+        1139,
+        64,
+        112
+      ],
+      "distance": 3.934048478223841,
+      "reachable": false,
+      "block": "Block{minecraft:piston}[extended=false,facing=down]"
+    }
+  },
+  {
+    "tick": 1123,
+    "pos": [
+      1141,
+      67,
+      105
+    ],
+    "distance": 2.2595801265806474,
+    "nearest_same_priority": 2.2595801265806474,
+    "extra_distance": 0.0,
+    "global_nearest": 2.2595801265806474,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 17,
+      "nearest": [
+        1141,
+        67,
+        105
+      ],
+      "distance": 2.2595801265806474,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=west]"
+    }
+  },
+  {
+    "tick": 1160,
+    "pos": [
+      1139,
+      68,
+      105
+    ],
+    "distance": 1.6790616719126856,
+    "nearest_same_priority": 1.6790616719126856,
+    "extra_distance": 0.0,
+    "global_nearest": 1.6790616719126856,
+    "reachable": true,
+    "violated": false,
+    "global_audit": {
+      "eligible_count": 13,
+      "nearest": [
+        1139,
+        68,
+        105
+      ],
+      "distance": 1.6790616719126856,
+      "reachable": true,
+      "block": "Block{minecraft:piston}[extended=false,facing=west]"
+    }
+  }
+]

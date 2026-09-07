@@ -1,0 +1,6356 @@
+{
+  "nonempty_containers": 65,
+  "item_counts": {
+    "minecraft:redstone": 5,
+    "minecraft:netherrack": 256,
+    "minecraft:ender_chest": 64,
+    "minecraft:diamond_sword": 1,
+    "minecraft:diamond_pickaxe": 1,
+    "minecraft:diamond_axe": 1,
+    "minecraft:diamond_shovel": 1,
+    "minecraft:diamond_helmet": 1,
+    "minecraft:diamond_chestplate": 1,
+    "minecraft:diamond_leggings": 1,
+    "minecraft:diamond_boots": 1,
+    "minecraft:enchanted_golden_apple": 64,
+    "minecraft:piston": 1,
+    "minecraft:observer": 1,
+    "minecraft:basalt": 70812
+  },
+  "containers": [
+    {
+      "pos": [
+        1117,
+        67,
+        106
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:redstone",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pos": [
+        1122,
+        43,
+        99
+      ],
+      "block_entity": "minecraft:shulker_box",
+      "items": [
+        {
+          "Slot": 9,
+          "id": "minecraft:netherrack",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:netherrack",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:netherrack",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:netherrack",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:ender_chest",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:diamond_sword",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:sharpness": 5,
+              "minecraft:unbreaking": 3
+            }
+          }
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:diamond_pickaxe",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:unbreaking": 3,
+              "minecraft:efficiency": 5
+            }
+          }
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:diamond_axe",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:unbreaking": 3,
+              "minecraft:efficiency": 5
+            }
+          }
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:diamond_shovel",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:unbreaking": 3,
+              "minecraft:efficiency": 5
+            }
+          }
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:diamond_helmet",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:unbreaking": 3,
+              "minecraft:protection": 3
+            }
+          }
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:diamond_chestplate",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:unbreaking": 3,
+              "minecraft:protection": 3
+            }
+          }
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:diamond_leggings",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:unbreaking": 3,
+              "minecraft:protection": 3
+            }
+          }
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:diamond_boots",
+          "count": 1,
+          "components": {
+            "minecraft:enchantments": {
+              "minecraft:feather_falling": 3,
+              "minecraft:unbreaking": 3,
+              "minecraft:protection": 3
+            }
+          }
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:enchanted_golden_apple",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1149,
+        67,
+        104
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:redstone",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pos": [
+        1143,
+        67,
+        104
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:redstone",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pos": [
+        1143,
+        67,
+        106
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:redstone",
+          "count": 2
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:piston",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pos": [
+        1127,
+        68,
+        126
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:observer",
+          "count": 1
+        }
+      ]
+    },
+    {
+      "pos": [
+        1142,
+        63,
+        114
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        116
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        114
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        118
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        120
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        118
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        120
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        122
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1148,
+        63,
+        114
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        120
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        124
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        122
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        124
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1142,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1146,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1145,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1148,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1147,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1150,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1149,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1151,
+        63,
+        126
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        119
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        117
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        121
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        119
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        119
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        123
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        121
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        121
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1139,
+        63,
+        125
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        123
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        123
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        125
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        125
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1140,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1142,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1144,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1151,
+        63,
+        123
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1146,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1151,
+        63,
+        125
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1149,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1148,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1151,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1150,
+        63,
+        127
+      ],
+      "block_entity": "minecraft:chest",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 5,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 6,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 7,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 8,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 9,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 10,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 11,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 12,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 13,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 14,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 15,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 16,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 17,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 18,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 19,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 20,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 21,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 22,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 23,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 24,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 25,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 26,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1153,
+        63,
+        119
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1153,
+        63,
+        118
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1142,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1141,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 28
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1144,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1146,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1145,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1148,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1150,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1149,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    },
+    {
+      "pos": [
+        1151,
+        63,
+        128
+      ],
+      "block_entity": "minecraft:hopper",
+      "items": [
+        {
+          "Slot": 0,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 1,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 2,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 3,
+          "id": "minecraft:basalt",
+          "count": 64
+        },
+        {
+          "Slot": 4,
+          "id": "minecraft:basalt",
+          "count": 64
+        }
+      ]
+    }
+  ]
+}

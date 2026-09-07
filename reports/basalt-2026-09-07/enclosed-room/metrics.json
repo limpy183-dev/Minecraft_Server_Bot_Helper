@@ -1,0 +1,251 @@
+{
+  "case": "enclosed-room",
+  "frames": 1600,
+  "seconds": 80.0,
+  "travel_blocks": 63.67424239303882,
+  "damage": 0,
+  "min_health": 20,
+  "end": {
+    "state": "Off \u00e2\u20ac\u201d confirmed no selected blocks within 80 blocks",
+    "ticks": 1600,
+    "reason": "Nothing left to break \u00e2\u20ac\u201d 1 blocks mined",
+    "inventory": {
+      "minecraft:cobblestone": 253,
+      "minecraft:cooked_beef": 64,
+      "minecraft:crimson_roots": 2,
+      "minecraft:diamond_axe": 1,
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:diamond_sword": 1,
+      "minecraft:lever": 4,
+      "minecraft:nether_wart_block": 1,
+      "minecraft:netherrack": 16,
+      "minecraft:prismarine_brick_stairs": 1,
+      "minecraft:redstone_lamp": 1,
+      "minecraft:redstone_torch": 1,
+      "minecraft:tuff_brick_stairs": 1
+    },
+    "position": [
+      1145.254587549142,
+      59.0,
+      126.49128072321096
+    ],
+    "health": 20.0
+  },
+  "phases": {
+    "PLANNING": 5,
+    "WALKING": 201,
+    "SCANNING": 946,
+    "COLLECTING": 436,
+    "MINING": 11,
+    "OFF": 1
+  },
+  "events": {
+    "selection": 2,
+    "stuck": 3,
+    "retry": 1,
+    "break": 21,
+    "place": 3
+  },
+  "breaks": {
+    "minecraft:prismarine_brick_stairs": 1,
+    "minecraft:tuff_brick_stairs": 1,
+    "minecraft:redstone_lamp": 1,
+    "minecraft:crimson_nylium": 4,
+    "minecraft:nether_wart_block": 1,
+    "minecraft:crimson_roots": 1,
+    "minecraft:netherrack": 12
+  },
+  "placements": {
+    "minecraft:cobblestone": 3
+  },
+  "pickups": {
+    "minecraft:tuff_brick_stairs": 1,
+    "minecraft:prismarine_brick_stairs": 1,
+    "minecraft:redstone_torch": 1,
+    "minecraft:lever": 4,
+    "minecraft:redstone_lamp": 1,
+    "minecraft:netherrack": 16,
+    "minecraft:crimson_roots": 2,
+    "minecraft:nether_wart_block": 1
+  },
+  "inventory_decreases": {
+    "minecraft:cobblestone": 3
+  },
+  "original_redstone": 2954,
+  "remaining_redstone": 2948,
+  "remaining_selected": [
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1118,
+        70,
+        129
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1122,
+        70,
+        117
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1133,
+        75,
+        101
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1133,
+        75,
+        133
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1134,
+        75,
+        101
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1134,
+        75,
+        133
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1138,
+        70,
+        124
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1154,
+        70,
+        93
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1154,
+        70,
+        125
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1158,
+        75,
+        133
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1159,
+        75,
+        133
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1162,
+        77,
+        135
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1163,
+        76,
+        135
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1170,
+        70,
+        117
+      ]
+    },
+    {
+      "block": "minecraft:redstone_block",
+      "pos": [
+        1174,
+        70,
+        129
+      ]
+    }
+  ],
+  "retries": [
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Lamp: route stopped making progress",
+      "pos": [
+        1146,
+        62,
+        121
+      ],
+      "observed_tick": 171
+    }
+  ],
+  "stuck": [
+    {
+      "kind": "stuck",
+      "detail": "route stopped making progress",
+      "pos": [
+        1141,
+        65,
+        124
+      ],
+      "observed_tick": 69
+    },
+    {
+      "kind": "stuck",
+      "detail": "route stopped making progress",
+      "pos": [
+        1141,
+        65,
+        124
+      ],
+      "observed_tick": 120
+    },
+    {
+      "kind": "stuck",
+      "detail": "route stopped making progress",
+      "pos": [
+        1141,
+        65,
+        124
+      ],
+      "observed_tick": 171
+    }
+  ],
+  "immediate_cell_reversals": 16,
+  "repeated_cell_entries": 21,
+  "route_count": 17,
+  "decisions": 2,
+  "priority_violations": 0,
+  "max_same_priority_extra": 0.0,
+  "global_audited_decisions": 0,
+  "global_priority_misses": [],
+  "oscillation_sequences": []
+}

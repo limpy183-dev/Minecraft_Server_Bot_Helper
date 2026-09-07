@@ -1,0 +1,2189 @@
+{
+  "case": "full-redstone",
+  "frames": 14840,
+  "seconds": 742.0,
+  "travel_blocks": 1391.4207078320414,
+  "damage": 11.000001000000001,
+  "min_health": 11.599999,
+  "end": {
+    "health": 11.733333,
+    "position": [
+      1120.589595530522,
+      61.0,
+      132.41370185408255
+    ],
+    "inventory": {
+      "minecraft:basalt": 9,
+      "minecraft:cobblestone": 67,
+      "minecraft:comparator": 5,
+      "minecraft:cooked_beef": 63,
+      "minecraft:diamond_axe": 1,
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:diamond_sword": 1,
+      "minecraft:gray_concrete": 5,
+      "minecraft:hopper": 9,
+      "minecraft:iron_trapdoor": 1,
+      "minecraft:nether_wart_block": 2,
+      "minecraft:netherrack": 8,
+      "minecraft:note_block": 42,
+      "minecraft:observer": 20,
+      "minecraft:piston": 84,
+      "minecraft:redstone": 137,
+      "minecraft:redstone_torch": 4,
+      "minecraft:repeater": 54,
+      "minecraft:scaffolding": 3,
+      "minecraft:sticky_piston": 4,
+      "minecraft:target": 13
+    },
+    "reason": "Health down to 11.6",
+    "ticks": 14840,
+    "state": "Off \u00e2\u20ac\u201d Sticky Piston"
+  },
+  "phases": {
+    "PLANNING": 355,
+    "WALKING": 3787,
+    "MINING": 3813,
+    "COLLECTING": 3990,
+    "WAITING": 358,
+    "PREPARING": 1531,
+    "SCANNING": 30,
+    "COVERING": 974,
+    "OFF": 2
+  },
+  "events": {
+    "selection": 386,
+    "place": 197,
+    "break": 408,
+    "retry": 33,
+    "stuck": 7
+  },
+  "breaks": {
+    "minecraft:note_block": 42,
+    "minecraft:hopper": 9,
+    "minecraft:piston": 84,
+    "minecraft:target": 13,
+    "minecraft:repeater": 52,
+    "minecraft:redstone_wire": 127,
+    "minecraft:black_stained_glass": 13,
+    "minecraft:scaffolding": 1,
+    "minecraft:observer": 19,
+    "minecraft:comparator": 4,
+    "minecraft:iron_trapdoor": 1,
+    "minecraft:cobblestone": 8,
+    "minecraft:gray_concrete": 5,
+    "minecraft:basalt": 9,
+    "minecraft:netherrack": 4,
+    "minecraft:crimson_nylium": 4,
+    "minecraft:redstone_wall_torch": 4,
+    "minecraft:nether_wart_block": 2,
+    "minecraft:blue_ice": 2,
+    "minecraft:sticky_piston": 5
+  },
+  "placements": {
+    "minecraft:cobblestone": 197
+  },
+  "pickups": {
+    "minecraft:note_block": 42,
+    "minecraft:hopper": 9,
+    "minecraft:observer": 20,
+    "minecraft:piston": 84,
+    "minecraft:target": 13,
+    "minecraft:repeater": 54,
+    "minecraft:redstone": 137,
+    "minecraft:scaffolding": 3,
+    "minecraft:comparator": 5,
+    "minecraft:cobblestone": 9,
+    "minecraft:iron_trapdoor": 1,
+    "minecraft:gray_concrete": 5,
+    "minecraft:basalt": 9,
+    "minecraft:netherrack": 8,
+    "minecraft:redstone_torch": 4,
+    "minecraft:nether_wart_block": 2,
+    "minecraft:sticky_piston": 4
+  },
+  "inventory_decreases": {
+    "minecraft:cobblestone": 198,
+    "minecraft:cooked_beef": 1
+  },
+  "original_redstone": 2954,
+  "remaining_redstone": 2582,
+  "remaining_selected": [
+    {
+      "pos": [
+        1118,
+        70,
+        129
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1133,
+        75,
+        101
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1133,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1134,
+        75,
+        101
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1134,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1138,
+        70,
+        124
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1154,
+        70,
+        93
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1154,
+        70,
+        125
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1158,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1159,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1162,
+        77,
+        135
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1163,
+        76,
+        135
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1170,
+        70,
+        117
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1174,
+        70,
+        129
+      ],
+      "block": "minecraft:redstone_block"
+    }
+  ],
+  "retries": [
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1127,
+        66,
+        123
+      ],
+      "observed_tick": 754
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        70,
+        116
+      ],
+      "observed_tick": 1844
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "observed_tick": 1848
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1130,
+        67,
+        116
+      ],
+      "observed_tick": 2640
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1132,
+        67,
+        116
+      ],
+      "observed_tick": 3067
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1131,
+        66,
+        123
+      ],
+      "observed_tick": 3764
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot keep a clear aim on Note Block",
+      "pos": [
+        1136,
+        70,
+        126
+      ],
+      "observed_tick": 4085
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot keep a clear aim on Redstone Wire",
+      "pos": [
+        1137,
+        69,
+        124
+      ],
+      "observed_tick": 4258
+    },
+    {
+      "kind": "retry",
+      "detail": "protection placement was not accepted; trying another target",
+      "pos": [
+        1133,
+        68,
+        125
+      ],
+      "observed_tick": 4493
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Wire: no safe working position in loaded terrain",
+      "pos": [
+        1138,
+        65,
+        127
+      ],
+      "observed_tick": 4606
+    },
+    {
+      "kind": "retry",
+      "detail": "Baritone found no route",
+      "pos": [
+        1137,
+        64,
+        128
+      ],
+      "observed_tick": 4784
+    },
+    {
+      "kind": "retry",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1131,
+        68,
+        129
+      ],
+      "observed_tick": 5284
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1129,
+        68,
+        129
+      ],
+      "observed_tick": 5648
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1129,
+        69,
+        129
+      ],
+      "observed_tick": 5670
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Wire: no safe working position in loaded terrain",
+      "pos": [
+        1131,
+        69,
+        127
+      ],
+      "observed_tick": 5993
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot keep a clear aim on Redstone Wire",
+      "pos": [
+        1130,
+        74,
+        120
+      ],
+      "observed_tick": 6758
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1129,
+        69,
+        129
+      ],
+      "observed_tick": 7124
+    },
+    {
+      "kind": "retry",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1123,
+        64,
+        128
+      ],
+      "observed_tick": 7395
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1127,
+        68,
+        129
+      ],
+      "observed_tick": 7535
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1129,
+        68,
+        129
+      ],
+      "observed_tick": 7585
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Wire: no safe working position in loaded terrain",
+      "pos": [
+        1130,
+        68,
+        123
+      ],
+      "observed_tick": 10406
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1130,
+        66,
+        120
+      ],
+      "observed_tick": 10703
+    },
+    {
+      "kind": "retry",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1135,
+        64,
+        128
+      ],
+      "observed_tick": 11572
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Wire: no safe working position in loaded terrain",
+      "pos": [
+        1130,
+        68,
+        123
+      ],
+      "observed_tick": 11732
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        69,
+        124
+      ],
+      "observed_tick": 12758
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1118,
+        70,
+        129
+      ],
+      "observed_tick": 13520
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1121,
+        66,
+        129
+      ],
+      "observed_tick": 13612
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1123,
+        66,
+        133
+      ],
+      "observed_tick": 13725
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        68,
+        134
+      ],
+      "observed_tick": 13990
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Wire: no safe working position in loaded terrain",
+      "pos": [
+        1120,
+        69,
+        136
+      ],
+      "observed_tick": 14040
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1121,
+        65,
+        137
+      ],
+      "observed_tick": 14183
+    },
+    {
+      "kind": "retry",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1121,
+        63,
+        136
+      ],
+      "observed_tick": 14321
+    },
+    {
+      "kind": "retry",
+      "detail": "Baritone found no route",
+      "pos": [
+        1121,
+        63,
+        136
+      ],
+      "observed_tick": 14409
+    }
+  ],
+  "stuck": [
+    {
+      "kind": "stuck",
+      "detail": "route stopped making progress",
+      "pos": [
+        1135,
+        65,
+        117
+      ],
+      "observed_tick": 2955
+    },
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1138,
+        65,
+        127
+      ],
+      "observed_tick": 4738
+    },
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1132,
+        65,
+        129
+      ],
+      "observed_tick": 5284
+    },
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1125,
+        64,
+        126
+      ],
+      "observed_tick": 7395
+    },
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1132,
+        64,
+        127
+      ],
+      "observed_tick": 11572
+    },
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1121,
+        62,
+        135
+      ],
+      "observed_tick": 14321
+    },
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1121,
+        62,
+        135
+      ],
+      "observed_tick": 14382
+    }
+  ],
+  "immediate_cell_reversals": 184,
+  "repeated_cell_entries": 549,
+  "route_count": 813,
+  "decisions": 386,
+  "priority_violations": 0,
+  "max_same_priority_extra": 0.3326961901012324,
+  "global_audited_decisions": 386,
+  "global_priority_misses": [
+    {
+      "tick": 1630,
+      "pos": [
+        1127,
+        68,
+        115
+      ],
+      "distance": 3.277212656760768,
+      "nearest_same_priority": 3.277212656760768,
+      "extra_distance": 0.0,
+      "global_nearest": 2.340492546945573,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2908,
+        "nearest": [
+          1129,
+          71,
+          114
+        ],
+        "distance": 1.3388915950921816,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1706,
+      "pos": [
+        1127,
+        68,
+        116
+      ],
+      "distance": 2.303132857925028,
+      "nearest_same_priority": 2.303132857925028,
+      "extra_distance": 0.0,
+      "global_nearest": 2.303132857925028,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2906,
+        "nearest": [
+          1127,
+          68,
+          114
+        ],
+        "distance": 1.0528938608073468,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1744,
+      "pos": [
+        1124,
+        69,
+        116
+      ],
+      "distance": 2.2250307515639585,
+      "nearest_same_priority": 2.2250307515639585,
+      "extra_distance": 0.0,
+      "global_nearest": 2.2250307515639585,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2905,
+        "nearest": [
+          1127,
+          68,
+          114
+        ],
+        "distance": 1.8345709307760016,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1807,
+      "pos": [
+        1123,
+        69,
+        115
+      ],
+      "distance": 2.009302856593982,
+      "nearest_same_priority": 2.009302856593982,
+      "extra_distance": 0.0,
+      "global_nearest": 2.009302856593982,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2903,
+        "nearest": [
+          1125,
+          71,
+          115
+        ],
+        "distance": 1.1692435280387827,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1826,
+      "pos": [
+        1123,
+        69,
+        116
+      ],
+      "distance": 1.7629737754636707,
+      "nearest_same_priority": 1.7629737754636707,
+      "extra_distance": 0.0,
+      "global_nearest": 1.7629737754636707,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2902,
+        "nearest": [
+          1123,
+          70,
+          115
+        ],
+        "distance": 1.133788195728574,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1845,
+      "pos": [
+        1123,
+        69,
+        117
+      ],
+      "distance": 1.8727888585899808,
+      "nearest_same_priority": 1.5703903684685372,
+      "extra_distance": 0.3023984901214436,
+      "global_nearest": 1.5703903684685372,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2900,
+        "nearest": [
+          1123,
+          70,
+          115
+        ],
+        "distance": 1.0012400303191804,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1848,
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "distance": 1.5584249709204314,
+      "nearest_same_priority": 1.5584249709204314,
+      "extra_distance": 0.0,
+      "global_nearest": 1.5584249709204314,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2899,
+        "nearest": [
+          1123,
+          70,
+          115
+        ],
+        "distance": 1.0017991177197176,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 1858,
+      "pos": [
+        1124,
+        70,
+        118
+      ],
+      "distance": 1.857817772259734,
+      "nearest_same_priority": 1.857817772259734,
+      "extra_distance": 0.0,
+      "global_nearest": 1.857817772259734,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2898,
+        "nearest": [
+          1123,
+          70,
+          115
+        ],
+        "distance": 1.4017399534563302,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 2202,
+      "pos": [
+        1127,
+        68,
+        117
+      ],
+      "distance": 4.394596019867232,
+      "nearest_same_priority": 4.394596019867232,
+      "extra_distance": 0.0,
+      "global_nearest": 2.876212673498889,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2889,
+        "nearest": [
+          1123,
+          70,
+          115
+        ],
+        "distance": 2.1785010038306565,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 2398,
+      "pos": [
+        1129,
+        67,
+        117
+      ],
+      "distance": 2.5950722489561926,
+      "nearest_same_priority": 2.5950722489561926,
+      "extra_distance": 0.0,
+      "global_nearest": 2.5950722489561926,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2881,
+        "nearest": [
+          1127,
+          68,
+          114
+        ],
+        "distance": 2.2123290767704407,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 3007,
+      "pos": [
+        1132,
+        67,
+        116
+      ],
+      "distance": 2.459205871306372,
+      "nearest_same_priority": 2.459205871306372,
+      "extra_distance": 0.0,
+      "global_nearest": 2.3804546788964567,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2867,
+        "nearest": [
+          1133,
+          68,
+          116
+        ],
+        "distance": 1.378133641729023,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 3804,
+      "pos": [
+        1137,
+        67,
+        122
+      ],
+      "distance": 3.608433679979527,
+      "nearest_same_priority": 3.5869300335212824,
+      "extra_distance": 0.021503646458244763,
+      "global_nearest": 1.74824312621819,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2854,
+        "nearest": [
+          1137,
+          67,
+          120
+        ],
+        "distance": 2.382428774902796,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 3840,
+      "pos": [
+        1137,
+        66,
+        122
+      ],
+      "distance": 1.4977795129328564,
+      "nearest_same_priority": 1.4977795129328564,
+      "extra_distance": 0.0,
+      "global_nearest": 1.356495101397526,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2853,
+        "nearest": [
+          1137,
+          67,
+          120
+        ],
+        "distance": 1.0597293171823723,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 3866,
+      "pos": [
+        1137,
+        67,
+        123
+      ],
+      "distance": 2.0614837739068235,
+      "nearest_same_priority": 2.0614837739068235,
+      "extra_distance": 0.0,
+      "global_nearest": 1.3731637663035237,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2852,
+        "nearest": [
+          1137,
+          67,
+          120
+        ],
+        "distance": 1.0592258794317748,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 3889,
+      "pos": [
+        1137,
+        67,
+        124
+      ],
+      "distance": 2.2243518157216253,
+      "nearest_same_priority": 2.2243518157216253,
+      "extra_distance": 0.0,
+      "global_nearest": 2.133756008943797,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2851,
+        "nearest": [
+          1137,
+          67,
+          120
+        ],
+        "distance": 1.8592896289834522,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4086,
+      "pos": [
+        1137,
+        69,
+        125
+      ],
+      "distance": 1.6825071926183062,
+      "nearest_same_priority": 1.6825071926183062,
+      "extra_distance": 0.0,
+      "global_nearest": 1.6825071926183062,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2848,
+        "nearest": [
+          1138,
+          70,
+          125
+        ],
+        "distance": 1.0324027576583004,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4198,
+      "pos": [
+        1137,
+        69,
+        124
+      ],
+      "distance": 1.9500043153822495,
+      "nearest_same_priority": 1.8746191755944837,
+      "extra_distance": 0.07538513978776584,
+      "global_nearest": 1.8746191755944837,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2847,
+        "nearest": [
+          1138,
+          70,
+          125
+        ],
+        "distance": 0.8403581382833893,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4259,
+      "pos": [
+        1137,
+        69,
+        126
+      ],
+      "distance": 1.8349023129195332,
+      "nearest_same_priority": 1.8349023129195332,
+      "extra_distance": 0.0,
+      "global_nearest": 1.8349023129195332,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2846,
+        "nearest": [
+          1138,
+          70,
+          125
+        ],
+        "distance": 0.8323738586976015,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4283,
+      "pos": [
+        1137,
+        68,
+        125
+      ],
+      "distance": 2.128145609497144,
+      "nearest_same_priority": 2.128145609497144,
+      "extra_distance": 0.0,
+      "global_nearest": 2.128145609497144,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2845,
+        "nearest": [
+          1138,
+          70,
+          125
+        ],
+        "distance": 0.8323738586976015,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4373,
+      "pos": [
+        1133,
+        68,
+        125
+      ],
+      "distance": 3.202531255569728,
+      "nearest_same_priority": 3.202531255569728,
+      "extra_distance": 0.0,
+      "global_nearest": 2.15427957378475,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2843,
+        "nearest": [
+          1138,
+          69,
+          125
+        ],
+        "distance": 1.8540800432413622,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4679,
+      "pos": [
+        1137,
+        64,
+        128
+      ],
+      "distance": 2.506942871855945,
+      "nearest_same_priority": 2.506942871855945,
+      "extra_distance": 0.0,
+      "global_nearest": 2.506942871855945,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2836,
+        "nearest": [
+          1142,
+          65,
+          129
+        ],
+        "distance": 4.463100619652354,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4785,
+      "pos": [
+        1137,
+        69,
+        127
+      ],
+      "distance": 2.6465995273546974,
+      "nearest_same_priority": 2.6465995273546974,
+      "extra_distance": 0.0,
+      "global_nearest": 2.6465995273546974,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2835,
+        "nearest": [
+          1142,
+          65,
+          129
+        ],
+        "distance": 4.463100619652354,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 4847,
+      "pos": [
+        1135,
+        71,
+        129
+      ],
+      "distance": 3.783124710128842,
+      "nearest_same_priority": 3.783124710128842,
+      "extra_distance": 0.0,
+      "global_nearest": 3.6497556610415893,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2833,
+        "nearest": [
+          1138,
+          70,
+          126
+        ],
+        "distance": 1.0198245154987298,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 6589,
+      "pos": [
+        1132,
+        72,
+        120
+      ],
+      "distance": 2.1365696403047143,
+      "nearest_same_priority": 2.1365696403047143,
+      "extra_distance": 0.0,
+      "global_nearest": 2.1365696403047143,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2791,
+        "nearest": [
+          1135,
+          71,
+          119
+        ],
+        "distance": 1.2109835433378016,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 6944,
+      "pos": [
+        1130,
+        74,
+        124
+      ],
+      "distance": 3.2252949512463642,
+      "nearest_same_priority": 3.2252949512463642,
+      "extra_distance": 0.0,
+      "global_nearest": 3.2252949512463642,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2775,
+        "nearest": [
+          1134,
+          74,
+          122
+        ],
+        "distance": 2.578302310634368,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 7124,
+      "pos": [
+        1129,
+        69,
+        129
+      ],
+      "distance": 6.816462403971141,
+      "nearest_same_priority": 6.816462403971141,
+      "extra_distance": 0.0,
+      "global_nearest": 6.816462403971141,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2766,
+        "nearest": [
+          1130,
+          74,
+          134
+        ],
+        "distance": 2.689513153854662,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 7134,
+      "pos": [
+        1125,
+        71,
+        129
+      ],
+      "distance": 7.076218519248619,
+      "nearest_same_priority": 7.076218519248619,
+      "extra_distance": 0.0,
+      "global_nearest": 7.076218519248619,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2765,
+        "nearest": [
+          1130,
+          74,
+          134
+        ],
+        "distance": 2.6776053273439087,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 9106,
+      "pos": [
+        1130,
+        74,
+        120
+      ],
+      "distance": 2.214873740740691,
+      "nearest_same_priority": 2.214873740740691,
+      "extra_distance": 0.0,
+      "global_nearest": 2.214873740740691,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2716,
+        "nearest": [
+          1129,
+          72,
+          115
+        ],
+        "distance": 3.4716890789210644,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 9142,
+      "pos": [
+        1131,
+        72,
+        118
+      ],
+      "distance": 3.3617192834862006,
+      "nearest_same_priority": 3.3617192834862006,
+      "extra_distance": 0.0,
+      "global_nearest": 3.3617192834862006,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2715,
+        "nearest": [
+          1130,
+          74,
+          118
+        ],
+        "distance": 1.4044883591155997,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 9197,
+      "pos": [
+        1131,
+        72,
+        122
+      ],
+      "distance": 3.301809598305334,
+      "nearest_same_priority": 3.301809598305334,
+      "extra_distance": 0.0,
+      "global_nearest": 3.301809598305334,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2713,
+        "nearest": [
+          1132,
+          72,
+          117
+        ],
+        "distance": 2.6523187253924836,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 9329,
+      "pos": [
+        1135,
+        71,
+        123
+      ],
+      "distance": 4.527324116357627,
+      "nearest_same_priority": 4.440967715558568,
+      "extra_distance": 0.08635640079905915,
+      "global_nearest": 4.440967715558568,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2707,
+        "nearest": [
+          1134,
+          74,
+          122
+        ],
+        "distance": 3.1885054579057273,
+        "reachable": false
+      }
+    },
+    {
+      "tick": 9391,
+      "pos": [
+        1136,
+        70,
+        126
+      ],
+      "distance": 3.0573426579323817,
+      "nearest_same_priority": 3.0573426579323817,
+      "extra_distance": 0.0,
+      "global_nearest": 3.0573426579323817,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2706,
+        "nearest": [
+          1136,
+          72,
+          123
+        ],
+        "distance": 1.4875973330115693,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 9600,
+      "pos": [
+        1137,
+        69,
+        124
+      ],
+      "distance": 2.4099613872617485,
+      "nearest_same_priority": 2.4099613872617485,
+      "extra_distance": 0.0,
+      "global_nearest": 2.4099613872617485,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2705,
+        "nearest": [
+          1138,
+          70,
+          126
+        ],
+        "distance": 0.9047425515243758,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 9624,
+      "pos": [
+        1136,
+        65,
+        125
+      ],
+      "distance": 4.668778441793309,
+      "nearest_same_priority": 4.668778441793309,
+      "extra_distance": 0.0,
+      "global_nearest": 4.668778441793309,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2704,
+        "nearest": [
+          1138,
+          70,
+          125
+        ],
+        "distance": 1.3333992214343922,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 10746,
+      "pos": [
+        1132,
+        68,
+        124
+      ],
+      "distance": 2.345279151503502,
+      "nearest_same_priority": 2.345279151503502,
+      "extra_distance": 0.0,
+      "global_nearest": 2.345279151503502,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2672,
+        "nearest": [
+          1137,
+          70,
+          123
+        ],
+        "distance": 4.070219216776888,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 11016,
+      "pos": [
+        1134,
+        66,
+        130
+      ],
+      "distance": 4.608065348732993,
+      "nearest_same_priority": 4.608065348732993,
+      "extra_distance": 0.0,
+      "global_nearest": 4.608065348732993,
+      "reachable": false,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2670,
+        "nearest": [
+          1137,
+          70,
+          129
+        ],
+        "distance": 1.135129211183666,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 14000,
+      "pos": [
+        1120,
+        69,
+        136
+      ],
+      "distance": 2.0765136009899514,
+      "nearest_same_priority": 2.0765136009899514,
+      "extra_distance": 0.0,
+      "global_nearest": 2.0765136009899514,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2590,
+        "nearest": [
+          1119,
+          70,
+          135
+        ],
+        "distance": 1.6381651863927402,
+        "reachable": true
+      }
+    },
+    {
+      "tick": 14041,
+      "pos": [
+        1121,
+        65,
+        136
+      ],
+      "distance": 2.5413681130654555,
+      "nearest_same_priority": 2.5413681130654555,
+      "extra_distance": 0.0,
+      "global_nearest": 2.5413681130654555,
+      "reachable": true,
+      "violated": false,
+      "global_audit": {
+        "eligible_count": 2589,
+        "nearest": [
+          1118,
+          67,
+          136
+        ],
+        "distance": 1.3528998720796515,
+        "reachable": true
+      }
+    }
+  ],
+  "oscillation_sequences": [
+    {
+      "start_tick": 429,
+      "end_tick": 502,
+      "cells": [
+        [
+          1129,
+          69,
+          123
+        ],
+        [
+          1129,
+          70,
+          123
+        ]
+      ],
+      "target": [
+        1125,
+        71,
+        123
+      ]
+    },
+    {
+      "start_tick": 464,
+      "end_tick": 512,
+      "cells": [
+        [
+          1129,
+          70,
+          123
+        ],
+        [
+          1129,
+          69,
+          123
+        ]
+      ],
+      "target": [
+        1125,
+        71,
+        123
+      ]
+    },
+    {
+      "start_tick": 4920,
+      "end_tick": 4941,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4924,
+      "end_tick": 4947,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4929,
+      "end_tick": 4953,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4935,
+      "end_tick": 4959,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4941,
+      "end_tick": 4965,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4947,
+      "end_tick": 4971,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4953,
+      "end_tick": 4977,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4959,
+      "end_tick": 4983,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4965,
+      "end_tick": 4989,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4971,
+      "end_tick": 4995,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4977,
+      "end_tick": 5001,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4983,
+      "end_tick": 5007,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4989,
+      "end_tick": 5013,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 4995,
+      "end_tick": 5019,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5001,
+      "end_tick": 5025,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5007,
+      "end_tick": 5031,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5013,
+      "end_tick": 5037,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5019,
+      "end_tick": 5043,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5025,
+      "end_tick": 5049,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5031,
+      "end_tick": 5055,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5037,
+      "end_tick": 5061,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5043,
+      "end_tick": 5067,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5049,
+      "end_tick": 5073,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5055,
+      "end_tick": 5079,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5061,
+      "end_tick": 5085,
+      "cells": [
+        [
+          1135,
+          70,
+          131
+        ],
+        [
+          1135,
+          69,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 5067,
+      "end_tick": 5091,
+      "cells": [
+        [
+          1135,
+          69,
+          131
+        ],
+        [
+          1135,
+          70,
+          131
+        ]
+      ],
+      "target": [
+        1135,
+        71,
+        129
+      ]
+    },
+    {
+      "start_tick": 7701,
+      "end_tick": 7726,
+      "cells": [
+        [
+          1127,
+          65,
+          130
+        ],
+        [
+          1127,
+          64,
+          130
+        ]
+      ],
+      "target": [
+        1129,
+        65,
+        131
+      ]
+    },
+    {
+      "start_tick": 10615,
+      "end_tick": 10635,
+      "cells": [
+        [
+          1131,
+          66,
+          125
+        ],
+        [
+          1131,
+          65,
+          125
+        ]
+      ],
+      "target": [
+        1130,
+        66,
+        122
+      ]
+    }
+  ]
+}

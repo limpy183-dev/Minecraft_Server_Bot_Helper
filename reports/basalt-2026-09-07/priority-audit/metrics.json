@@ -1,0 +1,260 @@
+{
+  "case": "priority-audit",
+  "frames": 2400,
+  "seconds": 120.0,
+  "travel_blocks": 156.07181221389823,
+  "damage": 0,
+  "min_health": 20,
+  "end": {
+    "health": 20.0,
+    "position": [
+      1133.3677737083972,
+      74.0,
+      120.03614025854651
+    ],
+    "inventory": {
+      "minecraft:cobblestone": 221,
+      "minecraft:cooked_beef": 64,
+      "minecraft:diamond_axe": 1,
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:diamond_sword": 1,
+      "minecraft:hopper": 5,
+      "minecraft:iron_trapdoor": 1,
+      "minecraft:netherrack": 1,
+      "minecraft:note_block": 16,
+      "minecraft:observer": 4,
+      "minecraft:piston": 22,
+      "minecraft:redstone": 16,
+      "minecraft:repeater": 8,
+      "minecraft:scaffolding": 2,
+      "minecraft:target": 4
+    },
+    "reason": "Picking up drops \u00e2\u20ac\u201d Redstone Dust \u00c2\u00b7 Baritone: Traverse",
+    "ticks": 2400,
+    "state": "Picking up drops \u00e2\u20ac\u201d Redstone Dust \u00c2\u00b7 Baritone: Traverse"
+  },
+  "phases": {
+    "PLANNING": 64,
+    "WALKING": 667,
+    "MINING": 812,
+    "COLLECTING": 547,
+    "WAITING": 48,
+    "PREPARING": 175,
+    "SCANNING": 3,
+    "COVERING": 84
+  },
+  "events": {
+    "selection": 75,
+    "place": 35,
+    "break": 75,
+    "stuck": 1,
+    "retry": 3
+  },
+  "breaks": {
+    "minecraft:piston": 22,
+    "minecraft:hopper": 5,
+    "minecraft:note_block": 16,
+    "minecraft:repeater": 8,
+    "minecraft:observer": 3,
+    "minecraft:netherrack": 1,
+    "minecraft:target": 4,
+    "minecraft:redstone_wire": 14,
+    "minecraft:black_stained_glass": 1,
+    "minecraft:iron_trapdoor": 1
+  },
+  "placements": {
+    "minecraft:cobblestone": 35
+  },
+  "pickups": {
+    "minecraft:piston": 22,
+    "minecraft:observer": 4,
+    "minecraft:hopper": 5,
+    "minecraft:note_block": 16,
+    "minecraft:redstone": 16,
+    "minecraft:repeater": 8,
+    "minecraft:netherrack": 1,
+    "minecraft:target": 4,
+    "minecraft:iron_trapdoor": 1,
+    "minecraft:scaffolding": 2
+  },
+  "inventory_decreases": {
+    "minecraft:cobblestone": 35
+  },
+  "original_redstone": 2954,
+  "remaining_redstone": 2879,
+  "remaining_selected": [
+    {
+      "pos": [
+        1118,
+        70,
+        129
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1133,
+        75,
+        101
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1133,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1134,
+        75,
+        101
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1134,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1138,
+        70,
+        124
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1154,
+        70,
+        93
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1154,
+        70,
+        125
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1158,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1159,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1162,
+        77,
+        135
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1163,
+        76,
+        135
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1170,
+        70,
+        117
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1174,
+        70,
+        129
+      ],
+      "block": "minecraft:redstone_block"
+    }
+  ],
+  "retries": [
+    {
+      "kind": "retry",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1131,
+        68,
+        129
+      ],
+      "observed_tick": 467
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1130,
+        66,
+        120
+      ],
+      "observed_tick": 1302
+    },
+    {
+      "kind": "retry",
+      "detail": "cannot get to Redstone Wire: no safe working position in loaded terrain",
+      "pos": [
+        1129,
+        68,
+        118
+      ],
+      "observed_tick": 1462
+    }
+  ],
+  "stuck": [
+    {
+      "kind": "stuck",
+      "detail": "path search exceeded its deadline",
+      "pos": [
+        1132,
+        65,
+        128
+      ],
+      "observed_tick": 467
+    }
+  ],
+  "immediate_cell_reversals": 22,
+  "repeated_cell_entries": 49,
+  "route_count": 108,
+  "decisions": 75,
+  "priority_violations": 0,
+  "max_same_priority_extra": 0.0,
+  "global_audited_decisions": 75,
+  "global_priority_misses": [],
+  "oscillation_sequences": []
+}

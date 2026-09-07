@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1788778792114,
+    "session": "20260907-115951",
+    "world": "sp:New World",
+    "kind": "SESSION",
+    "dimension": "the_nether",
+    "x": 1123,
+    "y": 73,
+    "z": 117,
+    "biome": "crimson_forest",
+    "health": 20.0,
+    "food": 20,
+    "state": "Running",
+    "runtimeSec": 0.0,
+    "note": "Movement started"
+  }
+]

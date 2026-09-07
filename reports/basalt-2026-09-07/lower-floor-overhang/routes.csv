@@ -1,0 +1,2 @@
+start_tick,end_tick,seconds,target,node_count,nodes_considered,predicted_ticks,path_geometry,travel,endpoint_distance,travel_to_endpoint_ratio,unfinished
+1,135,6.7,,21,1394,141.90853992944702,27.71205413665293,31.36847667684324,20.500579682941982,1.5301263262786742,
