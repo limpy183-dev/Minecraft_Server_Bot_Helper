@@ -71,6 +71,12 @@ public final class MineSafety {
 		if (cfg != null && cfg.movementEnabled && mc.level != null && Storage.protectedWorldBlock(cfg, mc.level, pos)) return false;
 		if (cfg == null || !cfg.movementEnabled || !cfg.destroyerEnabled || !cfg.protectMiningDrops
 				|| mc.player == null || mc.level == null) return true;
+		BlockState state = mc.level.getBlockState(pos);
+		if (state.requiresCorrectToolForDrops() && java.util.stream.IntStream.range(0, 9)
+				.noneMatch(slot -> mc.player.getInventory().getItem(slot).isCorrectToolForDrops(state))) {
+			MovRand.controller().stop(mc, "No suitable hotbar tool to recover " + state.getBlock().getName().getString());
+			return false;
+		}
 		if (inspect(new PathMove.Ctx(mc, mc.player, mc.level, cfg), pos).safe()) return true;
 		// Hold the first request until the controller handles it. A path/builder can try
 		// several blocks in successive ticks; overwriting this made protection chase them.
@@ -82,6 +88,7 @@ public final class MineSafety {
 	public static void clearDenied() { denied = null; }
 
 	public static void main(String[] args) {
+		SitePreparation.selfCheck();
 		BlockPos target = new BlockPos(0, 5, 0);
 		View floor = (x, y, z) -> y == 0 ? SOLID : AIR;
 		assert inspect(floor, target, 16).safe();

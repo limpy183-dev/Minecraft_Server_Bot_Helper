@@ -8,7 +8,7 @@ import numpy as np
 
 root=pathlib.Path(sys.argv[1])
 names=['west-selected','north-selected','east-selected','south-selected','lower-floor-overhang','full-redstone']
-survey=json.loads((root/'survey/before.json').read_text())
+survey=json.loads((root/'survey/before.json').read_text(encoding='utf-8'))
 points=np.array([b['pos'] for b in survey['redstone']])
 fig, axes=plt.subplots(2,3,figsize=(15,10),layout='constrained')
 for ax,name in zip(axes.flat,names):
@@ -16,7 +16,7 @@ for ax,name in zip(axes.flat,names):
     file=root/name/'ticks.jsonl'
     if file.exists():
         track=[]
-        for line in file.open():
+        for line in file.open(encoding='utf-8'):
             try: track.append(json.loads(line)['position'])
             except ValueError: break
         if len(track)>1:
@@ -33,7 +33,7 @@ fig.colorbar(plt.cm.ScalarMappable(norm=plt.Normalize(55,80),cmap='viridis'),ax=
 fig.suptitle('Basalt farm: actual player trajectories\nGrey = original redstone; red rings = two persistent selected-block failures',fontsize=16)
 fig.savefig(root/'routes.png',dpi=160);plt.close(fig)
 
-results=json.loads((root/'summary.json').read_text())
+results=json.loads((root/'summary.json').read_text(encoding='utf-8'))
 fig,ax=plt.subplots(figsize=(12,max(4,len(results)*.5)),layout='constrained')
 groups={'Mining':['MINING','CLEARING'],'Travel':['WALKING','BRIDGING','PLANNING'],'Collect':['COLLECTING'],
         'Protection':['COVERING','PREPARING'],'Scan / wait':['SCANNING','WAITING','DONE','OFF'],
@@ -47,7 +47,7 @@ ax.invert_yaxis();ax.spines[['top','right']].set_visible(False);ax.legend(ncols=
 fig.savefig(root/'phase-time.png',dpi=160)
 plt.close(fig)
 
-full=[json.loads(line) for line in (root/'full-redstone/ticks.jsonl').open()]
+full=[json.loads(line) for line in (root/'full-redstone/ticks.jsonl').open(encoding='utf-8')]
 tail=[row for row in full if row['tick']>=14660]
 t=np.array([row['tick']/20 for row in tail])
 fig,axes=plt.subplots(2,1,figsize=(12,6),sharex=True,layout='constrained')

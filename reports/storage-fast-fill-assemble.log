@@ -1,0 +1,21 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Fabric Loom: 1.17.20
+
+> Task :compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :verifyBaritone
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :processIncludeJars UP-TO-DATE
+> Task :jar
+> Task :assemble
+
+[Incubating] Problems report is available at: file:///C:/Users/damia/Desktop/AI_Projects/Minecraft/Movement_And_Randomisation/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 16s
+5 actionable tasks: 3 executed, 2 up-to-date

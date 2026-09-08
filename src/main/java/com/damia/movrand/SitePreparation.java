@@ -10,13 +10,13 @@ final class SitePreparation {
 	private BlockPos placing;
 	private BlockPos protecting;
 	private Direction face;
+	private boolean anchor;
 	private int ticks, placeTicks;
-	int placed;
 	boolean coveringLiquid;
 	String detail = "";
 	SitePreparation(Config cfg) { builder = new NativeNavigation(cfg); }
 	boolean active() { return protecting != null; }
-	void reset() { builder.reset(); placing = protecting = null; face = null; ticks = placeTicks = 0; }
+	void reset() { builder.reset(); placing = protecting = null; face = null; anchor = false; ticks = placeTicks = 0; }
 
 	Result tick(PathMove.Ctx ctx, BlockPos block, Bot.Steer steer, java.util.Set<net.minecraft.world.level.block.Block> mayBreak) {
 		if (!ctx.cfg().protectMiningDrops || ctx.level().getBlockState(block).isAir()) {
@@ -26,7 +26,7 @@ final class SitePreparation {
 		// Confirm the placement before revalidating a queued mining request: containing
 		// liquid can make that request safe on the very same tick.
 		if (placing != null && Bot.fullPlacementSupport(ctx.level(), placing)) {
-			placed++; placing = null; builder.reset();
+			placing = null; builder.reset();
 		}
 		if (assessment.safe()) { reset(); return Result.READY; }
 		if (protecting != null && !protecting.equals(block)) {
@@ -44,17 +44,29 @@ final class SitePreparation {
 			detail = "no permitted building blocks for drop protection"; reset(); return Result.FAILED;
 		}
 		ctx.player().getInventory().setSelectedSlot(slot);
-		if (placing == null || !assessment.cover().contains(placing)) {
+		if (placing == null || (!anchor && !assessment.cover().contains(placing))) {
 			builder.reset();
 			placing = assessment.cover().stream().min(java.util.Comparator
 					.comparingInt((BlockPos p) -> Bot.placeAgainst(ctx.mc(), ctx.player(), p, null) != null ? 0 : 1)
 					.thenComparingInt(p -> ctx.level().getFluidState(p).isSource() ? 0 : 1)
 					.thenComparingDouble(p -> p.distToCenterSqr(ctx.player().getX(), ctx.player().getY(), ctx.player().getZ()))).orElseThrow();
+			BlockPos required = placing;
+			placing = nextAnchor(required, block,
+					p -> ctx.level().hasChunkAt(p) && !ctx.level().getBlockState(p).isAir()
+							&& ctx.level().getFluidState(p).isEmpty() && !ctx.level().getBlockState(p).getShape(ctx.level(), p).isEmpty(),
+					p -> ctx.level().hasChunkAt(p) && p.getY() >= ctx.level().getMinY() && p.getY() < ctx.level().getMaxY()
+							&& Bot.fillable(ctx.mc(), p) && !ctx.player().getBoundingBox().intersects(new net.minecraft.world.phys.AABB(p)));
+			if (placing == null) { detail = "no nearby anchor for the protection floor"; reset(); return Result.FAILED; }
+			anchor = !placing.equals(required);
 			face = null;
 			placeTicks = 0;
 		}
 		coveringLiquid = !ctx.level().getFluidState(placing).isEmpty();
-		face = Bot.placeAgainst(ctx.mc(), ctx.player(), placing, face);
+		// This action sneaks. Testing only the standing ray alternated every tick between
+		// standing navigation and a crouched placement that could no longer see its face.
+		face = Bot.placeAgainst(ctx.mc(), ctx.player(), placing, face,
+				new net.minecraft.world.phys.Vec3(ctx.player().getX(),
+						ctx.player().getY() + ctx.player().getEyeHeight(net.minecraft.world.entity.Pose.CROUCHING), ctx.player().getZ()));
 		if (face != null) {
 			if (NativeNavigation.yieldFor(steer)) { steer.externalNavigation = true; return Result.WORKING; }
 			if (++placeTicks > Math.max(60, BaseDestroyer.aimDeadlineTicks(ctx.cfg()))) {
@@ -74,5 +86,35 @@ final class SitePreparation {
 		detail = builder.status;
 		if (result == Pathing.Nav.NO_ROUTE) { reset(); return Result.FAILED; }
 		return Result.WORKING;
+	}
+
+	/** Build back toward the required cell from an existing click face, one confirmed block
+	 * at a time. The four-block bound keeps scaffolding local and supply use finite. */
+	static BlockPos nextAnchor(BlockPos required, BlockPos protectedBlock,
+	                          java.util.function.Predicate<BlockPos> support,
+	                          java.util.function.Predicate<BlockPos> fillable) {
+		var queue = new java.util.ArrayDeque<BlockPos>();
+		var seen = new java.util.HashSet<BlockPos>();
+		queue.add(required); seen.add(required);
+		while (!queue.isEmpty()) {
+			BlockPos cell = queue.removeFirst();
+			for (Direction side : Direction.values()) if (support.test(cell.relative(side))) return cell;
+			for (Direction side : Direction.values()) {
+				BlockPos next = cell.relative(side);
+				if (!next.equals(protectedBlock) && next.distManhattan(required) <= 4
+						&& seen.add(next) && fillable.test(next)) queue.addLast(next);
+			}
+		}
+		return null;
+	}
+
+	static void selfCheck() {
+		BlockPos required = BlockPos.ZERO, target = required.above();
+		assert nextAnchor(required, target, p -> p.equals(required.west()), p -> true).equals(required);
+		BlockPos first = nextAnchor(required, target, p -> p.equals(required.west(3)), p -> true);
+		assert first.equals(required.west(2)) : "unsupported floor did not start at the existing anchor";
+		assert nextAnchor(required, target, p -> false, p -> true) == null : "unbounded scaffolding search";
+		assert nextAnchor(required, target, p -> p.equals(target.above()), p -> p.equals(target)) == null
+				: "scaffolding replaced the target it was protecting";
 	}
 }

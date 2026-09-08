@@ -230,6 +230,7 @@ public final class BlockTargets {
 	 * the heap limit.
 	 */
     private ScanJob pending;
+	void resetScan() { pending = null; }
     private static final class ScanJob {
         final ClientLevel level;
         final BlockPos origin;
@@ -294,6 +295,29 @@ public final class BlockTargets {
         return new ScanResult(List.copyOf(out), job.stats.matching, job.stats.eligible, job.stats.hidden,
                 job.stats.scannedChunks, job.stats.unloadedChunks, complete);
     }
+
+	/** Refresh nearby candidates before choosing from a partially scanned or stale heap. */
+	List<Found> withNearby(ClientLevel level, LocalPlayer player, Config cfg, List<Found> cached,
+	                       Predicate<BlockPos> eligible) {
+		// A fresh reach-sized cube is cheap and includes thin outline shapes whose centres
+		// differ from the block centre. Never let the global heap hide reachable work.
+		var merged = new java.util.LinkedHashMap<BlockPos, Found>();
+		for (Found f : cached) merged.put(f.pos(), f);
+		Set<Block> wanted = blocks(cfg);
+		int radius = (int) Math.ceil(player.blockInteractionRange()) + 1;
+		BlockPos origin = BlockPos.containing(player.getEyePosition());
+		for (BlockPos cursor : BlockPos.betweenClosed(origin.offset(-radius, -radius, -radius),
+				origin.offset(radius, radius, radius))) {
+			if (!level.hasChunkAt(cursor)) continue;
+			BlockState state = level.getBlockState(cursor);
+			if (!wanted.contains(state.getBlock()) || !breakable(state, level, cursor)
+					|| Storage.protectedWorldBlock(cfg, level, cursor) || !eligible.test(cursor)) continue;
+			BlockPos pos = cursor.immutable();
+			merged.put(pos, new Found(pos, Math.sqrt(pos.distToCenterSqr(player.getX(), player.getY(), player.getZ())),
+					state.getBlock().getName().getString(), isStoragePath(BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath())));
+		}
+		return List.copyOf(merged.values());
+	}
 
 	/** Whether this chunk's horizontal block square touches the circular search area. */
 	private static boolean chunkIntersects(BlockPos origin, int radius, int chunkX, int chunkZ) {

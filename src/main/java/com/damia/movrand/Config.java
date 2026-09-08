@@ -420,6 +420,11 @@ public final class Config {
 	public double baritoneTurnSmoothing = 0.35;
 	public double baritoneTurnRate = 24;
 	public double baritoneAimVariation = 0.03;
+	/** Optional walking/sprinting variation on ordinary supported ground only. */
+	public boolean baritoneRandomisePace = false;
+	public double baritoneSprintChance = 0.8;
+	public double baritonePaceMinSec = 2;
+	public double baritonePaceMaxSec = 6;
 	public double baritoneNoProgressSec = 8;
 	/** How far to look for blocks worth breaking. Blocks, not chunks. */
 	public int destroyRadius = 32;
@@ -608,6 +613,7 @@ public final class Config {
 	// ----------------------------------------------------------- the bag
 
 	public boolean storageEnabled = false;
+	public boolean storageFastTransfers = true;
 	public boolean storageReturnShulkers = true;
 	public double storagePlayerRadius = 32;
 	public List<Storage.Target> storageTargets = new ArrayList<>();
@@ -894,6 +900,12 @@ public final class Config {
 			Path p = path();
 			Files.createDirectories(p.getParent());
 			Files.writeString(p, GSON.toJson(this));
+			String profile = sanitise(activeProfile);
+			if (!profile.isEmpty()) {
+				Path dir = profilesDir();
+				if (dir == null) throw new java.io.IOException("Could not open profiles directory");
+				Files.writeString(dir.resolve(profile + ".json"), GSON.toJson(this));
+			}
 		} catch (Exception e) {
 			MovRand.LOG.warn("[movrand] could not write config", e);
 		}
@@ -1020,6 +1032,12 @@ public final class Config {
 		baritoneTurnSmoothing = Math.max(0, Math.min(1, baritoneTurnSmoothing));
 		baritoneTurnRate = Math.max(8, Math.min(90, baritoneTurnRate));
 		baritoneAimVariation = Math.max(0, Math.min(0.2, baritoneAimVariation));
+		if (!Double.isFinite(baritoneSprintChance)) baritoneSprintChance = 0.8;
+		if (!Double.isFinite(baritonePaceMinSec)) baritonePaceMinSec = 2;
+		if (!Double.isFinite(baritonePaceMaxSec)) baritonePaceMaxSec = 6;
+		baritoneSprintChance = Math.max(0, Math.min(1, baritoneSprintChance));
+		baritonePaceMinSec = Math.max(0.5, Math.min(30, baritonePaceMinSec));
+		baritonePaceMaxSec = Math.max(baritonePaceMinSec, Math.min(30, baritonePaceMaxSec));
 		baritoneNoProgressSec = Math.max(3, Math.min(60, baritoneNoProgressSec));
 		destroyVerticalRadius = Math.max(2, Math.min(160, destroyVerticalRadius));
 		destroyMaxTargets = Math.max(16, Math.min(20_000, destroyMaxTargets));

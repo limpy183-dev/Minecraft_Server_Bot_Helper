@@ -23,6 +23,7 @@ public final class NativeNavigation {
 	private static volatile NativeNavigation owner;
 	private final Human.Turn yawTurn = new Human.Turn(), pitchTurn = new Human.Turn(false);
 	private boolean cameraSynced;
+	private final Pace pace = new Pace();
 	private final Config cfg;
 	private IBaritone engine;
 	private BlockPos destination;
@@ -44,8 +45,75 @@ public final class NativeNavigation {
 
 	NativeNavigation(Config cfg) { this.cfg = cfg; }
 
+	/** The executor accepts any point in a landing cell, so include the body's overhang
+	 * into neighbouring cells, not just the air in the destination column. */
+	public static boolean clearLanding(MineSafety.View view, int x, int y, int z) {
+		for (int dx = -1; dx <= 1; dx++) for (int dz = -1; dz <= 1; dz++)
+			for (int dy = 0; dy <= 1; dy++) {
+				int cell = view.cell(x + dx, y + dy, z + dz);
+				if (cell == MineSafety.BURNING || cell == MineSafety.UNKNOWN) return false;
+			}
+		return true;
+	}
+
 	public static boolean controlling() { return owner != null; }
 	public static Config activeConfig() { NativeNavigation current = owner; return current == null ? null : current.cfg; }
+
+	/** Only reduce an already-approved sprint on a clear, level stretch of the active route. */
+	public static boolean randomiseSprint(baritone.api.pathing.path.IPathExecutor executor, boolean sprint) {
+		NativeNavigation current = owner;
+		if (current == null || current.engine == null || current.engine.getPathingBehavior().getCurrent() != executor)
+			return sprint;
+		if (!current.cfg.baritoneRandomisePace) { current.pace.reset(); return sprint; }
+		var player = current.engine.getPlayerContext().player();
+		if (player == null) return sprint;
+		boolean eligible = current.cfg.baritoneRandomisePace && current.cfg.destroySprint && sprint
+				&& !current.building && !current.retiring && player.onGround()
+				&& !player.isInWater() && !player.isInLava() && !player.onClimbable()
+				&& !player.isUsingItem() && !player.horizontalCollision;
+		var input = current.engine.getInputOverrideHandler();
+		eligible &= !input.isInputForcedDown(Input.JUMP) && !input.isInputForcedDown(Input.SNEAK)
+				&& !input.isInputForcedDown(Input.CLICK_LEFT) && !input.isInputForcedDown(Input.CLICK_RIGHT);
+		// Preserve run-ups and landings: the previous, current and next two moves must
+		// all be ordinary traverses with full solid footing and no planned block edits.
+		var moves = executor.getPath().movements();
+		int index = executor.getPosition();
+		eligible &= index > 0 && index + 2 < moves.size();
+		if (eligible) for (int i = index - 1; i <= index + 2; i++) {
+			IMovement move = moves.get(i);
+			if (!(move instanceof baritone.pathing.movement.movements.MovementTraverse)
+					|| !move.safeToCancel() || move.getSrc().getY() != move.getDest().getY()) {
+				eligible = false;
+				break;
+			}
+			var world = current.engine.getPlayerContext().world();
+			for (BlockPos feet : new BlockPos[]{move.getSrc(), move.getDest()}) {
+				BlockPos floor = feet.below();
+				if (!world.getBlockState(floor).isCollisionShapeFullBlock(world, floor)
+						|| baritone.pathing.movement.MovementHelper.avoidWalkingInto(world.getBlockState(floor))
+						|| !world.getFluidState(floor).isEmpty()
+						|| !world.getBlockState(feet).isAir() || !world.getBlockState(feet.above()).isAir())
+					eligible = false;
+			}
+		}
+		return current.pace.sprint(current.cfg, eligible, player.tickCount) && sprint;
+	}
+
+	/** Keep a sampled pace for a whole segment; critical moves immediately resume normal execution. */
+	static final class Pace {
+		private int untilTick;
+		private boolean sampled, sprint;
+		void reset() { sampled = false; }
+		boolean sprint(Config cfg, boolean eligible, int tick) {
+			if (!cfg.baritoneRandomisePace || !eligible) { reset(); return true; }
+			if (!sampled || tick >= untilTick) {
+				sprint = Rng.chance(cfg.baritoneSprintChance);
+				untilTick = tick + Rng.ticks(cfg.baritonePaceMinSec, cfg.baritonePaceMaxSec);
+				sampled = true;
+			}
+			return sprint;
+		}
+	}
     public static boolean finishingCriticalMove() { return owner != null && !owner.safeToCancel(); }
 
 	/** Smooth every actual look, including precision moves; candidate geometry stays exact. */
@@ -135,7 +203,8 @@ public final class NativeNavigation {
 		if (Bot.fullPlacementSupport(ctx.level(), where)) { reset(); return Pathing.Nav.ARRIVED; }
 		// Baritone's single-block liquid schematic normally aims for the square above it.
 		// That square may contain the block we are protecting. Approach a clickable face instead.
-		if (!building && placementAim(ctx, ctx.player().getEyePosition(), where) == null) {
+		if (!building && placementAim(ctx, new Vec3(ctx.player().getX(), ctx.player().getY()
+				+ ctx.player().getEyeHeight(net.minecraft.world.entity.Pose.CROUCHING), ctx.player().getZ()), where) == null) {
 			Pathing.Nav approach = tick(ctx, steer, where, (x, y, z) -> placementAim(ctx,
 					new Vec3(x + 0.5, y + 1.27, z + 0.5), where) != null, mayBreak, true);
 			if (approach != Pathing.Nav.ARRIVED) return approach;
@@ -175,8 +244,8 @@ public final class NativeNavigation {
 	static Vec3 placementAim(PathMove.Ctx ctx, Vec3 eyes, BlockPos where) {
 		for (net.minecraft.core.Direction side : net.minecraft.core.Direction.values()) {
 			BlockPos against = where.relative(side);
-			if (!Bot.fullPlacementSupport(ctx.level(), against)) continue;
-			Vec3 aim = Vec3.atCenterOf(against).add(-side.getStepX() * 0.499, -side.getStepY() * 0.499, -side.getStepZ() * 0.499);
+			if (ctx.level().getBlockState(against).getShape(ctx.level(), against).isEmpty()) continue;
+			Vec3 aim = Bot.placePoint(ctx.mc(), where, side);
 			if (eyes.distanceToSqr(aim) > Math.pow(ctx.player().blockInteractionRange() - 0.15, 2)) continue;
 			var hit = ctx.level().clip(new net.minecraft.world.level.ClipContext(eyes, aim,
 					net.minecraft.world.level.ClipContext.Block.OUTLINE, net.minecraft.world.level.ClipContext.Fluid.NONE, ctx.player()));
@@ -192,6 +261,7 @@ public final class NativeNavigation {
 		owner = this;
 		retiring = false;
 		cameraSynced = false;
+		pace.reset();
 		ticks = idleTicks = failures = 0;
 		progress.reset();
 		observedBreaking = null;
@@ -359,6 +429,15 @@ public final class NativeNavigation {
 		return Bot.hitBlock(engine.getPlayerContext().minecraft());
 	}
 
+	boolean walking() { return owner == this && engine.getPathingBehavior().hasPath(); }
+	PathFinder.Kind currentKind() {
+		if (owner != this) return PathFinder.Kind.START;
+		if (breakingBlock() != null) return PathFinder.Kind.MINE;
+		if (currentMove() instanceof baritone.pathing.movement.movements.MovementPillar) return PathFinder.Kind.PILLAR;
+		if (engine.getInputOverrideHandler().isInputForcedDown(Input.CLICK_RIGHT)) return PathFinder.Kind.BRIDGE;
+		return walking() ? PathFinder.Kind.WALK : PathFinder.Kind.START;
+	}
+
 	/** Give Baritone time to finish an uninterruptible landing before another task takes the keys. */
 	public static boolean yieldFor(Bot.Steer steer) {
 		if (owner == null || (steer != null && steer.externalNavigation)) return false;
@@ -386,12 +465,38 @@ public final class NativeNavigation {
 	}
 
 	public static void main(String[] args) {
+		MineSafety.View corner = (x, y, z) -> x == 1121 && y == 56 && z == 134 ? MineSafety.BURNING : MineSafety.AIR;
+		assert !clearLanding(corner, 1121, 56, 133) : "basalt lava corner accepted as a landing";
+		assert clearLanding(corner, 1121, 58, 133) : "contained lava below a landing blocked the route";
+		assert clearLanding((x, y, z) -> MineSafety.AIR, 0, 0, 0);
 		NavigationWatchdog.selfCheck();
 		CellGoal goal = new CellGoal(Set.of(new BlockPos(-2, 3, 4), new BlockPos(7, -5, 0)));
 		assert goal.isInGoal(-2, 3, 4) && goal.isInGoal(7, -5, 0);
 		assert !goal.isInGoal(-2, 4, 4) : "lower-floor goal accepted the wrong elevation";
 		assert goal.heuristic(-2, 3, 4) == 0 && goal.heuristic(12, 3, 4) > 0;
 		Config cfg = new Config();
+		Pace pace = new Pace();
+		cfg.baritoneSprintChance = 0;
+		assert pace.sprint(cfg, true, 0) : "default changed Baritone's pace";
+		cfg.baritoneRandomisePace = true;
+		cfg.baritonePaceMinSec = cfg.baritonePaceMaxSec = 1;
+		assert !pace.sprint(cfg, true, 0);
+		cfg.baritoneSprintChance = 1;
+		assert !pace.sprint(cfg, true, 19) : "pace was resampled mid-segment";
+		assert pace.sprint(cfg, true, 20) : "pace did not expire";
+		cfg.baritoneSprintChance = 0;
+		pace.reset();
+		assert !pace.sprint(cfg, true, 21);
+		assert pace.sprint(cfg, false, 22) : "random pace interfered with a critical move";
+		cfg.baritoneSprintChance = 1;
+		assert pace.sprint(cfg, true, 23) : "critical move did not reset the segment";
+		cfg.baritoneSprintChance = Double.NaN;
+		cfg.baritonePaceMinSec = Double.POSITIVE_INFINITY;
+		cfg.baritonePaceMaxSec = -1;
+		cfg.clampAll();
+		assert cfg.baritoneSprintChance == 0.8 && cfg.baritonePaceMinSec == 2 && cfg.baritonePaceMaxSec == 2;
+		Config copied = cfg.copy();
+		assert copied.baritoneRandomisePace && copied.baritonePaceMaxSec == 2 : "profile lost pace settings";
 		Rotation previous = new Rotation(179, 0), desired = new Rotation(-120, 60);
 		for (boolean interaction : new boolean[]{false, true}) {
 			for (double strength : new double[]{0, 0.35, 0.8, 1}) {

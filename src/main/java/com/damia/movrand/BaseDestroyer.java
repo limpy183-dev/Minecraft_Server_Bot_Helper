@@ -70,6 +70,34 @@ public final class BaseDestroyer {
 	public String detail = "";
 	public int mined;
 	public int placed;
+	private record PendingEdit(ClientLevel level, BlockPos pos, Block block, boolean placement, String name, long expires) {}
+	private final List<PendingEdit> pendingEdits = new ArrayList<>();
+
+	/** Record actual vanilla interactions, including native path excavation and building. */
+	public void expectEdit(ClientLevel level, BlockPos pos, Block block, boolean placement) {
+		if (!cfg.movementEnabled || !cfg.destroyerEnabled) return;
+		pendingEdits.removeIf(e -> e.level != level || e.expires < level.getGameTime()
+				|| (e.pos.equals(pos) && e.placement == placement));
+		if (pendingEdits.size() >= 128) pendingEdits.removeFirst();
+		pendingEdits.add(new PendingEdit(level, pos.immutable(), block, placement,
+				block.getName().getString(), level.getGameTime() + 200));
+	}
+
+	/** Server block updates/acknowledgements confirm edits; predictions alone never count. */
+	public void confirmEdit(ClientLevel level, BlockPos pos, BlockState state) {
+		pendingEdits.removeIf(e -> e.level != level || e.expires < level.getGameTime());
+		for (var it = pendingEdits.iterator(); it.hasNext();) {
+			PendingEdit e = it.next();
+			if (!e.pos.equals(pos)) continue;
+			boolean confirmed = e.placement ? state.is(e.block)
+					: !state.is(e.block) && (state.isAir() || !state.getFluidState().isEmpty());
+			it.remove();
+			if (!confirmed) return; // a rejected prediction cannot claim a later unrelated edit
+			if (e.placement) placed++;
+			else noteMined(level, pos, e.name);
+			return;
+		}
+	}
 	public int collected;
 	public double lastPathCost;
 	public int lastPathNodes;
@@ -105,9 +133,6 @@ public final class BaseDestroyer {
 	private int mineTicks;
 	/** The face being aimed at, kept between ticks so the crosshair does not hop. */
 	private Direction aimFace;
-	/** The block being swung at last tick, and its name while it still had one. */
-	private BlockPos wasBreaking;
-	private String wasBreakingName = "";
 	/** Set once on running out of work, so the reaction fires once rather than every tick. */
 	private boolean finished;
 	/** Ticks the job has been running, for the sale cooldown. */
@@ -142,6 +167,8 @@ public final class BaseDestroyer {
 	}
 
 	public void reset() {
+		pendingEdits.clear();
+		targets.resetScan();
 		preparation.reset();
 		MineSafety.clearDenied();
 		phase = Phase.SCANNING;
@@ -163,7 +190,6 @@ public final class BaseDestroyer {
 		capCooldown = 0;
 		forgetBlock();
 		forgetPlacement();
-		wasBreaking = null;
 		nav.reset();
 		fetch.reset();
 	}
@@ -239,8 +265,7 @@ public final class BaseDestroyer {
 		PathMove.Ctx ctx = new PathMove.Ctx(mc, player, level, cfg);
 		drops.observe(ctx);
 		collected = drops.collected;
-		countBrokenBlock(level);
-		countPlaced(mc);
+		observePlacement(mc);
 
 		// 0. Air. Everything else on this list is a thing that might go wrong; this one is a
 		//    clock that is already running, and it only runs one way. A fight underwater with no
@@ -329,8 +354,6 @@ public final class BaseDestroyer {
 		LocalPlayer player = ctx.player();
 		Minecraft mc = ctx.mc();
 
-		countBrokenBlock(level);
-
 		boolean finishedTarget = target != null && !stillATarget(level, target);
 		if (finishedTarget) {
 			// it went: either we broke it or somebody else did
@@ -345,24 +368,26 @@ public final class BaseDestroyer {
 
 		if (target == null) {
 			if (scanFrom != null && player.blockPosition().distSqr(scanFrom) >= 4) scanCooldown = 0;
-			// Consume a still-live cached candidate first. If none exists, waiting for the scan
-			// clock is fine, but it is never evidence that the loaded area is empty.
-			target = pickTarget(mc, level, player);
-			if (target == null) {
-				if (scanCooldown > 0 && !finishedTarget) {
-					phase = Phase.SCANNING;
-					detail = "waiting for the next block scan";
-					return steer;
-				}
-
+			// Advance even while cached candidates remain: otherwise a partial scan can
+			// stay frozen for the entire demolition. Local targets are refreshed below.
+			boolean scanned = scanCooldown == 0 || finishedTarget;
+			if (scanned) {
 				phase = Phase.SCANNING;
 				lastScan = targets.scanDetailed(level, player, cfg,
 						pos -> eligibleForScan(level, player, pos));
 				found = lastScan.found();
 				scanFrom = player.blockPosition().immutable();
 				scanCooldown = lastScan.complete() ? Rng.ticks(cfg.destroyScanSec, cfg.destroyScanMaxSec) : 0;
-				target = pickTarget(mc, level, player);
-				if (target == null) return handleEmptyShortlist();
+			}
+			found = targets.withNearby(level, player, cfg, found, pos -> eligibleForScan(level, player, pos));
+			target = pickTarget(mc, level, player);
+			if (target == null) {
+				if (!scanned) {
+					phase = Phase.SCANNING;
+					detail = "waiting for the next block scan";
+					return steer;
+				}
+				return handleEmptyShortlist();
 			}
 			// back in business after a dry spell: the next dry spell is news again
 			finished = false;
@@ -402,8 +427,6 @@ public final class BaseDestroyer {
 
 	private SitePreparation.Result prepare(PathMove.Ctx ctx, BlockPos block, Bot.Steer steer) {
 		SitePreparation.Result result = preparation.tick(ctx, block, steer, mayBreak());
-		placed += preparation.placed;
-		preparation.placed = 0;
 		if (result != SitePreparation.Result.READY) {
 			phase = preparation.coveringLiquid ? Phase.COVERING : Phase.PREPARING;
 			detail = preparation.detail;
@@ -512,7 +535,7 @@ public final class BaseDestroyer {
 						new net.minecraft.world.phys.AABB(want).deflate(0.25)));
 
 		Pathing.Nav result = nav.tick(ctx, steer, want, goal, mayBreak());
-		absorb(level, nav);
+		absorb(nav);
 
 		switch (result) {
 			case WALKING -> {
@@ -592,13 +615,9 @@ public final class BaseDestroyer {
 		};
 	}
 
-	/** Take over whatever the route broke or placed on the way, so the tallies are real. */
-	private void absorb(ClientLevel level, Pathing from) {
-		placed += from.placed;
+	/** Read route statistics; edit totals come from server confirmations for both executors. */
+	private void absorb(Pathing from) {
 		from.placed = 0;
-		if (from.justMined != null && !from.justMined.equals(target)) {
-			noteMined(level, from.justMined, from.justMinedName);
-		}
 		from.mined = 0;
 		from.justMined = null;
 		lastPathCost = from.lastCost;
@@ -677,7 +696,9 @@ public final class BaseDestroyer {
 	}
 
 	private boolean stillATarget(ClientLevel level, BlockPos pos) {
-		return !Storage.protectedWorldBlock(cfg, level, pos) && targets.blocks(cfg).contains(level.getBlockState(pos).getBlock());
+		return level.hasChunkAt(pos) && !Storage.protectedWorldBlock(cfg, level, pos)
+				&& targets.blocks(cfg).contains(level.getBlockState(pos).getBlock())
+				&& BlockTargets.breakable(level.getBlockState(pos), level, pos);
 	}
 
 	/**
@@ -820,26 +841,7 @@ public final class BaseDestroyer {
 		return steer.attack;
 	}
 
-	/**
-	 * Notice a block we were swinging at turn to air.
-	 *
-	 * <p>The only honest way to count one. A swing is not a broken block, a held button is not a
-	 * broken block, and the client is never told that a break succeeded — the block simply
-	 * stops being there.
-	 */
-	private void countBrokenBlock(ClientLevel level) {
-		if (wasBreaking != null && level.getBlockState(wasBreaking).isAir()) {
-			noteMined(level, wasBreaking, wasBreakingName);
-			wasBreaking = null;
-		}
-		if (breaking != null && !breaking.equals(wasBreaking) && !level.getBlockState(breaking).isAir()) {
-			wasBreaking = breaking;
-			// read the name while the block still has one, not after it is air
-			wasBreakingName = describeBlock(level, breaking);
-		}
-	}
-
-	/** Called when a block turns to air, so the count and the journal are real. */
+	/** Called once for a server-confirmed player break. */
 	public void noteMined(ClientLevel level, BlockPos pos, String name) {
 		mined++;
 		if (cfg.destroyLogTargets && journal != null) {
@@ -1096,12 +1098,11 @@ public final class BaseDestroyer {
 		return true;
 	}
 
-	/** Count a placement only after the client world confirms the fillable square became solid. */
-	private void countPlaced(Minecraft mc) {
+	/** Release a completed placement target without counting a client prediction. */
+	private void observePlacement(Minecraft mc) {
 		if (placeTarget == null) return;
 		boolean fillable = Bot.fillable(mc, placeTarget);
 		if (placeWasFillable && !fillable) {
-			placed++;
 			forgetPlacement();
 			return;
 		}
@@ -1118,7 +1119,7 @@ public final class BaseDestroyer {
 	private Bot.Steer collectDrops(PathMove.Ctx ctx, Bot.Steer steer) {
 		if (backpack.full(ctx.player())) return null;
 		boolean active = drops.tick(ctx, steer, mayBreak());
-		absorb(ctx.level(), fetch);
+		absorb(fetch);
 		if (!active) return null;
 		phase = Phase.COLLECTING;
 		detail = drops.detail;

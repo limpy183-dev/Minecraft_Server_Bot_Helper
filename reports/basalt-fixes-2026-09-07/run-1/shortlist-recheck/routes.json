@@ -1,0 +1,6606 @@
+[
+  {
+    "start_tick": 0,
+    "target": [
+      1128,
+      67,
+      126
+    ],
+    "start_position": [
+      1126.5,
+      65.0,
+      126.5
+    ],
+    "nodes": [
+      [
+        1126,
+        65,
+        126
+      ],
+      [
+        1127,
+        66,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 37,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.715227993217551,
+    "end_tick": 13,
+    "seconds": 0.65,
+    "end_position": [
+      1127.1800171922314,
+      66.0,
+      126.5
+    ],
+    "endpoint_distance": 1.209306984074045,
+    "travel_to_endpoint_ratio": 1.4183561459631238
+  },
+  {
+    "start_tick": 23,
+    "target": [
+      1127,
+      68,
+      126
+    ],
+    "start_position": [
+      1127.3830743232133,
+      66.0,
+      126.5
+    ],
+    "nodes": [
+      [
+        1127,
+        66,
+        126
+      ],
+      [
+        1127,
+        67,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 76,
+    "predicted_ticks": 34.3119376289183,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 24,
+    "seconds": 0.05,
+    "end_position": [
+      1127.4806358877927,
+      66.0,
+      126.49074034411677
+    ],
+    "endpoint_distance": 0.09800000056246884,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 34,
+    "target": [
+      1127,
+      68,
+      126
+    ],
+    "start_position": [
+      1127.5922741699299,
+      66.0,
+      126.48014465430347
+    ],
+    "nodes": [
+      [
+        1127,
+        66,
+        126
+      ],
+      [
+        1127,
+        67,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 76,
+    "predicted_ticks": 34.3119376289183,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 56,
+    "seconds": 1.1,
+    "end_position": [
+      1127.5922741699299,
+      66.0,
+      126.48014465430347
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 65,
+    "target": [
+      1128,
+      67,
+      125
+    ],
+    "start_position": [
+      1127.5922741699299,
+      66.0,
+      126.48014465430347
+    ],
+    "nodes": [
+      [
+        1127,
+        66,
+        126
+      ],
+      [
+        1127,
+        67,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 16,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 66,
+    "seconds": 0.05,
+    "end_position": [
+      1127.5922741699299,
+      66.0,
+      126.48014465430347
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 68,
+    "target": [
+      1128,
+      67,
+      125
+    ],
+    "start_position": [
+      1127.5922741699299,
+      66.0,
+      126.48014465430347
+    ],
+    "nodes": [
+      [
+        1127,
+        66,
+        126
+      ],
+      [
+        1128,
+        66,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 13,
+    "predicted_ticks": 18.53138753764188,
+    "path_geometry": 1.0,
+    "travel": 0.14489217079874506,
+    "end_tick": 75,
+    "seconds": 0.35,
+    "end_position": [
+      1127.7566074256074,
+      66.0,
+      126.48366543809428
+    ],
+    "endpoint_distance": 0.16437096714469937,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 78,
+    "target": [
+      1128,
+      68,
+      125
+    ],
+    "start_position": [
+      1127.77621592284,
+      66.0,
+      126.4840836993966
+    ],
+    "nodes": [
+      [
+        1127,
+        66,
+        126
+      ],
+      [
+        1127,
+        67,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 16,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 1.3708587883527825,
+    "end_tick": 89,
+    "seconds": 0.55,
+    "end_position": [
+      1127.6220430609296,
+      67.25220334025373,
+      126.49292005209847
+    ],
+    "endpoint_distance": 1.2616895647588253,
+    "travel_to_endpoint_ratio": 1.0865262158325175
+  },
+  {
+    "start_tick": 127,
+    "target": [
+      1128,
+      69,
+      125
+    ],
+    "start_position": [
+      1127.611712681777,
+      67.0,
+      126.49351240644783
+    ],
+    "nodes": [
+      [
+        1127,
+        67,
+        126
+      ],
+      [
+        1127,
+        68,
+        124
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.127583749109052,
+    "path_geometry": 2.23606797749979,
+    "travel": 7.225229543103644,
+    "end_tick": 184,
+    "seconds": 2.85,
+    "end_position": [
+      1127.5005249372714,
+      68.125,
+      124.50121857653761
+    ],
+    "endpoint_distance": 2.29068164947174,
+    "travel_to_endpoint_ratio": 3.1541831859393787
+  },
+  {
+    "start_tick": 243,
+    "target": [
+      1127,
+      68,
+      124
+    ],
+    "start_position": [
+      1127.4910144170556,
+      68.125,
+      124.47864234690047
+    ],
+    "nodes": [
+      [
+        1127,
+        68,
+        124
+      ],
+      [
+        1127,
+        68,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.3243604304591387,
+    "end_tick": 246,
+    "seconds": 0.15,
+    "end_position": [
+      1127.4950723389118,
+      68.125,
+      124.04676057723067
+    ],
+    "endpoint_distance": 0.43190083318154143,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 254,
+    "target": [
+      1127,
+      70,
+      122
+    ],
+    "start_position": [
+      1127.4962285195304,
+      68.0,
+      123.9237090870242
+    ],
+    "nodes": [
+      [
+        1127,
+        68,
+        123
+      ],
+      [
+        1127,
+        69,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 10,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 0.04659999847412166,
+    "end_tick": 255,
+    "seconds": 0.05,
+    "end_position": [
+      1127.4962285195304,
+      68.0,
+      123.9237090870242
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 264,
+    "target": [
+      1127,
+      70,
+      122
+    ],
+    "start_position": [
+      1127.4962285195304,
+      68.0,
+      123.9237090870242
+    ],
+    "nodes": [
+      [
+        1127,
+        68,
+        123
+      ],
+      [
+        1127,
+        69,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 10,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 1.5046908275179096,
+    "end_tick": 282,
+    "seconds": 0.9,
+    "end_position": [
+      1127.4989164493168,
+      69.25220334025373,
+      123.6338187456738
+    ],
+    "endpoint_distance": 1.2853236325211577,
+    "travel_to_endpoint_ratio": 1.170670786287858
+  },
+  {
+    "start_tick": 299,
+    "target": [
+      1127,
+      71,
+      122
+    ],
+    "start_position": [
+      1127.498976198584,
+      69.0,
+      123.62691143961455
+    ],
+    "nodes": [
+      [
+        1127,
+        69,
+        123
+      ],
+      [
+        1127,
+        68,
+        123
+      ],
+      [
+        1126,
+        68,
+        122
+      ],
+      [
+        1126,
+        69,
+        122
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 44,
+    "predicted_ticks": 45.43580353473712,
+    "path_geometry": 3.414213562373095,
+    "travel": 0.0,
+    "end_tick": 306,
+    "seconds": 0.35,
+    "end_position": [
+      1127.498976198584,
+      69.0,
+      123.62691143961455
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 306,
+    "target": [
+      1127,
+      71,
+      122
+    ],
+    "start_position": [
+      1127.498976198584,
+      69.0,
+      123.62691143961455
+    ],
+    "nodes": [
+      [
+        1127,
+        69,
+        123
+      ],
+      [
+        1127,
+        68,
+        123
+      ],
+      [
+        1126,
+        68,
+        122
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 7,
+    "predicted_ticks": 26.373865633406968,
+    "path_geometry": 2.414213562373095,
+    "travel": 0.0,
+    "end_tick": 322,
+    "seconds": 0.8,
+    "end_position": [
+      1127.498976198584,
+      69.0,
+      123.62691143961455
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 322,
+    "target": [
+      1127,
+      71,
+      122
+    ],
+    "start_position": [
+      1127.498976198584,
+      69.0,
+      123.62691143961455
+    ],
+    "nodes": [
+      [
+        1127,
+        69,
+        123
+      ],
+      [
+        1127,
+        68,
+        124
+      ],
+      [
+        1126,
+        65,
+        124
+      ],
+      [
+        1126,
+        65,
+        123
+      ],
+      [
+        1126,
+        65,
+        122
+      ]
+    ],
+    "node_count": 5,
+    "nodes_considered": 11,
+    "predicted_ticks": 31.066525118081458,
+    "path_geometry": 6.576491222541475,
+    "travel": 7.57411363328568,
+    "end_tick": 355,
+    "seconds": 1.65,
+    "end_position": [
+      1126.4989497256133,
+      65.0,
+      122.71190868046325
+    ],
+    "endpoint_distance": 4.223420769458864,
+    "travel_to_endpoint_ratio": 1.7933599436875745
+  },
+  {
+    "start_tick": 357,
+    "target": [
+      1127,
+      71,
+      122
+    ],
+    "start_position": [
+      1126.4962111847638,
+      65.0,
+      122.60561569463214
+    ],
+    "nodes": [
+      [
+        1126,
+        65,
+        122
+      ],
+      [
+        1126,
+        65,
+        123
+      ],
+      [
+        1126,
+        65,
+        124
+      ],
+      [
+        1127,
+        65,
+        125
+      ],
+      [
+        1128,
+        65,
+        125
+      ],
+      [
+        1128,
+        66,
+        126
+      ],
+      [
+        1127,
+        67,
+        126
+      ],
+      [
+        1127,
+        68,
+        124
+      ],
+      [
+        1127,
+        69,
+        123
+      ],
+      [
+        1127,
+        70,
+        123
+      ]
+    ],
+    "node_count": 10,
+    "nodes_considered": 352,
+    "predicted_ticks": 63.81940072980423,
+    "path_geometry": 11.89292222699217,
+    "travel": 14.524154120816657,
+    "end_tick": 431,
+    "seconds": 3.7,
+    "end_position": [
+      1127.4915880787046,
+      70.25220334025373,
+      123.38047021609998
+    ],
+    "endpoint_distance": 5.401556684679231,
+    "travel_to_endpoint_ratio": 2.688883032925011
+  },
+  {
+    "start_tick": 469,
+    "target": [
+      1125,
+      71,
+      123
+    ],
+    "start_position": [
+      1127.492058452458,
+      70.0,
+      123.38717380725976
+    ],
+    "nodes": [
+      [
+        1127,
+        70,
+        123
+      ],
+      [
+        1128,
+        70,
+        124
+      ],
+      [
+        1125,
+        71,
+        124
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 5,
+    "predicted_ticks": 21.95051755758819,
+    "path_geometry": 4.576491222541475,
+    "travel": 4.342681576670461,
+    "end_tick": 490,
+    "seconds": 1.05,
+    "end_position": [
+      1125.5040844877249,
+      71.0,
+      124.53127911177157
+    ],
+    "endpoint_distance": 2.5022025162381856,
+    "travel_to_endpoint_ratio": 1.735543605478926
+  },
+  {
+    "start_tick": 515,
+    "target": [
+      1124,
+      72,
+      124
+    ],
+    "start_position": [
+      1125.300000011921,
+      71.0,
+      124.5299052563787
+    ],
+    "nodes": [
+      [
+        1125,
+        71,
+        124
+      ],
+      [
+        1125,
+        72,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 5,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.0,
+    "end_tick": 516,
+    "seconds": 0.05,
+    "end_position": [
+      1125.300000011921,
+      71.0,
+      124.5299052563787
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 534,
+    "target": [
+      1125,
+      72,
+      125
+    ],
+    "start_position": [
+      1125.300000011921,
+      71.0,
+      124.5299052563787
+    ],
+    "nodes": [
+      [
+        1125,
+        71,
+        124
+      ],
+      [
+        1125,
+        72,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 4,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.7152279434810476,
+    "end_tick": 552,
+    "seconds": 0.9,
+    "end_position": [
+      1125.4298507350836,
+      72.0,
+      123.86240095959135
+    ],
+    "endpoint_distance": 1.2093069075034004,
+    "travel_to_endpoint_ratio": 1.418356194642198
+  },
+  {
+    "start_tick": 554,
+    "target": [
+      1125,
+      72,
+      125
+    ],
+    "start_position": [
+      1125.3352598630768,
+      72.0,
+      123.68395452016242
+    ],
+    "nodes": [
+      [
+        1125,
+        72,
+        123
+      ],
+      [
+        1124,
+        72,
+        123
+      ],
+      [
+        1123,
+        72,
+        123
+      ],
+      [
+        1123,
+        71,
+        123
+      ],
+      [
+        1123,
+        68,
+        122
+      ],
+      [
+        1124,
+        68,
+        122
+      ]
+    ],
+    "node_count": 6,
+    "nodes_considered": 49,
+    "predicted_ticks": 37.92403939570064,
+    "path_geometry": 7.16227766016838,
+    "travel": 7.397905498430079,
+    "end_tick": 589,
+    "seconds": 1.75,
+    "end_position": [
+      1124.234270756301,
+      68.0,
+      122.46755994083665
+    ],
+    "endpoint_distance": 4.323400604368299,
+    "travel_to_endpoint_ratio": 1.711131161649778
+  },
+  {
+    "start_tick": 589,
+    "target": [
+      1123,
+      70,
+      123
+    ],
+    "start_position": [
+      1124.234270756301,
+      68.0,
+      122.46755994083665
+    ],
+    "nodes": [
+      [
+        1124,
+        68,
+        122
+      ],
+      [
+        1124,
+        69,
+        122
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 11,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 0.2317537604767707,
+    "end_tick": 591,
+    "seconds": 0.1,
+    "end_position": [
+      1124.389034361405,
+      68.0,
+      122.48665564834974
+    ],
+    "endpoint_distance": 0.1559372293913347,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 600,
+    "target": [
+      1123,
+      70,
+      123
+    ],
+    "start_position": [
+      1124.4489262144195,
+      68.0,
+      122.49404548206941
+    ],
+    "nodes": [
+      [
+        1124,
+        68,
+        122
+      ],
+      [
+        1124,
+        68,
+        121
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.5593006812473423,
+    "end_tick": 604,
+    "seconds": 0.2,
+    "end_position": [
+      1124.4841419789875,
+      68.0,
+      121.8073699889018
+    ],
+    "endpoint_distance": 0.6875779104880336,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 611,
+    "target": [
+      1123,
+      70,
+      123
+    ],
+    "start_position": [
+      1124.4919296422945,
+      68.0,
+      121.65738743629775
+    ],
+    "nodes": [
+      [
+        1124,
+        68,
+        121
+      ],
+      [
+        1123,
+        68,
+        122
+      ],
+      [
+        1123,
+        69,
+        123
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 14,
+    "predicted_ticks": 21.297809550674593,
+    "path_geometry": 2.8284271247461903,
+    "travel": 1.1180190158112682,
+    "end_tick": 627,
+    "seconds": 0.8,
+    "end_position": [
+      1123.6397108635535,
+      68.0,
+      122.38105144760969
+    ],
+    "endpoint_distance": 1.1180189837864218,
+    "travel_to_endpoint_ratio": 1.0000000286442778
+  },
+  {
+    "start_tick": 635,
+    "target": [
+      1122,
+      69,
+      123
+    ],
+    "start_position": [
+      1123.6397108635535,
+      68.0,
+      122.38105144760969
+    ],
+    "nodes": [
+      [
+        1123,
+        68,
+        122
+      ],
+      [
+        1123,
+        69,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.7724079000516133,
+    "end_tick": 639,
+    "seconds": 0.2,
+    "end_position": [
+      1123.6102598904392,
+      69.00133597911214,
+      122.61685571868443
+    ],
+    "endpoint_distance": 1.0291475876369438,
+    "travel_to_endpoint_ratio": 0.7505317112243949
+  },
+  {
+    "start_tick": 646,
+    "target": [
+      1124,
+      70,
+      124
+    ],
+    "start_position": [
+      1123.569973894024,
+      69.0,
+      122.93941246349328
+    ],
+    "nodes": [
+      [
+        1123,
+        69,
+        122
+      ],
+      [
+        1123,
+        69,
+        123
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 1,
+    "predicted_ticks": 0.0,
+    "path_geometry": 1.0,
+    "travel": 0.18055030078301712,
+    "end_tick": 648,
+    "seconds": 0.1,
+    "end_position": [
+      1123.5421735879129,
+      69.0,
+      123.16367641386431
+    ],
+    "endpoint_distance": 0.2259804780415649,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 667,
+    "target": [
+      1122,
+      69,
+      124
+    ],
+    "start_position": [
+      1123.475747551446,
+      69.0,
+      123.53555252957624
+    ],
+    "nodes": [
+      [
+        1123,
+        69,
+        123
+      ],
+      [
+        1123,
+        70,
+        124
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 5,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.7492901541317567,
+    "end_tick": 681,
+    "seconds": 0.7,
+    "end_position": [
+      1123.4950084474344,
+      70.0,
+      124.29490493204003
+    ],
+    "endpoint_distance": 1.2557814512254153,
+    "travel_to_endpoint_ratio": 1.3929893234406086
+  },
+  {
+    "start_tick": 689,
+    "target": [
+      1122,
+      71,
+      124
+    ],
+    "start_position": [
+      1123.4980413892333,
+      70.0,
+      124.41529550977236
+    ],
+    "nodes": [
+      [
+        1123,
+        70,
+        124
+      ],
+      [
+        1123,
+        69,
+        123
+      ],
+      [
+        1122,
+        69,
+        123
+      ],
+      [
+        1121,
+        69,
+        123
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 21,
+    "predicted_ticks": 42.16794951056751,
+    "path_geometry": 3.414213562373095,
+    "travel": 3.924796243408719,
+    "end_tick": 713,
+    "seconds": 1.2,
+    "end_position": [
+      1121.6984213454932,
+      69.0,
+      123.4954070104528
+    ],
+    "endpoint_distance": 2.2549561310614337,
+    "travel_to_endpoint_ratio": 1.740519999190083
+  },
+  {
+    "start_tick": 719,
+    "target": [
+      1122,
+      71,
+      124
+    ],
+    "start_position": [
+      1121.6953404487483,
+      69.0,
+      123.49593779752603
+    ],
+    "nodes": [
+      [
+        1121,
+        69,
+        123
+      ],
+      [
+        1122,
+        69,
+        123
+      ],
+      [
+        1123,
+        69,
+        123
+      ],
+      [
+        1123,
+        70,
+        124
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 4,
+    "predicted_ticks": 13.76043063351952,
+    "path_geometry": 3.414213562373095,
+    "travel": 3.2533969787584534,
+    "end_tick": 735,
+    "seconds": 0.8,
+    "end_position": [
+      1123.6849379434789,
+      70.0,
+      124.03306276220225
+    ],
+    "endpoint_distance": 2.290633409936334,
+    "travel_to_endpoint_ratio": 1.4203045169278652
+  },
+  {
+    "start_tick": 743,
+    "target": [
+      1122,
+      71,
+      125
+    ],
+    "start_position": [
+      1123.699999988079,
+      70.0,
+      124.11734092295627
+    ],
+    "nodes": [
+      [
+        1123,
+        70,
+        124
+      ],
+      [
+        1122,
+        71,
+        124
+      ],
+      [
+        1121,
+        71,
+        125
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 32,
+    "predicted_ticks": 41.89198868422463,
+    "path_geometry": 2.8284271247461903,
+    "travel": 3.3489328988895366,
+    "end_tick": 793,
+    "seconds": 2.5,
+    "end_position": [
+      1121.7439368327114,
+      71.0,
+      124.69999998807907
+    ],
+    "endpoint_distance": 2.272812058652633,
+    "travel_to_endpoint_ratio": 1.4734755063183045
+  },
+  {
+    "start_tick": 794,
+    "target": [
+      1122,
+      71,
+      125
+    ],
+    "start_position": [
+      1121.7096183295505,
+      71.0,
+      124.69999998807907
+    ],
+    "nodes": [
+      [
+        1122,
+        71,
+        124
+      ],
+      [
+        1121,
+        71,
+        125
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.25914193392461,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.18337081219303186,
+    "end_tick": 797,
+    "seconds": 0.15,
+    "end_position": [
+      1121.5835606306064,
+      71.0,
+      124.94523428050248
+    ],
+    "endpoint_distance": 0.27573610870449144,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 803,
+    "target": [
+      1122,
+      73,
+      125
+    ],
+    "start_position": [
+      1121.5380902707539,
+      71.0,
+      125.11997062697216
+    ],
+    "nodes": [
+      [
+        1121,
+        71,
+        125
+      ],
+      [
+        1121,
+        72,
+        125
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 7,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 0.004085939711215727,
+    "end_tick": 804,
+    "seconds": 0.05,
+    "end_position": [
+      1121.5380902707539,
+      71.0,
+      125.11997062697216
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 813,
+    "target": [
+      1122,
+      73,
+      125
+    ],
+    "start_position": [
+      1121.4599284012668,
+      71.0,
+      125.44469153042772
+    ],
+    "nodes": [
+      [
+        1121,
+        71,
+        125
+      ],
+      [
+        1121,
+        72,
+        125
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 7,
+    "predicted_ticks": 19.06193790133015,
+    "path_geometry": 1.0,
+    "travel": 1.3402084225218183,
+    "end_tick": 819,
+    "seconds": 0.3,
+    "end_position": [
+      1121.4154630319304,
+      72.25220334025373,
+      125.58706137914449
+    ],
+    "endpoint_distance": 1.2610549346624262,
+    "travel_to_endpoint_ratio": 1.0627676762397196
+  },
+  {
+    "start_tick": 832,
+    "target": [
+      1122,
+      73,
+      126
+    ],
+    "start_position": [
+      1121.3964019259279,
+      72.0,
+      125.64809149805376
+    ],
+    "nodes": [
+      [
+        1121,
+        72,
+        125
+      ],
+      [
+        1122,
+        73,
+        125
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.2267685095902734,
+    "end_tick": 837,
+    "seconds": 0.25,
+    "end_position": [
+      1121.8368075738995,
+      73.24918707874468,
+      125.5888551277202
+    ],
+    "endpoint_distance": 1.3258712003955195,
+    "travel_to_endpoint_ratio": 0.9252546621604852
+  },
+  {
+    "start_tick": 842,
+    "target": [
+      1122,
+      73,
+      126
+    ],
+    "start_position": [
+      1122.1727360992397,
+      73.0,
+      125.54382704215719
+    ],
+    "nodes": [
+      [
+        1122,
+        73,
+        125
+      ],
+      [
+        1122,
+        73,
+        126
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.629193255728691,
+    "end_tick": 846,
+    "seconds": 0.2,
+    "end_position": [
+      1122.4369788250774,
+      73.0,
+      126.19215003949105
+    ],
+    "endpoint_distance": 0.7001049400126313,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 859,
+    "target": [
+      1123,
+      73,
+      125
+    ],
+    "start_position": [
+      1122.48515239854,
+      73.0,
+      126.33539984060731
+    ],
+    "nodes": [
+      [
+        1122,
+        73,
+        126
+      ],
+      [
+        1123,
+        73,
+        125
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 5.039962802470046,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.3243604480226625,
+    "end_tick": 862,
+    "seconds": 0.15,
+    "end_position": [
+      1122.8188586060278,
+      73.0,
+      126.06121282963032
+    ],
+    "endpoint_distance": 0.431900856568165,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 862,
+    "target": [
+      1122,
+      73,
+      127
+    ],
+    "start_position": [
+      1122.8188586060278,
+      73.0,
+      126.06121282963032
+    ],
+    "nodes": [
+      [
+        1122,
+        73,
+        126
+      ],
+      [
+        1122,
+        73,
+        127
+      ],
+      [
+        1122,
+        71,
+        128
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 10,
+    "predicted_ticks": 16.73874286846618,
+    "path_geometry": 3.23606797749979,
+    "travel": 2.215323416156192,
+    "end_tick": 875,
+    "seconds": 0.65,
+    "end_position": [
+      1122.4819995374448,
+      73.0,
+      128.18927746561369
+    ],
+    "endpoint_distance": 2.15456100563655,
+    "travel_to_endpoint_ratio": 1.0282017591336152
+  },
+  {
+    "start_tick": 894,
+    "target": [
+      1122,
+      72,
+      128
+    ],
+    "start_position": [
+      1122.4826945613838,
+      73.0,
+      128.2995623628407
+    ],
+    "nodes": [
+      [
+        1122,
+        73,
+        128
+      ],
+      [
+        1122,
+        73,
+        127
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 1,
+    "predicted_ticks": 0.0,
+    "path_geometry": 1.0,
+    "travel": 0.1274000123936615,
+    "end_tick": 896,
+    "seconds": 0.1,
+    "end_position": [
+      1122.4870751362516,
+      73.0,
+      128.10265065556436
+    ],
+    "endpoint_distance": 0.1969604272402364,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 896,
+    "target": [
+      1122,
+      72,
+      128
+    ],
+    "start_position": [
+      1122.4870751362516,
+      73.0,
+      128.10265065556436
+    ],
+    "nodes": [
+      [
+        1122,
+        73,
+        127
+      ],
+      [
+        1122,
+        71,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 6,
+    "predicted_ticks": 13.174950993911652,
+    "path_geometry": 2.23606797749979,
+    "travel": 2.3539369582596006,
+    "end_tick": 906,
+    "seconds": 0.5,
+    "end_position": [
+      1122.5146594973594,
+      71.0,
+      128.63411744023313
+    ],
+    "endpoint_distance": 2.0695936413179954,
+    "travel_to_endpoint_ratio": 1.1373908922335714
+  },
+  {
+    "start_tick": 958,
+    "target": [
+      1122,
+      71,
+      127
+    ],
+    "start_position": [
+      1122.5153264721926,
+      71.0,
+      128.6496255306697
+    ],
+    "nodes": [
+      [
+        1122,
+        71,
+        128
+      ],
+      [
+        1123,
+        71,
+        127
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.25914193392461,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.33223140250304883,
+    "end_tick": 962,
+    "seconds": 0.2,
+    "end_position": [
+      1122.7610922719164,
+      71.0,
+      128.36321899131744
+    ],
+    "endpoint_distance": 0.3773983758545195,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 968,
+    "target": [
+      1124,
+      72,
+      128
+    ],
+    "start_position": [
+      1122.7933221109367,
+      71.0,
+      128.32565950717404
+    ],
+    "nodes": [
+      [
+        1122,
+        71,
+        128
+      ],
+      [
+        1123,
+        71,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 5.039962802470046,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.559277170028917,
+    "end_tick": 972,
+    "seconds": 0.2,
+    "end_position": [
+      1123.1479946905217,
+      71.0,
+      128.9146682437234
+    ],
+    "endpoint_distance": 0.6875492203769543,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 977,
+    "target": [
+      1124,
+      72,
+      128
+    ],
+    "start_position": [
+      1123.2237111407592,
+      71.0,
+      129.0404114030692
+    ],
+    "nodes": [
+      [
+        1123,
+        71,
+        129
+      ],
+      [
+        1124,
+        72,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.8456924793001557,
+    "end_tick": 986,
+    "seconds": 0.45,
+    "end_position": [
+      1124.1437351955651,
+      72.0,
+      129.3784905575992
+    ],
+    "endpoint_distance": 1.400264894992826,
+    "travel_to_endpoint_ratio": 1.3181023718441587
+  },
+  {
+    "start_tick": 995,
+    "target": [
+      1124,
+      72,
+      129
+    ],
+    "start_position": [
+      1124.3716575787412,
+      72.0,
+      129.46061227520005
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        129
+      ],
+      [
+        1124,
+        72,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.3243604441621557,
+    "end_tick": 998,
+    "seconds": 0.15,
+    "end_position": [
+      1124.4292496513856,
+      72.0,
+      129.03256847062798
+    ],
+    "endpoint_distance": 0.43190085142774565,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1013,
+    "target": [
+      1124,
+      72,
+      130
+    ],
+    "start_position": [
+      1124.486283655124,
+      72.0,
+      128.4973143219014
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        128
+      ],
+      [
+        1124,
+        72,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.013457994956776222,
+    "end_tick": 1014,
+    "seconds": 0.05,
+    "end_position": [
+      1124.4870777520919,
+      72.0,
+      128.49000929038783
+    ],
+    "endpoint_distance": 0.0073480660999059285,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1014,
+    "target": [
+      1124,
+      72,
+      130
+    ],
+    "start_position": [
+      1124.4870777520919,
+      72.0,
+      128.49000929038783
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        128
+      ],
+      [
+        1124,
+        72,
+        127
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.33788399317062684,
+    "end_tick": 1017,
+    "seconds": 0.15,
+    "end_position": [
+      1124.4937381876723,
+      72.0,
+      128.0507928723831
+    ],
+    "endpoint_distance": 0.43926691572097387,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1023,
+    "target": [
+      1124,
+      72,
+      130
+    ],
+    "start_position": [
+      1124.4955537182134,
+      72.0,
+      127.92638663546903
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        127
+      ],
+      [
+        1124,
+        72,
+        128
+      ],
+      [
+        1124,
+        72,
+        129
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 3,
+    "predicted_ticks": 7.127583749109051,
+    "path_geometry": 2.0,
+    "travel": 1.0819765237182968,
+    "end_tick": 1029,
+    "seconds": 0.3,
+    "end_position": [
+      1124.4993222154462,
+      72.0,
+      129.15413791377335
+    ],
+    "endpoint_distance": 1.227757061860895,
+    "travel_to_endpoint_ratio": 0.8812627166471837
+  },
+  {
+    "start_tick": 1034,
+    "target": [
+      1125,
+      71,
+      129
+    ],
+    "start_position": [
+      1124.499678704508,
+      72.0,
+      129.3209536161364
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        129
+      ],
+      [
+        1125,
+        72,
+        129
+      ],
+      [
+        1126,
+        73,
+        129
+      ],
+      [
+        1127,
+        73,
+        130
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 8,
+    "predicted_ticks": 15.236601561435041,
+    "path_geometry": 3.8284271247461903,
+    "travel": 3.175912843716997,
+    "end_tick": 1048,
+    "seconds": 0.7,
+    "end_position": [
+      1126.974585533182,
+      73.0,
+      129.8395012031118
+    ],
+    "endpoint_distance": 2.719201244957088,
+    "travel_to_endpoint_ratio": 1.1679579985508268
+  },
+  {
+    "start_tick": 1054,
+    "target": [
+      1125,
+      71,
+      129
+    ],
+    "start_position": [
+      1127.1389964621505,
+      73.0,
+      129.92463106732666
+    ],
+    "nodes": [
+      [
+        1127,
+        73,
+        130
+      ],
+      [
+        1126,
+        71,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 4,
+    "predicted_ticks": 13.174950993911652,
+    "path_geometry": 2.23606797749979,
+    "travel": 0.0041897575990298514,
+    "end_tick": 1055,
+    "seconds": 0.05,
+    "end_position": [
+      1127.1389964621505,
+      73.0,
+      129.92463106732666
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1055,
+    "target": [
+      1125,
+      71,
+      129
+    ],
+    "start_position": [
+      1127.1389964621505,
+      73.0,
+      129.92463106732666
+    ],
+    "nodes": [
+      [
+        1127,
+        73,
+        130
+      ],
+      [
+        1126,
+        73,
+        129
+      ],
+      [
+        1125,
+        72,
+        129
+      ],
+      [
+        1124,
+        72,
+        129
+      ],
+      [
+        1123,
+        71,
+        129
+      ]
+    ],
+    "node_count": 5,
+    "nodes_considered": 10,
+    "predicted_ticks": 27.24575787335696,
+    "path_geometry": 5.242640687119286,
+    "travel": 4.547356673516227,
+    "end_tick": 1077,
+    "seconds": 1.1,
+    "end_position": [
+      1123.2198169400315,
+      71.53584062504456,
+      129.49637579747355
+    ],
+    "endpoint_distance": 4.205607373260645,
+    "travel_to_endpoint_ratio": 1.0812603911692833
+  },
+  {
+    "start_tick": 1080,
+    "target": [
+      1125,
+      71,
+      129
+    ],
+    "start_position": [
+      1122.90869977588,
+      71.0,
+      129.49745599640752
+    ],
+    "nodes": [
+      [
+        1123,
+        71,
+        129
+      ],
+      [
+        1124,
+        72,
+        129
+      ],
+      [
+        1125,
+        72,
+        129
+      ],
+      [
+        1125,
+        71,
+        130
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 12,
+    "predicted_ticks": 19.517640357131192,
+    "path_geometry": 3.8284271247461903,
+    "travel": 7.048061538880282,
+    "end_tick": 1113,
+    "seconds": 1.65,
+    "end_position": [
+      1125.552397739107,
+      71.53584062504456,
+      130.79595229255614
+    ],
+    "endpoint_distance": 2.993719547207134,
+    "travel_to_endpoint_ratio": 2.3542824996601563
+  },
+  {
+    "start_tick": 1120,
+    "target": [
+      1125,
+      71,
+      129
+    ],
+    "start_position": [
+      1125.5557764767022,
+      71.0,
+      131.20111319529533
+    ],
+    "nodes": [
+      [
+        1125,
+        71,
+        131
+      ],
+      [
+        1125,
+        71,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 1,
+    "predicted_ticks": 0.0,
+    "path_geometry": 1.0,
+    "travel": 0.32565271562434317,
+    "end_tick": 1123,
+    "seconds": 0.15,
+    "end_position": [
+      1125.5222145520918,
+      71.0,
+      130.77875947300342
+    ],
+    "endpoint_distance": 0.42368510655603153,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1137,
+    "target": [
+      1123,
+      72,
+      131
+    ],
+    "start_position": [
+      1125.5126452453503,
+      71.0,
+      130.6575996524938
+    ],
+    "nodes": [
+      [
+        1125,
+        71,
+        130
+      ],
+      [
+        1124,
+        72,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.0,
+    "end_tick": 1138,
+    "seconds": 0.05,
+    "end_position": [
+      1125.5126452453503,
+      71.0,
+      130.6575996524938
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1147,
+    "target": [
+      1123,
+      72,
+      131
+    ],
+    "start_position": [
+      1125.5126452453503,
+      71.0,
+      130.6575996524938
+    ],
+    "nodes": [
+      [
+        1125,
+        71,
+        130
+      ],
+      [
+        1124,
+        72,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.482236535199537,
+    "end_tick": 1154,
+    "seconds": 0.35,
+    "end_position": [
+      1124.8303653817268,
+      72.17675927506424,
+      130.5517520122517
+    ],
+    "endpoint_distance": 1.3643576974901728,
+    "travel_to_endpoint_ratio": 1.0863987779203432
+  },
+  {
+    "start_tick": 1165,
+    "target": [
+      1122,
+      72,
+      131
+    ],
+    "start_position": [
+      1124.4727673386317,
+      72.0,
+      130.49617721728336
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        130
+      ],
+      [
+        1123,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 5.039962802470046,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.0,
+    "end_tick": 1166,
+    "seconds": 0.05,
+    "end_position": [
+      1124.4727673386317,
+      72.0,
+      130.49617721728336
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1167,
+    "target": [
+      1122,
+      72,
+      131
+    ],
+    "start_position": [
+      1124.4727673386317,
+      72.0,
+      130.49617721728336
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        130
+      ],
+      [
+        1123,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 5.039962802470046,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.3243604405731843,
+    "end_tick": 1170,
+    "seconds": 0.15,
+    "end_position": [
+      1124.1722688654843,
+      72.0,
+      130.8064013408233
+    ],
+    "endpoint_distance": 0.43190084416453944,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1175,
+    "target": [
+      1122,
+      72,
+      131
+    ],
+    "start_position": [
+      1124.0866477911661,
+      72.0,
+      130.89478707534832
+    ],
+    "nodes": [
+      [
+        1124,
+        72,
+        130
+      ],
+      [
+        1123,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 5.039962802470046,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.13261838670733322,
+    "end_tick": 1177,
+    "seconds": 0.1,
+    "end_position": [
+      1123.9496369342664,
+      72.0,
+      131.03628419794046
+    ],
+    "endpoint_distance": 0.19696042904664837,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1182,
+    "target": [
+      1122,
+      72,
+      131
+    ],
+    "start_position": [
+      1123.894267184996,
+      72.0,
+      131.09346696708525
+    ],
+    "nodes": [
+      [
+        1123,
+        72,
+        131
+      ],
+      [
+        1122,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.32773573698518155,
+    "end_tick": 1185,
+    "seconds": 0.15,
+    "end_position": [
+      1123.4796705587592,
+      72.0,
+      131.21449488169924
+    ],
+    "endpoint_distance": 0.43190058879642823,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1186,
+    "target": [
+      1122,
+      71,
+      130
+    ],
+    "start_position": [
+      1123.4233129302725,
+      72.0,
+      131.23097238177766
+    ],
+    "nodes": [
+      [
+        1123,
+        72,
+        131
+      ],
+      [
+        1123,
+        71,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 11,
+    "predicted_ticks": 16.3647240403464,
+    "path_geometry": 1.0,
+    "travel": 0.05871703583695843,
+    "end_tick": 1187,
+    "seconds": 0.05,
+    "end_position": [
+      1123.3925416615446,
+      72.0,
+      131.23996909786547
+    ],
+    "endpoint_distance": 0.032059505290778764,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1187,
+    "target": [
+      1122,
+      71,
+      130
+    ],
+    "start_position": [
+      1123.3925416615446,
+      72.0,
+      131.23996909786547
+    ],
+    "nodes": [
+      [
+        1123,
+        72,
+        131
+      ],
+      [
+        1122,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.17696398359574017,
+    "end_tick": 1189,
+    "seconds": 0.1,
+    "end_position": [
+      1123.1774213843637,
+      72.0,
+      131.30249326816184
+    ],
+    "endpoint_distance": 0.2240223326492672,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1196,
+    "target": [
+      1122,
+      71,
+      130
+    ],
+    "start_position": [
+      1123.0904855306653,
+      72.0,
+      131.32776095651147
+    ],
+    "nodes": [
+      [
+        1123,
+        72,
+        131
+      ],
+      [
+        1123,
+        71,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 11,
+    "predicted_ticks": 16.3647240403464,
+    "path_geometry": 1.0,
+    "travel": 0.0979966409082338,
+    "end_tick": 1210,
+    "seconds": 0.7,
+    "end_position": [
+      1123.2301022894949,
+      72.0,
+      131.38658495687483
+    ],
+    "endpoint_distance": 0.15150281305909888,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1210,
+    "target": [
+      1122,
+      71,
+      130
+    ],
+    "start_position": [
+      1123.2301022894949,
+      72.0,
+      131.38658495687483
+    ],
+    "nodes": [
+      [
+        1122,
+        72,
+        131
+      ],
+      [
+        1123,
+        71,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 4,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.053506172150865075,
+    "end_tick": 1211,
+    "seconds": 0.05,
+    "end_position": [
+      1123.2570246683026,
+      72.0,
+      131.39792802223494
+    ],
+    "endpoint_distance": 0.0292143733876174,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1218,
+    "target": [
+      1122,
+      71,
+      130
+    ],
+    "start_position": [
+      1123.284132475678,
+      72.0,
+      131.40934921324575
+    ],
+    "nodes": [
+      [
+        1122,
+        72,
+        131
+      ],
+      [
+        1123,
+        71,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 4,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.3575042590719887,
+    "end_tick": 1222,
+    "seconds": 0.2,
+    "end_position": [
+      1123.539402817297,
+      71.53584062504456,
+      131.4283209737161
+    ],
+    "endpoint_distance": 0.5300630154657838,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1240,
+    "target": null,
+    "start_position": [
+      1123.493509428384,
+      71.0,
+      131.481158143082
+    ],
+    "nodes": [
+      [
+        1123,
+        71,
+        131
+      ],
+      [
+        1122,
+        71,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.25914193392461,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.7807293403679674,
+    "end_tick": 1248,
+    "seconds": 0.4,
+    "end_position": [
+      1123.300000011921,
+      71.0,
+      130.71857681159634
+    ],
+    "endpoint_distance": 0.7867503933207345,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1248,
+    "target": [
+      1121,
+      72,
+      131
+    ],
+    "start_position": [
+      1123.300000011921,
+      71.0,
+      130.71857681159634
+    ],
+    "nodes": [
+      [
+        1123,
+        71,
+        131
+      ],
+      [
+        1122,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.8641600528038036,
+    "end_tick": 1258,
+    "seconds": 0.5,
+    "end_position": [
+      1122.864945194194,
+      72.0,
+      131.3156489861022
+    ],
+    "endpoint_distance": 1.2432891361210308,
+    "travel_to_endpoint_ratio": 1.4993777381662352
+  },
+  {
+    "start_tick": 1269,
+    "target": [
+      1122,
+      71,
+      132
+    ],
+    "start_position": [
+      1122.5650472707832,
+      72.0,
+      131.43069832282157
+    ],
+    "nodes": [
+      [
+        1122,
+        72,
+        131
+      ],
+      [
+        1122,
+        71,
+        130
+      ],
+      [
+        1122,
+        68,
+        129
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 35,
+    "predicted_ticks": 23.938941368972408,
+    "path_geometry": 4.576491222541475,
+    "travel": 5.550423007124786,
+    "end_tick": 1291,
+    "seconds": 1.1,
+    "end_position": [
+      1122.4940941596087,
+      68.0,
+      129.43136842100972
+    ],
+    "endpoint_distance": 4.472399177205039,
+    "travel_to_endpoint_ratio": 1.2410392693510517
+  },
+  {
+    "start_tick": 1293,
+    "target": [
+      1122,
+      71,
+      132
+    ],
+    "start_position": [
+      1122.4949369417575,
+      68.0,
+      129.55876556302633
+    ],
+    "nodes": [
+      [
+        1122,
+        68,
+        129
+      ],
+      [
+        1122,
+        68,
+        130
+      ],
+      [
+        1122,
+        68,
+        131
+      ],
+      [
+        1122,
+        69,
+        131
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 81,
+    "predicted_ticks": 62.00888581373147,
+    "path_geometry": 3.0,
+    "travel": 0.5593004583231607,
+    "end_tick": 1296,
+    "seconds": 0.15,
+    "end_position": [
+      1122.4980063072983,
+      68.0,
+      130.1189350651621
+    ],
+    "endpoint_distance": 0.5601779111388353,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1304,
+    "target": [
+      1122,
+      71,
+      132
+    ],
+    "start_position": [
+      1122.4990028288858,
+      68.0,
+      130.14171767598557
+    ],
+    "nodes": [
+      [
+        1122,
+        68,
+        130
+      ],
+      [
+        1122,
+        68,
+        129
+      ],
+      [
+        1122,
+        69,
+        129
+      ],
+      [
+        1122,
+        70,
+        129
+      ],
+      [
+        1122,
+        71,
+        130
+      ],
+      [
+        1122,
+        72,
+        131
+      ],
+      [
+        1121,
+        72,
+        131
+      ]
+    ],
+    "node_count": 7,
+    "nodes_considered": 157,
+    "predicted_ticks": 58.61715332059029,
+    "path_geometry": 6.82842712474619,
+    "travel": 7.594009072757348,
+    "end_tick": 1345,
+    "seconds": 2.05,
+    "end_position": [
+      1122.1789801616665,
+      72.0,
+      131.64803882159168
+    ],
+    "endpoint_distance": 4.286189205020498,
+    "travel_to_endpoint_ratio": 1.7717391159173133
+  },
+  {
+    "start_tick": 1347,
+    "target": [
+      1122,
+      71,
+      132
+    ],
+    "start_position": [
+      1121.8218807556875,
+      72.0,
+      131.77078075418842
+    ],
+    "nodes": [
+      [
+        1121,
+        72,
+        131
+      ],
+      [
+        1122,
+        72,
+        131
+      ],
+      [
+        1123,
+        71,
+        131
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 8,
+    "predicted_ticks": 12.88479347272072,
+    "path_geometry": 2.414213562373095,
+    "travel": 2.2164789763381267,
+    "end_tick": 1359,
+    "seconds": 0.6,
+    "end_position": [
+      1123.91935070691,
+      71.53584062504456,
+      131.5238390067221
+    ],
+    "endpoint_distance": 2.1623608274944415,
+    "travel_to_endpoint_ratio": 1.025027344259835
+  },
+  {
+    "start_tick": 1366,
+    "target": [
+      1122,
+      71,
+      132
+    ],
+    "start_position": [
+      1124.332986063958,
+      70.76636799395752,
+      131.5046293299282
+    ],
+    "nodes": [
+      [
+        1124,
+        71,
+        131
+      ],
+      [
+        1123,
+        71,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 2.6167256538178316,
+    "end_tick": 1373,
+    "seconds": 0.35,
+    "end_position": [
+      1124.373787464676,
+      68.0,
+      131.5027344684103
+    ],
+    "endpoint_distance": 2.7666695181740186,
+    "travel_to_endpoint_ratio": 0.9458034783803347
+  },
+  {
+    "start_tick": 1373,
+    "target": [
+      1122,
+      71,
+      132
+    ],
+    "start_position": [
+      1124.373787464676,
+      68.0,
+      131.5027344684103
+    ],
+    "nodes": [
+      [
+        1124,
+        68,
+        131
+      ],
+      [
+        1124,
+        69,
+        131
+      ],
+      [
+        1123,
+        70,
+        131
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 25,
+    "predicted_ticks": 32.694784696333656,
+    "path_geometry": 2.414213562373095,
+    "travel": 3.445908203114563,
+    "end_tick": 1398,
+    "seconds": 1.25,
+    "end_position": [
+      1123.8592380561445,
+      70.0,
+      131.5007855313702
+    ],
+    "endpoint_distance": 2.0651307203602873,
+    "travel_to_endpoint_ratio": 1.6686150514062288
+  },
+  {
+    "start_tick": 1451,
+    "target": [
+      1123,
+      69,
+      131
+    ],
+    "start_position": [
+      1123.4766851792463,
+      70.0,
+      131.4637669359771
+    ],
+    "nodes": [
+      [
+        1123,
+        70,
+        131
+      ],
+      [
+        1123,
+        70,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 7,
+    "predicted_ticks": 18.53138753764188,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 1452,
+    "seconds": 0.05,
+    "end_position": [
+      1123.4766851792463,
+      70.0,
+      131.4637669359771
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1453,
+    "target": [
+      1123,
+      70,
+      129
+    ],
+    "start_position": [
+      1123.4766851792463,
+      70.0,
+      131.4637669359771
+    ],
+    "nodes": [
+      [
+        1123,
+        70,
+        131
+      ],
+      [
+        1123,
+        71,
+        129
+      ],
+      [
+        1122,
+        70,
+        129
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 8,
+    "predicted_ticks": 18.448585347275248,
+    "path_geometry": 3.6502815398728847,
+    "travel": 2.6072513997742948,
+    "end_tick": 1466,
+    "seconds": 0.65,
+    "end_position": [
+      1123.4739292436361,
+      71.0,
+      129.61946018230833
+    ],
+    "endpoint_distance": 2.0979692554490263,
+    "travel_to_endpoint_ratio": 1.242750051271017
+  },
+  {
+    "start_tick": 1466,
+    "target": [
+      1123,
+      70,
+      129
+    ],
+    "start_position": [
+      1123.4739292436361,
+      71.0,
+      129.61946018230833
+    ],
+    "nodes": [
+      [
+        1123,
+        71,
+        129
+      ],
+      [
+        1122,
+        70,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 4,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.4093078216765789,
+    "end_tick": 1474,
+    "seconds": 0.4,
+    "end_position": [
+      1122.1559272760271,
+      70.53584062504456,
+      129.47953315686854
+    ],
+    "endpoint_distance": 1.4043335374577752,
+    "travel_to_endpoint_ratio": 1.0035420960093344
+  },
+  {
+    "start_tick": 1481,
+    "target": [
+      1123,
+      70,
+      129
+    ],
+    "start_position": [
+      1121.74974308054,
+      70.0,
+      129.47897973340787
+    ],
+    "nodes": [
+      [
+        1121,
+        70,
+        129
+      ],
+      [
+        1122,
+        70,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 1,
+    "predicted_ticks": 0.0,
+    "path_geometry": 1.0,
+    "travel": 0.3256403239173619,
+    "end_tick": 1484,
+    "seconds": 0.15,
+    "end_position": [
+      1122.173215114194,
+      70.0,
+      129.4911089802127
+    ],
+    "endpoint_distance": 0.4236457032888323,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1502,
+    "target": [
+      1120,
+      72,
+      129
+    ],
+    "start_position": [
+      1122.5074672724372,
+      70.0,
+      129.45921123832542
+    ],
+    "nodes": [
+      [
+        1122,
+        70,
+        129
+      ],
+      [
+        1122,
+        71,
+        128
+      ],
+      [
+        1123,
+        71,
+        128
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 15,
+    "predicted_ticks": 25.16423442205235,
+    "path_geometry": 2.414213562373095,
+    "travel": 2.574794952534388,
+    "end_tick": 1520,
+    "seconds": 0.9,
+    "end_position": [
+      1123.2844654783496,
+      71.0,
+      128.5365663107797
+    ],
+    "endpoint_distance": 1.5668439214921497,
+    "travel_to_endpoint_ratio": 1.6433002146648648
+  },
+  {
+    "start_tick": 1531,
+    "target": [
+      1120,
+      72,
+      129
+    ],
+    "start_position": [
+      1123.4068381945003,
+      71.0,
+      128.51292804247595
+    ],
+    "nodes": [
+      [
+        1123,
+        71,
+        128
+      ],
+      [
+        1124,
+        72,
+        128
+      ],
+      [
+        1121,
+        73,
+        128
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 6,
+    "predicted_ticks": 19.324222508074048,
+    "path_geometry": 4.576491222541475,
+    "travel": 5.219874590837757,
+    "end_tick": 1552,
+    "seconds": 1.05,
+    "end_position": [
+      1121.1928965097404,
+      73.0,
+      128.5001670705921
+    ],
+    "endpoint_distance": 2.9835717899727054,
+    "travel_to_endpoint_ratio": 1.7495387938647557
+  },
+  {
+    "start_tick": 1556,
+    "target": [
+      1120,
+      72,
+      129
+    ],
+    "start_position": [
+      1120.735071076526,
+      73.0,
+      128.50014243284235
+    ],
+    "nodes": [
+      [
+        1121,
+        73,
+        128
+      ],
+      [
+        1120,
+        72,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 3,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.5252168453582201,
+    "end_tick": 1560,
+    "seconds": 0.2,
+    "end_position": [
+      1120.2472370149956,
+      72.53584062504456,
+      128.50002834597112
+    ],
+    "endpoint_distance": 0.6733691483608419,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1576,
+    "target": [
+      1120,
+      73,
+      129
+    ],
+    "start_position": [
+      1119.9164870673742,
+      72.0,
+      128.5000277992533
+    ],
+    "nodes": [
+      [
+        1119,
+        72,
+        128
+      ],
+      [
+        1120,
+        72,
+        128
+      ],
+      [
+        1120,
+        72,
+        129
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 3,
+    "predicted_ticks": 7.127583749109051,
+    "path_geometry": 2.0,
+    "travel": 0.29605924229152214,
+    "end_tick": 1579,
+    "seconds": 0.15,
+    "end_position": [
+      1120.2331898120226,
+      72.0,
+      128.6795006574341
+    ],
+    "endpoint_distance": 0.36402078964176887,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1586,
+    "target": [
+      1119,
+      72,
+      129
+    ],
+    "start_position": [
+      1120.3096921517958,
+      72.0,
+      128.69999998807907
+    ],
+    "nodes": [
+      [
+        1120,
+        72,
+        128
+      ],
+      [
+        1119,
+        72,
+        128
+      ],
+      [
+        1118,
+        73,
+        128
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 17,
+    "predicted_ticks": 24.095179412196405,
+    "path_geometry": 2.414213562373095,
+    "travel": 2.611594406335632,
+    "end_tick": 1603,
+    "seconds": 0.85,
+    "end_position": [
+      1118.718699072825,
+      73.0,
+      128.5080338030247
+    ],
+    "endpoint_distance": 1.8889441478077695,
+    "travel_to_endpoint_ratio": 1.382568356701568
+  },
+  {
+    "start_tick": 1604,
+    "target": [
+      1119,
+      72,
+      129
+    ],
+    "start_position": [
+      1118.655297585744,
+      73.0,
+      128.50486025587406
+    ],
+    "nodes": [
+      [
+        1118,
+        73,
+        128
+      ],
+      [
+        1119,
+        72,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 3,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.2506658383471716,
+    "end_tick": 1612,
+    "seconds": 0.4,
+    "end_position": [
+      1119.8783290170475,
+      72.53584062504456,
+      128.4999003179813
+    ],
+    "endpoint_distance": 1.3081568744991088,
+    "travel_to_endpoint_ratio": 0.9560518793482239
+  },
+  {
+    "start_tick": 1622,
+    "target": [
+      1120,
+      71,
+      130
+    ],
+    "start_position": [
+      1120.2855398207219,
+      72.0,
+      128.49956453252136
+    ],
+    "nodes": [
+      [
+        1120,
+        72,
+        128
+      ],
+      [
+        1120,
+        72,
+        129
+      ],
+      [
+        1120,
+        72,
+        130
+      ],
+      [
+        1120,
+        71,
+        130
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 15,
+    "predicted_ticks": 19.742307750339904,
+    "path_geometry": 3.0,
+    "travel": 0.0,
+    "end_tick": 1623,
+    "seconds": 0.05,
+    "end_position": [
+      1120.2855398207219,
+      72.0,
+      128.49956453252136
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1628,
+    "target": [
+      1120,
+      71,
+      130
+    ],
+    "start_position": [
+      1120.2855398207219,
+      72.0,
+      128.49956453252136
+    ],
+    "nodes": [
+      [
+        1120,
+        72,
+        128
+      ],
+      [
+        1119,
+        72,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.12740001072537782,
+    "end_tick": 1630,
+    "seconds": 0.1,
+    "end_position": [
+      1120.088579440416,
+      72.0,
+      128.49943234912507
+    ],
+    "endpoint_distance": 0.19696042466111766,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1632,
+    "target": [
+      1120,
+      71,
+      130
+    ],
+    "start_position": [
+      1120.0298623860406,
+      72.0,
+      128.49939294313054
+    ],
+    "nodes": [
+      [
+        1120,
+        72,
+        128
+      ],
+      [
+        1120,
+        72,
+        129
+      ],
+      [
+        1120,
+        72,
+        130
+      ],
+      [
+        1120,
+        71,
+        130
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 15,
+    "predicted_ticks": 19.742307750339904,
+    "path_geometry": 3.0,
+    "travel": 2.402472798222506,
+    "end_tick": 1650,
+    "seconds": 0.9,
+    "end_position": [
+      1120.5174840200646,
+      71.76636799395752,
+      130.58158773465132
+    ],
+    "endpoint_distance": 2.1512540347555205,
+    "travel_to_endpoint_ratio": 1.1167778232641572
+  },
+  {
+    "start_tick": 1666,
+    "target": [
+      1119,
+      72,
+      131
+    ],
+    "start_position": [
+      1120.5155679413438,
+      71.41999998688698,
+      130.68949573162814
+    ],
+    "nodes": [
+      [
+        1120,
+        71,
+        130
+      ],
+      [
+        1120,
+        72,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.4612747919481635,
+    "end_tick": 1673,
+    "seconds": 0.35,
+    "end_position": [
+      1120.508171696492,
+      72.02442408821369,
+      131.035470496297
+    ],
+    "endpoint_distance": 0.696478094766937,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1675,
+    "target": [
+      1120,
+      71,
+      132
+    ],
+    "start_position": [
+      1120.505827447214,
+      72.0,
+      131.16495247286525
+    ],
+    "nodes": [
+      [
+        1120,
+        72,
+        131
+      ],
+      [
+        1120,
+        72,
+        132
+      ],
+      [
+        1119,
+        71,
+        132
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 7,
+    "predicted_ticks": 12.88479347272072,
+    "path_geometry": 2.414213562373095,
+    "travel": 2.353362621522421,
+    "end_tick": 1688,
+    "seconds": 0.65,
+    "end_position": [
+      1119.447474237634,
+      71.53584062504456,
+      132.35243198927708
+    ],
+    "endpoint_distance": 1.6570042376182874,
+    "travel_to_endpoint_ratio": 1.420251420059765
+  },
+  {
+    "start_tick": 1732,
+    "target": [
+      1116,
+      72,
+      131
+    ],
+    "start_position": [
+      1119.300000011921,
+      71.0,
+      132.30000001192093
+    ],
+    "nodes": [
+      [
+        1119,
+        71,
+        132
+      ],
+      [
+        1118,
+        72,
+        132
+      ],
+      [
+        1117,
+        71,
+        132
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 3,
+    "predicted_ticks": 15.953848482576664,
+    "path_geometry": 2.8284271247461903,
+    "travel": 2.780977031409348,
+    "end_tick": 1747,
+    "seconds": 0.75,
+    "end_position": [
+      1117.697875029141,
+      72.0,
+      132.51014428163657
+    ],
+    "endpoint_distance": 1.9002539500135336,
+    "travel_to_endpoint_ratio": 1.4634765165937647
+  },
+  {
+    "start_tick": 1755,
+    "target": [
+      1116,
+      71,
+      132
+    ],
+    "start_position": [
+      1117.468884427152,
+      71.0,
+      132.50148544412804
+    ],
+    "nodes": [
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1116,
+        72,
+        132
+      ],
+      [
+        1116,
+        72,
+        131
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 3,
+    "predicted_ticks": 10.196638758964996,
+    "path_geometry": 2.414213562373095,
+    "travel": 1.1970429265129492,
+    "end_tick": 1760,
+    "seconds": 0.25,
+    "end_position": [
+      1117.2088973696839,
+      72.24918707874468,
+      132.5008312626996
+    ],
+    "endpoint_distance": 1.2759553502011596,
+    "travel_to_endpoint_ratio": 0.9381542436608228
+  },
+  {
+    "start_tick": 1765,
+    "target": [
+      1116,
+      71,
+      132
+    ],
+    "start_position": [
+      1117.0793943452106,
+      72.0,
+      132.5006201914193
+    ],
+    "nodes": [
+      [
+        1116,
+        72,
+        132
+      ],
+      [
+        1117,
+        71,
+        132
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 4,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.6200101993797055,
+    "end_tick": 1770,
+    "seconds": 0.25,
+    "end_position": [
+      1117.6356419659953,
+      71.53584062504456,
+      132.50039477381
+    ],
+    "endpoint_distance": 0.7244690412990419,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1781,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1117.699999988079,
+      71.0,
+      132.50056017052665
+    ],
+    "nodes": [
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1117,
+        70,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.0,
+    "end_tick": 1782,
+    "seconds": 0.05,
+    "end_position": [
+      1117.699999988079,
+      71.0,
+      132.50056017052665
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1782,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1117.699999988079,
+      71.0,
+      132.50056017052665
+    ],
+    "nodes": [
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1116,
+        72,
+        132
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 5,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 2.051812107914034,
+    "end_tick": 1796,
+    "seconds": 0.7,
+    "end_position": [
+      1116.6748994241582,
+      72.0,
+      132.49993910302345
+    ],
+    "endpoint_distance": 1.432072467396732,
+    "travel_to_endpoint_ratio": 1.4327571785832074
+  },
+  {
+    "start_tick": 1799,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1116.657156742842,
+      72.0,
+      132.49993499869547
+    ],
+    "nodes": [
+      [
+        1116,
+        72,
+        132
+      ],
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1115,
+        69,
+        130
+      ],
+      [
+        1115,
+        68,
+        131
+      ],
+      [
+        1114,
+        68,
+        131
+      ]
+    ],
+    "node_count": 8,
+    "nodes_considered": 262,
+    "predicted_ticks": 84.38880105327064,
+    "path_geometry": 8.65685424949238,
+    "travel": 0.07928927528705466,
+    "end_tick": 1800,
+    "seconds": 0.05,
+    "end_position": [
+      1116.7004486711735,
+      72.0,
+      132.4999776435004
+    ],
+    "endpoint_distance": 0.04329194933509992,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1801,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1116.851486010855,
+      72.0,
+      132.5001230707817
+    ],
+    "nodes": [
+      [
+        1116,
+        72,
+        132
+      ],
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1115,
+        69,
+        130
+      ],
+      [
+        1115,
+        68,
+        131
+      ],
+      [
+        1114,
+        68,
+        131
+      ]
+    ],
+    "node_count": 8,
+    "nodes_considered": 262,
+    "predicted_ticks": 84.38880105327064,
+    "path_geometry": 8.65685424949238,
+    "travel": 0.1510374096943633,
+    "end_tick": 1802,
+    "seconds": 0.05,
+    "end_position": [
+      1116.9339524078998,
+      72.0,
+      132.50020247408654
+    ],
+    "endpoint_distance": 0.08246643527173901,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1803,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1117.1063789112661,
+      72.0,
+      132.50003818489478
+    ],
+    "nodes": [
+      [
+        1116,
+        72,
+        132
+      ],
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1115,
+        69,
+        130
+      ],
+      [
+        1115,
+        68,
+        131
+      ],
+      [
+        1114,
+        68,
+        131
+      ],
+      [
+        1113,
+        68,
+        131
+      ]
+    ],
+    "node_count": 9,
+    "nodes_considered": 644,
+    "predicted_ticks": 113.67195709111743,
+    "path_geometry": 9.65685424949238,
+    "travel": 0.17242658163423005,
+    "end_tick": 1804,
+    "seconds": 0.05,
+    "end_position": [
+      1117.2005237930393,
+      72.0,
+      132.49994848298567
+    ],
+    "endpoint_distance": 0.09414492450751497,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1808,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1117.4016834111,
+      72.0,
+      132.50019782884004
+    ],
+    "nodes": [
+      [
+        1116,
+        72,
+        132
+      ],
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1115,
+        69,
+        130
+      ],
+      [
+        1115,
+        68,
+        131
+      ],
+      [
+        1114,
+        65,
+        131
+      ],
+      [
+        1113,
+        65,
+        131
+      ],
+      [
+        1112,
+        65,
+        131
+      ]
+    ],
+    "node_count": 10,
+    "nodes_considered": 921,
+    "predicted_ticks": 128.28989686192364,
+    "path_geometry": 12.81913190966076,
+    "travel": 0.10636685335930837,
+    "end_tick": 1809,
+    "seconds": 0.05,
+    "end_position": [
+      1117.4597594236648,
+      71.92159999847412,
+      132.50038328627244
+    ],
+    "endpoint_distance": 0.09756750416574086,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1814,
+    "target": [
+      1116,
+      71,
+      130
+    ],
+    "start_position": [
+      1117.5922233767506,
+      71.0,
+      132.50080629094407
+    ],
+    "nodes": [
+      [
+        1117,
+        71,
+        132
+      ],
+      [
+        1117,
+        70,
+        131
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.8536268058001977,
+    "end_tick": 1820,
+    "seconds": 0.3,
+    "end_position": [
+      1117.5663235409259,
+      70.92159999847412,
+      131.5578682177066
+    ],
+    "endpoint_distance": 0.9465461276112072,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1844,
+    "target": [
+      1117,
+      69,
+      131
+    ],
+    "start_position": [
+      1117.5501895913212,
+      70.0,
+      131.25660885617717
+    ],
+    "nodes": [
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 3,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.0,
+    "end_tick": 1845,
+    "seconds": 0.05,
+    "end_position": [
+      1117.5501895913212,
+      70.0,
+      131.25660885617717
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1845,
+    "target": [
+      1117,
+      69,
+      131
+    ],
+    "start_position": [
+      1117.5501895913212,
+      70.0,
+      131.25660885617717
+    ],
+    "nodes": [
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 4,
+    "predicted_ticks": 12.88479347272072,
+    "path_geometry": 2.414213562373095,
+    "travel": 0.2495080157145767,
+    "end_tick": 1848,
+    "seconds": 0.15,
+    "end_position": [
+      1117.5408580986839,
+      70.0,
+      130.92450853051918
+    ],
+    "endpoint_distance": 0.3322313998660926,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1848,
+    "target": [
+      1117,
+      69,
+      131
+    ],
+    "start_position": [
+      1117.5408580986839,
+      70.0,
+      130.92450853051918
+    ],
+    "nodes": [
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.12789035714449293,
+    "end_tick": 1850,
+    "seconds": 0.1,
+    "end_position": [
+      1117.5388968126538,
+      70.0,
+      130.854707936485
+    ],
+    "endpoint_distance": 0.06982814311161314,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1854,
+    "target": [
+      1117,
+      69,
+      131
+    ],
+    "start_position": [
+      1117.5381993754972,
+      70.0,
+      130.82988670843693
+    ],
+    "nodes": [
+      [
+        1117,
+        70,
+        131
+      ],
+      [
+        1117,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 3,
+    "predicted_ticks": 9.321001598166195,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.6416604283304247,
+    "end_tick": 1859,
+    "seconds": 0.25,
+    "end_position": [
+      1117.519754651907,
+      69.53584062504456,
+      130.1740093876116
+    ],
+    "endpoint_distance": 0.803715865937939,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1866,
+    "target": [
+      1117,
+      69,
+      131
+    ],
+    "start_position": [
+      1117.5097161755382,
+      69.125,
+      129.8170974772707
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.32548953523070834,
+    "end_tick": 1869,
+    "seconds": 0.15,
+    "end_position": [
+      1117.5035909665708,
+      69.125,
+      130.24170270692403
+    ],
+    "endpoint_distance": 0.4246494074337776,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1889,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.5013599897982,
+      69.125,
+      130.24414372945128
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1117,
+        69,
+        127
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 132,
+    "predicted_ticks": 62.13010395024811,
+    "path_geometry": 3.0,
+    "travel": 2.8011060291486354,
+    "end_tick": 1912,
+    "seconds": 1.15,
+    "end_position": [
+      1117.4998727743277,
+      69.0,
+      127.68867250148125
+    ],
+    "endpoint_distance": 2.5585269998169875,
+    "travel_to_endpoint_ratio": 1.0948119872680646
+  },
+  {
+    "start_tick": 1912,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.4998727743277,
+      69.0,
+      127.68867250148125
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        127
+      ],
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1118,
+        69,
+        128
+      ],
+      [
+        1118,
+        70,
+        128
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 14,
+    "predicted_ticks": 37.35857666029514,
+    "path_geometry": 3.0,
+    "travel": 0.005363303422206361,
+    "end_tick": 1913,
+    "seconds": 0.05,
+    "end_position": [
+      1117.4998727743277,
+      69.0,
+      127.68867250148125
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1917,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.4998727743277,
+      69.0,
+      127.68867250148125
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        127
+      ],
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1119,
+        68,
+        130
+      ]
+    ],
+    "node_count": 6,
+    "nodes_considered": 30,
+    "predicted_ticks": 38.54376475947166,
+    "path_geometry": 5.414213562373095,
+    "travel": 4.863705459752607,
+    "end_tick": 1939,
+    "seconds": 1.1,
+    "end_position": [
+      1119.1048798210206,
+      68.0,
+      130.5360376261884
+    ],
+    "endpoint_distance": 3.4181187476933,
+    "travel_to_endpoint_ratio": 1.4229188096624361
+  },
+  {
+    "start_tick": 1941,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1119.0593273122693,
+      68.0,
+      130.52777187940956
+    ],
+    "nodes": [
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1117,
+        69,
+        127
+      ],
+      [
+        1118,
+        69,
+        127
+      ],
+      [
+        1119,
+        69,
+        127
+      ]
+    ],
+    "node_count": 7,
+    "nodes_considered": 211,
+    "predicted_ticks": 85.89053458376763,
+    "path_geometry": 6.414213562373095,
+    "travel": 7.149431150277952,
+    "end_tick": 1989,
+    "seconds": 2.4,
+    "end_position": [
+      1119.3076631006452,
+      69.0,
+      127.49105902628912
+    ],
+    "endpoint_distance": 3.206757804402313,
+    "travel_to_endpoint_ratio": 2.229488968721942
+  },
+  {
+    "start_tick": 1993,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1119.3076631006452,
+      69.0,
+      127.49105902628912
+    ],
+    "nodes": [
+      [
+        1119,
+        69,
+        127
+      ],
+      [
+        1118,
+        69,
+        127
+      ],
+      [
+        1118,
+        70,
+        128
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 3,
+    "predicted_ticks": 10.196638758964996,
+    "path_geometry": 2.414213562373095,
+    "travel": 0.0,
+    "end_tick": 1994,
+    "seconds": 0.05,
+    "end_position": [
+      1119.3076631006452,
+      69.0,
+      127.49105902628912
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 1994,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1119.3076631006452,
+      69.0,
+      127.49105902628912
+    ],
+    "nodes": [
+      [
+        1119,
+        69,
+        127
+      ],
+      [
+        1118,
+        69,
+        127
+      ],
+      [
+        1117,
+        69,
+        127
+      ],
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1118,
+        66,
+        131
+      ]
+    ],
+    "node_count": 8,
+    "nodes_considered": 22,
+    "predicted_ticks": 40.314911964850474,
+    "path_geometry": 8.650281539872886,
+    "travel": 9.685412947035479,
+    "end_tick": 2038,
+    "seconds": 2.2,
+    "end_position": [
+      1118.4223117504066,
+      66.0,
+      131.45616271753073
+    ],
+    "endpoint_distance": 5.050336057696271,
+    "travel_to_endpoint_ratio": 1.9177759334006608
+  },
+  {
+    "start_tick": 2039,
+    "target": [
+      1118,
+      70,
+      129
+    ],
+    "start_position": [
+      1118.4287674104955,
+      66.0,
+      131.44655112533692
+    ],
+    "nodes": [
+      [
+        1118,
+        66,
+        131
+      ],
+      [
+        1118,
+        67,
+        131
+      ],
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1117,
+        69,
+        130
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 39,
+    "predicted_ticks": 32.32763167015109,
+    "path_geometry": 3.8284271247461903,
+    "travel": 5.2298872565543375,
+    "end_tick": 2068,
+    "seconds": 1.45,
+    "end_position": [
+      1117.8607758472253,
+      69.0,
+      130.370631626789
+    ],
+    "endpoint_distance": 3.237316355146923,
+    "travel_to_endpoint_ratio": 1.6155008293333704
+  },
+  {
+    "start_tick": 2104,
+    "target": [
+      1116,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.6946871767336,
+      69.0,
+      130.34492851801147
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1117,
+        69,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.41342223966232194,
+    "end_tick": 2108,
+    "seconds": 0.2,
+    "end_position": [
+      1117.5359366078583,
+      69.125,
+      129.78990170049568
+    ],
+    "endpoint_distance": 0.5906619263842546,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2109,
+    "target": [
+      1116,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.4938043526918,
+      69.125,
+      129.67961469649578
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 1.0548930146321496,
+    "end_tick": 2114,
+    "seconds": 0.25,
+    "end_position": [
+      1117.4797066098752,
+      69.125,
+      128.59969595078618
+    ],
+    "endpoint_distance": 1.080010760912825,
+    "travel_to_endpoint_ratio": 0.9767430592455894
+  },
+  {
+    "start_tick": 2120,
+    "target": [
+      1116,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.4870007207455,
+      69.0,
+      128.39872490326582
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1115,
+        69,
+        130
+      ]
+    ],
+    "node_count": 5,
+    "nodes_considered": 8,
+    "predicted_ticks": 14.255167498218102,
+    "path_geometry": 4.0,
+    "travel": 3.573466248711335,
+    "end_tick": 2137,
+    "seconds": 0.85,
+    "end_position": [
+      1115.74765439814,
+      69.0,
+      130.5441543419018
+    ],
+    "endpoint_distance": 2.7619183742694826,
+    "travel_to_endpoint_ratio": 1.2938348511680775
+  },
+  {
+    "start_tick": 2160,
+    "target": [
+      1117,
+      69,
+      130
+    ],
+    "start_position": [
+      1115.5737396564275,
+      69.0,
+      130.5306975231238
+    ],
+    "nodes": [
+      [
+        1115,
+        69,
+        130
+      ],
+      [
+        1116,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.5593007780133191,
+    "end_tick": 2164,
+    "seconds": 0.2,
+    "end_position": [
+      1116.260935805884,
+      69.0,
+      130.5077805586303
+    ],
+    "endpoint_distance": 0.687578166530435,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2178,
+    "target": [
+      1118,
+      69,
+      129
+    ],
+    "start_position": [
+      1116.41103540923,
+      69.0,
+      130.50272585247166
+    ],
+    "nodes": [
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1117,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2179,
+    "seconds": 0.05,
+    "end_position": [
+      1116.41103540923,
+      69.0,
+      130.50272585247166
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2180,
+    "target": [
+      1118,
+      69,
+      129
+    ],
+    "start_position": [
+      1116.41103540923,
+      69.0,
+      130.50272585247166
+    ],
+    "nodes": [
+      [
+        1116,
+        69,
+        130
+      ],
+      [
+        1117,
+        69,
+        130
+      ],
+      [
+        1117,
+        69,
+        129
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 4,
+    "predicted_ticks": 7.127583749109051,
+    "path_geometry": 2.0,
+    "travel": 1.02754520368583,
+    "end_tick": 2186,
+    "seconds": 0.3,
+    "end_position": [
+      1117.4861139460006,
+      69.0,
+      130.2127921345105
+    ],
+    "endpoint_distance": 1.1134879528022423,
+    "travel_to_endpoint_ratio": 0.9228166331749473
+  },
+  {
+    "start_tick": 2192,
+    "target": [
+      1119,
+      70,
+      129
+    ],
+    "start_position": [
+      1117.6751071600986,
+      69.0,
+      129.5496703052615
+    ],
+    "nodes": [
+      [
+        1117,
+        69,
+        129
+      ],
+      [
+        1117,
+        69,
+        128
+      ],
+      [
+        1117,
+        69,
+        127
+      ],
+      [
+        1118,
+        69,
+        127
+      ],
+      [
+        1119,
+        70,
+        127
+      ]
+    ],
+    "node_count": 5,
+    "nodes_considered": 30,
+    "predicted_ticks": 31.22276316130546,
+    "path_geometry": 4.414213562373095,
+    "travel": 4.574970303610873,
+    "end_tick": 2216,
+    "seconds": 1.2,
+    "end_position": [
+      1119.1928593097866,
+      70.0,
+      127.47156576786158
+    ],
+    "endpoint_distance": 2.7608132961583443,
+    "travel_to_endpoint_ratio": 1.6571096314180018
+  },
+  {
+    "start_tick": 2220,
+    "target": [
+      1119,
+      70,
+      129
+    ],
+    "start_position": [
+      1119.3926373896388,
+      70.0,
+      127.48598382211316
+    ],
+    "nodes": [
+      [
+        1119,
+        70,
+        127
+      ],
+      [
+        1118,
+        70,
+        128
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 9.25914193392461,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.016245420966916158,
+    "end_tick": 2221,
+    "seconds": 0.05,
+    "end_position": [
+      1119.401484380401,
+      70.0,
+      127.48662231254647
+    ],
+    "endpoint_distance": 0.008870000878130013,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2221,
+    "target": [
+      1119,
+      70,
+      129
+    ],
+    "start_position": [
+      1119.401484380401,
+      70.0,
+      127.48662231254647
+    ],
+    "nodes": [
+      [
+        1119,
+        70,
+        127
+      ],
+      [
+        1118,
+        70,
+        128
+      ],
+      [
+        1118,
+        69,
+        129
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 4,
+    "predicted_ticks": 18.580143532090805,
+    "path_geometry": 2.8284271247461903,
+    "travel": 2.969711421360998,
+    "end_tick": 2240,
+    "seconds": 0.95,
+    "end_position": [
+      1118.485328045515,
+      69.53584062504456,
+      129.85263174997064
+    ],
+    "endpoint_distance": 2.5792997137383864,
+    "travel_to_endpoint_ratio": 1.1513634516931561
+  },
+  {
+    "start_tick": 2264,
+    "target": [
+      1119,
+      70,
+      131
+    ],
+    "start_position": [
+      1118.4918173737397,
+      69.0,
+      130.27120972306105
+    ],
+    "nodes": [
+      [
+        1118,
+        69,
+        130
+      ],
+      [
+        1118,
+        69,
+        129
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 1,
+    "predicted_ticks": 0.0,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2265,
+    "seconds": 0.05,
+    "end_position": [
+      1118.4918173737397,
+      69.0,
+      130.27120972306105
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2269,
+    "target": [
+      1119,
+      70,
+      131
+    ],
+    "start_position": [
+      1118.4918173737397,
+      69.0,
+      130.27120972306105
+    ],
+    "nodes": [
+      [
+        1118,
+        69,
+        129
+      ],
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1119,
+        69,
+        130
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 26,
+    "predicted_ticks": 29.852389135808075,
+    "path_geometry": 2.8284271247461903,
+    "travel": 0.0979999302245291,
+    "end_tick": 2271,
+    "seconds": 0.1,
+    "end_position": [
+      1118.4929794142538,
+      68.92159999847412,
+      130.42271316500847
+    ],
+    "endpoint_distance": 0.17059074857486078,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2276,
+    "target": [
+      1119,
+      70,
+      131
+    ],
+    "start_position": [
+      1118.493915477895,
+      68.0,
+      130.54475440347107
+    ],
+    "nodes": [
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1119,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 14,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.7554346587578675,
+    "end_tick": 2290,
+    "seconds": 0.7,
+    "end_position": [
+      1119.1726727085702,
+      69.0,
+      130.5210906146614
+    ],
+    "endpoint_distance": 1.208830572534793,
+    "travel_to_endpoint_ratio": 1.4521759282418727
+  },
+  {
+    "start_tick": 2325,
+    "target": [
+      1119,
+      69,
+      129
+    ],
+    "start_position": [
+      1119.3753056289936,
+      69.0,
+      130.50797312168936
+    ],
+    "nodes": [
+      [
+        1119,
+        69,
+        130
+      ],
+      [
+        1120,
+        69,
+        130
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 6,
+    "predicted_ticks": 18.53138753764188,
+    "path_geometry": 1.0,
+    "travel": 0.029400003620480723,
+    "end_tick": 2331,
+    "seconds": 0.3,
+    "end_position": [
+      1119.4207570987317,
+      69.0,
+      130.50768115813563
+    ],
+    "endpoint_distance": 0.045452407461717595,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2350,
+    "target": [
+      1119,
+      68,
+      134
+    ],
+    "start_position": [
+      1119.3561820728005,
+      69.0,
+      130.32261891786922
+    ],
+    "nodes": [
+      [
+        1119,
+        69,
+        130
+      ],
+      [
+        1118,
+        68,
+        130
+      ],
+      [
+        1118,
+        67,
+        131
+      ],
+      [
+        1118,
+        65,
+        132
+      ],
+      [
+        1119,
+        65,
+        133
+      ],
+      [
+        1119,
+        66,
+        133
+      ],
+      [
+        1119,
+        67,
+        133
+      ]
+    ],
+    "node_count": 7,
+    "nodes_considered": 314,
+    "predicted_ticks": 75.08079279537438,
+    "path_geometry": 8.478708664619075,
+    "travel": 10.407924838109933,
+    "end_tick": 2406,
+    "seconds": 2.8,
+    "end_position": [
+      1119.4471540938207,
+      67.25220334025373,
+      133.43560783106557
+    ],
+    "endpoint_distance": 3.5712419472939794,
+    "travel_to_endpoint_ratio": 2.9143712444339656
+  },
+  {
+    "start_tick": 2426,
+    "target": [
+      1120,
+      68,
+      134
+    ],
+    "start_position": [
+      1119.4471540938207,
+      67.0,
+      133.43560783106557
+    ],
+    "nodes": [
+      [
+        1119,
+        67,
+        133
+      ],
+      [
+        1120,
+        65,
+        133
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 13.174950993911652,
+    "path_geometry": 2.23606797749979,
+    "travel": 3.0448503098003132,
+    "end_tick": 2440,
+    "seconds": 0.7,
+    "end_position": [
+      1120.5526284519951,
+      65.0,
+      133.51359532361735
+    ],
+    "endpoint_distance": 2.2865160409618146,
+    "travel_to_endpoint_ratio": 1.3316549087140925
+  },
+  {
+    "start_tick": 2448,
+    "target": [
+      1120,
+      68,
+      134
+    ],
+    "start_position": [
+      1120.5526284519951,
+      65.0,
+      133.51359532361735
+    ],
+    "nodes": [
+      [
+        1120,
+        65,
+        133
+      ],
+      [
+        1120,
+        66,
+        133
+      ],
+      [
+        1119,
+        67,
+        133
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 26,
+    "predicted_ticks": 25.69478478574062,
+    "path_geometry": 2.414213562373095,
+    "travel": 0.0,
+    "end_tick": 2449,
+    "seconds": 0.05,
+    "end_position": [
+      1120.5526284519951,
+      65.0,
+      133.51359532361735
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2449,
+    "target": [
+      1120,
+      68,
+      134
+    ],
+    "start_position": [
+      1120.5526284519951,
+      65.0,
+      133.51359532361735
+    ],
+    "nodes": [
+      [
+        1120,
+        65,
+        133
+      ],
+      [
+        1121,
+        65,
+        133
+      ],
+      [
+        1121,
+        65,
+        134
+      ],
+      [
+        1121,
+        65,
+        135
+      ],
+      [
+        1120,
+        65,
+        135
+      ],
+      [
+        1119,
+        65,
+        135
+      ]
+    ],
+    "node_count": 6,
+    "nodes_considered": 7,
+    "predicted_ticks": 17.81895937277263,
+    "path_geometry": 5.0,
+    "travel": 4.35046417963774,
+    "end_tick": 2474,
+    "seconds": 1.25,
+    "end_position": [
+      1120.0952549709255,
+      65.0,
+      136.02096704644146
+    ],
+    "endpoint_distance": 2.5487454674022887,
+    "travel_to_endpoint_ratio": 1.706904135889169
+  },
+  {
+    "start_tick": 2474,
+    "target": [
+      1120,
+      68,
+      134
+    ],
+    "start_position": [
+      1120.0952549709255,
+      65.0,
+      136.02096704644146
+    ],
+    "nodes": [
+      [
+        1120,
+        65,
+        135
+      ],
+      [
+        1119,
+        66,
+        135
+      ],
+      [
+        1119,
+        67,
+        133
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 46,
+    "predicted_ticks": 29.658971286750933,
+    "path_geometry": 3.6502815398728847,
+    "travel": 1.3857640623465879,
+    "end_tick": 2562,
+    "seconds": 4.4,
+    "end_position": [
+      1119.4979426982243,
+      65.0,
+      136.30000001192093
+    ],
+    "endpoint_distance": 0.6592733476667404,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2562,
+    "target": [
+      1120,
+      68,
+      134
+    ],
+    "start_position": [
+      1119.4979426982243,
+      65.0,
+      136.30000001192093
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        136
+      ],
+      [
+        1119,
+        66,
+        135
+      ],
+      [
+        1119,
+        67,
+        133
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 9,
+    "predicted_ticks": 15.760430633519523,
+    "path_geometry": 3.6502815398728847,
+    "travel": 4.585062429999093,
+    "end_tick": 2583,
+    "seconds": 1.05,
+    "end_position": [
+      1119.5002885667388,
+      67.0,
+      133.7270070671322
+    ],
+    "endpoint_distance": 3.2588798991419785,
+    "travel_to_endpoint_ratio": 1.406944278985636
+  },
+  {
+    "start_tick": 2607,
+    "target": [
+      1121,
+      68,
+      134
+    ],
+    "start_position": [
+      1119.5004681397763,
+      67.0,
+      133.50976836881944
+    ],
+    "nodes": [
+      [
+        1119,
+        67,
+        133
+      ],
+      [
+        1120,
+        68,
+        133
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 8,
+    "predicted_ticks": 20.53138753764188,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.0,
+    "end_tick": 2608,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5004681397763,
+      67.0,
+      133.50976836881944
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2608,
+    "target": [
+      1121,
+      68,
+      134
+    ],
+    "start_position": [
+      1119.5004681397763,
+      67.0,
+      133.50976836881944
+    ],
+    "nodes": [
+      [
+        1119,
+        67,
+        133
+      ],
+      [
+        1119,
+        68,
+        133
+      ],
+      [
+        1120,
+        68,
+        134
+      ]
+    ],
+    "node_count": 3,
+    "nodes_considered": 14,
+    "predicted_ticks": 24.101900703800197,
+    "path_geometry": 2.414213562373095,
+    "travel": 1.4987631085046775,
+    "end_tick": 2617,
+    "seconds": 0.45,
+    "end_position": [
+      1119.59918570118,
+      68.0,
+      133.6075647528894
+    ],
+    "endpoint_distance": 1.0096084833571095,
+    "travel_to_endpoint_ratio": 1.4844993214805908
+  },
+  {
+    "start_tick": 2618,
+    "target": [
+      1121,
+      68,
+      134
+    ],
+    "start_position": [
+      1119.6306699085246,
+      68.0,
+      133.63877348881476
+    ],
+    "nodes": [
+      [
+        1119,
+        68,
+        133
+      ],
+      [
+        1120,
+        68,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 5.039962802470046,
+    "path_geometry": 1.4142135623730951,
+    "travel": 0.648241207958177,
+    "end_tick": 2622,
+    "seconds": 0.2,
+    "end_position": [
+      1120.1534668500956,
+      68.0,
+      134.1569990011889
+    ],
+    "endpoint_distance": 0.7361211339116537,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2655,
+    "target": [
+      1119,
+      70,
+      135
+    ],
+    "start_position": [
+      1120.5373607318477,
+      68.0,
+      134.58523393120797
+    ],
+    "nodes": [
+      [
+        1120,
+        68,
+        134
+      ],
+      [
+        1120,
+        69,
+        135
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 6.63284688441047,
+    "path_geometry": 1.4142135623730951,
+    "travel": 1.6406045823286837,
+    "end_tick": 2664,
+    "seconds": 0.45,
+    "end_position": [
+      1120.5139779910992,
+      69.0,
+      135.1404527933712
+    ],
+    "endpoint_distance": 1.1440344127108866,
+    "travel_to_endpoint_ratio": 1.4340517768527015
+  },
+  {
+    "start_tick": 2679,
+    "target": [
+      1120,
+      70,
+      136
+    ],
+    "start_position": [
+      1120.5076748303813,
+      69.0,
+      135.30744061571346
+    ],
+    "nodes": [
+      [
+        1120,
+        69,
+        135
+      ],
+      [
+        1121,
+        69,
+        135
+      ],
+      [
+        1121,
+        69,
+        136
+      ],
+      [
+        1122,
+        70,
+        136
+      ],
+      [
+        1121,
+        70,
+        137
+      ]
+    ],
+    "node_count": 5,
+    "nodes_considered": 14,
+    "predicted_ticks": 23.01957256744413,
+    "path_geometry": 4.82842712474619,
+    "travel": 4.412921861057773,
+    "end_tick": 2708,
+    "seconds": 1.45,
+    "end_position": [
+      1121.4923510561098,
+      70.0,
+      137.22491934085767
+    ],
+    "endpoint_distance": 2.3761969469922835,
+    "travel_to_endpoint_ratio": 1.857136407250886
+  },
+  {
+    "start_tick": 2733,
+    "target": [
+      1120,
+      70,
+      136
+    ],
+    "start_position": [
+      1121.474656250115,
+      70.0,
+      137.3372678770158
+    ],
+    "nodes": [
+      [
+        1121,
+        70,
+        137
+      ],
+      [
+        1121,
+        69,
+        136
+      ],
+      [
+        1120,
+        69,
+        135
+      ],
+      [
+        1119,
+        66,
+        135
+      ],
+      [
+        1118,
+        65,
+        135
+      ]
+    ],
+    "node_count": 5,
+    "nodes_considered": 18,
+    "predicted_ticks": 38.29990576960864,
+    "path_geometry": 7.404918347287665,
+    "travel": 2.4849379682256556,
+    "end_tick": 2744,
+    "seconds": 0.55,
+    "end_position": [
+      1121.0855852340153,
+      69.0,
+      135.35576466938272
+    ],
+    "endpoint_distance": 2.2533821729633425,
+    "travel_to_endpoint_ratio": 1.102759220357993
+  },
+  {
+    "start_tick": 2745,
+    "target": [
+      1119,
+      71,
+      135
+    ],
+    "start_position": [
+      1121.0309422401472,
+      69.0,
+      135.30938207123785
+    ],
+    "nodes": [
+      [
+        1121,
+        69,
+        135
+      ],
+      [
+        1120,
+        69,
+        135
+      ],
+      [
+        1120,
+        68,
+        134
+      ],
+      [
+        1119,
+        65,
+        134
+      ]
+    ],
+    "node_count": 4,
+    "nodes_considered": 12,
+    "predicted_ticks": 27.502733243526933,
+    "path_geometry": 5.576491222541475,
+    "travel": 6.457632527426082,
+    "end_tick": 2772,
+    "seconds": 1.35,
+    "end_position": [
+      1119.5791975809204,
+      65.0,
+      134.56476904554492
+    ],
+    "endpoint_distance": 4.319954989768402,
+    "travel_to_endpoint_ratio": 1.4948379190803287
+  },
+  {
+    "start_tick": 2780,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2781,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2782,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2783,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2784,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2785,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2786,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2787,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2788,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2789,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2790,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2791,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2792,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2793,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2794,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2795,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2796,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2797,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2798,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2799,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2800,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2801,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2802,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2803,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2804,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2805,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2806,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2807,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2808,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2809,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2810,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2811,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2812,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2813,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2814,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2815,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2816,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2817,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2818,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2819,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2820,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2821,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  },
+  {
+    "start_tick": 2822,
+    "target": [
+      1121,
+      65,
+      134
+    ],
+    "start_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "nodes": [
+      [
+        1119,
+        65,
+        134
+      ],
+      [
+        1120,
+        65,
+        134
+      ]
+    ],
+    "node_count": 2,
+    "nodes_considered": 2,
+    "predicted_ticks": 3.5637918745545254,
+    "path_geometry": 1.0,
+    "travel": 0.0,
+    "end_tick": 2823,
+    "seconds": 0.05,
+    "end_position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "endpoint_distance": 0.0,
+    "travel_to_endpoint_ratio": null
+  }
+]

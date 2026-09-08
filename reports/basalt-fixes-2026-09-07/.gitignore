@@ -1,0 +1,2 @@
+# Keep retained test worlds locally without adding another copy of the farm to Git.
+run-*/worlds/

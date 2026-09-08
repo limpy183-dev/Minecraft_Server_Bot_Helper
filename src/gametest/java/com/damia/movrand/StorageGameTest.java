@@ -84,6 +84,8 @@ final class StorageGameTest {
             pick.enchant(server.registryAccess().lookupOrThrow(Registries.ENCHANTMENT).getOrThrow(Enchantments.SILK_TOUCH), 1);
             p.getInventory().setItem(12, pick); // exercise moving a pickaxe from the main inventory
             p.getInventory().setItem(2, new ItemStack(Items.ENDER_CHEST, 2)); // spare chest cannot count as recovery
+            p.getInventory().setItem(0, new ItemStack(Items.SHULKER_BOX));
+            p.getInventory().setItem(8, new ItemStack(Items.DYED_SHULKER_BOX.red()));
             p.getInventory().setItem(9, new ItemStack(Items.DIAMOND, 16));
             p.getInventory().setItem(10, new ItemStack(Items.IRON_INGOT, 8));
             ItemStack box = new ItemStack(Items.DYED_SHULKER_BOX.white());
@@ -95,11 +97,26 @@ final class StorageGameTest {
         world.getConnection().waitForClientboundPackets(); test.waitTicks(10);
         test.runOnClient(mc -> {
             MovRand.config().protectedSlots.add(12);
-            MovRand.controller().storage.inspect(mc, MovRand.controller().storage.enderTarget(), null);
+            mc.player.getInventory().setSelectedSlot(6);
+            var screen = storageScreen(mc);
+            clickInventory(screen, 0);
+            clickInventory(screen, 8);
+            screen.onClose();
+            screen = storageScreen(mc);
+            try {
+                var selected = screen.getClass().getDeclaredField("storageTarget"); selected.setAccessible(true);
+                require(((Storage.Target) selected.get(screen)).inventorySlot == 8, "Reopening settings forgot the selected shulker");
+            } catch (ReflectiveOperationException e) { throw new AssertionError(e); }
+            require(mc.player.getInventory().getSelectedSlot() == 6, "Picker changed the held hotbar slot");
+            clickInventory(screen, 2);
+            require(MovRand.controller().storage.previewing() && mc.gui.screen() == null, "Ender-chest click did not start inspection");
         });
         finish(test, "ender chest inspection while movement is off", 1200);
         test.runOnClient(mc -> {
             require(MovRand.controller().storage.enderView().size() == 27, "Ender view did not load");
+            require(mc.gui.screen() instanceof com.damia.movrand.gui.ConfigScreen, "Inspection did not return to settings");
+            require(mc.player.getInventory().getSelectedSlot() == 6, "Inspection did not restore the held slot");
+            mc.gui.screen().onClose();
             var a = MovRand.controller().storage.selectShulker(mc, 7, true);
             var b = MovRand.controller().storage.selectShulker(mc, 20, true);
             require(a != null && b != null, "Could not select ender shulkers");
@@ -223,15 +240,37 @@ final class StorageGameTest {
         test.runOnClient(mc -> mc.level.removeEntity(999998, net.minecraft.world.entity.Entity.RemovalReason.DISCARDED));
 
         // Render the actual Storage tab at the test client's compact UI size.
-        test.runOnClient(mc -> {
-            var screen = new com.damia.movrand.gui.ConfigScreen(); mc.setScreenAndShow(screen);
-            for (int i = 0; i < 15; i++) screen.keyPressed(new net.minecraft.client.input.KeyEvent(org.lwjgl.glfw.GLFW.GLFW_KEY_TAB, 0, 0));
-        });
+        test.runOnClient(StorageGameTest::storageScreen);
         test.takeScreenshot("storage-settings");
         test.runOnClient(mc -> mc.gui.screen().onClose());
         require(smoothedPhases.containsAll(List.of("place ender", "place box", "open ender", "open dest", "break box", "break ender")),
                 "Storage actions did not render smooth turns: " + smoothedPhases);
         MovRand.LOG.info("Storage server-backed checks passed; interpolated phases {}", smoothedPhases);
+    }
+
+    private static com.damia.movrand.gui.ConfigScreen storageScreen(net.minecraft.client.Minecraft mc) {
+        var screen = new com.damia.movrand.gui.ConfigScreen();
+        try {
+            var tab = screen.getClass().getDeclaredField("activeTab"); tab.setAccessible(true);
+            for (Object value : tab.getType().getEnumConstants()) if (value.toString().equals("STORAGE")) tab.set(null, value);
+        } catch (ReflectiveOperationException e) { throw new AssertionError(e); }
+        mc.setScreenAndShow(screen);
+        return screen;
+    }
+
+    private static void clickInventory(com.damia.movrand.gui.ConfigScreen screen, int slot) {
+        try {
+            var elements = screen.getClass().getDeclaredField("elements"); elements.setAccessible(true);
+            for (Object element : (List<?>) elements.get(screen)) {
+                if (!(element instanceof com.damia.movrand.gui.SlotGrid grid)) continue;
+                var cellOf = grid.getClass().getDeclaredMethod("cellOf", int.class); cellOf.setAccessible(true);
+                int[] cell = (int[]) cellOf.invoke(grid, slot);
+                require(grid.mouseClicked(cell[0] + 2, cell[1] + 2, 0), "Inventory picker rejected click");
+                MovRand.config().clampAll();
+                return;
+            }
+            throw new AssertionError("Missing inventory picker");
+        } catch (ReflectiveOperationException e) { throw new AssertionError(e); }
     }
 
     private static void setup(ClientGameTestContext test, TestSingleplayerContext world) {

@@ -70,6 +70,7 @@ public final class Storage {
         BREAK_ENDER, PICK_ENDER, NEXT, FAILED }
     private final Config cfg;
     private final Pathing nav;
+    private final SitePreparation recoveryPreparation;
     private Phase phase = Phase.IDLE;
     private Target target;
     private final ArrayDeque<Target> queue = new ArrayDeque<>();
@@ -100,7 +101,7 @@ public final class Storage {
     public String status = "Idle";
     public int deposited;
 
-    public Storage(Config cfg) { this.cfg = cfg; nav = new Pathing(cfg); }
+    public Storage(Config cfg) { this.cfg = cfg; nav = new Pathing(cfg); recoveryPreparation = new SitePreparation(cfg); }
     public boolean busy() { return phase != Phase.IDLE && phase != Phase.FAILED; }
     public boolean failed() { return phase == Phase.FAILED; }
     public boolean previewing() { return busy() && preview; }
@@ -158,6 +159,16 @@ public final class Storage {
         return fingerprint(copy, p);
     }
 
+    static boolean sameFingerprint(String saved, String current) {
+        if (saved == null || current == null || saved.isBlank() || current.isBlank()) return false;
+        // Codec object-field order is not an item property and can change across sessions.
+        try {
+            return com.google.gson.JsonParser.parseString(saved).equals(com.google.gson.JsonParser.parseString(current));
+        } catch (com.google.gson.JsonParseException e) {
+            return false;
+        }
+    }
+
     public Target selectShulker(Minecraft mc, int slot, boolean fromEnder) {
         if (busy() || mc.player == null || slot < 0 || slot >= (fromEnder ? 27 : 36)) return null;
         ItemStack stack = fromEnder ? (slot < enderView().size() ? enderView().get(slot) : ItemStack.EMPTY)
@@ -199,7 +210,9 @@ public final class Storage {
     }
 
     public void inspect(Minecraft mc, Target t, Screen back) {
-        if (t != null && begin(mc, List.of(t), true)) { returnScreen = back; mc.setScreenAndShow(null); }
+        if (t == null) return;
+        if (begin(mc, List.of(t), true)) { returnScreen = back; mc.setScreenAndShow(null); }
+        else MovRand.print(mc, failed() ? status + " — check the containers, then clear the storage stop in settings" : status);
     }
     public void storeNow(Minecraft mc) { begin(mc, eligibleTargets(mc), false); }
     public void acknowledge() {
@@ -341,6 +354,7 @@ public final class Storage {
         return true;
     }
     private void startTarget(Target t) {
+        recoveryPreparation.reset();
         target = t; stand = enderPos = boxPos = boxWork = null;
         searchGoal = null; searchYaw = sessionPlayer.getYRot(); unreachableSites.clear();
         enderPlaced = boxPlaced = false; menuId = -1; handSlot = -1;
@@ -376,6 +390,9 @@ public final class Storage {
                     BlockPos e = p.relative(d), b = e.relative(d.getClockWise()), work = p.relative(d.getClockWise());
                     if (!floor(ctx, e) || !safe(ctx, e) || !floor(ctx, b) || !safe(ctx, b)
                             || !floor(ctx, work) || !safe(ctx, work)) continue;
+                    // Choose a site whose eventual drops also pass the live mining guard.
+                    if (cfg.protectMiningDrops && (!MineSafety.inspect(ctx, e).safe()
+                            || needsEnder() && !MineSafety.inspect(ctx, b).safe())) continue;
                     nav.reset(); stand = p;
                     enderPos = needsEnder() ? e : null;
                     boxPos = needsEnder() ? b : e;
@@ -455,6 +472,8 @@ public final class Storage {
         LocalPlayer p = ctx.player();
         if (!p.onGround() || !safe(ctx, stand)) { fail(ctx.mc(), "Not standing safely"); return; }
         if (target.kind == Kind.WORLD) { go(Phase.OPEN_DEST); return; }
+        // Recheck both container sites after travelling, before taking anything out.
+        if (!floor(ctx, boxPos) || needsEnder() && !floor(ctx, enderPos)) { retrySite(); return; }
         int empty = 0;
         for (int i = 0; i < 36; i++) if (!cfg.slotProtected(i) && p.getInventory().getItem(i).isEmpty()) empty++;
         if (empty < (needsEnder() ? 2 : 1)) { fail(ctx.mc(), "Keep " + (needsEnder() ? 2 : 1) + " unprotected bag slots empty for container recovery"); return; }
@@ -467,7 +486,11 @@ public final class Storage {
             go(Phase.PLACE_ENDER);
         } else {
             boxInventorySlot = locate(p, target);
-            if (boxInventorySlot < 0 || cfg.slotProtected(boxInventorySlot)) { fail(ctx.mc(), "Selected shulker changed, is ambiguous, or is protected; select it again"); return; }
+            if (boxInventorySlot < 0) {
+                fail(ctx.mc(), boxInventorySlot == -2 ? "Multiple matching shulkers found; select one again"
+                        : "Selected shulker is missing or its contents changed; select it again"); return;
+            }
+            if (cfg.slotProtected(boxInventorySlot)) { fail(ctx.mc(), "Selected shulker is in protected inventory slot " + boxInventorySlot); return; }
             boxStack = p.getInventory().getItem(boxInventorySlot).copy();
             boxIdentity = identity(boxStack, p);
             go(Phase.PLACE_BOX);
@@ -476,6 +499,11 @@ public final class Storage {
 
     private boolean place(PathMove.Ctx ctx, Bot.Steer steer, BlockPos pos, ItemStack expected, int source) {
         Block b = ((BlockItem) expected.getItem()).getBlock();
+        if (!ctx.level().getBlockState(pos.above()).isAir()) {
+            if (!placementAttempted && !enderPlaced && !boxPlaced) retrySite();
+            else fail(ctx.mc(), "Block above container prevents opening at " + pos.toShortString());
+            return false;
+        }
         if (ctx.level().getBlockState(pos).is(b)) {
             if (!placementAttempted) { fail(ctx.mc(), "Placement square was occupied before our placement"); return false; }
             ItemStack now = ctx.player().getInventory().getItem(handSlot);
@@ -558,6 +586,10 @@ public final class Storage {
             return true;
         }
         if (target.kind == Kind.WORLD && !worldMatches(ctx)) { fail(ctx.mc(), "The selected world container changed"); return false; }
+        // Temporary shulkers are placed upright; their lids and the ender chest need air above.
+        if (target.kind != Kind.WORLD && !ctx.level().getBlockState(pos.above()).isAir()) {
+            fail(ctx.mc(), "Block above container prevents opening at " + pos.toShortString()); return false;
+        }
         if (!safe(ctx, pos) || !Bot.inReach(ctx.mc(), ctx.player(), pos)) { fail(ctx.mc(), "Container is unsafe or out of reach"); return false; }
         double[] look = Bot.aimAt(ctx.player(), Bot.aimPoint(ctx.mc(), ctx.player(), pos));
         steer.lookAt(look[0], look[1]); steer.precise = true; steer.useAt(pos);
@@ -595,7 +627,7 @@ public final class Storage {
         int origin = target.enderSlot;
         if (origin < 0 || origin >= 27) { fail(mc, "Invalid original ender-chest slot"); return; }
         ItemStack s = m.getSlot(origin).getItem();
-        if (!shulker(s) || !target.fingerprint.equals(fingerprint(s, mc.player))) {
+        if (!shulker(s) || !sameFingerprint(target.fingerprint, fingerprint(s, mc.player))) {
             fail(mc, "The selected ender-chest shulker changed; inspect and select it again"); return;
         }
         int dest = emptySlot(mc.player);
@@ -607,14 +639,14 @@ public final class Storage {
         AbstractContainerMenu m = menu(mc); if (m == null) return;
         ItemStack original = m.getSlot(target.enderSlot).getItem();
         if (!original.isEmpty()) {
-            if (target.fingerprint.equals(fingerprint(original, mc.player))
+            if (sameFingerprint(target.fingerprint, fingerprint(original, mc.player))
                     && mc.player.getInventory().getItem(boxInventorySlot).isEmpty()) {
                 snapshotEnder(mc); cfg.save(); go(Phase.BREAK_ENDER); return;
             }
             fail(mc, "Original ender-chest slot is occupied; filled shulker kept in your inventory"); return;
         }
         ItemStack s = mc.player.getInventory().getItem(boxInventorySlot);
-        if (!target.fingerprint.equals(fingerprint(s, mc.player))) { fail(mc, "Filled shulker moved before return"); return; }
+        if (!sameFingerprint(target.fingerprint, fingerprint(s, mc.player))) { fail(mc, "Filled shulker moved before return"); return; }
         transfer(mc, m, Backpack.menuSlotFor(m, mc.player, boxInventorySlot), target.enderSlot, 1, false);
     }
 
@@ -664,7 +696,7 @@ public final class Storage {
         go(boxPlaced ? Phase.BREAK_BOX : enderPlaced ? Phase.BREAK_ENDER : Phase.NEXT);
     }
 
-    /** Pickup -> deposit -> return remainder. One click per tick gap, with server state-id acknowledgement. */
+    /** Pickup -> deposit into exactly one slot -> return remainder, confirming each server update. */
     private void transfer(Minecraft mc, AbstractContainerMenu m, int from, int to, int count, boolean deposit) {
         if (from < 0 || to < 0 || from >= m.slots.size() || to >= m.slots.size()
                 || from == to || !m.getSlot(from).mayPickup(mc.player) || !m.getCarried().isEmpty()) {
@@ -710,7 +742,11 @@ public final class Storage {
                 if (dest.getCount() != initialDest + sent || (!dest.isEmpty() && !ItemStack.isSameItemSameComponents(dest, expected))) {
                     fail(mc, "Destination slot changed"); return false;
                 }
-                if (count == initialSource) { sent = count; step = 3; click(mc, to, 0); return false; }
+                int room = owner.getSlot(to).getMaxStackSize(expected) - initialDest;
+                if (sent == 0 && (count == initialSource || cfg.storageFastTransfers && count == Math.min(initialSource, room))) {
+                    // Vanilla left-click fills only this slot, leaving excess on the cursor.
+                    sent = count; step = count == initialSource ? 3 : 2; click(mc, to, 0); return false;
+                }
                 if (sent < count) { sent++; click(mc, to, 1); return false; }
                 step = 2;
             }
@@ -731,7 +767,7 @@ public final class Storage {
         private void click(Minecraft mc, int slot, int button) {
             state = owner.getStateId(); awaiting = true;
             clickServer(mc, owner, slot, button, ContainerInput.PICKUP);
-            wait = Rng.ticks(0.2, 0.4);
+            wait = cfg.storageFastTransfers ? 0 : Rng.ticks(0.2, 0.4);
         }
     }
 
@@ -745,6 +781,17 @@ public final class Storage {
             fail(ctx.mc(), "Placed container was replaced; refusing to break another block"); return false;
         }
         if (!safe(ctx, pos) || emptySlot(ctx.player()) < 0) { fail(ctx.mc(), "No safe recovery space for the container"); return false; }
+        // Storage owns the controller during recovery, so the destroyer's usual handler
+        // cannot resolve a mining-safety denial here. Prepare the drop area ourselves.
+        SitePreparation.Result prepared = recoveryPreparation.tick(ctx, pos, steer, Set.of());
+        if (prepared != SitePreparation.Result.READY) {
+            if (prepared == SitePreparation.Result.FAILED) fail(ctx.mc(), "Cannot safely recover container: " + recoveryPreparation.detail);
+            return false;
+        }
+        if (pos.equals(MineSafety.deniedBlock())) MineSafety.clearDenied();
+        if (!Bot.inReach(ctx.mc(), ctx.player(), pos)) {
+            at(ctx, steer, ender ? stand : boxWork); return false;
+        }
         if (ender) {
             int pick = silkPick(ctx.player());
             if (pick < 0) { fail(ctx.mc(), "Silk Touch pickaxe missing or nearly broken; ender chest left intact"); return false; }
@@ -765,13 +812,13 @@ public final class Storage {
         for (int i = 0; recoveredCount(ctx.player(), ender) > recoveryBefore && i < 36; i++) {
             ItemStack s = ctx.player().getInventory().getItem(i);
             if (s.getCount() <= recoverySlots[i]) continue;
-            if (ender ? s.is(Items.ENDER_CHEST) : shulker(s) && identity.equals(identity(s, ctx.player()))
+            if (ender ? s.is(Items.ENDER_CHEST) : shulker(s) && sameFingerprint(identity, identity(s, ctx.player()))
                     && contentsEqual(s, view(target))) return i;
         }
         for (var e : ctx.level().entitiesForRendering()) {
             if (!(e instanceof ItemEntity drop) || oldDrops.contains(e.getId()) || e.blockPosition().distSqr(pos) > 9) continue;
             ItemStack s = drop.getItem();
-            if (!(ender ? s.is(Items.ENDER_CHEST) : shulker(s) && identity.equals(identity(s, ctx.player()))
+            if (!(ender ? s.is(Items.ENDER_CHEST) : shulker(s) && sameFingerprint(identity, identity(s, ctx.player()))
                     && contentsEqual(s, view(target)))) continue;
             Vec3 goal = new Vec3(drop.getX(), ctx.player().getY(), drop.getZ());
             if (DropCollector.directWalk(ctx, goal)) DropCollector.aimAndWalk(ctx, steer, goal);
@@ -789,7 +836,7 @@ public final class Storage {
         int n = 0;
         for (int i = 0; i < 36; i++) {
             ItemStack s = p.getInventory().getItem(i);
-            if (ender ? s.is(Items.ENDER_CHEST) : shulker(s) && boxIdentity.equals(identity(s, p))
+            if (ender ? s.is(Items.ENDER_CHEST) : shulker(s) && sameFingerprint(boxIdentity, identity(s, p))
                     && contentsEqual(s, view(target))) n += s.getCount();
         }
         return n;
@@ -807,10 +854,10 @@ public final class Storage {
     }
     private int locate(LocalPlayer p, Target t) {
         if (t.inventorySlot >= 0 && t.inventorySlot < 36
-                && t.fingerprint.equals(fingerprint(p.getInventory().getItem(t.inventorySlot), p))) return t.inventorySlot;
+                && sameFingerprint(t.fingerprint, fingerprint(p.getInventory().getItem(t.inventorySlot), p))) return t.inventorySlot;
         int found = -1;
-        for (int i = 0; i < 36; i++) if (t.fingerprint.equals(fingerprint(p.getInventory().getItem(i), p))) {
-            if (found >= 0) return -1;
+        for (int i = 0; i < 36; i++) if (sameFingerprint(t.fingerprint, fingerprint(p.getInventory().getItem(i), p))) {
+            if (found >= 0) return -2;
             found = i;
         }
         return found;
@@ -879,6 +926,7 @@ public final class Storage {
         if (returnScreen != null) { Screen back = returnScreen; returnScreen = null; mc.setScreenAndShow(back); }
     }
     private void fail(Minecraft mc, String reason) {
+        recoveryPreparation.reset();
         nav.reset(); NativeNavigation.stopAll();
         transfer = null; swapFrom = -1; queue.clear();
         Screen foreign = mc.gui.screen() instanceof com.damia.movrand.gui.ConfigScreen ? mc.gui.screen() : null;
@@ -895,6 +943,11 @@ public final class Storage {
     }
 
     public static void main(String[] args) {
+        String saved = "{\"id\":\"minecraft:shulker_box\",\"count\":1,\"components\":{\"minecraft:container\":[]}}";
+        assert sameFingerprint(saved, "{\"components\":{\"minecraft:container\":[]},\"count\":1,\"id\":\"minecraft:shulker_box\"}");
+        assert !sameFingerprint(saved, saved.replace("shulker_box", "red_shulker_box"));
+        assert !sameFingerprint(saved, saved.replace("[]", "[{\"slot\":0}]"));
+        assert !sameFingerprint("", "") && !sameFingerprint("invalid{", saved);
         Target t = new Target();
         t.slots = new ArrayList<>(List.of(0, 1, 8, 9, 10, 18, 26));
         assert orderedSlots(t).equals(List.of(0, 1, 8, 9, 10, 18, 26));

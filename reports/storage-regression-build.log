@@ -1,0 +1,707 @@
+To honour the JVM settings for this build a single-use Daemon process will be forked. For more on this, please refer to https://docs.gradle.org/9.5.1/userguide/gradle_daemon.html#sec:disabling_the_daemon in the Gradle documentation.
+Daemon will be stopped at the end of the build 
+
+> Configure project :
+Fabric Loom: 1.17.20
+
+> Task :compileJava UP-TO-DATE
+> Task :verifyBaritone
+> Task :processResources UP-TO-DATE
+> Task :classes UP-TO-DATE
+> Task :processIncludeJars UP-TO-DATE
+> Task :jar
+
+> Task :selfCheckAreaCoverage
+World/dimension isolation, persistence, overlays and migration passed
+ORGANIC     covered 16 chunks in 16 targets
+SCOUT       covered 16 chunks in 16 targets
+NEAREST     covered 16 chunks in 16 targets
+SERPENTINE  covered 16 chunks in 16 targets
+SPIRAL      covered 16 chunks in 16 targets
+RANDOM      covered 16 chunks in 16 targets
+scout       covered 256 chunks in 16 stops
+scout       covered a 208 chunk circle in 16 stops
+3000 targets over 262144 chunks in 25ms
+ORGANIC     200 targets in    0.7ms
+SCOUT       200 targets in   46.1ms
+NEAREST     200 targets in    0.6ms
+SERPENTINE  200 targets in    1.0ms
+SPIRAL      200 targets in    4.0ms
+RANDOM      200 targets in    0.2ms
+AreaCoverage self-check passed
+
+> Task :assemble
+
+> Task :selfCheckAvoidance
+Avoidance self-check passed
+
+> Task :selfCheckBackpack
+Backpack self-check passed
+
+> Task :selfCheckBaseDestroyer
+BaseDestroyer self-check passed
+
+> Task :selfCheckBlockTargets
+BlockTargets self-check passed
+
+> Task :selfCheckBot
+Bot self-check passed
+
+> Task :selfCheckCombat
+Combat self-check passed
+
+> Task :selfCheckContainerScanner
+ContainerScanner self-check passed
+
+> Task :selfCheckDeaths
+Deaths self-check passed
+
+> Task :selfCheckDropCollector
+DropCollector self-check passed
+
+> Task :selfCheckHuman
+Finite-turn rate/strength matrix and frame continuity checks passed
+amplitude 0.20  ->  rms 0.1118 (want 0.1100)  peak 0.440  max step 0.0564
+amplitude 0.55  ->  rms 0.3040 (want 0.3025)  peak 1.210  max step 0.1575
+amplitude 2.00  ->  rms 1.1117 (want 1.1000)  peak 4.400  max step 0.5642
+Human self-check passed
+
+> Task :selfCheckJournal
+Journal self-check passed
+
+> Task :selfCheckMineSafety
+MineSafety self-check passed
+
+> Task :selfCheckMovementController
+MovementController self-check passed
+
+> Task :selfCheckNativeNavigation
+NativeNavigation self-check passed
+
+> Task :selfCheckNavProgress
+NavProgress OK
+
+> Task :selfCheckPathFinder
+PathFinder self-check passed
+
+> Task :selfCheckPathMove
+PathMove self-check passed
+
+> Task :selfCheckPathRunner
+PathRunner self-check passed
+
+> Task :selfCheckPathing
+Pathing self-check passed
+
+> Task :selfCheckPresets
+Cautious AFK              95  Very human         5 bullets  No detection risks
+Balanced                  90  Very human         4 bullets  No detection risks
+Base hunting              95  Very human         5 bullets  No detection risks
+Getting somewhere         82  Very human         4 bullets  No detection risks
+Maximum humanisation      95  Very human         5 bullets  No detection risks
+Single player             82  Very human         4 bullets  No detection risks
+Paranoid                  90  Very human         5 bullets  No detection risks
+Presets self-check passed
+
+> Task :selfCheckRisks
+Unsafe   Stop on a storage cluster              Containers
+Risky    No time limit                          Safety
+Risks self-check passed
+
+> Task :selfCheckRng
+UNIFORM    mean 15.00  span 10.00�20.00
+GAUSSIAN   mean 15.01  span 10.00�20.00
+SKEW_LOW   mean 13.34  span 10.00�20.00
+SKEW_HIGH  mean 16.66  span 10.00�20.00
+Rng self-check passed
+
+> Task :selfCheckSafeStop
+SafeStop self-check passed
+
+> Task :selfCheckStorage
+Storage self-check passed
+
+> Task :selfCheckWidgets
+Widgets self-check passed
+
+> Task :selfCheckWorldBounds
+WorldBounds self-check passed
+
+> Task :allSelfChecks
+> Task :compileGametestJava UP-TO-DATE
+> Task :generateLog4jConfig UP-TO-DATE
+> Task :generateDLIConfig UP-TO-DATE
+> Task :configureLaunch UP-TO-DATE
+> Task :processGametestResources UP-TO-DATE
+> Task :gametestClasses UP-TO-DATE
+
+> Task :runGameTest
+[22:06:59] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 26.2 with Fabric Loader 0.19.3
+[22:06:59] [main/INFO] (FabricLoader/Mappings) Mappings not present!
+[22:06:59] [main/INFO] (FabricLoader) Loading 44 mods:
+	- baritone 1.19.0
+	   \-- dev_babbaj_nether-pathfinder 1.6
+	- fabric-api 0.158.0+26.2
+	   |-- fabric-key-mapping-api-v1 2.0.5+e2bdee789e
+	   |-- fabric-model-loading-api-v1 8.0.16+c80601bb9e
+	   |-- fabric-renderer-api-v1 14.1.3+2b0d8a229e
+	   |-- fabric-renderer-indigo 9.1.3+2b0d8a229e
+	   |-- fabric-rendering-v1 25.3.2+515ac5339e
+	   |-- fabric-screen-api-v1 5.2.0+58e078ad9e
+	   \-- fabric-sound-api-v1 2.0.5+11a26f319e
+	- fabric-api-base 2.0.4+ece063239e
+	- fabric-api-lookup-api-v1 2.0.17+11e1c9a39e
+	- fabric-biome-api-v1 18.0.6+c7bd5b8e9e
+	- fabric-block-api-v1 3.0.3+ec56b6019e
+	- fabric-block-getter-api-v2 2.0.7+ec56b6019e
+	- fabric-command-api-v2 3.1.0+00cb03469e
+	- fabric-content-registries-v0 11.3.1+37b1aa249e
+	- fabric-convention-tags-v2 4.7.0+1f023a9e9e
+	- fabric-crash-report-info-v1 1.0.5+086d547a9e
+	- fabric-creative-tab-api-v1 5.0.14+d871b99e9e
+	- fabric-data-attachment-api-v1 2.2.18+515ac5339e
+	- fabric-data-generation-api-v1 25.5.0+aed122aa9e
+	- fabric-debug-api-v1 1.0.2+c792624d9e
+	- fabric-dimensions-v1 5.1.11+515ac5339e
+	- fabric-entity-events-v1 5.0.5+06488ac19e
+	- fabric-events-interaction-v0 5.2.7+515ac5339e
+	- fabric-game-rule-api-v1 4.0.8+46a6d00c9e
+	- fabric-gametest-api-v1 4.0.21+4a7fa0819e
+	- fabric-item-api-v1 14.5.0+c68f6cbe9e
+	- fabric-lifecycle-events-v1 4.1.3+4575b05f9e
+	- fabric-loot-api-v3 3.0.17+06488ac19e
+	- fabric-menu-api-v1 2.0.16+086d547a9e
+	- fabric-message-api-v1 7.0.8+bb2ed3f79e
+	- fabric-networking-api-v1 6.3.3+72073ef09e
+	- fabric-object-builder-api-v1 24.1.0+6fcd5f039e
+	- fabric-particles-v1 5.0.18+d1756aa99e
+	- fabric-permission-api-v1 1.0.5+e442d8d09e
+	- fabric-recipe-api-v1 9.0.20+11e1c9a39e
+	- fabric-registry-sync-v0 7.1.0+c7bd5b8e9e
+	- fabric-rendering-fluids-v1 6.0.4+06488ac19e
+	- fabric-resource-conditions-api-v1 6.1.0+10e9a28b9e
+	- fabric-resource-loader-v0 3.3.20+4fc5413f9e
+	- fabric-resource-loader-v1 2.0.13+9edec1269e
+	- fabric-serialization-api-v1 2.0.4+11a26f319e
+	- fabric-tag-api-v1 2.1.4+515ac5339e
+	- fabric-transfer-api-v1 8.0.12+11dbb7d79e
+	- fabric-transitive-access-wideners-v1 8.1.4+67c847259e
+	- fabricloader 0.19.3
+	- java 25
+	- minecraft 26.2
+	- mixinextras 0.5.4
+[22:06:59] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/C:/Users/damia/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.3+mixin.0.8.7/41c4a3984a80f4679e759fb9f495587acc5cdac7/sponge-mixin-0.17.3+mixin.0.8.7.jar Service=Knot/Fabric Env=SERVER
+[22:06:59] [main/INFO] (FabricLoader/Mixin) Compatibility level set to JAVA_25
+[22:07:00] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.4).
+[22:07:02] [main/ERROR] (HkeyPerformanceDataUtil) Unable to locate English counter names in registry Perflib 009. Counters may need to be rebuilt: 
+
+com.sun.jna.platform.win32.Win32Exception: The parameter is incorrect.
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:921)
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:898)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.mapCounterIndicesFromRegistry(HkeyPerformanceDataUtil.java:274)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.<clinit>(HkeyPerformanceDataUtil.java:51)
+	at knot//oshi.driver.windows.registry.ProcessPerformanceData.buildProcessMapFromRegistry(ProcessPerformanceData.java:45)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.queryProcessMapFromRegistry(WindowsOperatingSystem.java:328)
+	at knot//oshi.util.Memoizer$1.get(Memoizer.java:65)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.processMapToList(WindowsOperatingSystem.java:298)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.getProcess(WindowsOperatingSystem.java:292)
+	at knot//oshi.software.os.OperatingSystem.getCurrentProcess(OperatingSystem.java:246)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.server.Main.main(Main.java:104)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotServer.main(KnotServer.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:02] [main/WARN] (PerfCounterQuery) Unable to locate English counter names in registry Perflib 009. Assuming English counters. Error 0x80070057. See https://support.microsoft.com/en-us/help/300956/how-to-manually-rebuild-performance-counter-library-values
+[22:07:02] [main/WARN] (Minecraft) Failed to get system info for Process Loads
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getUserTime()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$0(SystemReport.java:190)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:189)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.server.Main.main(Main.java:104)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotServer.main(KnotServer.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:02] [main/WARN] (Minecraft) Failed to get system info for Process Virtual Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getVirtualSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$1(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.server.Main.main(Main.java:104)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotServer.main(KnotServer.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:02] [main/WARN] (Minecraft) Failed to get system info for Process Resident Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getResidentSetSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$2(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.server.Main.main(Main.java:104)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotServer.main(KnotServer.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:06] [main/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[22:07:06] [main/INFO] (FabricGameTestRunner) Starting test server
+[22:07:07] [main/INFO] (Minecraft) Loaded 1585 recipes
+[22:07:07] [main/INFO] (Minecraft) Loaded 1688 advancements
+[22:07:07] [main/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 66 new biomes in 1.696 ms
+[22:07:07] [Server thread/INFO] (Minecraft) Selecting global world spawn...
+[22:07:08] [Server thread/INFO] (Minecraft) Loading 0 persistent chunks...
+[22:07:08] [Server thread/INFO] (Minecraft) Preparing spawn area: 100%
+[22:07:08] [Server thread/INFO] (Minecraft) Time elapsed: 137 ms
+[22:07:08] [Server thread/INFO] (Minecraft) Started game test server
+[22:07:08] [Server thread/INFO] (Minecraft) 1 tests are now running at position -8516898, -59, 6014827!
+[22:07:08] [Server thread/INFO] (Minecraft) Running test environment 'minecraft:default' batch 0 (1 tests)...
+[22:07:08] [Server thread/INFO] (Minecraft) [ ]
+[22:07:08] [Server thread/INFO] (Minecraft) [+]
+[22:07:08] [Server thread/INFO] (Minecraft) ========= 1 GAME TESTS COMPLETE IN 352.4 ms ======================
+[22:07:08] [Server thread/INFO] (Minecraft) All 1 required tests passed :)
+[22:07:08] [Server thread/INFO] (Minecraft) ====================================================
+[22:07:08] [Server thread/INFO] (Minecraft) Stopping server
+[22:07:08] [Server thread/INFO] (Minecraft) Saving players
+[22:07:08] [Server thread/INFO] (Minecraft) Saving worlds
+[22:07:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[Test Level]'/minecraft:overworld
+[22:07:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[Test Level]'/minecraft:the_nether
+[22:07:08] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[Test Level]'/minecraft:the_end
+[22:07:08] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (world): All chunks are saved
+[22:07:08] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22:07:08] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22:07:08] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved
+[22:07:08] [Server thread/INFO] (Minecraft) Game test server shutting down
+
+> Task :compileTestJava NO-SOURCE
+> Task :processTestResources NO-SOURCE
+> Task :testClasses UP-TO-DATE
+> Task :test NO-SOURCE
+> Task :validateAccessWidener NO-SOURCE
+> Task :check
+> Task :build
+> Task :downloadAssets UP-TO-DATE
+> Task :configureClientLaunch UP-TO-DATE
+> Task :deleteGameTestRunDir
+
+> Task :runClientGameTest
+[22:07:10] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 26.2 with Fabric Loader 0.19.3
+[22:07:10] [main/INFO] (FabricLoader/Mappings) Mappings not present!
+[22:07:10] [main/INFO] (FabricLoader) Loading 54 mods:
+	- baritone 1.19.0
+	   \-- dev_babbaj_nether-pathfinder 1.6
+	- fabric-api 0.158.0+26.2
+	- fabric-api-base 2.0.4+ece063239e
+	- fabric-api-lookup-api-v1 2.0.17+11e1c9a39e
+	- fabric-biome-api-v1 18.0.6+c7bd5b8e9e
+	- fabric-block-api-v1 3.0.3+ec56b6019e
+	- fabric-block-getter-api-v2 2.0.7+ec56b6019e
+	- fabric-client-gametest-api-v1 6.0.0+515ac5339e
+	- fabric-command-api-v2 3.1.0+00cb03469e
+	- fabric-content-registries-v0 11.3.1+37b1aa249e
+	- fabric-convention-tags-v2 4.7.0+1f023a9e9e
+	- fabric-crash-report-info-v1 1.0.5+086d547a9e
+	- fabric-creative-tab-api-v1 5.0.14+d871b99e9e
+	- fabric-data-attachment-api-v1 2.2.18+515ac5339e
+	- fabric-data-generation-api-v1 25.5.0+aed122aa9e
+	- fabric-debug-api-v1 1.0.2+c792624d9e
+	- fabric-dimensions-v1 5.1.11+515ac5339e
+	- fabric-entity-events-v1 5.0.5+06488ac19e
+	- fabric-events-interaction-v0 5.2.7+515ac5339e
+	- fabric-game-rule-api-v1 4.0.8+46a6d00c9e
+	- fabric-gametest-api-v1 4.0.21+4a7fa0819e
+	- fabric-item-api-v1 14.5.0+c68f6cbe9e
+	- fabric-key-mapping-api-v1 2.0.5+e2bdee789e
+	- fabric-lifecycle-events-v1 4.1.3+4575b05f9e
+	- fabric-loot-api-v3 3.0.17+06488ac19e
+	- fabric-menu-api-v1 2.0.16+086d547a9e
+	- fabric-message-api-v1 7.0.8+bb2ed3f79e
+	- fabric-model-loading-api-v1 8.0.16+c80601bb9e
+	- fabric-networking-api-v1 6.3.3+72073ef09e
+	- fabric-object-builder-api-v1 24.1.0+6fcd5f039e
+	- fabric-particles-v1 5.0.18+d1756aa99e
+	- fabric-permission-api-v1 1.0.5+e442d8d09e
+	- fabric-recipe-api-v1 9.0.20+11e1c9a39e
+	- fabric-registry-sync-v0 7.1.0+c7bd5b8e9e
+	- fabric-renderer-api-v1 14.1.3+2b0d8a229e
+	- fabric-renderer-indigo 9.1.3+2b0d8a229e
+	- fabric-rendering-fluids-v1 6.0.4+06488ac19e
+	- fabric-rendering-v1 25.3.2+515ac5339e
+	- fabric-resource-conditions-api-v1 6.1.0+10e9a28b9e
+	- fabric-resource-loader-v0 3.3.20+4fc5413f9e
+	- fabric-resource-loader-v1 2.0.13+9edec1269e
+	- fabric-screen-api-v1 5.2.0+58e078ad9e
+	- fabric-serialization-api-v1 2.0.4+11a26f319e
+	- fabric-sound-api-v1 2.0.5+11a26f319e
+	- fabric-tag-api-v1 2.1.4+515ac5339e
+	- fabric-transfer-api-v1 8.0.12+11dbb7d79e
+	- fabric-transitive-access-wideners-v1 8.1.4+67c847259e
+	- fabricloader 0.19.3
+	- java 25
+	- minecraft 26.2
+	- mixinextras 0.5.4
+	- movrand 1.0.0
+	- movrand-terrain-tests 1.0.0
+[22:07:10] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/C:/Users/damia/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.3+mixin.0.8.7/41c4a3984a80f4679e759fb9f495587acc5cdac7/sponge-mixin-0.17.3+mixin.0.8.7.jar Service=Knot/Fabric Env=CLIENT
+[22:07:10] [main/INFO] (FabricLoader/Mixin) Compatibility level set to JAVA_25
+[22:07:11] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.4).
+[22:07:12] [Datafixer Bootstrap #0/INFO] (Minecraft) 295 Datafixer optimizations took 402 milliseconds
+[22:07:13] [main/ERROR] (HkeyPerformanceDataUtil) Unable to locate English counter names in registry Perflib 009. Counters may need to be rebuilt: 
+
+com.sun.jna.platform.win32.Win32Exception: The parameter is incorrect.
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:921)
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:898)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.mapCounterIndicesFromRegistry(HkeyPerformanceDataUtil.java:274)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.<clinit>(HkeyPerformanceDataUtil.java:51)
+	at knot//oshi.driver.windows.registry.ProcessPerformanceData.buildProcessMapFromRegistry(ProcessPerformanceData.java:45)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.queryProcessMapFromRegistry(WindowsOperatingSystem.java:328)
+	at knot//oshi.util.Memoizer$1.get(Memoizer.java:65)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.processMapToList(WindowsOperatingSystem.java:298)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.getProcess(WindowsOperatingSystem.java:292)
+	at knot//oshi.software.os.OperatingSystem.getCurrentProcess(OperatingSystem.java:246)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:13] [main/WARN] (PerfCounterQuery) Unable to locate English counter names in registry Perflib 009. Assuming English counters. Error 0x80070057. See https://support.microsoft.com/en-us/help/300956/how-to-manually-rebuild-performance-counter-library-values
+[22:07:13] [main/WARN] (Minecraft) Failed to get system info for Process Loads
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getUserTime()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$0(SystemReport.java:190)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:189)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:13] [main/WARN] (Minecraft) Failed to get system info for Process Virtual Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getVirtualSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$1(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:13] [main/WARN] (Minecraft) Failed to get system info for Process Resident Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getResidentSetSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$2(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[22:07:17] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[22:07:17] [Render thread/INFO] (Minecraft) Setting user: Player0
+[22:07:18] [Render thread/INFO] (Indigo) [Indigo] Registering Indigo renderer!
+[22:07:18] [Render thread/INFO] (movrand) [movrand] loaded — open the menu with the key bound to key.movrand.open
+[22:07:18] [Render thread/ERROR] (Minecraft) Illegal option value 0 for Anisotropic Filtering
+[22:07:18] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.4.1-snapshot
+[22:07:20] [Render thread/INFO] (Minecraft) Preferring discrete GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+[22:07:20] [Render thread/INFO] (Minecraft) Using graphics backend OpenGL, using drivers: 3.3.0 - Build 32.0.101.5972
+[22:07:20] [Render thread/INFO] (Minecraft) Using graphics device: Intel(R) Graphics (Intel)
+[22:07:20] [Render thread/INFO] (Minecraft) Using graphics device extensions: GL_ARB_multi_draw_indirect, GL_ARB_buffer_storage, GL_ARB_shader_draw_parameters, GL_ARB_base_instance, GL_KHR_debug, GL_ARB_draw_indirect, GL_ARB_clip_control, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access, GL_EXT_texture_filter_anisotropic
+[22:07:21] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, fabric-api, fabric-api-base, fabric-api-lookup-api-v1, fabric-biome-api-v1, fabric-block-api-v1, fabric-block-getter-api-v2, fabric-client-gametest-api-v1, fabric-command-api-v2, fabric-content-registries-v0, fabric-convention-tags-v2, fabric-crash-report-info-v1, fabric-creative-tab-api-v1, fabric-data-attachment-api-v1, fabric-data-generation-api-v1, fabric-debug-api-v1, fabric-dimensions-v1, fabric-entity-events-v1, fabric-events-interaction-v0, fabric-game-rule-api-v1, fabric-gametest-api-v1, fabric-item-api-v1, fabric-key-mapping-api-v1, fabric-lifecycle-events-v1, fabric-loot-api-v3, fabric-menu-api-v1, fabric-message-api-v1, fabric-model-loading-api-v1, fabric-networking-api-v1, fabric-object-builder-api-v1, fabric-particles-v1, fabric-permission-api-v1, fabric-recipe-api-v1, fabric-registry-sync-v0, fabric-renderer-api-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-rendering-v1, fabric-resource-conditions-api-v1, fabric-resource-loader-v0, fabric-resource-loader-v1, fabric-screen-api-v1, fabric-serialization-api-v1, fabric-sound-api-v1, fabric-tag-api-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabricloader, movrand
+[22:07:21] [Download-2/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+[22:07:21] [Render thread/INFO] (Minecraft) [CHAT] [Baritone] Baritone settings file not found, resetting.
+[22:07:21] [Worker-Main-4/INFO] (Minecraft) Found unifont_all_no_pua-17.0.01.hex, loading
+[22:07:21] [Worker-Main-11/INFO] (Minecraft) Found unifont_pua-17.0.01.hex, loading
+[22:07:21] [Render thread/INFO] (Minecraft) [STDOUT]: [nether-pathfinder] Created temp file at C:\Users\damia\AppData\Local\Temp\nether_pathfinder-x86_647113753189287605134.dll
+[22:07:21] [Render thread/INFO] (Minecraft) [STDERR]: [nether-pathfinder] Failed to delete temp file
+[22:07:21] [Render thread/INFO] (Minecraft) [STDOUT]: [nether-pathfinder] Loaded shared library
+[22:07:21] [Worker-Main-9/INFO] (Minecraft) Found unifont_jp_patch-17.0.01.hex, loading
+[22:07:22] [Render thread/INFO] (Minecraft) OpenAL initialized on device OpenAL Soft on Headphones (Realtek(R) Audio)
+[22:07:22] [Render thread/INFO] (Minecraft) Sound engine started
+[22:07:22] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[22:07:22] [Render thread/INFO] (Minecraft) Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[22:07:22] [Render thread/INFO] (Minecraft) Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
+[22:07:22] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[22:07:22] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[22:07:22] [Render thread/INFO] (Minecraft) Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[22:07:23] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[22:07:23] [Download-2/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+[22:07:26] [Render thread/INFO] (Minecraft) Loaded 1585 recipes
+[22:07:26] [Render thread/INFO] (Minecraft) Loaded 1688 advancements
+[22:07:26] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.GenericMessageScreen@1ce8ea6
+[22:07:26] [Render thread/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 66 new biomes in 1.071 ms
+[22:07:26] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 26.2
+[22:07:26] [Server thread/INFO] (Minecraft) Generating keypair
+[22:07:27] [Server thread/INFO] (Minecraft) Selecting global world spawn...
+[22:07:27] [Server thread/INFO] (Minecraft) Loading 0 persistent chunks...
+[22:07:27] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[22:07:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[22:07:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[22:07:27] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[22:07:27] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (world): All chunks are saved
+[22:07:27] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22:07:27] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22:07:27] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:27] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Server thread/INFO] (Minecraft) Loading 48 chunks for player spawn...
+[22:07:28] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Server thread/INFO] (Minecraft) Time elapsed: 1298 ms
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Server thread/INFO] (Minecraft) Player0[local:E:8c4eaae8] logged in with entity id 1 at (0.5, -60.0, 0.5)
+[22:07:28] [Server thread/INFO] (Minecraft) Player0 joined the game
+[22:07:28] [Server thread/INFO] (Minecraft) Changing view distance to 5, from 10
+[22:07:28] [Server thread/INFO] (Minecraft) Changing simulation distance to 12, from 0
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (Minecraft) [STDOUT]: Baritone world data dir: C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384
+[22:07:28] [Render thread/INFO] (Minecraft) [STDOUT]: Cached world directory: C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384\cache
+[22:07:28] [Render thread/INFO] (Minecraft) [STDOUT]: Would save waypoints to C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384\waypoints
+[22:07:28] [Render thread/INFO] (Minecraft) Loaded 2 advancements
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Download-2/ERROR] (Minecraft) Failed to retrieve profile key pair
+
+MinecraftClientHttpException[type=HTTP_ERROR, status=401, response=ErrorResponse[path=/player/certificates, error=null, errorMessage=null, details=null]]
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.buildHttpException(MinecraftClient.java:170)
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.readServiceResponse(MinecraftClient.java:147)
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.post(MinecraftClient.java:89)
+	at knot//com.mojang.authlib.yggdrasil.YggdrasilUserApiService.getKeyPair(YggdrasilUserApiService.java:62)
+	at knot//net.minecraft.client.multiplayer.AccountProfileKeyPairManager.fetchProfileKeyPair(AccountProfileKeyPairManager.java:128)
+	at knot//net.minecraft.client.multiplayer.AccountProfileKeyPairManager.lambda$readOrFetchProfileKeyPair$0(AccountProfileKeyPairManager.java:77)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+[22:07:28] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[22:07:28] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:28] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[22:07:29] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[22:07:29] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@63841a8
+[22:07:29] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: null
+[22:07:29] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage test setup
+[22:07:29] [Server thread/INFO] (Minecraft) No entity was found
+[22:07:29] [Server thread/INFO] (Minecraft) No items were found on player Player0
+[22:07:29] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:07:29] [Server thread/INFO] (Minecraft) Successfully filled 2401 block(s)
+[22:07:29] [Server thread/INFO] (Minecraft) Teleported Player0 to 0.500000, 1.000000, 0.500000
+[22:07:29] [Server thread/INFO] (Minecraft) Applied effect Instant Health to Player0
+[22:07:30] [Server thread/INFO] (Minecraft) Changed the block at 2, 1, 0
+[22:07:30] [Server thread/INFO] (Minecraft) Player0 has made the advancement [Diamonds!]
+[22:07:30] [Render thread/INFO] (Minecraft) [System] [CHAT] Player0 has made the advancement [Diamonds!]
+[22:07:30] [Render thread/INFO] (Minecraft) Loaded 22 advancements
+[22:07:30] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[22:07:31] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[22:07:35] [Render thread/INFO] (movrand) STORAGE TRACE chest exact slots and partial stack Chest · 2, 1, 0 · deposit attack false hit MutableBlockPos{x=2, y=1, z=0} screen net.minecraft.client.gui.screens.inventory.ContainerScreen@68c8bff7 destroying false grabbed false
+[22:07:36] [Test thread/INFO] (movrand) Storage smoothing chest exact slots and partial stack completed in 118 ticks with 22 moving frame intervals
+[22:07:36] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage check passed: chest exact slots and partial stack
+[22:07:36] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage test setup
+[22:07:36] [Server thread/INFO] (Minecraft) No entity was found
+[22:07:36] [Server thread/INFO] (Minecraft) Removed 8 item(s) from player Player0
+[22:07:36] [Server thread/INFO] (Minecraft) Successfully filled 1 block(s)
+[22:07:36] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:07:36] [Server thread/INFO] (Minecraft) Teleported Player0 to 0.500000, 1.000000, 0.500000
+[22:07:36] [Server thread/INFO] (Minecraft) Applied effect Instant Health to Player0
+[22:07:37] [Render thread/INFO] (Minecraft) Loaded 38 advancements
+[22:07:37] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[22:07:44] [Render thread/INFO] (movrand) STORAGE TRACE find a distant safe site and recover bag shulker Red Shulker Box · bag 9 · travel attack false hit null screen null destroying false grabbed true
+[22:07:46] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[22:07:49] [Render thread/INFO] (movrand) STORAGE TRACE find a distant safe site and recover bag shulker Red Shulker Box · bag 9 · break box attack true hit MutableBlockPos{x=-23, y=1, z=24} screen null destroying true grabbed true
+[22:07:52] [Test thread/INFO] (movrand) Storage smoothing find a distant safe site and recover bag shulker completed in 264 ticks with 145 moving frame intervals
+[22:07:52] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage check passed: find a distant safe site and recover bag shulker
+[22:07:52] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage test setup
+[22:07:52] [Server thread/INFO] (Minecraft) No entity was found
+[22:07:52] [Server thread/INFO] (Minecraft) Removed 1 item(s) from player Player0
+[22:07:52] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:07:52] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:07:52] [Server thread/INFO] (Minecraft) Teleported Player0 to 0.500000, 1.000000, 0.500000
+[22:07:52] [Server thread/INFO] (Minecraft) Applied effect Instant Health to Player0
+[22:07:53] [Server thread/INFO] (Minecraft) Player0 has made the advancement [Acquire Hardware]
+[22:07:53] [Render thread/INFO] (Minecraft) [System] [CHAT] Player0 has made the advancement [Acquire Hardware]
+[22:07:53] [Render thread/INFO] (Minecraft) Loaded 68 advancements
+[22:07:58] [Render thread/INFO] (movrand) STORAGE TRACE ender chest inspection while movement is off Ender chest · break ender attack true hit MutableBlockPos{x=0, y=1, z=-1} screen null destroying true grabbed true
+[22:07:58] [ForkJoinPool.commonPool-worker-2/INFO] (Minecraft) [STDOUT]: Saving region 0,0 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384\cache
+[22:07:58] [ForkJoinPool.commonPool-worker-1/INFO] (Minecraft) [STDOUT]: Saving region 0,-1 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384\cache
+[22:07:58] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: Saving region -1,0 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384\cache
+[22:07:58] [ForkJoinPool.commonPool-worker-3/INFO] (Minecraft) [STDOUT]: Saving region -1,-1 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\New World\.\baritone\minecraft\overworld_384\cache
+[22:07:58] [ForkJoinPool.commonPool-worker-1/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[22:07:58] [ForkJoinPool.commonPool-worker-2/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[22:07:58] [ForkJoinPool.commonPool-worker-3/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[22:07:58] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[22:07:58] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: World save took 30ms
+[22:08:02] [Test thread/INFO] (movrand) Storage smoothing ender chest inspection while movement is off completed in 183 ticks with 201 moving frame intervals
+[22:08:02] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage check passed: ender chest inspection while movement is off
+[22:08:02] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[22:08:07] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Diamonds · ender 7 · open dest attack false hit MutableBlockPos{x=1, y=1, z=-1} screen null destroying false grabbed true
+[22:08:12] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Diamonds · ender 7 · break box attack true hit MutableBlockPos{x=1, y=1, z=-1} screen null destroying true grabbed true
+[22:08:17] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Diamonds · ender 7 · break ender attack true hit MutableBlockPos{x=0, y=1, z=-1} screen null destroying true grabbed true
+[22:08:22] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Diamonds · ender 7 · next attack false hit null screen null destroying false grabbed true
+[22:08:27] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Blue Shulker Box · ender 20 · place box attack false hit null screen null destroying false grabbed true
+[22:08:32] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Blue Shulker Box · ender 20 · break box attack true hit MutableBlockPos{x=1, y=1, z=-2} screen null destroying true grabbed true
+[22:08:37] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Blue Shulker Box · ender 20 · break ender attack true hit MutableBlockPos{x=0, y=1, z=-2} screen null destroying true grabbed true
+[22:08:42] [Render thread/INFO] (movrand) STORAGE TRACE two ender shulkers returned to original slots Blue Shulker Box · ender 20 · next attack false hit null screen null destroying false grabbed true
+[22:08:43] [Test thread/INFO] (movrand) Storage smoothing two ender shulkers returned to original slots completed in 810 ticks with 724 moving frame intervals
+[22:08:43] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage check passed: two ender shulkers returned to original slots
+[22:08:43] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[22:08:48] [Render thread/INFO] (movrand) STORAGE TRACE retain filled ender shulker in bag Diamonds · ender 7 · place box attack false hit null screen null destroying false grabbed true
+[22:08:53] [Render thread/INFO] (movrand) STORAGE TRACE retain filled ender shulker in bag Diamonds · ender 7 · break box attack true hit MutableBlockPos{x=1, y=1, z=-3} screen null destroying true grabbed true
+[22:08:58] [Render thread/INFO] (movrand) STORAGE TRACE retain filled ender shulker in bag Diamonds · bag 0 · break ender attack true hit MutableBlockPos{x=0, y=1, z=-3} screen null destroying true grabbed true
+[22:09:02] [Test thread/INFO] (movrand) Storage smoothing retain filled ender shulker in bag completed in 363 ticks with 365 moving frame intervals
+[22:09:02] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage check passed: retain filled ender shulker in bag
+[22:09:02] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[22:09:14] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §rStorage stopped: Original ender-chest slot is occupied; filled shulker kept in your inventory · shulker site 2, 1, -4 · ender site 1, 1, -4
+[22:09:14] [Server thread/INFO] (Minecraft) Changed the block at 5, 1, 0
+[22:09:15] [Server thread/INFO] (Minecraft) Successfully filled 6 block(s)
+[22:09:15] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage test setup
+[22:09:15] [Server thread/INFO] (Minecraft) No entity was found
+[22:09:15] [Server thread/INFO] (Minecraft) Removed 6 item(s) from player Player0
+[22:09:15] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:09:15] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:09:15] [Server thread/INFO] (Minecraft) Teleported Player0 to 0.500000, 1.000000, 0.500000
+[22:09:15] [Server thread/INFO] (Minecraft) Applied effect Instant Health to Player0
+[22:09:15] [Server thread/INFO] (Minecraft) Gave 1 [Ender Chest] to Player0
+[22:09:16] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §rStorage stopped: A Silk Touch pickaxe with durability is required
+[22:09:16] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§cStopped: §7Storage test setup
+[22:09:16] [Server thread/INFO] (Minecraft) No entity was found
+[22:09:16] [Server thread/INFO] (Minecraft) Removed 1 item(s) from player Player0
+[22:09:16] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:09:16] [Server thread/INFO] (Minecraft) No blocks were filled
+[22:09:16] [Server thread/INFO] (Minecraft) Teleported Player0 to 0.500000, 1.000000, 0.500000
+[22:09:16] [Server thread/INFO] (Minecraft) Applied effect Instant Health to Player0
+[22:09:17] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[22:09:19] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §rStorage stopped: Storage area became unsafe · shulker site 1, 1, -1 · ender site 0, 1, -1
+[22:09:19] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[22:09:19] [Test thread/INFO] (movrand) Storage server-backed checks passed; interpolated phases [next, prepare, reopen ender, place box, pick ender, break ender, break box, place ender, take, open dest, open ender, deposit, pick box, travel, return]
+[22:09:19] [Server thread/INFO] (Minecraft) Player0 lost connection: Disconnected
+[22:09:19] [Server thread/INFO] (Minecraft) Player0 left the game
+[22:09:19] [Server thread/INFO] (Minecraft) Stopping singleplayer server as player logged out
+[22:09:19] [Server thread/INFO] (Minecraft) Stopping server
+[22:09:19] [Server thread/INFO] (Minecraft) Saving players
+[22:09:19] [Server thread/INFO] (Minecraft) Saving worlds
+[22:09:20] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[22:09:20] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[22:09:20] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[22:09:20] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (world): All chunks are saved
+[22:09:20] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[22:09:20] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[22:09:20] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: java.lang.InterruptedException: sleep interrupted
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.sleepNanos0(Native Method)
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.sleepNanos(Thread.java:509)
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.sleep(Thread.java:540)
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at knot//baritone.cache.CachedWorld.lambda$new$0(CachedWorld.java:101)
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+[22:09:20] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.run(Thread.java:1474)
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: java.lang.InterruptedException
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1767)
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:435)
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at knot//baritone.cache.CachedWorld$PackerThread.run(CachedWorld.java:312)
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+[22:09:20] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.run(Thread.java:1474)
+[22:09:20] [Render thread/INFO] (Minecraft) Stopping!
+
+BUILD SUCCESSFUL in 2m 51s
+40 actionable tasks: 32 executed, 8 up-to-date

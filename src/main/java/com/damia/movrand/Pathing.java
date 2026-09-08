@@ -133,6 +133,7 @@ public final class Pathing {
 	}
 
 	public boolean walking() {
+		if (cfg.baritoneNavigation) return nativeNav.walking();
 		return runner != null;
 	}
 
@@ -142,15 +143,18 @@ public final class Pathing {
 	}
 
 	public int step() {
+		if (cfg.baritoneNavigation) return nativeNav.walking() ? nativeNav.step : 0;
 		return runner == null ? 0 : runner.step();
 	}
 
 	public int length() {
+		if (cfg.baritoneNavigation) return nativeNav.walking() ? nativeNav.length : 0;
 		return runner == null ? 0 : runner.length();
 	}
 
 	/** What the route is doing right now, so the job can label the phase honestly. */
 	public PathFinder.Kind currentKind() {
+		if (cfg.baritoneNavigation) return nativeNav.currentKind();
 		return runner == null ? PathFinder.Kind.START : runner.currentKind();
 	}
 

@@ -1,0 +1,270 @@
+{
+  "case": "shortlist-recheck",
+  "frames": 2840,
+  "seconds": 142.0,
+  "travel_blocks": 274.72218996069313,
+  "damage": 12.0,
+  "min_health": 8.0,
+  "end": {
+    "ticks": 2840,
+    "state": "Off \u2014 capping liquid at 1122, 64, 134",
+    "health": 8.0,
+    "position": [
+      1119.5888725265147,
+      65.0,
+      134.55866337375633
+    ],
+    "inventory": {
+      "minecraft:cobblestone": 208,
+      "minecraft:comparator": 5,
+      "minecraft:cooked_beef": 64,
+      "minecraft:diamond_axe": 1,
+      "minecraft:diamond_pickaxe": 1,
+      "minecraft:diamond_sword": 1,
+      "minecraft:gray_concrete": 1,
+      "minecraft:hopper": 2,
+      "minecraft:note_block": 12,
+      "minecraft:observer": 3,
+      "minecraft:piston": 16,
+      "minecraft:redstone": 24,
+      "minecraft:redstone_block": 1,
+      "minecraft:redstone_torch": 2,
+      "minecraft:repeater": 5,
+      "minecraft:sticky_piston": 2,
+      "minecraft:target": 2
+    },
+    "reason": "Health down to 12.0"
+  },
+  "phases": {
+    "PLANNING": 91,
+    "WALKING": 654,
+    "MINING": 791,
+    "COLLECTING": 672,
+    "WAITING": 89,
+    "PREPARING": 449,
+    "SCANNING": 4,
+    "COVERING": 82,
+    "OFF": 8
+  },
+  "events": {
+    "selection": 77,
+    "place": 48,
+    "break": 76,
+    "retry": 4,
+    "stuck": 1
+  },
+  "breaks": {
+    "minecraft:piston": 17,
+    "minecraft:hopper": 3,
+    "minecraft:note_block": 12,
+    "minecraft:target": 2,
+    "minecraft:repeater": 5,
+    "minecraft:redstone_wire": 22,
+    "minecraft:sticky_piston": 2,
+    "minecraft:black_stained_glass": 2,
+    "minecraft:comparator": 5,
+    "minecraft:redstone_wall_torch": 2,
+    "minecraft:gray_concrete": 1,
+    "minecraft:redstone_block": 1,
+    "minecraft:observer": 2
+  },
+  "placements": {
+    "minecraft:cobblestone": 48
+  },
+  "pickups": {
+    "minecraft:piston": 16,
+    "minecraft:observer": 3,
+    "minecraft:hopper": 2,
+    "minecraft:note_block": 12,
+    "minecraft:target": 2,
+    "minecraft:repeater": 5,
+    "minecraft:redstone": 24,
+    "minecraft:sticky_piston": 2,
+    "minecraft:comparator": 5,
+    "minecraft:redstone_torch": 2,
+    "minecraft:gray_concrete": 1,
+    "minecraft:redstone_block": 1
+  },
+  "inventory_decreases": {
+    "minecraft:cobblestone": 48
+  },
+  "original_redstone": 2954,
+  "remaining_redstone": 2873,
+  "remaining_selected": [
+    {
+      "pos": [
+        1122,
+        70,
+        117
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1133,
+        75,
+        101
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1133,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1134,
+        75,
+        101
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1134,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1138,
+        70,
+        124
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1154,
+        70,
+        93
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1154,
+        70,
+        125
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1158,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1159,
+        75,
+        133
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1162,
+        77,
+        135
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1163,
+        76,
+        135
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1170,
+        70,
+        117
+      ],
+      "block": "minecraft:redstone_block"
+    },
+    {
+      "pos": [
+        1174,
+        70,
+        129
+      ],
+      "block": "minecraft:redstone_block"
+    }
+  ],
+  "retries": [
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1122,
+        69,
+        124
+      ],
+      "observed_tick": 682
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1123,
+        70,
+        131
+      ],
+      "observed_tick": 1238
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1123,
+        69,
+        131
+      ],
+      "observed_tick": 1452
+    },
+    {
+      "kind": "retry",
+      "detail": "no safe working position in loaded terrain",
+      "pos": [
+        1119,
+        71,
+        135
+      ],
+      "observed_tick": 2773
+    }
+  ],
+  "stuck": [
+    {
+      "kind": "stuck",
+      "detail": "route stopped making progress",
+      "pos": [
+        1119,
+        65,
+        136
+      ],
+      "observed_tick": 2562
+    }
+  ],
+  "immediate_cell_reversals": 42,
+  "repeated_cell_entries": 129,
+  "route_count": 152,
+  "decisions": 77,
+  "priority_violations": 0,
+  "max_same_priority_extra": 0.3060193918660674,
+  "global_audited_decisions": 77,
+  "global_priority_misses": [],
+  "oscillation_sequences": []
+}

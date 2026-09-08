@@ -204,7 +204,8 @@ public final class ConfigScreen extends Screen {
 	private String placeSearch = "";
 	private String junkSearch = "";
 	private String storageSearch = "";
-	private Storage.Target storageTarget;
+	/** Like the active tab, retain the picker selection between settings screens. */
+	private static Storage.Target storageTarget;
 
 	private void build() {
 		// A text box whose setter rebuilds the page - the two searches both do - would
@@ -412,6 +413,7 @@ public final class ConfigScreen extends Screen {
 		add(new Note("Keep a different set of settings for each thing you use the bot for.", Ui.TEXT_MUTED));
 
 		add(new Section("Current"));
+		add(new Note("Every setting change saves automatically to the loaded config.", Ui.TEXT_MUTED));
 		add(new KeyValue("Loaded profile",
 				() -> cfg.activeProfile.isBlank() ? "unnamed (config/movrand.json)" : cfg.activeProfile,
 				() -> accent()));
@@ -455,18 +457,22 @@ public final class ConfigScreen extends Screen {
 		}
 		for (String name : profiles) {
 			boolean active = name.equals(cfg.activeProfile);
-			// reading each file is what lets a profile be judged before you switch to it
-			Config saved = Config.peekProfile(name);
+			// The loaded profile always represents the current settings.
+			Config saved = active ? cfg : Config.peekProfile(name);
 			Risks.Level worst = saved == null ? null : Risks.worst(saved);
 			String verdict = saved == null ? "could not be read" : Risks.summary(saved);
 			add(new Row(List.of(
 					new Action(() -> (active ? "\u25cf " : "") + (worst == Risks.Level.HIGH ? "\u26a0 " : "") + name,
 							active, () -> loadProfile(name))
-							.tip(active ? "This one is loaded. Click to reload it from disk."
+							.tip(active ? "This config is active. Changes save automatically; clicking keeps your current settings."
 									: "Load " + name + ", replacing every current setting."),
 					new Action(() -> pendingDelete.equals(name) ? "Really?" : "Delete", false, () -> {
 						if (pendingDelete.equals(name)) {
-							Config.deleteProfile(name);
+							if (!Config.deleteProfile(name)) {
+								ctl.lastReason = "Could not delete " + name;
+								return;
+							}
+							if (name.equals(cfg.activeProfile)) cfg.activeProfile = "";
 							pendingDelete = "";
 							ctl.lastReason = "Deleted " + name;
 						} else {
@@ -490,6 +496,11 @@ public final class ConfigScreen extends Screen {
 
 	/** Swapping the whole config means the screen's captured references are stale. */
 	private void loadProfile(String name) {
+		unfocusInputs();
+		if (name.equals(cfg.activeProfile)) {
+			build();
+			return;
+		}
 		Config loaded = Config.loadProfile(name);
 		if (loaded == null) {
 			ctl.lastReason = "Could not load " + name;
@@ -1002,11 +1013,6 @@ public final class ConfigScreen extends Screen {
             add(new Toggle("Climb vines", () -> cfg.baritoneVines, v -> cfg.baritoneVines = v));
             add(new Toggle("Use water buckets for long falls", () -> cfg.baritoneWaterBucketFalls, v -> cfg.baritoneWaterBucketFalls = v)
                     .tip("Requires a usable water bucket. Off keeps routes within the longest-drop limit."));
-            add(new Slider("Navigation turn smoothing", 0, 1, 0.05, 2, " x", () -> cfg.baritoneTurnSmoothing, v -> cfg.baritoneTurnSmoothing = v)
-                    .tip("1 gives full glide with continuous frame-by-frame camera motion. Sets the minimum smoothing for all Base destroyer actions. Higher smoothness does not lower the turn rate or hold movement keys."));
-            add(new Slider("Maximum navigation turn per tick", 8, 90, 1, 0, " degrees", () -> cfg.baritoneTurnRate, v -> cfg.baritoneTurnRate = v));
-            add(new Slider("Navigation aim variation", 0, 0.2, 0.01, 2, " degrees", () -> cfg.baritoneAimVariation, v -> cfg.baritoneAimVariation = v)
-                    .tip("Bounded random aim variation, passed through the turn filter during navigation. Jumps, placement and landing keep the same smoothing."));
             add(new Slider("Extra time per terrain move", 3, 60, 1, 0, "s", () -> cfg.baritoneNoProgressSec, v -> cfg.baritoneNoProgressSec = v)
                     .tip("Added to the predicted movement cost before Baritone cancels a stalled step."));
             add(Slider.ints("Failed route attempts", 1, 20, () -> cfg.pathAttempts, v -> cfg.pathAttempts = v));
@@ -1046,6 +1052,24 @@ public final class ConfigScreen extends Screen {
 		}
 		add(new KeyValue("Last route", () -> "%d nodes searched · cost %.0f"
 				.formatted(d.lastPathNodes, d.lastPathCost), () -> Ui.TEXT_MUTED));
+
+		if (cfg.baritoneNavigation) {
+			add(new Section("Baritone movement randomisation"));
+			add(new Note("Baritone already varies aim slightly. These controls apply while it navigates; the ordinary random strafe, pause and turn events do not.", Ui.TEXT_MUTED));
+			add(new Toggle("Randomise walking / sprinting", () -> cfg.baritoneRandomisePace, v -> cfg.baritoneRandomisePace = v)
+					.tip("Optional pace changes on clear, level ground. Requires Sprint between blocks. Keeps Baritone's normal control for jumps, run-ups, landings, climbing, mining and placement. Off preserves the original pace."));
+			add(new Slider("Sprint chance per segment", 0, 1, 0.05, 2, " x", () -> cfg.baritoneSprintChance, v -> cfg.baritoneSprintChance = v)
+					.tip("0 walks on eligible stretches; 1 keeps normal sprinting. Only permits sprinting when Baritone already considers it safe."));
+			add(new RangeSlider("Pace segment duration", 0.5, 30, 0.5, 1, "s",
+					() -> cfg.baritonePaceMinSec, v -> cfg.baritonePaceMinSec = v,
+					() -> cfg.baritonePaceMaxSec, v -> cfg.baritonePaceMaxSec = v)
+					.tip("Choose a random duration in this range, then draw the next walking or sprinting segment. Terrain manoeuvres take priority immediately."));
+			add(new Slider("Navigation aim variation", 0, 0.2, 0.01, 2, " degrees", () -> cfg.baritoneAimVariation, v -> cfg.baritoneAimVariation = v)
+					.tip("Existing bounded random aim variation, passed through the turn filter. Set to 0 to disable it. Does not add route detours."));
+			add(new Slider("Navigation turn smoothing", 0, 1, 0.05, 2, " x", () -> cfg.baritoneTurnSmoothing, v -> cfg.baritoneTurnSmoothing = v)
+					.tip("1 gives full glide with continuous frame-by-frame camera motion. Sets the minimum smoothing for all Base destroyer actions. Higher smoothness does not lower the turn rate or hold movement keys."));
+			add(new Slider("Maximum navigation turn per tick", 8, 90, 1, 0, " degrees", () -> cfg.baritoneTurnRate, v -> cfg.baritoneTurnRate = v));
+		}
 
 		if (!cfg.baritoneNavigation) {
 		add(new Section("How the route is walked"));
@@ -1433,6 +1457,8 @@ public final class ConfigScreen extends Screen {
 	private void buildStorage() {
 		add(new Section("Collected item storage"));
 		add(new Toggle("Store collected items in containers", () -> cfg.storageEnabled, v -> cfg.storageEnabled = v));
+		add(new Toggle("Fast slot filling", () -> cfg.storageFastTransfers, v -> cfg.storageFastTransfers = v)
+				.tip("Fill the chosen slot with one left-click, then return any remainder to your inventory. Waits for server confirmation; never shift-clicks into neighbouring slots."));
 		add(new Note("Stores matching unprotected stacks, including any already in your bag. Choose each container, "
 				+ "its allowed slots and its item filter below. Empty filters store nothing. Runs before selling and junk disposal.", Ui.TEXT_MUTED));
 		add(new KeyValue("Storage", () -> ctl.storage.status, () -> ctl.storage.failed() ? Ui.WARN : Ui.TEXT_MUTED));
@@ -1454,30 +1480,47 @@ public final class ConfigScreen extends Screen {
 				+ "Shulkers go next to the ender chest, one at a time. Keep two bag slots empty and one hotbar slot unprotected. "
 				+ "Ender-chest access requires a Silk Touch pickaxe; placed containers are recovered afterward.", Ui.TEXT_FAINT));
 		add(new Section("Choose a shulker or ender chest from your inventory"));
-		add(new SlotGrid(36, true, "Click a shulker to configure it; click an ender chest to inspect it",
+		add(new SlotGrid(36, true, "Click shulkers to select/deselect; click an ender chest to inspect it",
 				i -> minecraft.player == null ? net.minecraft.world.item.ItemStack.EMPTY : minecraft.player.getInventory().getItem(i),
-				i -> storageTarget != null && storageTarget.kind == Storage.Kind.INVENTORY_SHULKER && storageTarget.inventorySlot == i,
+				i -> cfg.storageTargets.stream().anyMatch(t -> t.kind == Storage.Kind.INVENTORY_SHULKER
+						&& t.inventorySlot == i && t.world.equals(WorldId.current())),
 				(i, button) -> {
 					if (minecraft.player == null) return;
 					var stack = minecraft.player.getInventory().getItem(i);
 					if (stack.is(net.minecraft.world.item.Items.ENDER_CHEST)) {
 						storageTarget = ctl.storage.enderTarget();
+						SCROLL[Tab.STORAGE.ordinal()] = 0; // Keep inspection progress or its stop reason visible on return.
 						ctl.storage.inspect(minecraft, storageTarget, this);
+						if (minecraft.gui.screen() == this) build();
 					} else {
-						Storage.Target t = ctl.storage.selectShulker(minecraft, i, false);
-						if (t != null) storageTarget = t;
+						if (cfg.storageTargets.removeIf(t -> t.kind == Storage.Kind.INVENTORY_SHULKER
+								&& t.inventorySlot == i && t.world.equals(WorldId.current()))) {
+							if (!cfg.storageTargets.contains(storageTarget)) storageTarget = null;
+						} else {
+							Storage.Target t = ctl.storage.selectShulker(minecraft, i, false);
+							if (t != null) storageTarget = t;
+						}
 						build();
 					}
 				}));
 		List<net.minecraft.world.item.ItemStack> ender = ctl.storage.enderView();
 		if (!ender.isEmpty()) {
 			add(new Section("Inside your ender chest · last inspection"));
-			add(new Note("Click a shulker here to configure its contents. Use the Ender chest destination below to choose "
+			add(new Note("Click a shulker here to select it; click again to remove its route. Use the Ender chest destination below to choose "
 					+ "slots for loose items. Inspect again after manually changing the chest.", Ui.TEXT_MUTED));
 			add(new SlotGrid(27, false, "Click one or more shulkers to create their individual routes", ender::get,
 					i -> cfg.storageTargets.stream().anyMatch(t -> t.kind == Storage.Kind.ENDER_SHULKER && t.enderSlot == i
 							&& t.world.equals(WorldId.current())),
-					(i, button) -> { Storage.Target t = ctl.storage.selectShulker(minecraft, i, true); if (t != null) storageTarget = t; build(); }));
+					(i, button) -> {
+						if (cfg.storageTargets.removeIf(t -> t.kind == Storage.Kind.ENDER_SHULKER && t.enderSlot == i
+								&& t.world.equals(WorldId.current()))) {
+							if (!cfg.storageTargets.contains(storageTarget)) storageTarget = null;
+						} else {
+							Storage.Target t = ctl.storage.selectShulker(minecraft, i, true);
+							if (t != null) storageTarget = t;
+						}
+						build();
+					}));
 		}
 		add(new Section("Nearby placed chests, barrels and shulkers"));
 		add(new Action("Refresh nearby containers", false, this::build));
@@ -1509,11 +1552,12 @@ public final class ConfigScreen extends Screen {
 		add(new Note("Highlighted destination slots may receive items. Click cells to toggle them. Existing stacks stay where they are; "
 				+ "the order controls how new deposits fill compatible or empty slots. Shulkers cannot go inside shulkers.", Ui.TEXT_MUTED));
 		List<net.minecraft.world.item.ItemStack> view = ctl.storage.view(t);
-		add(new SlotGrid(t.size, false, "Destination slots · last known contents", view::get, t.slots::contains,
+		// clampAll replaces these lists after clicks; callbacks must read the current list.
+		add(new SlotGrid(t.size, false, "Destination slots · last known contents", view::get, i -> t.slots.contains(i),
 				(i, button) -> { if (!t.slots.remove(Integer.valueOf(i))) t.slots.add(i); }));
 		add(new Row(List.of(new Action("Select all slots", false, () -> {
 			t.slots.clear(); for (int i = 0; i < t.size; i++) t.slots.add(i);
-		}), new Action("Clear slots", false, t.slots::clear))));
+		}), new Action("Clear slots", false, () -> t.slots.clear()))));
 		add(new Cycle<>("Deposit items by", List.of(Storage.ItemOrder.values()), r -> switch (r) {
 			case INVENTORY -> "Inventory order"; case NAME -> "Item name";
 			case LARGEST_STACK -> "Largest stack first"; case FILTER_ORDER -> "Filter selection order";
@@ -1538,7 +1582,7 @@ public final class ConfigScreen extends Screen {
 		for (String match : searchItems(storageSearch)) if (!items.contains(Storage.id(match))) items.add(Storage.id(match));
 		add(new Note(t.items.isEmpty() ? "No items selected — nothing will be stored here." : "Selected types, in filter order: "
 				+ String.join(", ", t.items).replace("minecraft:", ""), Ui.TEXT_FAINT));
-		if (!items.isEmpty()) add(new Widgets.ItemGrid(items, t.items::contains, id -> {
+		if (!items.isEmpty()) add(new Widgets.ItemGrid(items, id -> t.items.contains(id), id -> {
 			if (!t.items.remove(Storage.id(id))) t.items.add(Storage.id(id)); build();
 		}));
 	}
@@ -2596,6 +2640,7 @@ public final class ConfigScreen extends Screen {
 
 	private void resetAll() {
 		Config fresh = new Config();
+		fresh.activeProfile = cfg.activeProfile;
 		fresh.clampAll();
 		fresh.save();
 		MovRand.replaceConfig(fresh);
@@ -2886,13 +2931,20 @@ public final class ConfigScreen extends Screen {
 		int y = panelY + panelH - 20;
 		Ui.hLine(g, panelX + 8, y - 4, panelW - 16, Ui.BORDER_SOFT);
 		String tip = hoverTip.isEmpty()
-				? "Esc closes and saves  ·  right-click a cycle to go backwards  ·  the bot keeps walking"
+				? "Changes save automatically  ·  right-click a cycle to go backwards  ·  the bot keeps walking"
 				: hoverTip;
 		Ui.textElided(g, font, tip, panelW - 32, panelX + 12, y + 2,
 				hoverTip.isEmpty() ? Ui.TEXT_FAINT : Ui.TEXT_MUTED);
 	}
 
 	// --------------------------------------------------------------- input
+
+	private void saveSettings() {
+		// A profile action may have replaced this screen and its captured config.
+		if (cfg != MovRand.config()) return;
+		cfg.clampAll();
+		cfg.save();
+	}
 
 	@Override
 	public boolean mouseClicked(MouseButtonEvent event, boolean doubled) {
@@ -2913,6 +2965,7 @@ public final class ConfigScreen extends Screen {
 		int py = panelY + 14;
 		if (button == 0 && mx >= px && mx < px + pw && my >= py && my < py + 18) {
 			ctl.toggle(minecraft);
+			saveSettings();
 			return true;
 		}
 
@@ -2931,7 +2984,7 @@ public final class ConfigScreen extends Screen {
 		if (insideContent) {
 			for (Element e : elements) {
 				if (e.mouseClicked(mx, my, button, doubled)) {
-					cfg.clampAll();
+					saveSettings();
 					return true;
 				}
 			}
@@ -2947,7 +3000,7 @@ public final class ConfigScreen extends Screen {
 			return true;
 		}
 		for (Element e : elements) e.mouseDragged(event.x(), event.y());
-		cfg.clampAll();
+		saveSettings();
 		return true;
 	}
 
@@ -2961,6 +3014,7 @@ public final class ConfigScreen extends Screen {
 			return true;
 		}
 		for (Element e : elements) e.mouseReleased();
+		saveSettings();
 		return super.mouseReleased(event);
 	}
 
@@ -2973,7 +3027,10 @@ public final class ConfigScreen extends Screen {
 		}
 		if (my >= contentY && my < contentY + contentH) {
 			// the map zooms on the wheel; everything else lets the page scroll
-			for (Element e : elements) if (e.mouseScrolled(mx, my, dy)) return true;
+			for (Element e : elements) if (e.mouseScrolled(mx, my, dy)) {
+				saveSettings();
+				return true;
+			}
 		}
 		if (mx >= contentX - 8 && mx <= contentX + contentW + 12) {
 			SCROLL[activeTab.ordinal()] -= dy * 22;
@@ -2987,7 +3044,7 @@ public final class ConfigScreen extends Screen {
 		TextInput focused = focusedInput();
 		if (focused != null) {
 			focused.keyPressed(event.key(), event.modifiers());
-			cfg.clampAll();
+			saveSettings();
 			return true;
 		}
 		if (event.key() == GLFW.GLFW_KEY_TAB) {
@@ -3004,7 +3061,11 @@ public final class ConfigScreen extends Screen {
 	@Override
 	public boolean charTyped(CharacterEvent event) {
 		TextInput focused = focusedInput();
-		if (focused != null) return focused.charTyped(event.codepoint());
+		if (focused != null) {
+			boolean handled = focused.charTyped(event.codepoint());
+			saveSettings();
+			return handled;
+		}
 		return super.charTyped(event);
 	}
 
@@ -3041,6 +3102,7 @@ public final class ConfigScreen extends Screen {
 			if (e instanceof TextInput t) t.unfocus();
 			if (e instanceof Row row) for (Element c : row.children) if (c instanceof TextInput t2) t2.unfocus();
 		}
+		saveSettings();
 	}
 
 	@Override

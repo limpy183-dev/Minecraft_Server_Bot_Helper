@@ -2,7 +2,7 @@
 import collections, json, pathlib, sys
 
 root=pathlib.Path(sys.argv[1]).resolve()
-results=json.loads((root/'summary.json').read_text()); byname={r['case']:r for r in results}
+results=json.loads((root/'summary.json').read_text(encoding='utf-8')); byname={r['case']:r for r in results}
 def link(name,label=None):return f'[{label or name}]({(root/name).as_posix()})'
 def itemlist(items):return ', '.join(f'{n} {k.removeprefix("minecraft:")}' for k,n in items.items()) or 'none'
 lines=['# Basalt farm destroyer test — Minecraft 26.2','',
@@ -13,7 +13,7 @@ if full:
     stop=root/'full-redstone/stopped-for-stagnation.json'
     if stop.exists():lines += ['The harness stopped after 180 game seconds without a confirmed player break, covering multiple retry windows.','']
 else:lines += ['The long full-family run is still pending; this is an interim report.','']
-provenance=json.loads((root/'provenance.json').read_text())
+provenance=json.loads((root/'provenance.json').read_text(encoding='utf-8'))
 if provenance.get('installed_tested_copy'):
     lines += [f"The final tested save is installed in Modrinth’s Fabric 26.2 profile as [New World - Basalt Destroyer Test 2026-09-07](<{provenance['installed_tested_copy']}>). The original archive’s SHA-256 was rechecked after testing and is unchanged.",'']
 lines += ['## Main findings','',

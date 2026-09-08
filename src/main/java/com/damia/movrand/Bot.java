@@ -559,18 +559,17 @@ public final class Bot {
 	 * @return the direction to the support block, or null when there is nothing to place from
 	 */
 	public static Direction placeAgainst(Minecraft mc, LocalPlayer player, BlockPos target, Direction preferred) {
+		return placeAgainst(mc, player, target, preferred, player.getEyePosition());
+	}
+
+	static Direction placeAgainst(Minecraft mc, LocalPlayer player, BlockPos target, Direction preferred, Vec3 eyes) {
 		if (mc.level == null) return null;
-		if (preferred != null && supports(mc, player, target, preferred)) return preferred;
+		if (preferred != null && supports(mc, player, target, preferred, eyes)) return preferred;
 
 		Direction best = null;
 		double bestDist = Double.MAX_VALUE;
-		Vec3 eyes = player.getEyePosition();
 		for (Direction face : Direction.values()) {
-			// Never the block above. Clicking a ceiling to fill the square underneath it is a
-			// real placement and it is nobody's first idea; Baritone leaves UP out of its
-			// candidate list for the same reason.
-			if (face == Direction.UP) continue;
-			if (!supports(mc, player, target, face)) continue;
+			if (!supports(mc, player, target, face, eyes)) continue;
 			double d = placePoint(mc, target, face).distanceToSqr(eyes);
 			if (d < bestDist) {
 				bestDist = d;
@@ -596,23 +595,20 @@ public final class Bot {
 	 * For lava at your feet that is the block you are standing on, and the side of it facing
 	 * the lava is the one side you cannot see from up there: the ray goes in through the top.
 	 */
-	private static boolean supports(Minecraft mc, LocalPlayer player, BlockPos target, Direction face) {
+	private static boolean supports(Minecraft mc, LocalPlayer player, BlockPos target, Direction face, Vec3 eyes) {
 		BlockPos against = target.relative(face);
 		BlockState state = mc.level.getBlockState(against);
 		if (state.isAir() || !state.getFluidState().isEmpty()) return false;
-		// A collision shape is enough to stand on, but not enough to place a pillar from.
-		// Slabs, repeaters, dust, rails and similar partial shapes can be ray-hit while still
-		// being rejected by the block-placement rules. Require the same full upper support a
-		// stable pillar needs, so the bot does not jump and hold use at a placement that can
-		// never succeed.
-		if (!fullPlacementSupport(mc.level, against)) return false;
-		if (!inReach(mc, player, against)) return false;
+		// Click support and a floor to stand on are different requirements. Vanilla's
+		// placement context below decides whether a thin block can anchor this placement.
+		if (state.getShape(mc.level, against).isEmpty()) return false;
 		// cheap and exact: a face you are behind is a face you cannot click, no ray needed
-		if (!facesTheEye(blockBox(mc, against), face.getOpposite(), player.getEyePosition())) {
+		if (!facesTheEye(blockBox(mc, against), face.getOpposite(), eyes)) {
 			return false;
 		}
 		Vec3 aim = placePoint(mc, target, face);
-		return placesInto(mc, player, target, against, aim)
+		return eyes.distanceToSqr(aim) <= player.blockInteractionRange() * player.blockInteractionRange()
+				&& placesInto(mc, player, target, against, aim, eyes)
 				&& placementWouldBeAccepted(mc, player, target, against, face, aim);
 	}
 
@@ -664,8 +660,8 @@ public final class Bot {
 
 	/** Whether a ray to this point lands on the support, on the face that fills the target. */
 	private static boolean placesInto(Minecraft mc, LocalPlayer player, BlockPos target,
-	                                  BlockPos against, Vec3 aim) {
-		BlockHitResult hit = mc.level.clip(new ClipContext(player.getEyePosition(), aim,
+	                                  BlockPos against, Vec3 aim, Vec3 eyes) {
+		BlockHitResult hit = mc.level.clip(new ClipContext(eyes, aim,
 				ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));
 		return hit.getType() == HitResult.Type.BLOCK
 				&& hit.getBlockPos().equals(against)
@@ -674,7 +670,12 @@ public final class Bot {
 
 	/** The point on the support block that is clicked to put a block into {@code target}. */
 	public static Vec3 placePoint(Minecraft mc, BlockPos target, Direction toSupport) {
-		return facePoint(blockBox(mc, target.relative(toSupport)), toSupport.getOpposite());
+		AABB box = blockBox(mc, target.relative(toSupport));
+		Vec3 normal = toSupport.getOpposite().getUnitVec3();
+		double span = Math.abs(normal.x) * box.getXsize() + Math.abs(normal.y) * box.getYsize() + Math.abs(normal.z) * box.getZsize();
+		// Mining can hit any face; placement must enter the specific neighbour-facing face.
+		// A deeply inset aim hits the top of a repeater instead of its thin side.
+		return box.getCenter().add(normal.scale(span * 0.499));
 	}
 
 	/**

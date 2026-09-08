@@ -173,7 +173,8 @@ public final class BasaltFarmGameTest implements FabricClientGameTest {
             trace = Files.newBufferedWriter(dir.resolve("ticks.jsonl"));
             test.runOnClient(mc -> { MovRand.controller().start(mc); active = this; });
             try {
-                for (int n = 0; n < c.ticks; n += 20) {
+                int limit = Integer.parseInt(System.getenv().getOrDefault("MOVRAND_BASALT_TICKS", Integer.toString(c.ticks)));
+                for (int n = 0; n < limit; n += 20) {
                     test.waitTicks(20);
                     boolean done = test.computeOnClient(mc -> mc.player.isDeadOrDying()
                         || (c.drop != null && mc.player.getInventory().contains(s -> s.is(Items.DIAMOND)))

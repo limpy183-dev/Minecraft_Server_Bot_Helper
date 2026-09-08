@@ -10,11 +10,24 @@ import net.minecraft.world.level.block.Blocks;
 /** Real server physics, survival inventory, production controller and Baritone executor. */
 public final class TerrainGameTest implements FabricClientGameTest {
 	@Override public void runTest(ClientGameTestContext test) {
+		if (System.getenv("MOVRAND_STORAGE_WORLD") != null) {
+			StorageProfileGameTest.run(test);
+			return;
+		}
 		if (System.getenv("MOVRAND_BASALT_SOURCE") != null) {
 			new BasaltFarmGameTest().runTest(test);
 			return;
 		}
 		try (var world = test.worldBuilder().create()) {
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_STORAGE_ONLY"))) {
+				StorageGameTest.run(test, world);
+				return;
+			}
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_MECHANICS_ONLY"))) {
+				BasaltMechanicsGameTest.run(test, world);
+				return;
+			}
+			navigationPace(test, world);
 			miningAimPoints(test, world);
 			if (!Boolean.parseBoolean(System.getenv("MOVRAND_TERRAIN_ONLY"))) {
 				smoothingMatrix(test, world);
@@ -79,6 +92,39 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			// has closed, stop them so Minecraft's shutdown watchdog does not fail a passed run.
 			if (baritone.Baritone.getExecutor() instanceof java.util.concurrent.ExecutorService executor)
 				executor.shutdownNow();
+		}
+	}
+
+	/** Exercise the real sprint hook, then leave the terrain suite to cover critical moves. */
+	private static void navigationPace(ClientGameTestContext test, TestSingleplayerContext world) {
+		for (boolean enabled : new boolean[]{true, false}) {
+			setup(test, world);
+			world.getServer().runCommand("tp @p 0.5 1 0.5 -90 0");
+			world.getServer().runCommand("effect give @p saturation 1 4 true");
+			drop(world, 18.5, 1.2, 0.5);
+			world.getConnection().waitForClientboundPackets();
+			test.waitTicks(15);
+			test.runOnClient(mc -> {
+				Config cfg = MovRand.config();
+				cfg.baritoneRandomisePace = enabled;
+				cfg.baritoneSprintChance = 0;
+				cfg.destroySprint = true;
+				cfg.collectRadius = 24;
+				MovRand.controller().start(mc);
+			});
+			int[] samples = new int[2];
+			try {
+				test.waitFor(mc -> {
+					if (NativeNavigation.controlling() && mc.player.getX() > 5 && mc.player.getX() < 12) {
+						samples[0]++;
+						if (mc.player.isSprinting()) samples[1]++;
+					}
+					return mc.player.getInventory().contains(s -> s.is(Items.DIAMOND));
+				}, 600);
+				if (samples[0] < 5 || (enabled ? samples[1] != 0 : samples[1] == 0))
+					throw new AssertionError("pace toggle=" + enabled + ", travel ticks=" + samples[0] + ", sprint ticks=" + samples[1]);
+				test.runOnClient(mc -> MovRand.controller().stop(mc, "navigation pace toggle=" + enabled + " passed"));
+			} catch (Throwable failure) { diagnose(test, "navigation-pace-" + enabled); throw failure; }
 		}
 	}
 
@@ -287,12 +333,15 @@ public final class TerrainGameTest implements FabricClientGameTest {
 		});
 	}
 
-	private static void setup(ClientGameTestContext test, TestSingleplayerContext world) {
+	static void setup(ClientGameTestContext test, TestSingleplayerContext world) {
 		test.runOnClient(mc -> {
 			MovRand.controller().stop(mc, "terrain fixture");
 			Config cfg = new Config();
 			cfg.terrainDefaults();
 			cfg.fastDestroyerTuning();
+			// Walk wherever eligible to stress the transition back to normal terrain execution.
+			cfg.baritoneRandomisePace = true;
+			cfg.baritoneSprintChance = 0;
 			cfg.baritoneTurnSmoothing = cfg.taskAimSmoothing = 1;
 			cfg.destroyerEnabled = true;
 			cfg.destroyStopWhenDone = false;

@@ -8,17 +8,17 @@ def position(p): return (p['x'],p['y'],p['z']) if isinstance(p, dict) else tuple
 
 def analyse(folder):
     if not (folder/'end.json').exists(): return None
-    end = json.loads((folder/'end.json').read_text())
-    before = json.loads((folder/'before.json').read_text())
-    after = json.loads((folder/'after.json').read_text())
-    events = json.loads((folder/'events.json').read_text())
+    end = json.loads((folder/'end.json').read_text(encoding='utf-8'))
+    before = json.loads((folder/'before.json').read_text(encoding='utf-8'))
+    after = json.loads((folder/'after.json').read_text(encoding='utf-8'))
+    events = json.loads((folder/'events.json').read_text(encoding='utf-8'))
     counts = collections.Counter(e['kind'] for e in events)
     breaks = collections.Counter(e['block'] for e in events if e['kind']=='break')
     places = collections.Counter(e['block'] for e in events if e['kind']=='place')
     pickups, consumed = collections.Counter(), collections.Counter()
     previous = None; travel = damage = 0; phases = collections.Counter(); minhealth = 20
     last_cell = None; cells = []; cell_visits=[]; routes = []; route = None; active_key = None; frames=0; server_ticks=set()
-    for line in (folder/'ticks.jsonl').open():
+    for line in (folder/'ticks.jsonl').open(encoding='utf-8'):
         r = json.loads(line); frames += 1
         server_ticks.add(r['server_tick'])
         phases[r['phase']] += 1; minhealth = min(minhealth,r['health'])

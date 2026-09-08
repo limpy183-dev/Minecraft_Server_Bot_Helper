@@ -577,6 +577,22 @@ gaps**, **Place while crossing a gap** and **Climb vines** control terrain edits
 Tunnelling and terrain edits for pickup routes are enabled by default. Your exclusions still
 apply to route digging. Inventory restocking remains under the mod's slot controls.
 
+### Baritone movement randomisation
+
+The **Base destroyer → Baritone movement randomisation** subsection contains the navigation
+camera controls and optional **Randomise walking / sprinting**. Baritone already applies small
+random aim offsets (default **0.03 degrees**); ordinary random strafe, pause and turn events
+do not run while Baritone owns movement.
+
+Pace randomisation is **off by default**, preserving existing behaviour. When enabled, it
+draws a walking or sprinting segment using **Sprint chance per segment** (default **0.8**)
+and a uniformly random **Pace segment duration** (default **2–6 seconds**). It requires
+**Sprint between blocks** and only reduces sprinting that Baritone has already approved.
+It applies on clear, fully supported, level stretches with ordinary walking steps ahead
+and behind. Jumps, run-ups, landings, bridges, climbing, liquids, mining and placement retain
+normal control immediately. It adds no detours or pauses and changes no target selection,
+mining permissions, inventory handling or safety rules. These settings save with configs and profiles.
+
 **Navigation turn smoothing**, **Maximum navigation turn per tick** and **Navigation aim
 variation** control navigation humanisation. Candidate placement checks use the intended
 rotation so smoothing cannot prevent a placement from ever being considered. Smoothing now
