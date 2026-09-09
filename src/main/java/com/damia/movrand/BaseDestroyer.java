@@ -435,7 +435,11 @@ public final class BaseDestroyer {
 	}
 
 	private boolean closeToDrops(LocalPlayer player, BlockPos block) {
-		return !cfg.protectMiningDrops || DropCollector.pickupOverlap(player.getBoundingBox(),
+		return closeToDrops(cfg, player.getBoundingBox(), block);
+	}
+
+	static boolean closeToDrops(Config cfg, net.minecraft.world.phys.AABB player, BlockPos block) {
+		return !cfg.mineWithinPickupRange || DropCollector.pickupOverlap(player,
 				new net.minecraft.world.phys.AABB(block).deflate(0.25));
 	}
 
@@ -530,9 +534,9 @@ public final class BaseDestroyer {
 		PathFinder.Goal goal = (x, y, z) ->
 				!rejectedWorkCells.contains(BlockPos.asLong(x, y, z))
 				&& Bot.canWorkFrom(level, ctx.player(), x, y, z, want, aim, reach)
-				&& (!cfg.protectMiningDrops || DropCollector.pickupOverlap(
+				&& closeToDrops(cfg,
 						new net.minecraft.world.phys.AABB(x + 0.2, y, z + 0.2, x + 0.8, y + 1.8, z + 0.8),
-						new net.minecraft.world.phys.AABB(want).deflate(0.25)));
+						want);
 
 		Pathing.Nav result = nav.tick(ctx, steer, want, goal, mayBreak());
 		absorb(nav);
@@ -546,10 +550,7 @@ public final class BaseDestroyer {
 			case PLANNING -> {
 				phase = Phase.PLANNING;
 				detail = nav.status;
-				// Face what we are about to walk to. Working out a route is half a second of
-				// standing still at worst, and half a second spent looking at the thing you are
-				// about to go and get is a person thinking; the same half second spent staring at
-				// the floor is a client that has stopped responding.
+				// Face the target while the bounded route search runs.
 				double[] look = Bot.aimAt(ctx.player(), aim);
 				steer.lookAt(look[0], look[1]);
 				return steer;
@@ -662,10 +663,11 @@ public final class BaseDestroyer {
 			if (cfg.destroyRequireLineOfSight && !BlockTargets.visibleToPlayer(level, player, f.pos(),
 					level.getBlockState(f.pos()), cfg.destroyFieldOfViewDeg)) continue;
 			double distance = Math.sqrt(Bot.blockCentre(mc, f.pos()).distanceToSqr(player.getEyePosition()));
-			boolean reachable = distance <= player.blockInteractionRange()
+			boolean reachable = distance <= player.blockInteractionRange() && closeToDrops(player, f.pos())
 					&& (Bot.visibleFace(mc, player, f.pos(), null) != null
 					|| Bot.rotationHits(mc, player, f.pos(), Bot.aimAt(player, Bot.blockCentre(mc, f.pos()))[0],
-							Bot.aimAt(player, Bot.blockCentre(mc, f.pos()))[1]));
+							Bot.aimAt(player, Bot.blockCentre(mc, f.pos()))[1]))
+					&& (!cfg.protectMiningDrops || MineSafety.inspect(new PathMove.Ctx(mc, player, level, cfg), f.pos()).safe());
 			candidates.add(new Candidate(f.pos(), distance, reachable, f.storage()));
 		}
 		return chooseCandidate(candidates, cfg);
@@ -1158,6 +1160,19 @@ public final class BaseDestroyer {
 		Config cfg = new Config();
 		cfg.clampAll();
 		BaseDestroyer d = new BaseDestroyer(cfg, null);
+		var body = new net.minecraft.world.phys.AABB(0.2, 0, 0.2, 0.8, 1.8, 0.8);
+		BlockPos distantDrop = new BlockPos(3, 1, 0), nearbyDrop = new BlockPos(1, 1, 0);
+		assert cfg.mineWithinPickupRange : "default dropped the existing pickup-range preference";
+		cfg.mineWithinPickupRange = false;
+		assert cfg.protectMiningDrops && closeToDrops(cfg, body, distantDrop)
+				: "safe drop preparation restricted mining reach";
+		cfg.mineWithinPickupRange = true;
+		assert !closeToDrops(cfg, body, distantDrop) && closeToDrops(cfg, body, nearbyDrop);
+		cfg.protectMiningDrops = false;
+		assert !closeToDrops(cfg, body, distantDrop) : "pickup range depended on drop protection";
+		assert cfg.copy().mineWithinPickupRange : "profile copy lost pickup preference";
+		cfg.mineWithinPickupRange = false;
+		cfg.protectMiningDrops = true;
 
 		BlockPos near = new BlockPos(1, 0, 0), far = new BlockPos(8, 0, 0), tie = new BlockPos(1, 0, 1);
 		cfg.destroyTargetRandomness = 1;

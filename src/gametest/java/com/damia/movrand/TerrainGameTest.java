@@ -19,6 +19,10 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			return;
 		}
 		try (var world = test.worldBuilder().create()) {
+			readyTargetPriority(test, world);
+			walkingLavaEdge(test, world);
+			pickupRangeToggle(test, world);
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_PICKUP_ONLY"))) return;
 			if (Boolean.parseBoolean(System.getenv("MOVRAND_STORAGE_ONLY"))) {
 				StorageGameTest.run(test, world);
 				return;
@@ -129,6 +133,89 @@ public final class TerrainGameTest implements FabricClientGameTest {
 	}
 
 	/** Real outline/reach rays, sticky offsets and live toggle changes. */
+	private static void readyTargetPriority(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		world.getServer().runCommand("tp @p 0.5 1 0.5 -90 0");
+		world.getServer().runCommand("setblock 0 2 1 redstone_block");
+		world.getServer().runCommand("setblock 0 2 2 lava");
+		world.getServer().runCommand("setblock 1 1 0 redstone_block");
+		world.getConnection().waitForClientboundPackets();
+		test.runOnClient(mc -> {
+			Config cfg = MovRand.config();
+			cfg.destroyBlocks.add("redstone_block"); cfg.destroyTargetRandomness = cfg.taskReactionChance = 0;
+			MovRand.controller().start(mc);
+			try {
+				MovRand.controller().destroyer.tick(mc, mc.player, mc.level, 0);
+				if (!new BlockPos(1, 1, 0).equals(MovRand.controller().destroyer.target()))
+					throw new AssertionError("nearby lava preparation outranked a ready mining target");
+				MovRand.LOG.info("Ready mining target outranked nearer block requiring lava preparation");
+			} finally { MovRand.controller().stop(mc, "ready target fixture complete"); }
+		});
+	}
+
+	/** Exercise the actual injected route costs, including walking beside the farm's lava. */
+	private static void walkingLavaEdge(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		world.getServer().runCommand("tp @p 0.5 1 0.5 -90 0");
+		world.getServer().runCommand("setblock 2 1 0 lava");
+		world.getConnection().waitForClientboundPackets();
+		test.runOnClient(mc -> {
+			var nav = new Pathing(MovRand.config());
+			try {
+				nav.tick(new PathMove.Ctx(mc, mc.player, mc.level, MovRand.config()), new Bot.Steer(),
+						new BlockPos(4, 1, 0), (x, y, z) -> x == 4 && y == 1 && z == 0, null);
+				var ctx = new baritone.pathing.movement.CalculationContext(baritone.api.BaritoneAPI.getProvider().getPrimaryBaritone());
+				if (baritone.pathing.movement.movements.MovementTraverse.cost(ctx, 0, 1, 0, 1, 0)
+						< baritone.api.pathing.movement.ActionCosts.COST_INF)
+					throw new AssertionError("walking route accepted a lava edge");
+				var result = new baritone.utils.pathing.MutableMoveResult();
+				baritone.pathing.movement.movements.MovementDiagonal.cost(ctx, 0, 1, 0, 1, 1, result);
+				if (result.cost < baritone.api.pathing.movement.ActionCosts.COST_INF)
+					throw new AssertionError("diagonal route accepted a lava edge");
+				if (baritone.pathing.movement.movements.MovementTraverse.cost(ctx, 0, 1, 0, 0, -1)
+						>= baritone.api.pathing.movement.ActionCosts.COST_INF)
+					throw new AssertionError("lava-edge guard blocked a clear walking route");
+				MovRand.LOG.info("Walking and diagonal lava-edge costs rejected unsafe routes");
+			} finally { nav.reset(); }
+		});
+	}
+
+	/** An overhead block is mineable from the floor, but its spawning drops are above pickup height. */
+	private static void pickupRangeToggle(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		BlockPos target = new BlockPos(0, 4, 0);
+		world.getServer().runCommand("setblock 0 4 0 redstone_block");
+		world.getServer().runCommand("tp @p 0.5 1 0.5 0 -90");
+		world.getServer().runCommand("attribute @p minecraft:movement_speed base set 0");
+		world.getConnection().waitForClientboundPackets(); test.waitTicks(10);
+		try {
+			test.runOnClient(mc -> {
+				Config cfg = MovRand.config();
+				cfg.destroyBlocks.add("redstone_block"); cfg.taskReactionChance = 0;
+				cfg.mineWithinPickupRange = true; cfg.pathBridge = false; cfg.pathMine = false;
+				if (!MineSafety.inspect(new PathMove.Ctx(mc, mc.player, mc.level, cfg), target).safe())
+					throw new AssertionError("pickup fixture requires a safe drop area");
+				MovRand.controller().start(mc);
+			});
+			test.waitTicks(20);
+			test.runOnClient(mc -> {
+				if (!mc.level.getBlockState(target).is(Blocks.REDSTONE_BLOCK) || MovRand.controller().destroyer.mined != 0)
+					throw new AssertionError("pickup-only mode mined above pickup height");
+				MovRand.config().mineWithinPickupRange = false;
+			});
+			int ticks = test.waitFor(mc -> mc.level.getBlockState(target).isAir()
+					&& MovRand.controller().destroyer.mined > 0, 120);
+			test.runOnClient(mc -> {
+				if (!MovRand.config().protectMiningDrops || mc.player.position().distanceToSqr(new net.minecraft.world.phys.Vec3(0.5, 1, 0.5)) > 0.04)
+					throw new AssertionError("normal reach disabled protection or required a route");
+				MovRand.LOG.info("Pickup range toggle: overhead mining confirmed in {} ticks without moving", ticks);
+			});
+		} finally {
+			test.runOnClient(mc -> MovRand.controller().stop(mc, "pickup range fixture complete"));
+			world.getServer().runCommand("attribute @p minecraft:movement_speed base set 0.1");
+		}
+	}
+
 	private static void miningAimPoints(ClientGameTestContext test, TestSingleplayerContext world) {
 		setup(test, world);
 		world.getServer().runCommand("tp @p 0.5 1 0.5 -90 0");

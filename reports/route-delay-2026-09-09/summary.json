@@ -1,0 +1,185 @@
+[
+  {
+    "run": "baseline",
+    "case": "main-sweep",
+    "ticks": 1200,
+    "pickup_range": true,
+    "protect_drops": true,
+    "max_planning_ticks": 4,
+    "planning_ticks": 13,
+    "confirmed_breaks": {
+      "minecraft:observer": 1,
+      "minecraft:piston": 5,
+      "minecraft:cobblestone": 2,
+      "minecraft:note_block": 1,
+      "minecraft:obsidian": 1,
+      "minecraft:netherrack": 1
+    },
+    "health": 20.0,
+    "min_health": 20.0,
+    "phases": {
+      "PLANNING": 13,
+      "WALKING": 160,
+      "MINING": 321,
+      "WAITING": 22,
+      "COLLECTING": 175,
+      "PREPARING": 244,
+      "BRIDGING": 28,
+      "COVERING": 223,
+      "CLEARING": 14
+    }
+  },
+  {
+    "run": "baseline",
+    "case": "main-sweep-redstone",
+    "ticks": 1200,
+    "pickup_range": true,
+    "protect_drops": true,
+    "max_planning_ticks": 1,
+    "planning_ticks": 14,
+    "confirmed_breaks": {
+      "minecraft:redstone_block": 5,
+      "minecraft:piston": 1,
+      "minecraft:note_block": 1,
+      "minecraft:gray_concrete": 1,
+      "minecraft:netherrack": 1
+    },
+    "health": 20.0,
+    "min_health": 20.0,
+    "phases": {
+      "PREPARING": 231,
+      "PLANNING": 14,
+      "WALKING": 645,
+      "MINING": 184,
+      "BRIDGING": 9,
+      "CLEARING": 35,
+      "COLLECTING": 69,
+      "SCANNING": 1,
+      "WAITING": 12
+    }
+  },
+  {
+    "run": "fixed",
+    "case": "main-sweep",
+    "ticks": 340,
+    "pickup_range": false,
+    "protect_drops": true,
+    "max_planning_ticks": 0,
+    "planning_ticks": 0,
+    "confirmed_breaks": {
+      "minecraft:observer": 1,
+      "minecraft:piston": 3,
+      "minecraft:repeater": 4
+    },
+    "health": 0.0,
+    "min_health": 0.0,
+    "phases": {
+      "MINING": 83,
+      "WAITING": 39,
+      "COVERING": 117,
+      "COLLECTING": 68,
+      "PREPARING": 25,
+      "OFF": 8
+    }
+  },
+  {
+    "run": "fixed",
+    "case": "main-sweep-redstone",
+    "ticks": 1200,
+    "pickup_range": false,
+    "protect_drops": true,
+    "max_planning_ticks": 2,
+    "planning_ticks": 5,
+    "confirmed_breaks": {
+      "minecraft:redstone_block": 4,
+      "minecraft:cobblestone": 1,
+      "minecraft:black_stained_glass": 1,
+      "minecraft:netherrack": 1,
+      "minecraft:sticky_piston": 1,
+      "minecraft:piston": 1
+    },
+    "health": 20.0,
+    "min_health": 20.0,
+    "phases": {
+      "WAITING": 17,
+      "PREPARING": 505,
+      "MINING": 226,
+      "COLLECTING": 161,
+      "PLANNING": 5,
+      "WALKING": 271,
+      "SCANNING": 1,
+      "BRIDGING": 3,
+      "CLEARING": 11
+    }
+  },
+  {
+    "run": "final",
+    "case": "main-sweep",
+    "ticks": 2400,
+    "pickup_range": false,
+    "protect_drops": true,
+    "max_planning_ticks": 1,
+    "planning_ticks": 3,
+    "confirmed_breaks": {
+      "minecraft:observer": 4,
+      "minecraft:piston": 5,
+      "minecraft:repeater": 6,
+      "minecraft:note_block": 3,
+      "minecraft:redstone_wire": 5,
+      "minecraft:black_stained_glass": 2,
+      "minecraft:sticky_piston": 8,
+      "minecraft:netherrack": 6,
+      "minecraft:crimson_nylium": 3,
+      "minecraft:target": 3,
+      "minecraft:soul_soil": 3,
+      "minecraft:cobblestone": 3,
+      "minecraft:basalt": 1,
+      "minecraft:dropper": 1
+    },
+    "health": 4.0333347,
+    "min_health": 4.0333347,
+    "phases": {
+      "WAITING": 47,
+      "MINING": 448,
+      "COVERING": 918,
+      "SCANNING": 7,
+      "PREPARING": 343,
+      "COLLECTING": 590,
+      "WALKING": 26,
+      "PLANNING": 3,
+      "BRIDGING": 18
+    }
+  },
+  {
+    "run": "final",
+    "case": "main-sweep-redstone",
+    "ticks": 2400,
+    "pickup_range": false,
+    "protect_drops": true,
+    "max_planning_ticks": 1,
+    "planning_ticks": 16,
+    "confirmed_breaks": {
+      "minecraft:redstone_block": 8,
+      "minecraft:cobblestone": 1,
+      "minecraft:black_stained_glass": 2,
+      "minecraft:note_block": 1,
+      "minecraft:gray_concrete": 2,
+      "minecraft:sticky_piston": 1,
+      "minecraft:netherrack": 2,
+      "minecraft:piston": 1
+    },
+    "health": 20.0,
+    "min_health": 20.0,
+    "phases": {
+      "PREPARING": 520,
+      "MINING": 344,
+      "WAITING": 19,
+      "COLLECTING": 505,
+      "PLANNING": 16,
+      "WALKING": 941,
+      "SCANNING": 1,
+      "BRIDGING": 8,
+      "CLEARING": 46
+    }
+  }
+]

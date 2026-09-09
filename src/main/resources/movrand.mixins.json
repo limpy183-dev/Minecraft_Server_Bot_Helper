@@ -2,6 +2,6 @@
   "required": true,
   "package": "com.damia.movrand.mixin",
   "compatibilityLevel": "JAVA_25",
-  "client": ["BaritoneLookMixin", "BaritonePaceMixin", "CameraMixin", "BaritoneMiningMixin", "BaritoneInventoryMixin", "BaritoneBuilderInventoryMixin", "MiningSafetyMixin", "BlockEditConfirmationMixin", "BaritoneParkourSafetyMixin", "BaritoneAscendSafetyMixin", "BaritonePillarSafetyMixin"],
+  "client": ["BaritoneLookMixin", "BaritonePaceMixin", "CameraMixin", "BaritoneMiningMixin", "BaritoneInventoryMixin", "BaritoneBuilderInventoryMixin", "MiningSafetyMixin", "BlockEditConfirmationMixin", "BaritoneParkourSafetyMixin", "BaritoneAscendSafetyMixin", "BaritonePillarSafetyMixin", "BaritoneTraverseSafetyMixin", "BaritoneDiagonalSafetyMixin"],
   "injectors": {"defaultRequire": 1}
 }

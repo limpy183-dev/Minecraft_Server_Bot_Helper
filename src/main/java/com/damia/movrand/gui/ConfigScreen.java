@@ -955,7 +955,7 @@ public final class ConfigScreen extends Screen {
 				.tip("Updates targeting, aim, reaction and recovery timing. Keeps your block selections, inventory and path-edit permissions."));
 		add(new Toggle("Prefer blocks already in reach", () -> cfg.destroyPreferReachable,
 				v -> cfg.destroyPreferReachable = v)
-				.tip("Mine visible nearby blocks before planning a journey to an obstructed block."));
+				.tip("Mine visible nearby blocks that meet the pickup setting and need no drop-area preparation before planning a journey or preparing another block."));
 		add(Slider.ints("Choose between the nearest", 1, 32,
 				() -> cfg.destroyTargetChoices, v -> cfg.destroyTargetChoices = v)
 				.tip("Maximum near-tie candidates. Re-ranked from your current position at each decision."));
@@ -1131,6 +1131,8 @@ public final class ConfigScreen extends Screen {
         add(new Section("Protect mined drops"));
         add(new Toggle("Prepare a safe drop area before mining", () -> cfg.protectMiningDrops, v -> cfg.protectMiningDrops = v)
                 .tip("Contains exposed lava and builds catch floors before breaking. Includes route digging. Requires solid, nonflammable building supplies; defers blocks whose protection cannot be completed."));
+        add(new Toggle("Only mine targets within pickup range", () -> cfg.mineWithinPickupRange, v -> cfg.mineWithinPickupRange = v)
+                .tip("Walk close enough to pick up a target's drops before mining it. Can require longer routes, especially between floors. Off uses normal mining reach and collects drops afterwards; safe drop-area preparation still applies. Pickup delay and bouncing items can still delay collection."));
         add(Slider.ints("Check below each drop", 3, 64, () -> cfg.dropSafetyDepth, v -> cfg.dropSafetyDepth = v)
                 .tip("Checks a 3 by 3 landing patch. A deeper shaft needs a catch floor."));
         add(new Slider("Time to prepare one mining site", 5, 180, 5, 0, "s", () -> cfg.prepareSiteSec, v -> cfg.prepareSiteSec = v));

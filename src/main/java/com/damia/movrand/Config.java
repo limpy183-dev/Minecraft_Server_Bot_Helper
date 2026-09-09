@@ -411,6 +411,8 @@ public final class Config {
 	public boolean baritoneNavigation = true;
 	public boolean destroyLoadedChunks = true;
 	public boolean protectMiningDrops = true;
+	/** Optional close-range mining; independent of lava containment and catch floors. */
+	public boolean mineWithinPickupRange = true;
 	public int dropSafetyDepth = 16;
 	public double prepareSiteSec = 45;
 	public boolean baritoneParkour = true;

@@ -69,6 +69,8 @@ public final class BasaltFarmGameTest implements FabricClientGameTest {
                 if (active == this) EVENTS.add(Map.of("kind","break","server_tick",level.getGameTime(),"pos",xyz(pos),"block",id(state)));
             });
             List<Case> cases = List.of(
+                new Case("main-sweep", new BlockPos(1121,69,134), "profile", null, 2400),
+                new Case("main-sweep-redstone", new BlockPos(1121,69,134), "redstone_block", null, 2400),
                 new Case("survey", new BlockPos(1126,65,126), "none", null, 0),
                 new Case("west-selected", new BlockPos(1126,65,126), "redstone_block", null, 2400),
                 new Case("north-selected", new BlockPos(1137,77,101), "redstone_block", null, 2400),
@@ -99,7 +101,7 @@ public final class BasaltFarmGameTest implements FabricClientGameTest {
 
     private void runCase(ClientGameTestContext test, Path source, Case c) throws Exception {
         if(Files.exists(output.resolve(c.name).resolve("end.json"))) throw new IllegalStateException("Completed case exists; use a fresh MOVRAND_BASALT_OUTPUT directory: "+c.name);
-        Path save = test.computeOnClient(mc -> mc.gameDirectory.toPath().resolve("saves/basalt-" + c.name));
+        Path save = test.computeOnClient(mc -> mc.gameDirectory.toPath().resolve("saves/basalt-" + c.name + "-" + UUID.randomUUID()));
         if (save.toAbsolutePath().normalize().startsWith(source)) throw new IllegalArgumentException("test save overlaps source");
         try (var paths = Files.walk(source)) {
             for (Path p : paths.toList()) {
@@ -110,6 +112,11 @@ public final class BasaltFarmGameTest implements FabricClientGameTest {
             }
         }
         Path dir = output.resolve(c.name); Files.createDirectories(dir);
+        if (c.name.startsWith("main-sweep")) {
+            Path profiles = save.getParent().getParent().resolve("config/movrand-profiles");
+            Files.createDirectories(profiles);
+            Files.copy(Path.of(System.getenv("MOVRAND_BASALT_PROFILE")), profiles.resolve("Main sweep config.json"), StandardCopyOption.REPLACE_EXISTING);
+        }
         try (var world = new TestWorldSaveImpl(test, save).open()) {
             test.runOnClient(mc -> {
                 MovRand.controller().stop(mc,"basalt setup"); mc.options.pauseOnLostFocus = false;
@@ -142,6 +149,14 @@ public final class BasaltFarmGameTest implements FabricClientGameTest {
                 cfg.destroyBlocks.clear();
                 if (c.selection.equals("family")) cfg.setDestroyFamily(BlockTargets.Family.REDSTONE,true);
                 else if (!c.selection.equals("none")) cfg.destroyBlocks.add(c.selection);
+                if (c.name.startsWith("main-sweep")) {
+                    cfg = Config.loadProfile("Main sweep config");
+                    if (cfg == null) throw new AssertionError("Main sweep config missing");
+                    if (c.selection.equals("redstone_block")) {
+                        for (BlockTargets.Family f : BlockTargets.Family.values()) cfg.setDestroyFamily(f, false);
+                        cfg.destroyBlocks.clear(); cfg.destroyBlocks.add("redstone_block");
+                    }
+                }
                 cfg.clampAll(); MovRand.replaceConfig(cfg);
                 if(c.name.equals("priority-audit")) cfg.destroyTargetRandomness=0;
                 if(c.name.equals("working-position-control")) cfg.protectMiningDrops=false;
@@ -179,7 +194,11 @@ public final class BasaltFarmGameTest implements FabricClientGameTest {
                     boolean done = test.computeOnClient(mc -> mc.player.isDeadOrDying()
                         || (c.drop != null && mc.player.getInventory().contains(s -> s.is(Items.DIAMOND)))
                         || MovRand.controller().destroyer.phase == BaseDestroyer.Phase.OFF);
-                    if (done) break;
+                    if (done) {
+                        if (c.name.startsWith("main-sweep") && test.computeOnClient(mc -> mc.player.isDeadOrDying()))
+                            throw new AssertionError("Main sweep replay died; see the recorded trace");
+                        break;
+                    }
                     if(c.name.equals("full-redstone") && tick-lastBreakTick>=3600) {
                         write(dir.resolve("stopped-for-stagnation.json"),Map.of("tick",tick,"last_confirmed_break_tick",lastBreakTick,"reason","180 seconds without a confirmed player break across multiple retry windows"));
                         break;

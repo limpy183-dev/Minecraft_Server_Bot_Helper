@@ -362,7 +362,10 @@ public final class NativeNavigation {
 		public boolean isInGoal(int x, int y, int z) { return cells.contains(BlockPos.asLong(x, y, z)); }
 		public double heuristic(int x, int y, int z) {
 			double dx = Math.max(minX - x, Math.max(0, x - maxX)), dz = Math.max(minZ - z, Math.max(0, z - maxZ));
-			return Math.sqrt(dx * dx + dz * dz) * 3.5;
+			// Include Baritone's elevation cost. Ignoring Y gave every
+			// floor above/below a working position zero remaining cost and wasted searches.
+			return Math.sqrt(dx * dx + dz * dz) * 3.5
+					+ baritone.api.pathing.goals.GoalYLevel.calculate(Math.clamp(y, minY, maxY), y);
 		}
 	}
 
@@ -474,6 +477,11 @@ public final class NativeNavigation {
 		assert goal.isInGoal(-2, 3, 4) && goal.isInGoal(7, -5, 0);
 		assert !goal.isInGoal(-2, 4, 4) : "lower-floor goal accepted the wrong elevation";
 		assert goal.heuristic(-2, 3, 4) == 0 && goal.heuristic(12, 3, 4) > 0;
+		CellGoal floor = new CellGoal(Set.of(new BlockPos(0, 4, 0)));
+		assert floor.heuristic(0, 4, 0) == 0;
+		assert floor.heuristic(0, 1, 0) > floor.heuristic(0, 3, 0)
+				&& floor.heuristic(0, 8, 0) > floor.heuristic(0, 5, 0)
+				: "route search ignored progress between floors";
 		Config cfg = new Config();
 		Pace pace = new Pace();
 		cfg.baritoneSprintChance = 0;

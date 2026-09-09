@@ -828,6 +828,13 @@ wobble, turn rate and smoothing can all be adjusted independently.
 
 ### Picking up drops and recovering routes
 
+**Only mine targets within pickup range**, under Base destroyer → Protect mined
+drops, controls whether the bot must move close to a target's spawning drops before mining.
+It is on by default, preserving the existing preference for collecting from the mining
+position. Turn it off to use normal mining reach and collect the drops afterwards, avoiding
+extra routing especially between floors. Vanilla pickup delay and item movement still apply.
+**Prepare a safe drop area before mining** independently contains lava and builds catch floors.
+
 A pickup journey keeps the same item until it disappears, leaves range or times out. Nearby
 items only get a direct approach when the player's full width fits along a supported,
 hazard-free corridor. Otherwise the pathfinder routes around the obstacle, even when the
