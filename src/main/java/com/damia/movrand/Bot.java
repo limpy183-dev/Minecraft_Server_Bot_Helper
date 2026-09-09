@@ -58,6 +58,8 @@ public final class Bot {
 		public boolean externalNavigation;
 		/** Precise block intents, rechecked after the final smoothed rotation is applied. */
 		public BlockPos attackTarget, useTarget, placeTarget;
+		/** Required clicked face for placement, or null to allow any face. */
+		public Direction placeFace;
 		/**
 		 * Aiming at one specific block rather than walking somewhere.
 		 *
@@ -94,7 +96,12 @@ public final class Bot {
 		}
 
 		public void placeInto(BlockPos pos) {
+			placeInto(pos, null);
+		}
+
+		public void placeInto(BlockPos pos, Direction clickedFace) {
 			placeTarget = pos;
+			placeFace = clickedFace;
 		}
 
 		public void clear() {
@@ -103,6 +110,7 @@ public final class Bot {
 			hasMove = false;
 			precise = false;
 			attackTarget = useTarget = placeTarget = null;
+			placeFace = null;
 			forward = back = left = right = jump = sneak = sprint = attack = use = false;
 		}
 	}
@@ -731,8 +739,13 @@ public final class Bot {
 
 	/** Whether the crosshair is on a face whose placement would fill {@code target}. */
 	public static boolean aboutToPlaceInto(Minecraft mc, BlockPos target) {
+		return aboutToPlaceInto(mc, target, null);
+	}
+
+	public static boolean aboutToPlaceInto(Minecraft mc, BlockPos target, Direction clickedFace) {
 		return mc.hitResult instanceof BlockHitResult hit
 				&& hit.getType() == HitResult.Type.BLOCK
+				&& (clickedFace == null || hit.getDirection() == clickedFace)
 				&& hit.getBlockPos().relative(hit.getDirection()).equals(target);
 	}
 

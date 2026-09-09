@@ -1207,6 +1207,12 @@ public final class ConfigScreen extends Screen {
 				.tip("Never mid-swing at a block already in reach: that block takes a second and "
 						+ "the drop lasts five minutes, and walking off throws away the progress "
 						+ "on both."));
+		add(new Toggle("Only pick up selected block drops", () -> cfg.collectOnlySelectedDrops,
+				v -> cfg.collectOnlySelectedDrops = v)
+				.tip("Only travels to items from your Blocks to mine selection, including families, "
+						+ "individual blocks and exclusions. Includes normal drops such as redstone dust "
+						+ "and ore resources. Storage contents must match separately. Uses built-in drops; "
+						+ "walking over other items can still pick them up automatically."));
 		add(Slider.ints("Pick up within", 1, 48, () -> cfg.collectRadius, v -> cfg.collectRadius = v));
 		add(new Slider("Give up on one after", 2, 300, 1, 0, "s",
 				() -> cfg.collectGiveUpSec, v -> cfg.collectGiveUpSec = v)
@@ -1459,6 +1465,11 @@ public final class ConfigScreen extends Screen {
 	private void buildStorage() {
 		add(new Section("Collected item storage"));
 		add(new Toggle("Store collected items in containers", () -> cfg.storageEnabled, v -> cfg.storageEnabled = v));
+		add(new Slider("Store when occupied slots reach", 1, 36, 1, 0, " / 36",
+				() -> cfg.storageOccupiedSlots, v -> cfg.storageOccupiedSlots = (int) Math.round(v))
+				.tip("Start an automatic storage trip at or above this many occupied inventory and hotbar slots. Partial stacks, tools and protected slots count; armour and offhand do not."));
+		add(new Note("Only starts when matching items can be stored. Once started, the trip finishes all selected destinations. "
+				+ "For temporary containers, choose a threshold that leaves two unprotected bag slots empty for recovery.", Ui.TEXT_MUTED));
 		add(new Toggle("Fast slot filling", () -> cfg.storageFastTransfers, v -> cfg.storageFastTransfers = v)
 				.tip("Fill the chosen slot with one left-click, then return any remainder to your inventory. Waits for server confirmation; never shift-clicks into neighbouring slots."));
 		add(new Note("Stores matching unprotected stacks, including any already in your bag. Choose each container, "

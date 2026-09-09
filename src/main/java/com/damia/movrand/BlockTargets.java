@@ -1,10 +1,14 @@
 package com.damia.movrand;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.chunk.status.ChunkStatus;
@@ -16,6 +20,9 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -109,6 +116,7 @@ public final class BlockTargets {
 	// The resolved set, rebuilt only when the selection actually changes. The scan loop asks
 	// this a few hundred thousand times a pass, so it cannot be doing string work.
 	private Set<Block> resolved = Set.of();
+	private Set<Item> resolvedDrops;
 	private String resolvedFrom = "<unresolved>";
 
 	/** Everything the current settings select, as blocks. */
@@ -116,9 +124,49 @@ public final class BlockTargets {
 		String signature = signature(cfg);
 		if (!signature.equals(resolvedFrom)) {
 			resolved = resolve(cfg);
+			resolvedDrops = null;
 			resolvedFrom = signature;
 		}
 		return resolved;
+	}
+
+	/** Possible item types, including normal and Silk Touch drops, but not container contents. */
+	public Set<Item> dropItems(Config cfg) {
+		Set<Block> selected = blocks(cfg);
+		if (resolvedDrops != null) return resolvedDrops;
+		Set<Item> out = new LinkedHashSet<>();
+		for (Block block : selected) {
+			out.add(block.asItem());
+			Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+			// ponytail: bundled loot covers built-in drops; server-custom loot needs server support.
+			String resource = "/data/" + id.getNamespace() + "/loot_table/blocks/" + id.getPath() + ".json";
+			try (var stream = BlockTargets.class.getResourceAsStream(resource)) {
+				if (stream != null) {
+					try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+						addDropItems(JsonParser.parseReader(reader), out);
+					}
+				}
+			} catch (IOException | com.google.gson.JsonParseException e) {
+				MovRand.LOG.warn("Could not read mining drops for {}", id, e);
+			}
+		}
+		out.remove(Items.AIR);
+		resolvedDrops = Set.copyOf(out);
+		return resolvedDrops;
+	}
+
+	private static void addDropItems(JsonElement element, Set<Item> out) {
+		if (element.isJsonArray()) {
+			for (JsonElement child : element.getAsJsonArray()) addDropItems(child, out);
+		} else if (element.isJsonObject()) {
+			var object = element.getAsJsonObject();
+			if (object.has("type") && "minecraft:item".equals(object.get("type").getAsString())
+					&& object.has("name")) {
+				Identifier id = Identifier.tryParse(object.get("name").getAsString());
+				if (id != null) BuiltInRegistries.ITEM.getOptional(id).ifPresent(out::add);
+			}
+			for (JsonElement child : object.asMap().values()) addDropItems(child, out);
+		}
 	}
 
 	private static String signature(Config cfg) {

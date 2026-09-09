@@ -675,6 +675,9 @@ public final class MovementController {
 			forgetRoute();
 			return null;
 		}
+		// Jobs select tools and blocks before AutoEat ticks. Let the meal finish before
+		// running them again, or the slot change makes AutoEat restart every other tick.
+		if (autoEat.isEating()) return new Bot.Steer();
 		Bot.Steer storing = storage.tick(mc);
 		if (storing != null) {
 			forgetRoute();
@@ -926,7 +929,7 @@ public final class MovementController {
 				refreshCrosshair(mc, player);
 				if (steer.attackTarget != null) steer.attack = Bot.lookingAt(mc, steer.attackTarget);
 				if (steer.useTarget != null) steer.use = Bot.lookingAt(mc, steer.useTarget);
-				if (steer.placeTarget != null) steer.use = Bot.aboutToPlaceInto(mc, steer.placeTarget);
+				if (steer.placeTarget != null) steer.use = Bot.aboutToPlaceInto(mc, steer.placeTarget, steer.placeFace);
 			}
 		}
 

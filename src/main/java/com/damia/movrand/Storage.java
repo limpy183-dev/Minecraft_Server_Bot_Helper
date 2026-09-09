@@ -224,7 +224,8 @@ public final class Storage {
     public Bot.Steer tick(Minecraft mc) {
         if (!busy()) {
             if (cooldown > 0) cooldown--;
-            if (!failed() && cfg.storageEnabled && cfg.movementEnabled && (cooldown == 0 || needsRoom(mc))
+            if (!failed() && cfg.storageEnabled && cfg.movementEnabled && thresholdReached(mc)
+                    && (cooldown == 0 || needsRoom(mc))
                     && mc.gui.screen() == null && !MovRand.controller().destroyer.backpack.busy()) {
                 cooldown = 100;
                 begin(mc, eligibleTargets(mc), false);
@@ -333,6 +334,12 @@ public final class Storage {
         return cfg.storageTargets.stream().filter(t -> t.enabled && !t.slots.isEmpty()
                 && t.world.equals(WorldId.current()) && (t.kind != Kind.WORLD
                 || t.dimension.equals(mc.level.dimension().identifier().toString())) && source(mc.player, t) >= 0).toList();
+    }
+    private boolean thresholdReached(Minecraft mc) {
+        if (mc.player == null) return false;
+        int occupied = 0;
+        for (int i = 0; i < 36; i++) if (!mc.player.getInventory().getItem(i).isEmpty()) occupied++;
+        return occupied >= cfg.storageOccupiedSlots;
     }
     private boolean needsRoom(Minecraft mc) {
         if (mc.player == null) return false;
@@ -519,7 +526,8 @@ public final class Storage {
         }
         double[] look = Bot.aimAt(ctx.player(), Bot.placePoint(ctx.mc(), pos, face));
         steer.lookAt(look[0], look[1]); steer.precise = true; steer.sneak = true;
-        steer.placeInto(pos);
+        // Enforce the top face after camera smoothing, even while looking past the ender chest.
+        steer.placeInto(pos, Direction.UP);
         return false;
     }
     private boolean equip(Minecraft mc, int source, ItemStack expected) {

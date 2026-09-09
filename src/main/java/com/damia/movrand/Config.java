@@ -598,6 +598,8 @@ public final class Config {
 	public boolean airMineCeiling = true;
 
 	public boolean collectDrops = true;
+	/** Only travel to item types belonging to the current mining selection. */
+	public boolean collectOnlySelectedDrops = false;
 	public int collectRadius = 12;
 	/**
 	 * How long to spend on one drop before deferring it for a timed retry.
@@ -615,6 +617,8 @@ public final class Config {
 	// ----------------------------------------------------------- the bag
 
 	public boolean storageEnabled = false;
+	/** Occupied inventory/hotbar slots required to start an automatic storage trip. */
+	public int storageOccupiedSlots = 1;
 	public boolean storageFastTransfers = true;
 	public boolean storageReturnShulkers = true;
 	public double storagePlayerRadius = 32;
@@ -1143,6 +1147,7 @@ public final class Config {
 		if (junkItems == null) junkItems = new ArrayList<>();
 		if (protectedSlots == null) protectedSlots = new ArrayList<>();
 		if (sellSlots == null) sellSlots = new ArrayList<>();
+		storageOccupiedSlots = Math.max(1, Math.min(36, storageOccupiedSlots));
 		if (!Double.isFinite(storagePlayerRadius)) storagePlayerRadius = 32;
 		storagePlayerRadius = Math.max(16, Math.min(128, storagePlayerRadius));
 		if (storageTargets == null) storageTargets = new ArrayList<>();
