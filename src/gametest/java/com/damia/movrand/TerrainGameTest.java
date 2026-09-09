@@ -19,6 +19,13 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			return;
 		}
 		try (var world = test.worldBuilder().create()) {
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_EATING_ONLY"))) {
+				eatingDuringPlacement(test, world);
+				smoothEating(test, world);
+				return;
+			}
+			gatherBuildingSupplies(test, world);
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_SUPPLIES_ONLY"))) return;
 			readyTargetPriority(test, world);
 			walkingLavaEdge(test, world);
 			pickupRangeToggle(test, world);
@@ -36,6 +43,7 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			if (!Boolean.parseBoolean(System.getenv("MOVRAND_TERRAIN_ONLY"))) {
 				smoothingMatrix(test, world);
 				smoothEating(test, world);
+				eatingDuringPlacement(test, world);
 				StorageGameTest.run(test, world);
 			}
 			stalledRoute(test, world);
@@ -361,6 +369,49 @@ public final class TerrainGameTest implements FabricClientGameTest {
 		});
 	}
 
+	/** A short configured timeout must not repeatedly trade an unfinished meal for a block. */
+	private static void eatingDuringPlacement(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		world.getServer().runCommand("fill -2 1 -2 9 1 2 stone");
+		world.getServer().runCommand("setblock 6 1 0 lava");
+		world.getServer().runCommand("setblock 5 1 0 air");
+		world.getServer().runCommand("setblock 6 2 0 redstone_block");
+		world.getServer().runCommand("tp @p 0.5 2 0.5 -90 0");
+		world.getConnection().waitForClientboundPackets();
+		test.runOnClient(mc -> {
+			Config cfg = MovRand.config();
+			cfg.autoEatEnabled = false;
+			cfg.autoEatMaxTicks = 20;
+			cfg.taskReactionChance = 0;
+			cfg.destroyBlocks.add("redstone_block");
+			MovRand.controller().start(mc);
+		});
+		test.waitFor(mc -> MovRand.controller().destroyer.phase == BaseDestroyer.Phase.COVERING, 100);
+		world.getServer().runOnServer(server -> {
+			var player = server.getPlayerList().getPlayers().getFirst();
+			player.getFoodData().setFoodLevel(4);
+			player.getInventory().setItem(8, new net.minecraft.world.item.ItemStack(Items.COOKED_BEEF, 4));
+			player.inventoryMenu.broadcastChanges();
+		});
+		world.getConnection().waitForClientboundPackets();
+		test.runOnClient(mc -> MovRand.config().autoEatEnabled = true);
+		boolean[] started = {false};
+		test.waitFor(mc -> {
+			started[0] |= mc.player.isUsingItem() && mc.player.getMainHandItem().is(Items.COOKED_BEEF);
+			if (mc.player.getFoodData().getFoodLevel() >= 20) return true;
+			if (started[0] && !mc.player.getMainHandItem().is(Items.COOKED_BEEF))
+				throw new AssertionError("placement stole the hand before the meal finished");
+			return false;
+		}, 240);
+		if (!started[0]) throw new AssertionError("placement fixture never ate");
+		test.waitFor(mc -> mc.player.getInventory().contains(s -> s.is(Items.REDSTONE_BLOCK)), 400);
+		test.runOnClient(mc -> {
+			if (!mc.level.getBlockState(new BlockPos(6, 1, 0)).is(Blocks.COBBLESTONE))
+				throw new AssertionError("placement did not resume after eating");
+			MovRand.controller().stop(mc, "eating during placement passed");
+		});
+	}
+
 	/** Real Baritone paths must time out even while the executor keeps reporting a path. */
 	private static void stalledRoute(ClientGameTestContext test, TestSingleplayerContext world) {
 		setup(test, world);
@@ -418,6 +469,46 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			if (MineSafety.deniedBlock() != null) throw new AssertionError("vanished block left a stale mining denial");
 			MovRand.controller().stop(mc, "vanished protection target recovered");
 		});
+	}
+
+	/** Start empty, recover stone as cobblestone, then resume the selected demolition job. */
+	private static void gatherBuildingSupplies(ClientGameTestContext test, TestSingleplayerContext world) {
+		setup(test, world);
+		world.getServer().runCommand("clear @p cobblestone");
+		world.getServer().runCommand("fill 2 1 -1 3 1 1 stone");
+		world.getServer().runCommand("setblock 0 1 4 redstone_block");
+		world.getServer().runCommand("tp @p 0.5 1 0.5 -90 0");
+		world.getConnection().waitForClientboundPackets();
+		test.waitTicks(10);
+		test.runOnClient(mc -> {
+			Config cfg = MovRand.config();
+			cfg.gatherBuildingBlocks = true;
+			cfg.gatherBlocks = new java.util.ArrayList<>(java.util.List.of("stone"));
+			cfg.buildingBlocks = new java.util.ArrayList<>(java.util.List.of("cobblestone"));
+			cfg.gatherBlockCount = 3;
+			cfg.bridgeKeepBlocks = 1;
+			cfg.collectDrops = false;
+			cfg.collectOnlySelectedDrops = true;
+			cfg.restockHotbar = false;
+			cfg.destroyBlocks.add("redstone_block");
+			cfg.taskReactionChance = 0;
+			MovRand.controller().start(mc);
+		});
+		boolean[] gathered = {false};
+		try {
+			test.waitFor(mc -> {
+				BaseDestroyer job = MovRand.controller().destroyer;
+				gathered[0] |= job.gatheringSupplies();
+				return gathered[0] && !job.gatheringSupplies()
+						&& Bot.buildingBlockCount(mc.player, MovRand.config(), true) >= 4
+						&& mc.level.getBlockState(new BlockPos(0, 1, 4)).isAir();
+			}, 1000);
+			test.runOnClient(mc -> {
+				if (Bot.buildingSlot(mc.player, MovRand.config()) < 0)
+					throw new AssertionError("gathered supplies never became usable on the hotbar");
+				MovRand.controller().stop(mc, "building supply gathering passed");
+			});
+		} catch (Throwable failure) { diagnose(test, "building-supplies"); throw failure; }
 	}
 
 	static void setup(ClientGameTestContext test, TestSingleplayerContext world) {

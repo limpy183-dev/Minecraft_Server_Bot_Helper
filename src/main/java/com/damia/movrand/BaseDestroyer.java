@@ -54,6 +54,15 @@ public final class BaseDestroyer {
 	private final Journal journal;
 	/** Resolved once per change of selection: the scan asks it a few hundred thousand times. */
 	private final BlockTargets targets = new BlockTargets();
+	private final BlockTargets supplies = new BlockTargets();
+	private Config supplySelection;
+	private Set<Block> supplySources = Set.of();
+	private BlockPos pausedTarget;
+	private int supplyTicks, supplyCooldown;
+
+	public boolean gatheringSupplies() { return supplySelection != null; }
+	private BlockTargets activeTargets() { return gatheringSupplies() ? supplies : targets; }
+	private Config selection() { return gatheringSupplies() ? supplySelection : cfg; }
 	public final Combat combat;
 	public final Backpack backpack;
 	/**
@@ -167,6 +176,10 @@ public final class BaseDestroyer {
 	}
 
 	public void reset() {
+		supplySelection = null;
+		pausedTarget = null;
+		supplyTicks = supplyCooldown = 0;
+		supplies.resetScan();
 		pendingEdits.clear();
 		targets.resetScan();
 		preparation.reset();
@@ -195,6 +208,8 @@ public final class BaseDestroyer {
 	}
 
 	public void stop() {
+		supplySelection = null;
+		pausedTarget = null;
 		preparation.reset();
 		MineSafety.clearDenied();
 		NativeNavigation.stopAll();
@@ -221,7 +236,8 @@ public final class BaseDestroyer {
 	}
 
 	public String describe() {
-		return detail.isEmpty() ? phase.label : phase.label + " — " + detail;
+		return (gatheringSupplies() ? "Gathering building blocks · " : "")
+				+ (detail.isEmpty() ? phase.label : phase.label + " — " + detail);
 	}
 
 	/**
@@ -232,7 +248,11 @@ public final class BaseDestroyer {
 	 * wall on the way to them, and a search will happily take one if nothing says otherwise.
 	 */
 	public Set<Block> mayBreak() {
-		return cfg.pathMineOnlySelected ? targets.blocks(cfg) : null;
+		if (!cfg.pathMineOnlySelected) return null;
+		if (!gatheringSupplies()) return targets.blocks(cfg);
+		Set<Block> allowed = new java.util.HashSet<>(targets.blocks(cfg));
+		allowed.addAll(supplies.blocks(supplySelection));
+		return allowed;
 	}
 
 	// ---------------------------------------------------------------- ticking
@@ -259,6 +279,7 @@ public final class BaseDestroyer {
 		tick++;
 		if (scanCooldown > 0) scanCooldown--;
 		if (capCooldown > 0) capCooldown--;
+		if (supplyCooldown > 0) supplyCooldown--;
 		combat.onDamage(player, healthLost);
 
 		Bot.Steer steer = new Bot.Steer();
@@ -307,6 +328,7 @@ public final class BaseDestroyer {
 
 		// 4. The bag. Selling and tidying both stand still, so they come before walking.
 		if (handleInventory(mc, player, level, steer)) return steer;
+		updateSupplies(player);
 
 		// Preparation and denied route mining used to return before the target deadline was
 		// counted. Keep the deadline above every kind of work that can hold onto a target.
@@ -331,7 +353,7 @@ public final class BaseDestroyer {
 			MineSafety.clearDenied();
 			if (result == SitePreparation.Result.FAILED) { writeOff(denied, player); steer.clear(); }
 		}
-		if (cfg.collectDrops && !preparation.active() && !holdingABlock(mc, player)) {
+		if ((cfg.collectDrops || gatheringSupplies()) && !preparation.active() && !holdingABlock(mc, player)) {
 			Bot.Steer fetching = collectDrops(ctx, steer);
 			if (fetching != null) return fetching;
 		}
@@ -348,6 +370,63 @@ public final class BaseDestroyer {
 	}
 
 	// -------------------------------------------------------------- the job
+
+	static boolean needsSupplies(Config cfg, int available) {
+		return cfg.gatherBuildingBlocks && !cfg.gatherBlocks.isEmpty()
+				&& available <= cfg.bridgeKeepBlocks;
+	}
+
+	private void updateSupplies(LocalPlayer player) {
+		int available = Bot.buildingBlockCount(player, cfg, true);
+		if (gatheringSupplies()) {
+			if (available >= cfg.bridgeKeepBlocks + cfg.gatherBlockCount) {
+				endSupplies();
+				supplyCooldown = 0;
+				return;
+			}
+			if (!cfg.gatherBuildingBlocks || !supplySelection.destroyBlocks.equals(cfg.gatherBlocks)
+					|| ++supplyTicks > targetCeilingTicks() || backpack.full(player)) endSupplies();
+			return;
+		}
+		if (supplyCooldown > 0 || backpack.full(player) || !needsSupplies(cfg, available)) return;
+		supplySelection = cfg.copy();
+		for (BlockTargets.Family family : BlockTargets.Family.values()) supplySelection.setDestroyFamily(family, false);
+		supplySelection.destroyBlocks = new ArrayList<>(cfg.gatherBlocks);
+		supplySources = new java.util.HashSet<>();
+		for (Block block : supplies.blocks(supplySelection)) {
+			if (BlockTargets.dropItems(block).stream().anyMatch(item ->
+					Bot.usableBuildingStack(new net.minecraft.world.item.ItemStack(item), cfg))) supplySources.add(block);
+		}
+		pausedTarget = target;
+		target = null;
+		supplyTicks = 0;
+		clearSupplyJourney();
+	}
+
+	private void endSupplies() {
+		supplySelection = null;
+		target = pausedTarget;
+		pausedTarget = null;
+		// A source can be absent, protected, or produce server-custom drops. Bound the detour.
+		supplyCooldown = Math.max(20, (int) Math.round(cfg.destroyRetrySec * 20));
+		clearSupplyJourney();
+	}
+
+	private void clearSupplyJourney() {
+		supplies.resetScan();
+		targets.resetScan();
+		found = List.of();
+		lastScan = BlockTargets.ScanResult.EMPTY;
+		scanFrom = null;
+		scanCooldown = targetTicks = emptyScans = 0;
+		finished = false;
+		preparation.reset();
+		MineSafety.clearDenied();
+		forgetBlock();
+		forgetPlacement();
+		nav.reset();
+		drops.reset();
+	}
 
 	private Bot.Steer work(PathMove.Ctx ctx, Bot.Steer steer) {
 		ClientLevel level = ctx.level();
@@ -373,13 +452,13 @@ public final class BaseDestroyer {
 			boolean scanned = scanCooldown == 0 || finishedTarget;
 			if (scanned) {
 				phase = Phase.SCANNING;
-				lastScan = targets.scanDetailed(level, player, cfg,
+				lastScan = activeTargets().scanDetailed(level, player, selection(),
 						pos -> eligibleForScan(level, player, pos));
 				found = lastScan.found();
 				scanFrom = player.blockPosition().immutable();
 				scanCooldown = lastScan.complete() ? Rng.ticks(cfg.destroyScanSec, cfg.destroyScanMaxSec) : 0;
 			}
-			found = targets.withNearby(level, player, cfg, found, pos -> eligibleForScan(level, player, pos));
+			found = activeTargets().withNearby(level, player, selection(), found, pos -> eligibleForScan(level, player, pos));
 			target = pickTarget(mc, level, player);
 			if (target == null) {
 				if (!scanned) {
@@ -452,6 +531,12 @@ public final class BaseDestroyer {
 	 */
 	private Bot.Steer handleEmptyShortlist() {
         finished = false;
+		if (gatheringSupplies() && lastScan.complete()) {
+			endSupplies();
+			detail = "no reachable building supplies; retrying later";
+			phase = Phase.SCANNING;
+			return new Bot.Steer();
+		}
         if (!lastScan.complete()) {
             phase = Phase.SCANNING;
             detail = "scanning loaded terrain: " + lastScan.scannedChunks() + " chunks";
@@ -644,6 +729,15 @@ public final class BaseDestroyer {
 	 * separately, so they cannot make the job announce completion.
 	 */
 	private boolean eligibleForScan(ClientLevel level, LocalPlayer player, BlockPos pos) {
+		if (gatheringSupplies()) {
+			BlockState state = level.getBlockState(pos);
+			if (!supplySources.contains(state.getBlock())) return false;
+			if (state.requiresCorrectToolForDrops() && !player.getInventory()
+					.getItem(Bot.bestToolSlot(player, state)).isCorrectToolForDrops(state)) return false;
+			// Empty supplies cannot build a floor to protect the blocks being gathered.
+			if (cfg.protectMiningDrops && !MineSafety.inspect(new PathMove.Ctx(
+					Minecraft.getInstance(), player, level, cfg), pos).safe()) return false;
+		}
 		Retry retry = retries.get(pos.asLong());
 		if (retry != null
 				&& !retryReady(retry, tick, player.blockPosition(), cfg.destroyRetryMoveBlocks)) return false;
@@ -699,7 +793,7 @@ public final class BaseDestroyer {
 
 	private boolean stillATarget(ClientLevel level, BlockPos pos) {
 		return level.hasChunkAt(pos) && !Storage.protectedWorldBlock(cfg, level, pos)
-				&& targets.blocks(cfg).contains(level.getBlockState(pos).getBlock())
+				&& activeTargets().blocks(selection()).contains(level.getBlockState(pos).getBlock())
 				&& BlockTargets.breakable(level.getBlockState(pos), level, pos);
 	}
 
@@ -716,7 +810,7 @@ public final class BaseDestroyer {
 		BlockState state = level.getBlockState(pos);
 		if (!BlockTargets.breakable(state, level, pos)) return false;
 		if (Avoidance.floodsWhenBroken(level, pos, cfg.coverWater, true)) return false;
-		return !cfg.pathMineOnlySelected || targets.blocks(cfg).contains(state.getBlock());
+		return !cfg.pathMineOnlySelected || mayBreak().contains(state.getBlock());
 	}
 
 	private void journalTarget(ClientLevel level) {
@@ -1120,7 +1214,7 @@ public final class BaseDestroyer {
 
 	private Bot.Steer collectDrops(PathMove.Ctx ctx, Bot.Steer steer) {
 		if (backpack.full(ctx.player())) return null;
-		boolean active = drops.tick(ctx, steer, mayBreak());
+		boolean active = drops.tick(ctx, steer, mayBreak(), gatheringSupplies());
 		absorb(fetch);
 		if (!active) return null;
 		phase = Phase.COLLECTING;
@@ -1159,6 +1253,21 @@ public final class BaseDestroyer {
 	public static void main(String[] args) {
 		Config cfg = new Config();
 		cfg.clampAll();
+		assert needsSupplies(cfg, 0) : "gathering must be enabled by default";
+		cfg.gatherBuildingBlocks = false;
+		assert !needsSupplies(cfg, 0) : "disabled gathering changed the job";
+		cfg.gatherBuildingBlocks = true;
+		assert needsSupplies(cfg, 0) && needsSupplies(cfg, cfg.bridgeKeepBlocks);
+		assert !needsSupplies(cfg, cfg.bridgeKeepBlocks + 1) : "gathered despite usable stock";
+		Config saved = cfg.copy();
+		assert saved.gatherBuildingBlocks && saved.gatherBlocks.equals(cfg.gatherBlocks)
+				&& saved.gatherBlockCount == cfg.gatherBlockCount : "profile lost resupply settings";
+		cfg.gatherBlocks.clear();
+		assert !needsSupplies(cfg, 0) : "an empty source list mined arbitrary blocks";
+		cfg.gatherBlockCount = 0;
+		cfg.clampAll();
+		assert cfg.gatherBlockCount == 1;
+		cfg.gatherBuildingBlocks = false;
 		BaseDestroyer d = new BaseDestroyer(cfg, null);
 		var body = new net.minecraft.world.phys.AABB(0.2, 0, 0.2, 0.8, 1.8, 0.8);
 		BlockPos distantDrop = new BlockPos(3, 1, 0), nearbyDrop = new BlockPos(1, 1, 0);

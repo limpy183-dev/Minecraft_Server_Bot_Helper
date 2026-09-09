@@ -202,6 +202,7 @@ public final class ConfigScreen extends Screen {
 	private String blockSearch = "";
 	/** The same, for the grid of blocks the destroyer is allowed to place. */
 	private String placeSearch = "";
+	private String gatherSearch = "";
 	private String junkSearch = "";
 	private String storageSearch = "";
 	/** Like the active tab, retain the picker selection between settings screens. */
@@ -1184,6 +1185,32 @@ public final class ConfigScreen extends Screen {
 			}).tip("Click to pick or drop a block. With none picked it may place anything that "
 					+ "is not in a protected slot."));
 		}
+
+		add(new Section("Gather building blocks"));
+		add(new Toggle("Mine supplies when blocks run out", () -> cfg.gatherBuildingBlocks,
+				v -> cfg.gatherBuildingBlocks = v)
+				.tip("When only the building reserve remains, pause demolition, mine the sources selected below, "
+						+ "collect usable building blocks and resume. Includes hotbar restocking and keeps building blocks out of sales and rubbish."));
+		add(Slider.ints("Gather above the reserve", 1, 256, () -> cfg.gatherBlockCount,
+				v -> cfg.gatherBlockCount = v)
+				.tip("Usable blocks to keep in the bag and hotbar before returning to demolition."));
+		add(new TextInput("Find a block to mine", null, () -> gatherSearch, v -> {
+			gatherSearch = v;
+			build();
+		}).tip("Search by block name, then click an icon to select a source. Selected sources stay at the front."));
+		List<String> sources = new ArrayList<>(cfg.gatherBlocks);
+		List<String> sourceMatches = searchBlocks(gatherSearch);
+		for (String id : sourceMatches) if (!sources.contains(id)) sources.add(id);
+		if (gatherSearch.trim().length() >= 2 && sourceMatches.isEmpty())
+			add(new Note("Nothing matches \"" + gatherSearch + "\".", Ui.TEXT_FAINT));
+		add(new Note(cfg.gatherBlocks.isEmpty() ? "Nothing selected — no blocks will be mined for supplies."
+				: "Highlighted blocks are sources. Click an icon to add or remove one.", Ui.TEXT_FAINT));
+		if (!sources.isEmpty()) add(new Widgets.ItemGrid(sources, cfg.gatherBlocks::contains, id -> {
+			if (!cfg.gatherBlocks.remove(id)) cfg.gatherBlocks.add(id);
+			build();
+		}));
+		add(new Note("Sources must drop a usable block from ‘Blocks it may place’ above. Stone normally drops cobblestone. "
+				+ "Uses the job's search range, exclusions and safety rules; unavailable supplies are retried later.", Ui.TEXT_FAINT));
 
 		add(new Section("Breathing"));
 		add(new Toggle("Come up for air", () -> cfg.watchAir, v -> cfg.watchAir = v)

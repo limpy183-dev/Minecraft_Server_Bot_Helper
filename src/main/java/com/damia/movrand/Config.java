@@ -566,6 +566,10 @@ public final class Config {
 			"cobblestone", "cobbled_deepslate", "dirt", "netherrack", "stone", "andesite",
 			"diorite", "granite", "deepslate", "tuff", "end_stone"));
 	public boolean bridgeSneak = true;
+	/** Gather a fresh batch when only the building reserve remains. */
+	public boolean gatherBuildingBlocks = true;
+	public List<String> gatherBlocks = new ArrayList<>(List.of("stone", "cobblestone", "dirt", "netherrack"));
+	public int gatherBlockCount = 32;
 	/** Never place the last few, so there is always something left to get out of a hole. */
 	public int bridgeKeepBlocks = 1;
 	/**
@@ -1144,6 +1148,8 @@ public final class Config {
 		if (destroyBlocks == null) destroyBlocks = new ArrayList<>();
 		if (destroyExclude == null) destroyExclude = new ArrayList<>();
 		if (buildingBlocks == null) buildingBlocks = new ArrayList<>();
+		if (gatherBlocks == null) gatherBlocks = new ArrayList<>();
+		gatherBlockCount = Math.max(1, Math.min(256, gatherBlockCount));
 		if (junkItems == null) junkItems = new ArrayList<>();
 		if (protectedSlots == null) protectedSlots = new ArrayList<>();
 		if (sellSlots == null) sellSlots = new ArrayList<>();

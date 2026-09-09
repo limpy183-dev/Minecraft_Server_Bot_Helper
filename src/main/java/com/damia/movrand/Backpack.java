@@ -125,7 +125,7 @@ public final class Backpack {
 		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
-			if (stack.isEmpty() || Storage.reserved(cfg, stack) || !cfg.isJunk(itemId(stack))) continue;
+			if (stack.isEmpty() || keepStack(stack) || !cfg.isJunk(itemId(stack))) continue;
 			throwStack(mc, player, slot);
 			status = "dropped " + stack.getHoverName().getString();
 			return true;
@@ -135,7 +135,8 @@ public final class Backpack {
 
 	/** Move building blocks into an empty, unprotected hotbar slot when supplies run dry. */
 	public boolean restockHotbar(Minecraft mc, LocalPlayer player) {
-		if (!cfg.restockHotbar || mc.gameMode == null || player.containerMenu != player.inventoryMenu) return false;
+		if ((!cfg.restockHotbar && !(cfg.destroyerEnabled && cfg.gatherBuildingBlocks))
+				|| mc.gameMode == null || player.containerMenu != player.inventoryMenu) return false;
 		if (Bot.buildingSlot(player, cfg) >= 0) return false;
 		Inventory inv = player.getInventory();
 		int destination = restockDestination(cfg, slot -> inv.getItem(slot).isEmpty());
@@ -175,7 +176,7 @@ public final class Backpack {
 		int n = 0;
 		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot) || !cfg.slotForSale(slot)) continue;
-			if (!inv.getItem(slot).isEmpty() && !Storage.reserved(cfg, inv.getItem(slot))) n++;
+			if (!inv.getItem(slot).isEmpty() && !keepStack(inv.getItem(slot))) n++;
 		}
 		return n;
 	}
@@ -334,9 +335,14 @@ public final class Backpack {
 		Inventory inv = player.getInventory();
 		for (int slot = 0; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot) || !cfg.slotForSale(slot)) continue;
-			if (!inv.getItem(slot).isEmpty() && !Storage.reserved(cfg, inv.getItem(slot))) return slot;
+			if (!inv.getItem(slot).isEmpty() && !keepStack(inv.getItem(slot))) return slot;
 		}
 		return -1;
+	}
+
+	private boolean keepStack(ItemStack stack) {
+		return Storage.reserved(cfg, stack)
+				|| (cfg.destroyerEnabled && cfg.gatherBuildingBlocks && Bot.usableBuildingStack(stack, cfg));
 	}
 
 	// ------------------------------------------------------------ menu slots

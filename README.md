@@ -686,6 +686,21 @@ configured emergency reserve. It will not promise a ten-block bridge with one ex
 block, and falling blocks are never treated as stable scaffolding. Restocking runs whenever
 the hotbar supply is exhausted, not only after the whole inventory becomes full.
 
+In **Base destroyer → Gather building blocks**, enable **Mine supplies when blocks run out**
+to pause demolition when usable stock in the unprotected bag and hotbar reaches the reserve.
+Search for source blocks and click their icons to select them, just like the Inventory rubbish
+picker. Selected sources stay at the front; an empty selection disables gathering. The bot
+collects the configured batch above the reserve (32 by default), then resumes demolition.
+Gathering includes pickup and hotbar restocking even if their separate toggles are off; leave
+an empty, unprotected hotbar slot available. Usable building stacks are kept out of sales and
+rubbish while this option is enabled.
+
+Sources and building materials are separate selections: stone normally supplies cobblestone,
+which must be allowed under **Blocks it may place**. Protected slots, storage reservations,
+excluded blocks, the job's search range and mining safety rules still apply. Unavailable
+sources are retried after the failed-block retry delay, and each gathering detour is bounded
+by the existing per-target time limit. Gathering is enabled by default.
+
 ### Storage
 
 Enable **Store collected items in containers** in Inventory or the new **Storage** subsection.

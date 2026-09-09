@@ -135,24 +135,28 @@ public final class BlockTargets {
 		Set<Block> selected = blocks(cfg);
 		if (resolvedDrops != null) return resolvedDrops;
 		Set<Item> out = new LinkedHashSet<>();
-		for (Block block : selected) {
-			out.add(block.asItem());
-			Identifier id = BuiltInRegistries.BLOCK.getKey(block);
-			// ponytail: bundled loot covers built-in drops; server-custom loot needs server support.
-			String resource = "/data/" + id.getNamespace() + "/loot_table/blocks/" + id.getPath() + ".json";
-			try (var stream = BlockTargets.class.getResourceAsStream(resource)) {
-				if (stream != null) {
-					try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
-						addDropItems(JsonParser.parseReader(reader), out);
-					}
-				}
-			} catch (IOException | com.google.gson.JsonParseException e) {
-				MovRand.LOG.warn("Could not read mining drops for {}", id, e);
-			}
-		}
-		out.remove(Items.AIR);
+		for (Block block : selected) out.addAll(dropItems(block));
 		resolvedDrops = Set.copyOf(out);
 		return resolvedDrops;
+	}
+
+	static Set<Item> dropItems(Block block) {
+		Set<Item> out = new LinkedHashSet<>();
+		out.add(block.asItem());
+		Identifier id = BuiltInRegistries.BLOCK.getKey(block);
+		// ponytail: bundled loot covers built-in drops; server-custom loot needs server support.
+		String resource = "/data/" + id.getNamespace() + "/loot_table/blocks/" + id.getPath() + ".json";
+		try (var stream = BlockTargets.class.getResourceAsStream(resource)) {
+			if (stream != null) {
+				try (var reader = new InputStreamReader(stream, StandardCharsets.UTF_8)) {
+					addDropItems(JsonParser.parseReader(reader), out);
+				}
+			}
+		} catch (IOException | com.google.gson.JsonParseException e) {
+			MovRand.LOG.warn("Could not read mining drops for {}", id, e);
+		}
+		out.remove(Items.AIR);
+		return Set.copyOf(out);
 	}
 
 	private static void addDropItems(JsonElement element, Set<Item> out) {

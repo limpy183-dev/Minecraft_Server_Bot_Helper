@@ -539,9 +539,14 @@ public final class Bot {
 
 	/** How many blocks are on the hotbar for bridging and covering. */
 	public static int buildingBlockCount(LocalPlayer player, Config cfg) {
+		return buildingBlockCount(player, cfg, false);
+	}
+
+	/** Include the bag when deciding whether more material actually needs mining. */
+	public static int buildingBlockCount(LocalPlayer player, Config cfg, boolean includeBag) {
 		Inventory inv = player.getInventory();
 		int total = 0;
-		for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
+		for (int slot = 0; slot < (includeBag ? Inventory.INVENTORY_SIZE : Inventory.SELECTION_SIZE); slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
 			if (usableBuildingStack(stack, cfg)) total += stack.getCount();

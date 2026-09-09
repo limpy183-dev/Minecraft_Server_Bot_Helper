@@ -56,11 +56,16 @@ final class DropCollector {
 	}
 
 	boolean tick(PathMove.Ctx ctx, Bot.Steer steer, java.util.Set<net.minecraft.world.level.block.Block> mayBreak) {
+		return tick(ctx, steer, mayBreak, false);
+	}
+
+	boolean tick(PathMove.Ctx ctx, Bot.Steer steer, java.util.Set<net.minecraft.world.level.block.Block> mayBreak,
+	             boolean buildingSupplies) {
 		if (restTicks > 0) return false;
 		batchTicks++;
-		Set<Item> allowed = cfg.collectOnlySelectedDrops ? targets.dropItems(cfg) : null;
+		Set<Item> allowed = !buildingSupplies && cfg.collectOnlySelectedDrops ? targets.dropItems(cfg) : null;
 		Entity active = ctx.level().getEntity(itemId);
-		ItemEntity item = active instanceof ItemEntity drop && eligible(ctx, drop, allowed) ? drop : null;
+		ItemEntity item = active instanceof ItemEntity drop && eligible(ctx, drop, allowed, buildingSupplies) ? drop : null;
 		if (item == null && batchTicks > cfg.collectBatchSec * 20) {
 			// Yield between journeys. Interrupting a bridge or descent here restarts the same route forever.
 			batchTicks = 0;
@@ -72,7 +77,7 @@ final class DropCollector {
 		if (item == null) {
 			double best = Double.POSITIVE_INFINITY;
 			for (Entity e : ctx.level().entitiesForRendering()) {
-				if (!(e instanceof ItemEntity drop) || !eligible(ctx, drop, allowed)) continue;
+				if (!(e instanceof ItemEntity drop) || !eligible(ctx, drop, allowed, buildingSupplies)) continue;
 				double distance = drop.distanceToSqr(ctx.player());
 				if (distance < best) { best = distance; item = drop; }
 			}
@@ -139,8 +144,9 @@ final class DropCollector {
 		return true; // ARRIVED is checked against the actual pickup volume on the following tick.
 	}
 
-	private boolean eligible(PathMove.Ctx ctx, ItemEntity item, Set<Item> allowed) {
+	private boolean eligible(PathMove.Ctx ctx, ItemEntity item, Set<Item> allowed, boolean buildingSupplies) {
 		if (!item.isAlive() || item.getItem().isEmpty()
+				|| (buildingSupplies && !Bot.usableBuildingStack(item.getItem(), cfg))
 				|| (allowed != null && !allowed.contains(item.getItem().getItem()))
 				|| item.distanceToSqr(ctx.player()) > (double) cfg.collectRadius * cfg.collectRadius) return false;
 		Retry retry = retries.get(item.getId());

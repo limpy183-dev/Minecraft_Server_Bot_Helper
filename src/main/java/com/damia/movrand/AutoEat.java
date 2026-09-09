@@ -28,6 +28,7 @@ public final class AutoEat {
 
 	private int restoreSlot = -1;
 	private int eatingTicks;
+	private int lastFood;
 	private boolean eating;
 	private double startYaw, startPitch;
 	double lookYaw, lookPitch;
@@ -73,18 +74,24 @@ public final class AutoEat {
 			player.getInventory().setSelectedSlot(slot);
 			eating = true;
 			eatingTicks = 0;
+			lastFood = food;
 			startYaw = lookYaw = player.getYRot();
 			startPitch = lookPitch = player.getXRot();
 			wobbleTicks = 0;
 			status = "eating " + player.getInventory().getItem(slot).getHoverName().getString();
 		}
 
+		// Time out a stalled bite, not a meal that is still restoring hunger.
+		if (food > lastFood) eatingTicks = 0;
+		lastFood = food;
 		eatingTicks++;
 
 		// full, out of food, or something went wrong and we are just holding right-click
 		boolean full = food >= 20;
 		boolean gone = !isEdible(player.getInventory().getSelectedItem());
-		if (full || gone || eatingTicks > cfg.autoEatMaxTicks) {
+		// A short configured timeout must never cancel every bite before it completes.
+		int deadline = Math.max(cfg.autoEatMaxTicks, player.getMainHandItem().getUseDuration(player) + 20);
+		if (full || gone || eatingTicks > deadline) {
 			finish(mc, player);
 			status = full ? "full" : gone ? "finished the stack" : "gave up waiting";
 			return false;
