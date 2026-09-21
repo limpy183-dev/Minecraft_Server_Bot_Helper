@@ -138,13 +138,20 @@ public final class Backpack {
 		if ((!cfg.restockHotbar && !(cfg.destroyerEnabled && cfg.gatherBuildingBlocks))
 				|| mc.gameMode == null || player.containerMenu != player.inventoryMenu) return false;
 		if (Bot.buildingSlot(player, cfg) >= 0) return false;
-		Inventory inv = player.getInventory();
-		int destination = restockDestination(cfg, slot -> inv.getItem(slot).isEmpty());
+        return restockItem(mc, player, stack -> Bot.usableBuildingStack(stack, cfg));
+    }
+
+    /** One inventory swap, preserving occupied and protected slots. */
+    public boolean restockItem(Minecraft mc, LocalPlayer player, java.util.function.Predicate<ItemStack> wanted) {
+        if (mc.gameMode == null || player.containerMenu != player.inventoryMenu) return false;
+        Inventory inv = player.getInventory();
+        for (int i = 0; i < Inventory.SELECTION_SIZE; i++) if (wanted.test(inv.getItem(i))) return false;
+        int destination = restockDestination(cfg, slot -> inv.getItem(slot).isEmpty());
 		if (destination < 0) return false;
 		for (int slot = Inventory.SELECTION_SIZE; slot < Inventory.INVENTORY_SIZE; slot++) {
 			if (cfg.slotProtected(slot)) continue;
 			ItemStack stack = inv.getItem(slot);
-			if (!Bot.usableBuildingStack(stack, cfg)) continue;
+			if (!wanted.test(stack)) continue;
 			click(mc, player, player.inventoryMenu, menuSlotFor(player.inventoryMenu, player, slot),
 					destination, ContainerInput.SWAP);
 			// A rejected/no-op click must not keep the destroyer in its tidying/pause loop.

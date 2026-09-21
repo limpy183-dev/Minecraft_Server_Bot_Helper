@@ -6,7 +6,6 @@ import baritone.api.Settings;
 import baritone.api.pathing.goals.Goal;
 import baritone.api.pathing.movement.IMovement;
 import baritone.api.schematic.FillSchematic;
-import baritone.api.utils.Rotation;
 import baritone.api.utils.input.Input;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -21,10 +20,9 @@ import java.util.*;
 /** One owner of Baritone's real path executor; the task controller yields both keys and camera. */
 public final class NativeNavigation {
 	private static volatile NativeNavigation owner;
-	private final Human.Turn yawTurn = new Human.Turn(), pitchTurn = new Human.Turn(false);
-	private boolean cameraSynced;
 	private final Pace pace = new Pace();
 	private final Config cfg;
+	private final boolean explorer;
 	private IBaritone engine;
 	private BlockPos destination;
 	private Goal goal;
@@ -33,8 +31,9 @@ public final class NativeNavigation {
 	private int ticks, idleTicks, failures;
 	private final NavigationWatchdog progress = new NavigationWatchdog();
 	private BlockPos observedBreaking;
-	private Vec3 handoffAnchor;
-	private int handoffTicks, handoffSampleTick = -1;
+	private final NavigationWatchdog handoffProgress = new NavigationWatchdog();
+	private int handoffSampleTick = -1;
+	private boolean handoffStalled;
 	private final Map<Long, Integer> visits = new HashMap<>();
 	private long lastCell = Long.MIN_VALUE;
 	private final Map<Settings.Setting<?>, Object> saved = new IdentityHashMap<>();
@@ -43,7 +42,8 @@ public final class NativeNavigation {
 	int nodes, step, length;
 	double cost;
 
-	NativeNavigation(Config cfg) { this.cfg = cfg; }
+	NativeNavigation(Config cfg) { this(cfg, false); }
+	NativeNavigation(Config cfg, boolean explorer) { this.cfg = cfg; this.explorer = explorer; }
 
 	/** The executor accepts any point in a landing cell, so include the body's overhang
 	 * into neighbouring cells, not just the air in the destination column. */
@@ -56,18 +56,39 @@ public final class NativeNavigation {
 		return true;
 	}
 
+	public static boolean exploring() { return owner != null && owner.explorer; }
 	public static boolean controlling() { return owner != null; }
+	boolean active() { return owner == this; }
 	public static Config activeConfig() { NativeNavigation current = owner; return current == null ? null : current.cfg; }
+
+	/** Honey (including beneath a thin component) cannot provide a normal jump. */
+	public static boolean normalJumpFrom(baritone.pathing.movement.CalculationContext ctx, int x, int y, int z) {
+		return ctx.get(x, y, z).getBlock().getJumpFactor() >= 1
+				&& ctx.get(x, y - 1, z).getBlock().getJumpFactor() >= 1;
+	}
 
 	/** Only reduce an already-approved sprint on a clear, level stretch of the active route. */
 	public static boolean randomiseSprint(baritone.api.pathing.path.IPathExecutor executor, boolean sprint) {
 		NativeNavigation current = owner;
 		if (current == null || current.engine == null || current.engine.getPathingBehavior().getCurrent() != executor)
 			return sprint;
-		if (!current.cfg.baritoneRandomisePace) { current.pace.reset(); return sprint; }
 		var player = current.engine.getPlayerContext().player();
 		if (player == null) return sprint;
-		boolean eligible = current.cfg.baritoneRandomisePace && current.cfg.destroySprint && sprint
+		// Vanilla resolves the movement-affecting block, including ice below a thin
+		// component. Leave critical jump inputs alone; ordinary walking needs control.
+		Block surface = player.level().getBlockState(player.getBlockPosBelowThatAffectsMyMovement()).getBlock();
+		var moves = executor.getPath().movements();
+		int index = executor.getPosition();
+		boolean walkingNext = index + 1 >= moves.size()
+				|| moves.get(index + 1) instanceof baritone.pathing.movement.movements.MovementTraverse
+				|| moves.get(index + 1) instanceof baritone.pathing.movement.movements.MovementDiagonal;
+		if (player.onGround() && walkingNext && current.currentMove() instanceof baritone.pathing.movement.movements.MovementTraverse move
+				&& move.safeToCancel() && !current.engine.getInputOverrideHandler().isInputForcedDown(Input.JUMP)
+				&& (surface.getFriction() > 0.6F || surface.getSpeedFactor() < 1 || surface.getJumpFactor() < 1))
+			return false;
+		boolean vary = current.explorer ? current.cfg.explorerRandomisePace : current.cfg.baritoneRandomisePace;
+        if (!vary) { current.pace.reset(); return sprint; }
+		boolean eligible = vary && current.cfg.destroySprint && sprint
 				&& !current.building && !current.retiring && player.onGround()
 				&& !player.isInWater() && !player.isInLava() && !player.onClimbable()
 				&& !player.isUsingItem() && !player.horizontalCollision;
@@ -76,8 +97,6 @@ public final class NativeNavigation {
 				&& !input.isInputForcedDown(Input.CLICK_LEFT) && !input.isInputForcedDown(Input.CLICK_RIGHT);
 		// Preserve run-ups and landings: the previous, current and next two moves must
 		// all be ordinary traverses with full solid footing and no planned block edits.
-		var moves = executor.getPath().movements();
-		int index = executor.getPosition();
 		eligible &= index > 0 && index + 2 < moves.size();
 		if (eligible) for (int i = index - 1; i <= index + 2; i++) {
 			IMovement move = moves.get(i);
@@ -96,7 +115,7 @@ public final class NativeNavigation {
 					eligible = false;
 			}
 		}
-		return current.pace.sprint(current.cfg, eligible, player.tickCount) && sprint;
+		return current.pace.sprint(current.cfg, eligible, player.tickCount, vary) && sprint;
 	}
 
 	/** Keep a sampled pace for a whole segment; critical moves immediately resume normal execution. */
@@ -104,8 +123,9 @@ public final class NativeNavigation {
 		private int untilTick;
 		private boolean sampled, sprint;
 		void reset() { sampled = false; }
-		boolean sprint(Config cfg, boolean eligible, int tick) {
-			if (!cfg.baritoneRandomisePace || !eligible) { reset(); return true; }
+		boolean sprint(Config cfg, boolean eligible, int tick) { return sprint(cfg, eligible, tick, cfg.baritoneRandomisePace); }
+        boolean sprint(Config cfg, boolean eligible, int tick, boolean enabled) {
+			if (!enabled || !eligible) { reset(); return true; }
 			if (!sampled || tick >= untilTick) {
 				sprint = Rng.chance(cfg.baritoneSprintChance);
 				untilTick = tick + Rng.ticks(cfg.baritonePaceMinSec, cfg.baritonePaceMaxSec);
@@ -116,32 +136,17 @@ public final class NativeNavigation {
 	}
     public static boolean finishingCriticalMove() { return owner != null && !owner.safeToCancel(); }
 
-	/** Smooth every actual look, including precision moves; candidate geometry stays exact. */
-	public static Rotation smoothRotation(Rotation previous, Rotation desired, boolean interaction) {
-		NativeNavigation current = owner;
-		if (current == null) return desired;
-		// Start looking at the landing during the run-up. At low turn rates, waiting
-		// until airborne to request a placement face makes its click window impossible.
-		// This spends existing travel time, without holding keys or bypassing smoothing.
-		if (!interaction && current.engine != null
-				&& current.currentMove() instanceof baritone.pathing.movement.movements.MovementParkour move) {
-			var player = current.engine.getPlayerContext().player();
-			if (player != null && player.onGround()) {
-				double[] landing = Bot.aimAt(player, Vec3.atCenterOf(move.getDest().below()));
-				desired = new Rotation(desired.getYaw(), (float) landing[1]);
-			}
-		}
-		if (!current.cameraSynced) {
-			current.yawTurn.sync(previous.getYaw());
-			current.pitchTurn.sync(previous.getPitch());
-			current.cameraSynced = true;
-		}
-		Config c = current.cfg;
-		return new Rotation((float) Human.wrap(current.yawTurn.next(desired.getYaw(), c.baritoneTurnSmoothing, c.baritoneTurnRate)),
-				(float) current.pitchTurn.next(desired.getPitch(), c.baritoneTurnSmoothing, c.baritoneTurnRate)).clamp();
-	}
-
 	Pathing.Nav tick(PathMove.Ctx ctx, Bot.Steer steer, BlockPos want, PathFinder.Goal test, Set<Block> mayBreak, boolean edits) {
+        return tick(ctx, steer, want, test, mayBreak, edits, null);
+    }
+
+    /** Coordinate goals work in unloaded terrain and at any elevation. */
+    Pathing.Nav travel(PathMove.Ctx ctx, Bot.Steer steer, BlockPos want, Goal destinationGoal) {
+        return tick(ctx, steer, want, destinationGoal::isInGoal, null, true, destinationGoal);
+    }
+
+    private Pathing.Nav tick(PathMove.Ctx ctx, Bot.Steer steer, BlockPos want, PathFinder.Goal test,
+                            Set<Block> mayBreak, boolean edits, Goal suppliedGoal) {
 		BlockPos feet = ctx.player().blockPosition();
 		// A local arrival needs neither a goal snapshot nor a worker-thread search.
 		if (test.reached(feet.getX(), feet.getY(), feet.getZ()) && settled(ctx)) {
@@ -155,7 +160,7 @@ public final class NativeNavigation {
 			acquire(ctx, mayBreak, edits);
 			destination = want.immutable();
 			building = false;
-			goal = snapshotGoal(ctx, want, test);
+			goal = suppliedGoal != null ? suppliedGoal : snapshotGoal(ctx, want, test);
 			if (goal == null) { status = "no safe working position in loaded terrain"; reset(); return Pathing.Nav.NO_ROUTE; }
 			engine.getCustomGoalProcess().setGoalAndPath(goal);
 		}
@@ -173,7 +178,7 @@ public final class NativeNavigation {
 				steer.clear();
 				return Pathing.Nav.NO_ROUTE;
 			}
-			goal = snapshotGoal(ctx, want, test);
+			goal = suppliedGoal != null ? suppliedGoal : snapshotGoal(ctx, want, test);
 			if (goal == null) { status = "no safe working position"; reset(); return Pathing.Nav.NO_ROUTE; }
 			engine.getCustomGoalProcess().setGoalAndPath(goal);
 			progress.reset();
@@ -182,7 +187,7 @@ public final class NativeNavigation {
 		if (!pathing.hasPath() && pathing.getInProgress().isEmpty()) {
 			if (++idleTicks > 6) {
 				if (++failures >= Math.max(1, Math.min(3, cfg.pathAttempts))) { status = "Baritone found no route"; reset(); return Pathing.Nav.NO_ROUTE; }
-				goal = snapshotGoal(ctx, want, test);
+				goal = suppliedGoal != null ? suppliedGoal : snapshotGoal(ctx, want, test);
 				if (goal == null) { reset(); return Pathing.Nav.NO_ROUTE; }
 				engine.getCustomGoalProcess().setGoalAndPath(goal);
 				idleTicks = 0;
@@ -260,13 +265,13 @@ public final class NativeNavigation {
 		engine = BaritoneAPI.getProvider().getPrimaryBaritone();
 		owner = this;
 		retiring = false;
-		cameraSynced = false;
 		pace.reset();
 		ticks = idleTicks = failures = 0;
 		progress.reset();
 		observedBreaking = null;
-		handoffAnchor = null;
-		handoffTicks = 0;
+		handoffProgress.reset();
+		handoffStalled = false;
+		handoffSampleTick = -1;
 		visits.clear();
 		lastCell = Long.MIN_VALUE;
 		configure(ctx, mayBreak, edits);
@@ -289,7 +294,8 @@ public final class NativeNavigation {
 		set(s.allowParkourPlace, cfg.baritoneParkourPlace && edits && cfg.pathBridge);
 		set(s.allowVines, cfg.baritoneVines);
 		set(s.allowDownward, true);
-		set(s.allowWaterBucketFall, cfg.baritoneWaterBucketFalls);
+		set(s.allowWaterBucketFall, (explorer ? cfg.explorerWaterBucket : cfg.baritoneWaterBucketFalls)
+                && !ctx.level().environmentAttributes().getDimensionValue(net.minecraft.world.attribute.EnvironmentAttributes.WATER_EVAPORATES));
 		set(s.maxFallHeightNoWater, cfg.pathMaxFall);
 		set(s.strictLiquidCheck, true);
 		set(s.avoidUpdatingFallingBlocks, true);
@@ -299,7 +305,7 @@ public final class NativeNavigation {
 		set(s.allowDiagonalDescend, false);
 		set(s.allowDiagonalAscend, false);
 		set(s.freeLook, false);
-		set(s.smoothLook, false); // our finite turn filter also covers block interactions and jumps
+		set(s.smoothLook, false); // CameraSmoothing changes only rendering; keep physics and sent rotation aligned
 		set(s.elytraSmoothLook, false);
 		set(s.randomLooking113, 0.0);
 		set(s.randomLooking, cfg.baritoneAimVariation);
@@ -316,7 +322,18 @@ public final class NativeNavigation {
 		set(s.renderGoal, false);
 		set(s.skipFailedLayers, false);
 		set(s.buildRepeat, new net.minecraft.core.Vec3i(0, 0, 0));
-		List<Item> supplies = new ArrayList<>();
+		if (explorer) {
+            set(s.allowBreak, cfg.explorerMine);
+            set(s.allowPlace, cfg.explorerBridge && Bot.buildingBlockCount(ctx.player(), cfg) > cfg.bridgeKeepBlocks);
+            set(s.allowParkourPlace, cfg.baritoneParkourPlace && cfg.explorerBridge);
+            set(s.maxFallHeightNoWater, cfg.explorerMaxFall);
+            var avoid = new ArrayList<>(s.blocksToAvoid.value);
+            for (Block block : new Block[]{net.minecraft.world.level.block.Blocks.NETHER_PORTAL,
+                    net.minecraft.world.level.block.Blocks.END_PORTAL, net.minecraft.world.level.block.Blocks.END_GATEWAY})
+                if (!avoid.contains(block)) avoid.add(block);
+            set(s.blocksToAvoid, avoid);
+        }
+        List<Item> supplies = new ArrayList<>();
 		for (int i = 0; i < 9; i++) {
 			ItemStack stack = ctx.player().getInventory().getItem(i);
 			if (!cfg.slotProtected(i) && Bot.usableBuildingStack(stack, cfg)) supplies.add(stack.getItem());
@@ -327,7 +344,8 @@ public final class NativeNavigation {
 		for (Block block : BuiltInRegistries.BLOCK) {
 			String id = BuiltInRegistries.BLOCK.getKey(block).toString();
 			String path = id.substring(id.indexOf(':') + 1);
-			if (BlockTargets.neverBreak(path) || exclusions.contains(id) || exclusions.contains(path)) denied.add(block);
+			if (BlockTargets.neverBreak(path) || exclusions.contains(id) || exclusions.contains(path)
+                    || explorer && block instanceof net.minecraft.world.level.block.EntityBlock) denied.add(block);
 		}
 		set(s.blocksToDisallowBreaking, new ArrayList<>(denied));
 	}
@@ -340,7 +358,10 @@ public final class NativeNavigation {
 			for (int z = centre.getZ() - radius; z <= centre.getZ() + radius; z++) {
 				if (!ctx.level().hasChunk(x >> 4, z >> 4)) continue;
 				for (int y = Math.max(ctx.level().getMinY(), centre.getY() - radius); y <= Math.min(ctx.level().getMaxY() - 2, centre.getY() + radius); y++) {
-					if (test.reached(x, y, z)) cells.add(new BlockPos(x, y, z));
+					// Baritone puts slab/soul-sand nodes above their support; vanilla's
+					// feet cell can be inside it. Goals and rejected cells use vanilla cells.
+					int feetY = net.minecraft.util.Mth.floor(Avoidance.standingY(ctx.level(), x, y, z));
+					if (test.reached(x, feetY, z)) cells.add(new BlockPos(x, y, z));
 				}
 			}
 		}
@@ -406,16 +427,14 @@ public final class NativeNavigation {
 
 	/** A stale critical-move flag must not retain the keys forever after landing. */
 	private boolean canHandOff() {
-		if (safeToCancel()) { handoffAnchor = null; handoffTicks = 0; return true; }
+		if (safeToCancel()) { handoffProgress.reset(); handoffStalled = false; return true; }
 		var player = engine.getPlayerContext().player();
 		if (player == null) return false;
 		if (handoffSampleTick != player.tickCount) {
 			handoffSampleTick = player.tickCount;
-			if (handoffAnchor == null || player.position().distanceToSqr(handoffAnchor) >= 0.04) {
-				handoffAnchor = player.position(); handoffTicks = 0;
-			} else handoffTicks++;
+			handoffStalled = handoffProgress.update(player.position(), true, false, false, cfg) != null;
 		}
-		if (handoffTicks < 40 || (!player.onGround() && !player.isInWater() && !player.onClimbable())) return false;
+		if (!handoffStalled || (!player.onGround() && !player.isInWater() && !player.onClimbable())) return false;
 		engine.getPathingBehavior().forceCancel();
 		return true;
 	}
@@ -462,7 +481,6 @@ public final class NativeNavigation {
 				if (Objects.equals(setting.value, assigned.get(setting))) setting.value = entry.getValue();
 			}
 			owner = null;
-			cameraSynced = false;
 		}
 		saved.clear(); assigned.clear(); destination = null; goal = null; building = false;
 	}
@@ -505,19 +523,6 @@ public final class NativeNavigation {
 		assert cfg.baritoneSprintChance == 0.8 && cfg.baritonePaceMinSec == 2 && cfg.baritonePaceMaxSec == 2;
 		Config copied = cfg.copy();
 		assert copied.baritoneRandomisePace && copied.baritonePaceMaxSec == 2 : "profile lost pace settings";
-		Rotation previous = new Rotation(179, 0), desired = new Rotation(-120, 60);
-		for (boolean interaction : new boolean[]{false, true}) {
-			for (double strength : new double[]{0, 0.35, 0.8, 1}) {
-				cfg.baritoneTurnSmoothing = strength;
-				owner = new NativeNavigation(cfg);
-				Rotation actual = smoothRotation(previous, desired, interaction);
-				assert Math.abs(Human.wrap(actual.getYaw() - previous.getYaw())) <= cfg.baritoneTurnRate + 0.001
-						: "interaction bypassed the turn cap";
-				for (int i = 0; i < 40; i++) actual = smoothRotation(actual, desired, interaction);
-				assert Math.abs(Human.wrap(actual.getYaw() - desired.getYaw())) < 0.01 : "smoothing never converged";
-			}
-		}
-		owner = null;
 		System.out.println("NativeNavigation self-check passed");
 	}
 }

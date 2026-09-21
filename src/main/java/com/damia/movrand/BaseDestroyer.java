@@ -616,12 +616,14 @@ public final class BaseDestroyer {
 		// blocks of it. Those are the same thing in an open field and nothing like it in a
 		// building, which is where this job happens.
 		Vec3 aim = Bot.blockCentre(ctx.mc(), want);
-		PathFinder.Goal goal = (x, y, z) ->
-				!rejectedWorkCells.contains(BlockPos.asLong(x, y, z))
+		PathFinder.Goal goal = (x, y, z) -> {
+			double floorY = Avoidance.standingY(level, x, y, z);
+			return !rejectedWorkCells.contains(BlockPos.asLong(x, y, z))
 				&& Bot.canWorkFrom(level, ctx.player(), x, y, z, want, aim, reach)
 				&& closeToDrops(cfg,
-						new net.minecraft.world.phys.AABB(x + 0.2, y, z + 0.2, x + 0.8, y + 1.8, z + 0.8),
+						new net.minecraft.world.phys.AABB(x + 0.2, floorY, z + 0.2, x + 0.8, floorY + 1.8, z + 0.8),
 						want);
+		};
 
 		Pathing.Nav result = nav.tick(ctx, steer, want, goal, mayBreak());
 		absorb(nav);
@@ -701,11 +703,8 @@ public final class BaseDestroyer {
 		};
 	}
 
-	/** Read route statistics; edit totals come from server confirmations for both executors. */
+	/** Read route statistics; edit totals come from server confirmations. */
 	private void absorb(Pathing from) {
-		from.placed = 0;
-		from.mined = 0;
-		from.justMined = null;
 		lastPathCost = from.lastCost;
 		lastPathNodes = from.lastNodes;
 	}

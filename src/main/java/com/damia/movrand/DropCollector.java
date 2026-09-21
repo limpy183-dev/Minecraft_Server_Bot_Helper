@@ -116,8 +116,7 @@ final class DropCollector {
 		double width = ctx.player().getBbWidth(), height = ctx.player().getBbHeight();
 		PathFinder.Goal goal = (x, y, z) -> {
 			if (rejectedCells.contains(BlockPos.asLong(x, y, z))) return false;
-			double top = Avoidance.topOf(ctx.level(), new BlockPos(x, y, z));
-			double floorY = y + (top <= Avoidance.STEPPABLE ? Math.max(0, top) : 0);
+			double floorY = Avoidance.standingY(ctx.level(), x, y, z);
 			AABB body = new AABB(x + 0.5 - width / 2, floorY, z + 0.5 - width / 2,
 					x + 0.5 + width / 2, floorY + height, z + 0.5 + width / 2);
 			return pickupOverlap(body, itemBox);
@@ -200,9 +199,18 @@ final class DropCollector {
 	}
 
 	static void aimAndWalk(PathMove.Ctx ctx, Bot.Steer steer, Vec3 to) {
-		double heading = Math.toDegrees(Math.atan2(ctx.player().getX() - to.x, to.z - ctx.player().getZ()));
-		steer.moveTowards(heading);
+		Vec3 delta = to.subtract(ctx.player().position()).multiply(1, 0, 1);
+		double heading = Math.toDegrees(Math.atan2(-delta.x, delta.z));
 		steer.lookAt(heading, 15);
+		// Steer toward where we will stop, rather than orbiting a cell centre on ice.
+		if (ctx.player().onGround() && delta.horizontalDistanceSqr() < 2.25) {
+			float friction = ctx.level().getBlockState(ctx.player().getBlockPosBelowThatAffectsMyMovement()).getBlock().getFriction();
+			double drag = Math.clamp(friction * 0.91, 0, 0.98);
+			delta = delta.subtract(ctx.player().getDeltaMovement().multiply(1, 0, 1).scale(drag / (1 - drag)));
+			steer.sneak = true;
+		}
+		if (delta.horizontalDistanceSqr() > 0.0025)
+			steer.moveTowards(Math.toDegrees(Math.atan2(-delta.x, delta.z)));
 	}
 
 	public static void main(String[] args) {

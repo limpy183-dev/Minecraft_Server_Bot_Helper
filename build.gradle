@@ -66,7 +66,7 @@ def regressionChecks = [
 	'AreaCoverage', 'Avoidance', 'Backpack', 'BaseDestroyer', 'BlockTargets', 'Bot', 'Combat',
 	'ContainerScanner', 'Deaths', 'DropCollector', 'Human', 'Journal', 'MovementController', 'NavProgress',
 	'MineSafety', 'NativeNavigation', 'PathFinder', 'Pathing', 'PathMove', 'PathRunner', 'Presets', 'Risks', 'Rng',
-	'SafeStop', 'Storage', 'WorldBounds'
+	'SafeStop', 'TerrainExplorer', 'Storage', 'SusChunkFinder', 'ChunkFinder', 'WorldBounds', 'LitematicPlan'
 ]
 
 def regressionTasks = regressionChecks.collect { checkName ->

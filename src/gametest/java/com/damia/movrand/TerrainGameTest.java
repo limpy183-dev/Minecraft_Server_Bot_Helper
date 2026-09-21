@@ -10,6 +10,18 @@ import net.minecraft.world.level.block.Blocks;
 /** Real server physics, survival inventory, production controller and Baritone executor. */
 public final class TerrainGameTest implements FabricClientGameTest {
 	@Override public void runTest(ClientGameTestContext test) {
+		if (System.getenv("MOVRAND_BUILDER_WORLD") != null) {
+			LitematicaProfileGameTest.run(test);
+			return;
+		}
+		if (Boolean.parseBoolean(System.getenv("MOVRAND_CHUNK_FINDER_ONLY"))) {
+			new ChunkFinderGameTest().runTest(test);
+			return;
+		}
+		if (Boolean.parseBoolean(System.getenv("MOVRAND_SUS_ONLY"))) {
+			new SusChunkGameTest().runTest(test);
+			return;
+		}
 		if (System.getenv("MOVRAND_STORAGE_WORLD") != null) {
 			StorageProfileGameTest.run(test);
 			return;
@@ -19,6 +31,30 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			return;
 		}
 		try (var world = test.worldBuilder().create()) {
+            if (Boolean.parseBoolean(System.getenv("MOVRAND_GAPS_ONLY"))) {
+                navigationGaps(test, world);
+                return;
+            }
+            if (Boolean.parseBoolean(System.getenv("MOVRAND_NAVIGATION_ONLY"))) {
+                smoothingMatrix(test, world);
+                surfaceNavigation(test, world);
+                navigationPace(test, world);
+                navigationGaps(test, world);
+                stalledRoute(test, world);
+                return;
+            }
+            if (Boolean.parseBoolean(System.getenv("MOVRAND_EXPLORER_ONLY"))) {
+                TerrainExplorerGameTest.run(test, world);
+                return;
+            }
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_BUILDER_ONLY"))) {
+				LitematicaBuilderGameTest.run(test, world);
+				return;
+			}
+			if (Boolean.parseBoolean(System.getenv("MOVRAND_SURFACES_ONLY"))) {
+				surfaceNavigation(test, world);
+				return;
+			}
 			if (Boolean.parseBoolean(System.getenv("MOVRAND_EATING_ONLY"))) {
 				eatingDuringPlacement(test, world);
 				smoothEating(test, world);
@@ -38,6 +74,7 @@ public final class TerrainGameTest implements FabricClientGameTest {
 				BasaltMechanicsGameTest.run(test, world);
 				return;
 			}
+			surfaceNavigation(test, world);
 			navigationPace(test, world);
 			miningAimPoints(test, world);
 			if (!Boolean.parseBoolean(System.getenv("MOVRAND_TERRAIN_ONLY"))) {
@@ -56,24 +93,7 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			drop(world, 6.5, 1.2, 0.5);
 			collect(test, "lower-floor-overhang", 600);
 
-			for (double rate : new double[]{8, 24, 90}) {
-				setup(test, world);
-				test.runOnClient(mc -> {
-					MovRand.config().baritoneTurnRate = rate;
-					MovRand.config().baritoneParkourPlace = true;
-				});
-				world.getServer().runCommand("fill -2 8 -1 2 8 1 stone");
-				world.getServer().runCommand("fill 7 8 -1 10 8 1 stone");
-				world.getServer().runCommand("tp @p 0.5 9 0.5 -90 0");
-				drop(world, 8.5, 9.2, 0.5);
-				collect(test, "bridge-gap-rate-" + rate, 1000);
-				boolean built = world.getServer().computeOnServer(server -> {
-					for (int x = 3; x <= 6; x++) for (int y = 1; y <= 9; y++) for (int z = -2; z <= 2; z++)
-						if (server.overworld().getBlockState(new BlockPos(x, y, z)).is(Blocks.COBBLESTONE)) return true;
-					return false;
-				});
-				if (!built) throw new AssertionError("gap test did not exercise placement");
-			}
+			navigationGaps(test, world);
 
 			setup(test, world);
 			world.getServer().runCommand("fill -2 1 -2 9 1 2 stone");
@@ -104,6 +124,74 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			// has closed, stop them so Minecraft's shutdown watchdog does not fail a passed run.
 			if (baritone.Baritone.getExecutor() instanceof java.util.concurrent.ExecutorService executor)
 				executor.shutdownNow();
+		}
+	}
+
+	/** Start on partial shapes, cross them, and finish an actual demolition without editing the floor. */
+	private static void surfaceNavigation(ClientGameTestContext test, TestSingleplayerContext world) {
+		for (String[] surface : new String[][]{
+				{"stone", "repeater"}, {"ice", "repeater"}, {"blue_ice", "comparator"},
+				{"stone", "stone_slab[type=bottom]"}, {"ice", "white_carpet"},
+				{"packed_ice", "air"}, {"soul_sand", "air"}, {"honey_block", "air"},
+				{"slime_block", "air"}, {"dirt_path", "air"}, {"farmland", "air"},
+				{"stone", "stone_stairs[facing=east]"}, {"blue_ice", "snow[layers=2]"}}) {
+			setup(test, world);
+			String name = surface[0] + "/" + surface[1];
+			world.getServer().runCommand("fill -8 0 -8 20 0 8 " + surface[0]);
+			world.getServer().runCommand("fill -8 1 -8 20 1 8 " + surface[1]);
+			// Alternate strips force stepping onto/off components; the wall requires a turn.
+			if (!surface[1].equals("air")) for (int x = 1; x <= 9; x += 2)
+				world.getServer().runCommand("fill " + x + " 1 -8 " + x + " 1 8 air");
+			world.getServer().runCommand("fill 5 1 -8 6 4 1 stone");
+			world.getServer().runCommand("setblock 12 2 0 redstone_block");
+			world.getServer().runCommand("tp @p 0.5 2 0.5 -90 0");
+			world.getServer().runCommand("effect give @p saturation 1 4 true");
+			world.getConnection().waitForClientboundPackets();
+			test.waitTicks(20);
+			centreOnSurface(test, name);
+			test.runOnClient(mc -> {
+				Config cfg = MovRand.config();
+				cfg.destroyBlocks.add("redstone_block");
+				cfg.pathMine = cfg.pathBridge = cfg.baritoneParkour = false;
+				cfg.taskReactionChance = 0;
+				MovRand.LOG.info("SURFACE start {} at {}", name, mc.player.position());
+				MovRand.controller().start(mc);
+			});
+			try {
+				int ticks = test.waitFor(mc -> mc.level.getBlockState(new BlockPos(12, 2, 0)).isAir()
+						&& MovRand.controller().destroyer.mined > 0, 400);
+				test.runOnClient(mc -> {
+					if (mc.player.getX() < 8 || mc.player.getHealth() < 20)
+						throw new AssertionError("surface route did not safely reach the target: " + name);
+					MovRand.LOG.info("SURFACE passed {} in {} ticks at {}", name, ticks, mc.player.position());
+				});
+			} catch (Throwable failure) { diagnose(test, "surface-" + surface[0] + "-" + surface[1].split("\\[")[0]); throw failure; }
+			finally { test.runOnClient(mc -> MovRand.controller().stop(mc, "surface fixture complete")); }
+		}
+	}
+
+	/** Exercise close positioning with real friction and key input, including inherited sliding. */
+	private static void centreOnSurface(ClientGameTestContext test, String name) {
+		var target = new net.minecraft.world.phys.Vec3(0.7, 0, 0.7);
+		test.runOnClient(mc -> mc.player.setDeltaMovement(new net.minecraft.world.phys.Vec3(0.16, 0, -0.12)));
+		try {
+			int ticks = test.waitFor(mc -> {
+				Bot.Steer steer = new Bot.Steer();
+				DropCollector.aimAndWalk(new PathMove.Ctx(mc, mc.player, mc.level, MovRand.config()), steer, target);
+				boolean[] keys = steer.hasMove ? Bot.keysFor(mc.player.getYRot(), steer.moveYaw, null) : new boolean[4];
+				mc.options.keyUp.setDown(keys[0]); mc.options.keyDown.setDown(keys[1]);
+				mc.options.keyLeft.setDown(keys[2]); mc.options.keyRight.setDown(keys[3]);
+				mc.options.keyShift.setDown(steer.sneak);
+				return mc.player.position().subtract(target).horizontalDistanceSqr() < 0.015
+						&& mc.player.getDeltaMovement().horizontalDistanceSqr() < 0.0004;
+			}, 160);
+			test.runOnClient(mc -> MovRand.LOG.info("SURFACE centring {} in {} ticks", name, ticks));
+		} finally {
+			test.runOnClient(mc -> {
+				mc.options.keyUp.setDown(false); mc.options.keyDown.setDown(false);
+				mc.options.keyLeft.setDown(false); mc.options.keyRight.setDown(false);
+				mc.options.keyShift.setDown(false);
+			});
 		}
 	}
 
@@ -278,8 +366,34 @@ public final class TerrainGameTest implements FabricClientGameTest {
 		});
 	}
 
+	private static void navigationGaps(ClientGameTestContext test, TestSingleplayerContext world) {
+		for (double rate : new double[]{8, 24, 90}) {
+			setup(test, world);
+			test.runOnClient(mc -> {
+				MovRand.config().baritoneTurnRate = rate;
+				MovRand.config().baritoneParkourPlace = true;
+			});
+			world.getServer().runCommand("fill -2 8 -1 2 8 1 stone");
+			world.getServer().runCommand("fill 7 8 -1 10 8 1 stone");
+			world.getServer().runCommand("tp @p 0.5 9 0.5 -90 0");
+			drop(world, 8.5, 9.2, 0.5);
+			collect(test, "bridge-gap-rate-" + rate, 1000);
+			boolean built = world.getServer().computeOnServer(server -> {
+				for (int x = 3; x <= 6; x++) for (int y = 1; y <= 9; y++) for (int z = -2; z <= 2; z++)
+					if (server.overworld().getBlockState(new BlockPos(x, y, z)).is(Blocks.COBBLESTONE)) return true;
+				return false;
+			});
+			if (!built) throw new AssertionError("gap test did not exercise placement");
+		}
+	}
+
 	/** Production mining, thin shapes, navigation and camera handoffs at slider boundaries. */
 	private static void smoothingMatrix(ClientGameTestContext test, TestSingleplayerContext world) {
+        NavigationRotationCheck rotation = new NavigationRotationCheck();
+        test.runOnClient(mc -> baritone.api.BaritoneAPI.getProvider().getPrimaryBaritone()
+                .getGameEventHandler().registerEventListener(rotation));
+        test.runOnClient(mc -> rotation.enabled = true);
+        try {
 		for (int scenario = 0; scenario < 5; scenario++) {
 			setup(test, world);
 			double smoothing = new double[]{0, 0.35, 0.8, 1, 1}[scenario];
@@ -310,12 +424,17 @@ public final class TerrainGameTest implements FabricClientGameTest {
 			try {
 				double[] lastLook = {90, 0};
 				boolean[] navigated = {false};
+                boolean[] previousNavigation = {false};
 				int ticks = test.waitFor(mc -> {
 					double rate = Math.max(MovRand.config().baritoneTurnRate, MovRand.config().taskAimMaxTurnDeg);
-					if (Math.abs(Human.wrap(mc.player.getYRot() - lastLook[0])) > rate + 0.01
-							|| Math.abs(mc.player.getXRot() - lastLook[1]) > rate + 0.01)
+					rotation.verify();
+                    boolean navigating = NativeNavigation.controlling();
+                    if (!navigating && !previousNavigation[0]
+                            && (Math.abs(Human.wrap(mc.player.getYRot() - lastLook[0])) > rate + 0.01
+                            || Math.abs(mc.player.getXRot() - lastLook[1]) > rate + 0.01))
 						throw new AssertionError("camera snapped past its rate limit during a job/handoff");
-					lastLook[0] = mc.player.getYRot(); lastLook[1] = mc.player.getXRot();
+					previousNavigation[0] = navigating;
+                    lastLook[0] = mc.player.getYRot(); lastLook[1] = mc.player.getXRot();
 					navigated[0] |= NativeNavigation.controlling();
 					return mc.level.getBlockState(new BlockPos(2, 1, 0)).isAir()
 							&& mc.level.getBlockState(new BlockPos(8, 1, 0)).isAir()
@@ -329,6 +448,12 @@ public final class TerrainGameTest implements FabricClientGameTest {
 				});
 			} catch (Throwable failure) { diagnose(test, "smoothing-" + scenario); throw failure; }
 		}
+        test.runOnClient(mc -> {
+            rotation.verify();
+            if (rotation.samples == 0) throw new AssertionError("No navigation movement packets checked");
+            MovRand.LOG.info("Navigation rotation checked {} packets", rotation.samples);
+        });
+        } finally { test.runOnClient(mc -> rotation.enabled = false); }
 	}
 
 	/** Eating shares job aim and must finish, restore the tool and resume mining without a snap. */

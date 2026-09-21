@@ -1,0 +1,40 @@
+
+> Configure project :
+Fabric Loom: 1.17.20
+
+> Task :compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :verifyBaritone
+> Task :processResources UP-TO-DATE
+> Task :classes
+
+> Task :compileGametestJava FAILED
+C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\src\gametest\java\com\damia\movrand\TerrainExplorerGameTest.java:112: error: cannot find symbol
+            c.containerScanEnabled = true; c.containerThreshold = 1; c.containerReaction = Config.Reaction.NONE;
+                                                                                                          ^
+  symbol:   variable NONE
+  location: class Reaction
+1 error
+
+
+[Incubating] Problems report is available at: file:///C:/Users/damia/Desktop/AI_Projects/Minecraft/Movement_And_Randomisation/build/reports/problems/problems-report.html
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':compileGametestJava' (registered by plugin class 'org.gradle.api.plugins.JavaBasePlugin').
+> Compilation failed; see the compiler output below.
+  C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\src\gametest\java\com\damia\movrand\TerrainExplorerGameTest.java:112: error: cannot find symbol
+              c.containerScanEnabled = true; c.containerThreshold = 1; c.containerReaction = Config.Reaction.NONE;
+                                                                                                            ^
+    symbol:   variable NONE
+    location: class Reaction
+  1 error
+
+* Try:
+> Check your code and dependencies to fix the compilation error(s)
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+
+BUILD FAILED in 5s
+4 actionable tasks: 3 executed, 1 up-to-date

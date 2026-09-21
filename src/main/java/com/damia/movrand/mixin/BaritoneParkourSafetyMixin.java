@@ -17,6 +17,7 @@ public abstract class BaritoneParkourSafetyMixin {
 	@Inject(method = "cost(Lbaritone/pathing/movement/CalculationContext;IIILnet/minecraft/core/Direction;Lbaritone/utils/pathing/MutableMoveResult;)V", at = @At("RETURN"))
 	private static void movrand$landing(CalculationContext ctx, int x, int y, int z, Direction dir, MutableMoveResult result, CallbackInfo ci) {
 		if (NativeNavigation.activeConfig() == null || result.cost >= ActionCosts.COST_INF) return;
+		if (!NativeNavigation.normalJumpFrom(ctx, x, y, z)) { result.cost = ActionCosts.COST_INF; return; }
 		MineSafety.View view = (px, py, pz) -> ctx.bsi.worldContainsLoadedChunk(px, pz)
 				? MineSafety.classify(ctx.get(px, py, pz)) : MineSafety.UNKNOWN;
 		int distance = Math.abs(result.x - x) + Math.abs(result.z - z);

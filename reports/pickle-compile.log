@@ -1,0 +1,17 @@
+
+> Configure project :
+Fabric Loom: 1.17.20
+
+> Task :compileJava
+
+Note: Some input files use or override a deprecated API.
+> Task :verifyBaritone
+Note: Recompile with -Xlint:deprecation for details.
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :compileGametestJava
+
+[Incubating] Problems report is available at: file:///C:/Users/damia/Desktop/AI_Projects/Minecraft/Movement_And_Randomisation/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 4s
+4 actionable tasks: 3 executed, 1 up-to-date

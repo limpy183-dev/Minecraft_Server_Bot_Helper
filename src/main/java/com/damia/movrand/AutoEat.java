@@ -66,6 +66,7 @@ public final class AutoEat {
 				return false;
 			}
 			int slot = bestFoodSlot(player);
+            if (slot < 0 && cfg.explorerEnabled && new Backpack(cfg).restockItem(mc, player, this::suitableFood)) slot = bestFoodSlot(player);
 			if (slot < 0) {
 				status = "no food on the hotbar";
 				return false;
@@ -131,15 +132,9 @@ public final class AutoEat {
 		int bestNutrition = -1;
 		for (int slot = 0; slot < Inventory.SELECTION_SIZE; slot++) {
 			ItemStack stack = inv.getItem(slot);
-			if (!isEdible(stack)) continue;
-			if (cfg.autoEatAvoidHarmful && HARMFUL.contains(stack.getItem())) continue;
-			FoodProperties food = stack.get(DataComponents.FOOD);
-			int nutrition = food == null ? 0 : food.nutrition();
-			// do not burn a golden apple on a half-empty bar
-			if (cfg.autoEatSaveGoldenApples
-					&& (stack.is(Items.GOLDEN_APPLE) || stack.is(Items.ENCHANTED_GOLDEN_APPLE))) {
-				continue;
-			}
+            if (!suitableFood(stack)) continue;
+            FoodProperties food = stack.get(DataComponents.FOOD);
+            int nutrition = food == null ? 0 : food.nutrition();
 			if (nutrition > bestNutrition) {
 				bestNutrition = nutrition;
 				best = slot;
@@ -147,6 +142,19 @@ public final class AutoEat {
 		}
 		return best;
 	}
+
+    private boolean suitableFood(ItemStack stack) {
+        return isEdible(stack) && !(cfg.autoEatAvoidHarmful && HARMFUL.contains(stack.getItem()))
+                && !(cfg.autoEatSaveGoldenApples && (stack.is(Items.GOLDEN_APPLE) || stack.is(Items.ENCHANTED_GOLDEN_APPLE)));
+    }
+
+    private boolean canRestockFood(LocalPlayer player) {
+        var inv = player.getInventory();
+        if (!cfg.explorerEnabled || player.containerMenu != player.inventoryMenu
+                || Backpack.restockDestination(cfg, i -> inv.getItem(i).isEmpty()) < 0) return false;
+        for (int i = 9; i < 36; i++) if (!cfg.slotProtected(i) && suitableFood(inv.getItem(i))) return true;
+        return false;
+    }
 
 	private static boolean isEdible(ItemStack stack) {
 		return !stack.isEmpty() && stack.has(DataComponents.FOOD);
@@ -156,6 +164,6 @@ public final class AutoEat {
 	public boolean isOutOfFood(LocalPlayer player) {
 		return cfg.autoEatEnabled
 				&& player.getFoodData().getFoodLevel() <= cfg.autoEatThreshold
-				&& bestFoodSlot(player) < 0;
+				&& bestFoodSlot(player) < 0 && !canRestockFood(player);
 	}
 }

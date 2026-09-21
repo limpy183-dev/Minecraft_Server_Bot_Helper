@@ -54,6 +54,8 @@ public final class Bot {
 		public boolean forward, back, left, right;
 		public boolean jump, sneak, sprint;
 		public boolean attack, use;
+		/** Litematica interaction is validated against the final camera and desired block state. */
+		public boolean builderAction;
 		/** Baritone owns movement, interaction and rotation for this tick. */
 		public boolean externalNavigation;
 		/** Precise block intents, rechecked after the final smoothed rotation is applied. */
@@ -109,6 +111,7 @@ public final class Bot {
 			hasLook = false;
 			hasMove = false;
 			precise = false;
+			builderAction = false;
 			attackTarget = useTarget = placeTarget = null;
 			placeFace = null;
 			forward = back = left = right = jump = sneak = sprint = attack = use = false;
@@ -365,7 +368,7 @@ public final class Bot {
 	public static boolean canWorkFrom(net.minecraft.client.multiplayer.ClientLevel level,
 	                                  LocalPlayer player, int x, int y, int z,
 	                                  BlockPos target, Vec3 aim, double reach) {
-		Vec3 eyes = new Vec3(x + 0.5, y + player.getEyeHeight(), z + 0.5);
+		Vec3 eyes = new Vec3(x + 0.5, Avoidance.standingY(level, x, y, z) + player.getEyeHeight(), z + 0.5);
 		if (aim.distanceToSqr(eyes) > reach * reach) return false;
 		BlockHitResult hit = level.clip(new ClipContext(eyes, aim,
 				ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, player));

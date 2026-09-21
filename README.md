@@ -321,6 +321,15 @@ person searching a region wanders while still converging on full coverage — ev
 self-checked to finish in exactly one target per chunk. **Serpentine** is the fastest and
 looks the most like a machine. All of the ordinary randomisation keeps running on top.
 
+Every route uses the Randomisation tab's pauses, sidesteps, turns, hops, look-around,
+view wobble and smoothing. Movement's run-length settings control the event frequency.
+The turn-speed setting also caps camera changes between chunks, even with smoothing at zero.
+Organic eases the walking direction through corners, varies turn pace between targets, and
+adds movement drift independent of the yaw/pitch wobble (controlled by the wobble toggle and
+amplitude). Sidesteps follow the route's direction, and obstacle checks include that sidestep.
+For a sharp organic turn, movement waits until the heading comes around, then resumes;
+this keeps very slow turn settings from circling a nearby target indefinitely.
+
 Chunks the container scan has already read count as covered without walking into them, so
 a sweep set up for finding bases finishes far quicker than one that has to visit every
 chunk centre. Progress survives a restart, and is discarded if you move the area.
@@ -452,6 +461,24 @@ it if a short teleport is being waved through. **Put back** counts how often it 
 this session. Nothing is lost by ignoring them: a server that keeps rejecting movement means
 you are not covering ground, and that is what stuck detection is for.
 
+### Chunk finder
+
+Under **Watching → Chunk finder**, enable the finder and choose **Likely new** (green)
+or **Likely old** (previously loaded, amber). It draws chunk-sized boxes, with adjustable
+opacity, distance, box count and visibility through terrain. It works with movement off.
+
+This estimates generation/save history from the server's block and biome palettes, using
+the [palette-compaction principle documented by XaeroPlus](https://github.com/rfresh2/XaeroPlus/blob/1.20.1/common/src/main/java/xaeroplus/module/impl/PaletteNewChunks.java).
+It does **not** use your client's visit history. Minecraft does not transmit a record of
+every player's exploration, so neither mode proves whether someone has been there.
+Pre-generated terrain, server optimisations, upgrades and edits can affect the clues.
+Insufficient evidence and custom dimensions remain unmarked; they are not assumed old.
+Only loaded chunks are checked. Results reset on disconnect, dimension change or disabling.
+
+Run the palette and overlay integration check with
+`MOVRAND_CHUNK_FINDER_ONLY=true ./gradlew runClientGameTest` (PowerShell:
+`$env:MOVRAND_CHUNK_FINDER_ONLY='true'; .\gradlew.bat runClientGameTest`).
+
 ### Containers
 Counts hoppers, chests, barrels, shulkers, droppers, furnaces and crafting stations in the
 chunks around you and reacts once the total crosses a threshold. Reading is invisible;
@@ -551,11 +578,11 @@ Eight accent colours, backdrop dimming, world blur.
 
 ## Base destroyer
 
-The default terrain engine is the official **Baritone 1.19.0 for Minecraft 26.2**, bundled
-inside this mod. The destroyer controls its destinations, inventory permissions, mining
-safety and camera. Baritone executes terrain movement, digging and construction. The legacy
-planner remains available by switching **Use Baritone navigation** off. Keeping Baritone
-enabled is recommended, and its toggle has a green recommendation edge.
+The terrain engine is the official **Baritone 1.19.0 for Minecraft 26.2**, bundled
+inside this mod and always enabled for routes. The destroyer controls destinations,
+inventory permissions and mining safety. Baritone executes terrain movement, digging and
+construction, including the simulation rotation. Camera interpolation is visual only during
+navigation; there is no navigation-engine toggle.
 
 Its own section in the sidebar, under a rule, because everything above the rule watches and
 walks and everything below it reaches out and changes the world.
@@ -593,24 +620,23 @@ and behind. Jumps, run-ups, landings, bridges, climbing, liquids, mining and pla
 normal control immediately. It adds no detours or pauses and changes no target selection,
 mining permissions, inventory handling or safety rules. These settings save with configs and profiles.
 
-**Navigation turn smoothing**, **Maximum navigation turn per tick** and **Navigation aim
-variation** control navigation humanisation. Candidate placement checks use the intended
-rotation so smoothing cannot prevent a placement from ever being considered. Smoothing now
-ranges from **0 to 1**. A finite turn filter rounds acceleration and braking, settling within
-two ticks of the rate-limited heading reaching its target at every nonzero strength. Increasing
-smoothing does not reduce the turn rate or repeatedly release movement keys. Walking, sprinting,
-jumps, pillars and landings retain Baritone's planned physical heading while the view turns
-smoothly; precision movements no longer bypass the camera filter. Moving aim points use bounded
-prediction to avoid trailing placement faces, and parkour looks toward the landing during the
-run-up so low turn rates can use the existing travel time to line up.
+**Navigation camera smoothing** changes the rendered view only while Baritone navigates.
+Baritone owns the simulation rotation used for walking, sprint jumps, raycasts and outgoing
+movement packets. The previous custom look override smoothed the outgoing rotation while
+leaving the physical movement heading unsmoothed; those directions could disagree and trigger
+server corrections. That override has been removed. This fixes a client inconsistency, but
+acceptance still depends on the server's rules and anticheat configuration.
 
-At **1**, the rendered view uses continuous position and velocity between ticks, including
-navigation-to-mining handoffs, placement, combat and working wobble. Rendering uses two ticks
-of rotation history (up to 100 ms); interaction raycasts and movement use the current simulation
-rotation and are not delayed by rendering. Minecraft's movement, jump and mouse buttons retain
-their normal discrete timing. Turn-rate and intentional reaction-delay settings still control
-speed; the smoothing slider controls the shape of the turn. The controller yields its keys
-and camera while Baritone is executing.
+Camera smoothing ranges from **0 to 1** and uses up to two ticks of rotation history
+(100 ms). It also remains the minimum smoothing for local job actions. **Maximum local
+movement turn per tick** applies to local steering; Baritone navigation uses its own turns.
+**Navigation aim variation** retains Baritone's bounded random aim offsets. Local mining and
+placement still use **Maximum working turn per tick**. Rendering does not alter movement or
+interaction timing.
+
+The bot always uses bundled Baritone for routes. The navigation toggle and alternate route
+executor have been removed from the job router; old profiles containing the toggle still load
+and automatically use Baritone.
 
 Pickup journeys continue across batch time limits. A grid arrival on the wrong edge of a
 block triggers centring or another approach. Route failures and repeated loops are bounded;
@@ -856,6 +882,11 @@ hazard-free corridor. Otherwise the pathfinder routes around the obstacle, even 
 item is less than two blocks away. Pickup goals use the player's and item's bounding boxes,
 including height, instead of assuming a radius around the item's block is close enough.
 The final approach centres the player when a grid-square arrival is still out of pickup range.
+Working and pickup positions use collision-surface height, including repeaters, slabs, snow,
+stairs, paths and soul sand. Close positioning accounts for momentum and creeps into place;
+ordinary walking slows on slippery or movement-altering surfaces. Honey supports walking,
+but routes cannot assume normal jumps from it. Moving in circles within one block also counts
+as a stalled route, including while waiting to hand back navigation controls.
 
 **Wait for pickup confirmation** allows a short settling period for pickup delay. Items that
 remain, or cannot be reached, are deferred for **Retry an unreachable drop after**; moving
@@ -867,16 +898,79 @@ The native executor also checks physical progress independently of Baritone's bu
 Searches receive a three-second deadline; stationary routes are replanned after about 2.5
 seconds with the default settings, with at most three failed attempts before deferring a
 target. Confirmed mining gets the configured block-breaking allowance. Critical moves finish
-landing before recovery releases the controls. The legacy executor returns its best partial
-route within three seconds and uses per-step progress checks and failed-edge memory.
+landing before recovery releases the controls.
 
 Run `gradlew build` for all executable regression checks, and `gradlew runClientGameTest`
 for survival-world navigation and mining tests. Test worlds live under `build/run/clientGameTest`.
 The test mod is excluded from the distribution jar.
+Set `MOVRAND_NAVIGATION_ONLY=true` to check outgoing rotation against physical movement,
+local-action turn limits, terrain navigation, pace changes and stalled-route recovery.
+Set `MOVRAND_SURFACES_ONLY=true` when running the client tests to check close positioning and
+demolition across 12 partial-block/surface combinations, including repeaters on ice and turns.
 
 The unmodified dependency, source archive, license texts and provenance are in `libs/` and
 `src/main/resources/licenses/`. The build verifies the binary checksum and includes the
 corresponding Baritone source archive with the licenses in the distributable jar.
+
+## Litematica builder
+
+The **Litematica builder** sidebar section accepts `.litematic` files (the standard
+Litematica extension) and `.litematica` files. Browse folders in the GUI or paste a
+path, set the saved schematic origin, rotation and mirror, then **Load / validate
+schematic**. **Show material totals** lists the whole schematic's requirements.
+Supply materials in unprotected inventory slots, keep an empty hotbar slot for
+right-click configuration, and choose **Start / retry build**. **Pause builder**
+or the normal movement toggle stops it; retry rechecks the world rather than
+assuming previous placements still exist. The builder and base destroyer are
+mutually exclusive. A saved config never starts a building job automatically.
+
+**Auto-fetch creative materials** is enabled by default. In creative mode it supplies
+missing blocks, buckets, soil tools and temporary supports as needed, reusing its
+supplied hotbar slot. Existing items and protected slots are preserved; leave an
+unprotected inventory slot available. Disable the toggle to supply materials yourself.
+
+Baritone handles approach paths using the existing navigation pace and camera
+humanisation. Placement uses the actual smoothed camera, a fresh reach/face
+raycast, the block item's vanilla placement rules and ordinary player interaction
+packets. Every click waits for a server acknowledgement. Supports and companion
+blocks are retried on later passes; two complete verification passes check exact
+block states, including facing, axis, stair/slab halves and redstone properties.
+Repeaters are clicked to their saved **1–4 redstone tick delay**, comparators to
+their saved mode, and levers, note blocks and openable blocks to their saved
+settings. Slabs and layered blocks get repeated placements; farmland and paths
+use dirt and a hoe/shovel, and waterlogging uses supplied water buckets. Food,
+combat, safety guards and the existing work-through-interruptions setting apply.
+Automatic storage/selling is suspended to retain building supplies.
+
+Optional **Replace incorrect blocks** and **Match schematic air** permit clearing
+the corresponding cells. Containers, protected storage, unbreakable blocks and
+existing fluids require manual preparation. Temporary click supports can use the
+shared expendable-block selection/reserve (for example, to face a hopper sideways)
+and are removed before completion. Walking paths do not excavate the build;
+provide access scaffolding where no ordinary route exists. The builder moves
+towards unloaded chunks to request terrain from the server, with bounded retries.
+Status, last-pass verification counts, material totals and up to 128 unresolved
+placements are visible in the GUI.
+
+This is a survival block builder, **not a guarantee that every saved farm can be
+recreated automatically**. Entity placement, block-entity contents/text/NBT,
+special item interactions without a supported placement recipe, block states that
+need growth or external power, and construction sequences that depend on running
+machinery may need manual work. Exact mismatches remain unresolved; the bot does
+not silently accept default properties or declare them complete. A block-state
+success explicitly notes any saved entity/NBT records that it did not reproduce.
+See Litematica's own [placement limitations](https://github.com/maruohon/litematica/wiki/Basic-Operations).
+Files use format versions 4–7, with a limit of one million region cells and bounded
+NBT decompression. Unknown blocks/properties, corrupt palettes and conflicting
+overlapping regions are rejected. Negative subregion sizes and offsets are
+preserved; transforms apply to positions and block states around the saved origin.
+
+Run the packed-palette/coordinate self-check with `gradlew selfCheckLitematicPlan`.
+Run the real survival-world regression with `MOVRAND_BUILDER_ONLY=true` and
+`gradlew runClientGameTest` (PowerShell: `$env:MOVRAND_BUILDER_ONLY='true'`). It
+checks directional placement, repeater delay, comparator mode, multi-block items,
+temporary supports and cleanup, inventory transfers, soil, layered blocks,
+waterlogging, clearing, protected inventory and incomplete-build reporting.
 
 ## What a server can see
 
@@ -924,6 +1018,24 @@ will look like a person to every server-side model.
 None of this makes automation allowed. Being hard to notice is not permission.
 
 ## Working while the menu is open
+
+The **Sus chunk finder** starts scanning loaded chunks when enabled, including while
+movement and the container watcher are off. Each rule uses its own minimum: a storage
+minimum of 12 requires at least 12 container/machinery blocks in that chunk, including
+ender chests and shulker boxes. A double chest counts as two blocks. Lights and farmland
+also use per-chunk counts; building patterns require one connected horizontal patch
+with a row at least eight blocks long. Separate patches do not add together. Common
+generated materials such as planks and cobblestone need another rule that meets its
+own minimum; only a glass patch reaching the building minimum can qualify alone.
+
+Changing a detection rule clears old results and automatically rescans. A chunk can
+still qualify under another enabled rule; its finding lists the rules that actually
+met their minimums. Generated structures can resemble player builds, so these are
+heuristic findings rather than proof of a base.
+
+Run the focused client regression with `MOVRAND_SUS_ONLY=true` and
+`gradlew runClientGameTest`. It checks minimums, automatic startup, block removal,
+overlays, dimension changes and natural-terrain samples.
 
 The bot keeps walking with the menu up — `KeyboardInput` reads the key mappings with no
 screen gate, so writing them each tick works either way. Turn the backdrop dimming down on

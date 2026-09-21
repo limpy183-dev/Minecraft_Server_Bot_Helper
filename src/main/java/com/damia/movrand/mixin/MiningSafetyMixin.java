@@ -22,18 +22,25 @@ public abstract class MiningSafetyMixin {
 	@Inject(method = "destroyBlock", at = @At("HEAD"))
 	private void movrand$recordBreak(BlockPos pos, CallbackInfoReturnable<Boolean> cir) {
 		Minecraft mc = Minecraft.getInstance();
-		if (mc.level != null && MovRand.controller() != null && !mc.level.getBlockState(pos).isAir())
-			MovRand.controller().destroyer.expectEdit(mc.level, pos, mc.level.getBlockState(pos).getBlock(), false);
+		if (mc.level != null && MovRand.controller() != null && !mc.level.getBlockState(pos).isAir()) {
+            MovRand.controller().destroyer.expectEdit(mc.level, pos, mc.level.getBlockState(pos).getBlock(), false);
+            MovRand.controller().explorer.expectEdit(mc.level, pos, mc.level.getBlockState(pos).getBlock(), false);
+        }
 	}
 
-	@Inject(method = "useItemOn", at = @At("HEAD"))
+	@Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
 	private void movrand$recordPlacement(LocalPlayer player, InteractionHand hand, BlockHitResult hit, CallbackInfoReturnable<InteractionResult> cir) {
 		Minecraft mc = Minecraft.getInstance();
 		var stack = player.getItemInHand(hand);
 		if (mc.level != null && MovRand.controller() != null && stack.getItem() instanceof BlockItem item) {
 			var context = item.updatePlacementContext(new BlockPlaceContext(player, hand, stack, hit));
-			if (context != null && context.canPlace())
-				MovRand.controller().destroyer.expectEdit(mc.level, context.getClickedPos(), item.getBlock(), true);
+			if (context != null && context.canPlace()) {
+                if (!MovRand.controller().builder.expectNavigationPlacement(mc.level, context.getClickedPos(), item.getBlock())) {
+                    cir.setReturnValue(InteractionResult.FAIL); return;
+                }
+                MovRand.controller().destroyer.expectEdit(mc.level, context.getClickedPos(), item.getBlock(), true);
+                MovRand.controller().explorer.expectEdit(mc.level, context.getClickedPos(), item.getBlock(), true);
+            }
 		}
 	}
 

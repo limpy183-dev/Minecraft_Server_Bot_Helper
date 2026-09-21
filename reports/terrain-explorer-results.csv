@@ -1,0 +1,11 @@
+map,ticks,metres,metres_per_second,health,mined,placed,failures,controller_mean_ms,controller_max_ms
+flat-containers,56,11.536,4.120,20.0,0,0,0,0.5833,16.1412
+sealed-mining-tunnel,70,11.577,3.308,20.0,2,0,0,0.2774,6.2633
+elevated-gap,46,12.441,5.409,20.0,0,1,0,0.3186,5.3268
+lava-cast-detour,70,17.017,4.862,20.0,0,0,0,0.2409,4.7138
+exact-high-Y-pillar,122,19.557,3.206,20.0,0,13,0,0.1432,4.5502
+hungry-journey,149,17.580,2.360,20.0,0,0,0,0.2080,5.0382
+water-boat-shore,460,51.690,2.247,20.0,0,0,0,0.0686,4.6905
+map-area-three-chunks,147,31.892,4.339,20.0,0,0,0,0.1729,7.5298
+the_nether-terrain,54,11.536,4.273,20.0,0,0,0,0.2686,6.7958
+the_end-terrain,54,12.328,4.566,20.0,0,0,0,0.3122,6.8309

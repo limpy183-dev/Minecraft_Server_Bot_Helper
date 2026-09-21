@@ -397,6 +397,15 @@ public final class Avoidance {
 		return shape.isEmpty() ? 0 : shape.max(Direction.Axis.Y);
 	}
 
+	/** Physical standing height for both a feet cell and a route node above partial support. */
+	public static double standingY(net.minecraft.world.level.BlockGetter level, int x, int y, int z) {
+		BlockPos feet = new BlockPos(x, y, z);
+		double top = topOf(level, feet);
+		if (top > 0) return top < 1 ? y + top : y;
+		double below = topOf(level, feet.below());
+		return below > 0 ? y - 1 + below : y;
+	}
+
 	/** In the way: too tall to simply walk onto, so it has to be gone round or broken. */
 	public static boolean fillsSpace(net.minecraft.world.level.BlockGetter level, BlockPos pos) {
 		return topOf(level, pos) > STEPPABLE;

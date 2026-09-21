@@ -6,6 +6,7 @@ import com.damia.movrand.BaseDestroyer;
 import com.damia.movrand.BlockTargets;
 import com.damia.movrand.Bot;
 import com.damia.movrand.Config;
+import com.damia.movrand.ChunkFinder;
 import com.damia.movrand.ContainerScanner;
 import com.damia.movrand.Journal;
 import com.damia.movrand.MovRand;
@@ -13,6 +14,7 @@ import com.damia.movrand.MovementController;
 import com.damia.movrand.Presets;
 import com.damia.movrand.Risks;
 import com.damia.movrand.Storage;
+import com.damia.movrand.SusChunkFinder;
 import com.damia.movrand.WorldId;
 import com.damia.movrand.gui.Widgets.Action;
 import com.damia.movrand.gui.Widgets.Cycle;
@@ -47,6 +49,7 @@ public final class ConfigScreen extends Screen {
 		// thing: the rest of the mod watches and walks, this half reaches out and changes the
 		// world. That is worth being able to see in the sidebar without reading it.
 		DESTROY("Base destroyer", true),
+		BUILD("Litematica builder", true),
 		DATA("Data", true), SETUP("Setup", false);
 
 		final String label;
@@ -66,11 +69,14 @@ public final class ConfigScreen extends Screen {
 		MOVEMENT("Movement", Group.MOVE),
 		RANDOM("Randomisation", Group.MOVE),
 		AREA("Area sweep", Group.MOVE),
+        EXPLORER("Terrain explorer", Group.MOVE),
 		GOTO("Go to", Group.MOVE),
 		OBSTACLES("Obstacles", Group.MOVE),
 		FOOD("Food", Group.MOVE),
 
 		CONTAINERS("Containers", Group.WATCH),
+		CHUNKS("Chunk finder", Group.WATCH),
+		SUS_CHUNKS("Sus chunk finder", Group.WATCH),
 		SAFETY("Safety", Group.WATCH),
 		STUCK("Stuck & alert", Group.WATCH),
 		SAFESTOP("Safe stop", Group.WATCH),
@@ -81,6 +87,7 @@ public final class ConfigScreen extends Screen {
 		STORAGE("Storage", Group.DESTROY),
 		SELLING("Auto sell", Group.DESTROY),
 		COMBAT("Combat", Group.DESTROY),
+		BUILDER("Litematica builder", Group.BUILD),
 
 		LOGGING("Logging", Group.DATA),
 		LOGS("Log viewer", Group.DATA),
@@ -158,6 +165,10 @@ public final class ConfigScreen extends Screen {
 	private String hoverTip = "";
 	private int journalSizeWhenBuilt = -1;
 	private String newProfileName = "";
+	private java.nio.file.Path builderFolder;
+	private String builderFileSearch = "";
+	private boolean builderShowMaterials;
+	private com.damia.movrand.LitematicaBuilder.Phase builderPhaseWhenBuilt;
 	private String pendingDelete = "";
 	/** The scrollbar currently held by the mouse, if any. */
 	private Scrollbar draggingScrollbar = Scrollbar.NONE;
@@ -225,14 +236,18 @@ public final class ConfigScreen extends Screen {
 			case MOVEMENT -> buildMovement();
 			case RANDOM -> buildRandom();
 			case AREA -> buildArea();
+            case EXPLORER -> buildExplorer();
 			case OBSTACLES -> buildObstacles();
 			case STUCK -> buildStuck();
 			case SAFESTOP -> buildSafeStop();
 			case GOTO -> buildGoto();
 			case CONTAINERS -> buildContainers();
+			case SUS_CHUNKS -> buildSusChunks();
+			case CHUNKS -> buildChunks();
 			case SAFETY -> buildSafety();
 			case FOOD -> buildFood();
 			case DESTROYER -> buildDestroyer();
+			case BUILDER -> buildLitematica();
 			case BLOCKS -> buildBlocks();
 			case INVENTORY -> buildInventory();
 			case STORAGE -> buildStorage();
@@ -326,13 +341,6 @@ public final class ConfigScreen extends Screen {
 	}
 
 	// -------------------------------------------------------------- tabs
-
-	private void addBaritoneRecommendation() {
-		add(new Toggle("Use Baritone navigation", () -> cfg.baritoneNavigation,
-				v -> { cfg.baritoneNavigation = v; build(); })
-				.tip("Uses the bundled Baritone engine for digging, bridging, pillars, stairs, slabs, ladders and terrain recovery. Off selects the legacy planner.")
-				.recommend("Keep enabled for terrain navigation and recovery."));
-	}
 
 	private void buildPresets() {
 		add(new Note("New here? Pick a setup below. Everything it changes is listed, and every", Ui.TEXT));
@@ -566,6 +574,7 @@ public final class ConfigScreen extends Screen {
 
 	private void buildRandom() {
 		add(new Note("Weights are relative. When a run ends, one event is drawn using them.", Ui.TEXT_MUTED));
+		add(new Note("Applies to every area sweep route. Run lengths in Movement control how often events happen.", Ui.TEXT_FAINT));
 		flag("No random events");
 
 		add(new Section("Step left / right"));
@@ -593,7 +602,7 @@ public final class ConfigScreen extends Screen {
 		add(new Slider("Turn speed", 0.2, 15, 0.1, 1, "°/tick",
 				() -> cfg.turnSpeedDegPerTick, v -> cfg.turnSpeedDegPerTick = v)
 				.tip("Peak rate. A turn eases in and out rather than holding one speed, so it lasts "
-						+ "half again as long as this number alone suggests."));
+						+ "half again as long as this number alone suggests. Also limits camera turns between area sweep targets."));
 		flag("Turn speed");
 
 		add(new Section("Hop"));
@@ -621,8 +630,8 @@ public final class ConfigScreen extends Screen {
 		add(new Section("Smoothing"));
 		add(new Slider("Turning", 0, 0.95, 0.01, 2, "",
 				() -> cfg.cameraSmoothYaw, v -> cfg.cameraSmoothYaw = v)
-				.tip("How much of last tick's heading the camera keeps. 0 points straight at where "
-						+ "it wants to face; 0.95 takes about a second to get there. Higher is "
+				.tip("How much of last tick's heading the camera keeps. Area sweep turns still obey the turn-speed limit at 0. "
+						+ "0.95 takes about a second to get there. Higher is "
 						+ "smoother and lags a little wider round corners."));
 		add(new Slider("Looking up and down", 0, 0.95, 0.01, 2, "",
 				() -> cfg.cameraSmoothPitch, v -> cfg.cameraSmoothPitch = v)
@@ -648,6 +657,78 @@ public final class ConfigScreen extends Screen {
 		}).tip("Draws a fresh seed from the OS entropy pool."));
 	}
 
+    private void buildExplorer() {
+        ctl.syncAreaWorld(minecraft);
+        add(new Note("Explore the selected region or travel to an exact XYZ feet block. Uses Baritone for walking, climbing, swimming, mining and bridging.", Ui.TEXT_MUTED));
+        add(new Toggle("Terrain explorer enabled", () -> cfg.explorerEnabled, v -> {
+            ctl.stop(minecraft, "Changed terrain explorer mode");
+            cfg.explorerEnabled = v;
+            if (v) {
+                cfg.areaEnabled = cfg.gotoEnabled = cfg.destroyerEnabled = cfg.builderEnabled = false;
+            }
+            ctl.explorer.restart();
+        }));
+        add(new Row(List.of(new Action("Start / resume expedition", true, () -> {
+            ctl.stop(minecraft, "Starting terrain explorer");
+            cfg.clampAll();
+            cfg.explorerEnabled = true;
+            cfg.areaEnabled = cfg.gotoEnabled = cfg.destroyerEnabled = cfg.builderEnabled = false;
+            ctl.start(minecraft);
+        }), new Action("Stop", false, () -> ctl.stop(minecraft, "Explorer stopped")))));
+        add(new KeyValue("Doing", () -> ctl.explorer.status, () -> accent()));
+        add(new KeyValue("Expedition", () -> ctl.explorer.metrics(), () -> Ui.TEXT_MUTED));
+        add(new Toggle("Go to coordinates instead of sweeping", () -> cfg.explorerCoordinates, v -> {
+            ctl.stop(minecraft, "Changed explorer destination mode"); cfg.explorerCoordinates = v; build();
+        }));
+        add(new Section("Exact XYZ destination"));
+        add(new Row(List.of(
+                new TextInput("X", NUMERIC, () -> "" + cfg.explorerX, v -> cfg.explorerX = (int) parse(v, cfg.explorerX)),
+                new TextInput("Y", NUMERIC, () -> "" + cfg.explorerY, v -> cfg.explorerY = (int) parse(v, cfg.explorerY)),
+                new TextInput("Z", NUMERIC, () -> "" + cfg.explorerZ, v -> cfg.explorerZ = (int) parse(v, cfg.explorerZ)))));
+        add(new Action("Use my current feet block", false, () -> {
+            if (minecraft.player == null) return;
+            var p = minecraft.player.blockPosition(); cfg.explorerX = p.getX(); cfg.explorerY = p.getY(); cfg.explorerZ = p.getZ();
+        }));
+        add(new Note("Arrival requires all three block coordinates. Randomisation changes the journey, never the destination. Coordinates belong to the current dimension; portals stop the expedition.", Ui.TEXT_FAINT));
+        add(new Section("Exploration area"));
+        add(new Note("Shares the Area sweep selection and saved world/dimension coverage. Explorer counts chunks you physically enter; container scans continue independently.", Ui.TEXT_FAINT));
+        AreaMap map = new AreaMap(cfg, ctl.area, 190); add(map);
+        add(new Row(List.of(new Action("Select area", true, map::armSelection),
+                new Action("Centre on me", false, map::follow),
+                new Action("Reset coverage", false, () -> { ctl.stop(minecraft, "Reset exploration coverage"); ctl.area.reset(); }))));
+        add(new KeyValue("Coverage", () -> String.format(Locale.ROOT, "%.1f%% of %d chunks", ctl.area.progress() * 100, ctl.area.totalChunks()), () -> accent()));
+        add(new Cycle<>("Route", Arrays.asList(AreaCoverage.Route.values()), r -> r.label, () -> cfg.areaRoute, v -> cfg.areaRoute = v));
+        add(new Slider("Waypoint scatter", 0, 7.5, .5, 1, " blocks", () -> cfg.areaTargetJitter, v -> cfg.areaTargetJitter = v));
+        add(new Section("Terrain and supplies"));
+        add(new Toggle("Mine obstacles when needed", () -> cfg.explorerMine, v -> cfg.explorerMine = v));
+        add(new Toggle("Bridge and pillar with spare blocks", () -> cfg.explorerBridge, v -> cfg.explorerBridge = v));
+        add(new Toggle("Water bucket landings", () -> cfg.explorerWaterBucket, v -> cfg.explorerWaterBucket = v)
+                .tip("Requires a water bucket on the hotbar. Disabled automatically in ultra-warm dimensions such as the Nether."));
+        add(new Toggle("Boats on clear water crossings", () -> cfg.explorerBoats, v -> cfg.explorerBoats = v)
+                .tip("Deploys a hotbar boat for a wide, straight water corridor. Obstacles and shorelines return to Baritone swimming or walking."));
+        add(new Toggle("Break and recover expedition boat", () -> cfg.explorerRecoverBoat, v -> cfg.explorerRecoverBoat = v)
+                .tip("Only attacks the empty boat deployed for this crossing, when still in reach."));
+        add(Slider.ints("Maximum ordinary drop", 1, 3, () -> cfg.explorerMaxFall, v -> cfg.explorerMaxFall = v));
+        add(Slider.ints("Keep building blocks in reserve", 1, 64, () -> cfg.bridgeKeepBlocks, v -> cfg.bridgeKeepBlocks = v));
+        add(new Toggle("Restock building blocks from inventory", () -> cfg.restockHotbar, v -> cfg.restockHotbar = v));
+        add(new Toggle("Auto eat", () -> cfg.autoEatEnabled, v -> cfg.autoEatEnabled = v));
+        add(new Toggle("Defend against attackers", () -> cfg.combatEnabled, v -> cfg.combatEnabled = v));
+        add(new Note("Keep tools and supplies available, with an empty unprotected hotbar slot for restocking. Inventory protection, mining exclusions, Food, Combat and Safety settings apply. Containers and other block entities are protected from route mining.", Ui.TEXT_FAINT));
+        add(new Section("Humanisation"));
+        add(new Toggle("Pause briefly on safe ground", () -> cfg.explorerPause, v -> cfg.explorerPause = v));
+        add(new Toggle("Vary walking and sprinting", () -> cfg.explorerRandomisePace, v -> cfg.explorerRandomisePace = v));
+        add(new Slider("Sprint share", 0, 1, .05, 2, "", () -> cfg.baritoneSprintChance, v -> cfg.baritoneSprintChance = v));
+        add(new Slider("Camera smoothing", 0, 1, .05, 2, "", () -> cfg.baritoneTurnSmoothing, v -> cfg.baritoneTurnSmoothing = v));
+        add(new Slider("Aim variation", 0, .2, .01, 2, "", () -> cfg.baritoneAimVariation, v -> cfg.baritoneAimVariation = v));
+        add(new Note("Camera smoothing is visual only while navigating. Aim variation and pace are shared with other routed jobs; Baritone owns movement and server-facing rotation.", Ui.TEXT_FAINT));
+        add(new Section("Recovery, containers and logging"));
+        add(Slider.ints("Destination deadline (seconds)", 30, 7200, () -> cfg.explorerTargetSec, v -> cfg.explorerTargetSec = v));
+        add(Slider.ints("Retries before stopping", 0, 5, () -> cfg.explorerRetries, v -> cfg.explorerRetries = v));
+        add(Slider.ints("Progress log interval (seconds)", 5, 300, () -> cfg.explorerLogSec, v -> cfg.explorerLogSec = v));
+        add(new Toggle("Scan containers while exploring", () -> cfg.containerScanEnabled, v -> cfg.containerScanEnabled = v));
+        add(new Note("Container thresholds, alerts and stop reactions come from Containers. Logging records targets, route failures, progress and completion with speed and edit counts. Unreachable terrain remains unvisited. Storage transfers resume the expedition afterward.", Ui.TEXT_FAINT));
+    }
+
 	private void buildArea() {
 		AreaCoverage area = ctl.area;
 		ctl.syncAreaWorld(minecraft);
@@ -661,7 +742,7 @@ public final class ConfigScreen extends Screen {
 
 		add(new Toggle("Sweep an area", () -> cfg.areaEnabled, v -> {
 			cfg.areaEnabled = v;
-			if (v) cfg.gotoEnabled = false; // one navigator at a time
+			if (v) { cfg.gotoEnabled = false; cfg.explorerEnabled = false; ctl.explorer.stop(); } // one navigator at a time
 		}).tip("Walks every chunk in the region below. Overrides the go-to destination."));
 
 		add(new Section("The region"));
@@ -723,10 +804,11 @@ public final class ConfigScreen extends Screen {
 			cfg.areaRoute = v;
 			build();
 		})
-				.tip("Organic picks randomly among the nearest few chunks — covers efficiently without a straight line in sight. "
+				.tip("Organic picks among nearby chunks, eases around corners, and varies its turn pace and movement drift. "
 						+ "Scout walks only far enough apart for the container scans to touch, which finds the same "
 						+ "storage for a fraction of the walking."));
 		flag("Serpentine route");
+		add(new Note("All routes use Randomisation events, view wobble, smoothing and turn speed. Organic also curves its movement between targets.", Ui.TEXT_FAINT));
 		add(new Note(cfg.areaRoute == AreaCoverage.Route.SCOUT && !(cfg.areaUseScanRadius && cfg.containerScanEnabled)
 						? "Scout needs the scan credit below — without it there is nothing to space the stops by."
 						: AreaCoverage.Route.values()[Math.max(0,
@@ -907,6 +989,112 @@ public final class ConfigScreen extends Screen {
 				() -> cfg.safeStopRotationToleranceDeg, v -> cfg.safeStopRotationToleranceDeg = v));
 	}
 
+	private void changeBuilder(Runnable edit) {
+		if (cfg.builderEnabled) ctl.stop(Minecraft.getInstance(), "Builder settings changed");
+		ctl.builder.invalidate();
+		edit.run();
+	}
+
+	private void buildLitematica() {
+		var mc = Minecraft.getInstance();
+		var b = ctl.builder;
+		builderPhaseWhenBuilt = b.phase;
+		add(new Section("Litematica builder"));
+		add(new Note("Build through normal player interactions. Baritone walks to a placement angle; the shared camera smoothing and random delays apply to every block.", Ui.TEXT_MUTED));
+		add(new KeyValue("Status", () -> (cfg.builderEnabled && !cfg.movementEnabled ? "Paused · " : "") + b.status, () -> accent()));
+		add(new KeyValue("Verified on last pass", () -> b.verified + " / " + b.total() + " cells · " + b.interactions + " interactions", () -> Ui.TEXT_MUTED));
+		add(new KeyValue("Target", b::targetDescription, () -> Ui.TEXT_MUTED));
+		add(new TextInput("Schematic file", null, () -> cfg.builderFile, v -> changeBuilder(() -> cfg.builderFile = v)));
+		add(new Action(builderFolder == null ? "Browse files…" : "Close file browser", false, () -> {
+			if (builderFolder != null) builderFolder = null;
+			else {
+				java.nio.file.Path folder = mc.gameDirectory.toPath().resolve("schematics");
+				try {
+					var selected = java.nio.file.Path.of(cfg.builderFile).toAbsolutePath().getParent();
+					if (!cfg.builderFile.isBlank() && selected != null && java.nio.file.Files.isDirectory(selected)) folder = selected;
+				} catch (RuntimeException ignored) { }
+				builderFolder = java.nio.file.Files.isDirectory(folder) ? folder.toAbsolutePath() : mc.gameDirectory.toPath().toAbsolutePath();
+			}
+			build();
+		}));
+		if (builderFolder != null) {
+			add(new Note(builderFolder.toString(), Ui.TEXT_MUTED));
+			add(new TextInput("Filter filenames", null, () -> builderFileSearch, v -> { builderFileSearch = v; build(); }));
+			java.nio.file.Path parent = builderFolder.getParent();
+			if (parent != null) add(new Action("↑ Parent folder", false, () -> { builderFolder = parent; build(); }));
+			else for (java.nio.file.Path root : java.nio.file.FileSystems.getDefault().getRootDirectories())
+				add(new Action(root.toString(), false, () -> { builderFolder = root; build(); }));
+			try (var files = java.nio.file.Files.list(builderFolder)) {
+				var entries = files.filter(p -> java.nio.file.Files.isDirectory(p) || com.damia.movrand.LitematicPlan.accepts(p))
+						.filter(p -> p.getFileName().toString().toLowerCase(Locale.ROOT).contains(builderFileSearch.toLowerCase(Locale.ROOT)))
+						.sorted(java.util.Comparator.comparing((java.nio.file.Path p) -> !java.nio.file.Files.isDirectory(p))
+								.thenComparing(p -> p.getFileName().toString(), String.CASE_INSENSITIVE_ORDER)).limit(201).toList();
+				for (var path : entries.subList(0, Math.min(200, entries.size()))) {
+					boolean dir = java.nio.file.Files.isDirectory(path);
+					add(new Action((dir ? "Folder: " : "") + path.getFileName(), false, () -> {
+						if (dir) builderFolder = path;
+						else { changeBuilder(() -> cfg.builderFile = path.toAbsolutePath().toString()); builderFolder = null; }
+						build();
+					}));
+				}
+				if (entries.size() > 200) add(new Note("Showing 200 entries — narrow the filename filter.", Ui.TEXT_MUTED));
+			} catch (java.io.IOException | SecurityException e) { add(new Note("Cannot read folder: " + e.getMessage(), Ui.TEXT_MUTED)); }
+		}
+		add(new Section("Placement"));
+		add(new Note("Origin is the schematic's saved origin, including negative region offsets. Rotation and mirroring apply around that origin.", Ui.TEXT_MUTED));
+		add(new Row(List.of(
+				new TextInput("Origin X", "-0123456789", () -> "" + cfg.builderX, v -> changeBuilder(() -> cfg.builderX = builderCoordinate(v, cfg.builderX))),
+				new TextInput("Origin Y", "-0123456789", () -> "" + cfg.builderY, v -> changeBuilder(() -> cfg.builderY = builderCoordinate(v, cfg.builderY))),
+				new TextInput("Origin Z", "-0123456789", () -> "" + cfg.builderZ, v -> changeBuilder(() -> cfg.builderZ = builderCoordinate(v, cfg.builderZ))))));
+		add(new Action("Use my block position as origin", false, () -> {
+			if (mc.player != null) { var pos = mc.player.blockPosition(); changeBuilder(() -> { cfg.builderX = pos.getX(); cfg.builderY = pos.getY(); cfg.builderZ = pos.getZ(); }); build(); }
+		}));
+		add(new Cycle<>("Rotation", List.of(0, 1, 2, 3), i -> List.of("0°", "90° clockwise", "180°", "90° counterclockwise").get(i),
+				() -> Math.floorMod(cfg.builderRotation, 4), v -> changeBuilder(() -> cfg.builderRotation = v)));
+		add(new Cycle<>("Mirror before rotating", List.of(0, 1, 2), i -> List.of("None", "Flip Z", "Flip X").get(i),
+				() -> Math.floorMod(cfg.builderMirror, 3), v -> changeBuilder(() -> cfg.builderMirror = v)));
+		add(new Toggle("Replace incorrect blocks", () -> cfg.builderReplace, v -> changeBuilder(() -> cfg.builderReplace = v))
+				.tip("Allows mining mismatches inside the schematic. Containers, fluids and protected storage require manual preparation. Baritone approaches do not excavate the build."));
+		add(new Toggle("Match schematic air (clear spaces)", () -> cfg.builderClearAir, v -> changeBuilder(() -> cfg.builderClearAir = v))
+				.tip("Together with Replace incorrect blocks, clears blocks where the schematic contains air. Otherwise air cells are ignored."));
+		add(new Toggle("Auto-fetch creative materials", () -> cfg.builderCreativeMaterials, v -> cfg.builderCreativeMaterials = v)
+				.tip("In creative mode, automatically supplies missing blocks, buckets, tools and temporary supports. Reuses a supplied hotbar slot and preserves existing items and protected slots."));
+		add(new Toggle("Temporary placement supports", () -> cfg.builderScaffold, v -> cfg.builderScaffold = v)
+				.tip("Uses expendable building blocks for missing click anchors, such as a sideways hopper. Removes these supports before final verification; access scaffolding for walking can still be needed."));
+		add(new RangeSlider("Delay between interactions", .1, 3, .05, 2, "s",
+				() -> cfg.builderDelayMin, v -> cfg.builderDelayMin = v,
+				() -> cfg.builderDelayMax, v -> cfg.builderDelayMax = v));
+		add(new Action("Load / validate schematic", true, () -> {
+			if (cfg.movementEnabled) ctl.stop(mc, "Loading schematic");
+			b.loadAsync(() -> { if (mc.gui.screen() == this) build(); }); build();
+		}));
+		add(new Action("Start / retry build", true, () -> {
+			if (!b.loaded() || mc.player == null) return;
+			ctl.stop(mc, "Starting Litematica builder");
+			cfg.destroyerEnabled = false; cfg.explorerEnabled = false; ctl.explorer.stop(); cfg.builderEnabled = true;
+			ctl.start(mc); build();
+		}));
+		add(new Action("Pause builder", false, () -> { ctl.stop(mc, "Builder paused"); build(); }));
+		add(new Section("Materials and completion"));
+		add(new Note("Supply the required items in unprotected inventory slots and leave an empty hotbar slot for configuring blocks. Builds retry support dependencies and verify exact block states over two passes. Provide access paths/scaffolding for unreachable placements.", Ui.TEXT_MUTED));
+		add(new Note("Repeaters use their saved redstone delay (1–4 ticks); comparators, levers, note blocks and openable blocks are configured by right-clicking. Soil uses dirt plus a hoe/shovel; waterlogging uses water buckets. Running circuits, growth, entities, contents and block-entity data can need manual setup; unresolved states stop with a reason.", Ui.TEXT_MUTED));
+		add(new Note("Navigation pace, aim humanisation, Food, Combat and Work through interruptions use the existing shared settings. Storage selling is suspended while building so materials stay in the inventory.", Ui.TEXT_MUTED));
+		add(new KeyValue("Saved extra data", b::extras, () -> Ui.TEXT_MUTED));
+		add(new Action(builderShowMaterials ? "Hide material totals" : "Show material totals", false, () -> { builderShowMaterials = !builderShowMaterials; build(); }));
+		if (builderShowMaterials) {
+			add(new Note("Totals for the whole schematic, before subtracting blocks already built. Special setup entries may need tools, growth or manual work.", Ui.TEXT_MUTED));
+			for (String material : b.materials()) add(new Note(material, Ui.TEXT_MUTED));
+		}
+		if (!b.issues().isEmpty()) {
+			add(new Section("Unresolved placements (first 128)"));
+			for (String issue : b.issues()) add(new Note(issue, Ui.TEXT_MUTED));
+		}
+	}
+
+	private static int builderCoordinate(String text, int fallback) {
+		try { return Math.clamp(Integer.parseInt(text), -30_000_000, 30_000_000); }
+		catch (NumberFormatException e) { return fallback; }
+	}
 
 	// --------------------------------------------------------- base destroyer
 
@@ -915,7 +1103,9 @@ public final class ConfigScreen extends Screen {
 
 		add(new Section("The job"));
 		add(new Toggle("Take bases apart automatically", () -> cfg.destroyerEnabled, v -> {
+			if (v && cfg.builderEnabled) { ctl.stop(Minecraft.getInstance(), "Switched to base destroyer"); cfg.builderEnabled = false; }
 			cfg.destroyerEnabled = v;
+            if (v) { cfg.explorerEnabled = false; ctl.explorer.stop(); }
 			build();
 		})
 				.tip("While this is on, the movement toggle runs the job instead of wandering: "
@@ -1006,18 +1196,18 @@ public final class ConfigScreen extends Screen {
 						+ "Zero retries as soon as another selection pass reaches it."));
 
 		add(new Section("Route"));
-        addBaritoneRecommendation();
-        if (cfg.baritoneNavigation) {
-            add(new Toggle("Parkour across gaps", () -> cfg.baritoneParkour, v -> cfg.baritoneParkour = v));
-            add(new Toggle("Place while crossing a gap", () -> cfg.baritoneParkourPlace, v -> cfg.baritoneParkourPlace = v)
-                    .tip("Also needs bridging permission and expendable building blocks."));
-            add(new Toggle("Climb vines", () -> cfg.baritoneVines, v -> cfg.baritoneVines = v));
-            add(new Toggle("Use water buckets for long falls", () -> cfg.baritoneWaterBucketFalls, v -> cfg.baritoneWaterBucketFalls = v)
-                    .tip("Requires a usable water bucket. Off keeps routes within the longest-drop limit."));
-            add(new Slider("Extra time per terrain move", 3, 60, 1, 0, "s", () -> cfg.baritoneNoProgressSec, v -> cfg.baritoneNoProgressSec = v)
-                    .tip("Added to the predicted movement cost before Baritone cancels a stalled step."));
-            add(Slider.ints("Failed route attempts", 1, 20, () -> cfg.pathAttempts, v -> cfg.pathAttempts = v));
-        }
+        add(new Note("The bot uses bundled Baritone navigation automatically.", Ui.TEXT_MUTED));
+
+		add(new Toggle("Parkour across gaps", () -> cfg.baritoneParkour, v -> cfg.baritoneParkour = v));
+		add(new Toggle("Place while crossing a gap", () -> cfg.baritoneParkourPlace, v -> cfg.baritoneParkourPlace = v)
+		        .tip("Also needs bridging permission and expendable building blocks."));
+		add(new Toggle("Climb vines", () -> cfg.baritoneVines, v -> cfg.baritoneVines = v));
+		add(new Toggle("Use water buckets for long falls", () -> cfg.baritoneWaterBucketFalls, v -> cfg.baritoneWaterBucketFalls = v)
+		        .tip("Requires a usable water bucket. Off keeps routes within the longest-drop limit."));
+		add(new Slider("Extra time per terrain move", 3, 60, 1, 0, "s", () -> cfg.baritoneNoProgressSec, v -> cfg.baritoneNoProgressSec = v)
+		        .tip("Added to the predicted movement cost before Baritone cancels a stalled step."));
+		add(Slider.ints("Failed route attempts", 1, 20, () -> cfg.pathAttempts, v -> cfg.pathAttempts = v));
+
 		add(new Toggle("Mine through walls", () -> cfg.pathMine, v -> cfg.pathMine = v)
 				.tip("Lets the route go through a block rather than round it. Without this the "
 						+ "bot can only reach places it could already walk to."));
@@ -1029,8 +1219,7 @@ public final class ConfigScreen extends Screen {
 		add(new Toggle("Bridge across gaps", () -> cfg.pathBridge, v -> cfg.pathBridge = v)
 				.tip("Places a block to stand on. Only uses the blocks listed below, and never "
 						+ "from a protected slot."));
-		if (!cfg.baritoneNavigation) add(new Toggle("Cut corners", () -> cfg.pathDiagonal, v -> cfg.pathDiagonal = v)
-				.tip("Diagonal steps. Faster routes; a few more nodes to search."));
+
 		add(Slider.ints("Longest drop", 1, 24, () -> cfg.pathMaxFall, v -> cfg.pathMaxFall = v)
 				.tip("A drop taller than this is not a route. Fall damage starts past three."));
 		add(Slider.ints("A broken block is worth", 1, 32,
@@ -1039,96 +1228,26 @@ public final class ConfigScreen extends Screen {
 						+ "means \"dig straight there\"."));
 		add(Slider.ints("A placed block is worth", 1, 32,
 				() -> cfg.pathPlaceCost, v -> cfg.pathPlaceCost = v));
-		if (!cfg.baritoneNavigation) {
-		add(Slider.ints("Search budget", 500, 60000, () -> cfg.pathMaxNodes, v -> cfg.pathMaxNodes = v)
-				.tip("Nodes per plan. Running out is not a failure — the best partial route is "
-						+ "walked anyway and replanned from further along."));
-		add(new Slider("Settle for a route this much longer", 1, 3, 0.05, 2, " x",
-				() -> cfg.pathHeuristicWeight, v -> cfg.pathHeuristicWeight = v)
-				.tip("1 finds the shortest route there is and searches hardest for it. Above that "
-						+ "it will accept a route up to this much longer in exchange for looking "
-						+ "at far fewer places, which is nearly always the better trade on a "
-						+ "client. Past about 1.5 it stops being a search and becomes a walk "
-						+ "straight at the target, wall or no wall."));
-		}
+
 		add(new KeyValue("Last route", () -> "%d nodes searched · cost %.0f"
 				.formatted(d.lastPathNodes, d.lastPathCost), () -> Ui.TEXT_MUTED));
 
-		if (cfg.baritoneNavigation) {
-			add(new Section("Baritone movement randomisation"));
-			add(new Note("Baritone already varies aim slightly. These controls apply while it navigates; the ordinary random strafe, pause and turn events do not.", Ui.TEXT_MUTED));
-			add(new Toggle("Randomise walking / sprinting", () -> cfg.baritoneRandomisePace, v -> cfg.baritoneRandomisePace = v)
-					.tip("Optional pace changes on clear, level ground. Requires Sprint between blocks. Keeps Baritone's normal control for jumps, run-ups, landings, climbing, mining and placement. Off preserves the original pace."));
-			add(new Slider("Sprint chance per segment", 0, 1, 0.05, 2, " x", () -> cfg.baritoneSprintChance, v -> cfg.baritoneSprintChance = v)
-					.tip("0 walks on eligible stretches; 1 keeps normal sprinting. Only permits sprinting when Baritone already considers it safe."));
-			add(new RangeSlider("Pace segment duration", 0.5, 30, 0.5, 1, "s",
-					() -> cfg.baritonePaceMinSec, v -> cfg.baritonePaceMinSec = v,
-					() -> cfg.baritonePaceMaxSec, v -> cfg.baritonePaceMaxSec = v)
-					.tip("Choose a random duration in this range, then draw the next walking or sprinting segment. Terrain manoeuvres take priority immediately."));
-			add(new Slider("Navigation aim variation", 0, 0.2, 0.01, 2, " degrees", () -> cfg.baritoneAimVariation, v -> cfg.baritoneAimVariation = v)
-					.tip("Existing bounded random aim variation, passed through the turn filter. Set to 0 to disable it. Does not add route detours."));
-			add(new Slider("Navigation turn smoothing", 0, 1, 0.05, 2, " x", () -> cfg.baritoneTurnSmoothing, v -> cfg.baritoneTurnSmoothing = v)
-					.tip("1 gives full glide with continuous frame-by-frame camera motion. Sets the minimum smoothing for all Base destroyer actions. Higher smoothness does not lower the turn rate or hold movement keys."));
-			add(new Slider("Maximum navigation turn per tick", 8, 90, 1, 0, " degrees", () -> cfg.baritoneTurnRate, v -> cfg.baritoneTurnRate = v));
-		}
+		add(new Section("Baritone movement randomisation"));
+		add(new Note("Baritone already varies aim slightly. These controls apply while it navigates; the ordinary random strafe, pause and turn events do not.", Ui.TEXT_MUTED));
+		add(new Toggle("Randomise walking / sprinting", () -> cfg.baritoneRandomisePace, v -> cfg.baritoneRandomisePace = v)
+				.tip("Optional pace changes on clear, level ground. Requires Sprint between blocks. Keeps Baritone's normal control for jumps, run-ups, landings, climbing, mining and placement. Off preserves the original pace."));
+		add(new Slider("Sprint chance per segment", 0, 1, 0.05, 2, " x", () -> cfg.baritoneSprintChance, v -> cfg.baritoneSprintChance = v)
+				.tip("0 walks on eligible stretches; 1 keeps normal sprinting. Only permits sprinting when Baritone already considers it safe."));
+		add(new RangeSlider("Pace segment duration", 0.5, 30, 0.5, 1, "s",
+				() -> cfg.baritonePaceMinSec, v -> cfg.baritonePaceMinSec = v,
+				() -> cfg.baritonePaceMaxSec, v -> cfg.baritonePaceMaxSec = v)
+				.tip("Choose a random duration in this range, then draw the next walking or sprinting segment. Terrain manoeuvres take priority immediately."));
+		add(new Slider("Navigation aim variation", 0, 0.2, 0.01, 2, " degrees", () -> cfg.baritoneAimVariation, v -> cfg.baritoneAimVariation = v)
+				.tip("Bounded aim variation handled by Baritone. Set to 0 to disable it. Does not add route detours."));
+		add(new Slider("Navigation camera smoothing", 0, 1, 0.05, 2, " x", () -> cfg.baritoneTurnSmoothing, v -> cfg.baritoneTurnSmoothing = v)
+				.tip("Smooths the rendered navigation camera without changing movement or the rotation sent to the server. Also sets minimum smoothing for local job actions."));
+		add(new Slider("Maximum local movement turn per tick", 8, 90, 1, 0, " degrees", () -> cfg.baritoneTurnRate, v -> cfg.baritoneTurnRate = v));
 
-		if (!cfg.baritoneNavigation) {
-		add(new Section("How the route is walked"));
-		add(new Slider("Planning per tick", 0.1, 25, 0.1, 1, "ms",
-				() -> cfg.pathSliceMs, v -> cfg.pathSliceMs = v)
-				.tip("A tick is fifty milliseconds, and a whole route can take twenty to work "
-						+ "out. Spreading that over several ticks is the difference between a "
-						+ "pause you can see and one you cannot."));
-		add(new RangeSlider("Start the next leg with", 0.5, 30, 0.5, 1, "s left",
-				() -> cfg.pathRefreshSec, v -> cfg.pathRefreshSec = v,
-				() -> cfg.pathRefreshMaxSec, v -> cfg.pathRefreshMaxSec = v)
-				.tip("A route that stops short is normal — the search budget runs out long before "
-						+ "a base does — so the next leg gets planned behind the one being walked. "
-						+ "Drawn fresh from this range every time: a fixed number is the one thing "
-						+ "here anybody watching could see, because it is the moment the walk "
-						+ "stops being smooth."));
-		add(new RangeSlider("Wait after a plan comes to nothing", 0.1, 10, 0.05, 2, "s",
-				() -> cfg.pathRestMinSec, v -> cfg.pathRestMinSec = v,
-				() -> cfg.pathRestMaxSec, v -> cfg.pathRestMaxSec = v)
-				.tip("Retrying on the next tick asks the same question of the same world from the "
-						+ "same place, twenty times a second. Never zero."));
-		add(Slider.ints("Give up on a destination after", 1, 20,
-				() -> cfg.pathAttempts, v -> cfg.pathAttempts = v)
-				.tip("Plans in a row that find nothing walkable before the place is called "
-						+ "unreachable. A plan that got some of the way does not count — it moved "
-						+ "us, so the next one starts somewhere new."));
-		add(Slider.ints("Look this many moves ahead", 1, 32,
-				() -> cfg.pathLookaheadMoves, v -> cfg.pathLookaheadMoves = v)
-				.tip("Where the camera points between things it has to aim at. The next square is "
-						+ "under a block away, and a heading to something that close swings hard "
-						+ "as you close on it — so a filtered camera spends the whole route "
-						+ "chasing a target that never settles."));
-		add(Slider.ints("Check this many moves ahead", 1, 16,
-				() -> cfg.pathVerifyAhead, v -> cfg.pathVerifyAhead = v)
-				.tip("Stops the bot walking three blocks up a corridor to find the doorway it was "
-						+ "routed through has been filled in."));
-		add(new Slider("Off the route past", 1, 32, 0.5, 1, " blocks",
-				() -> cfg.pathOffRouteBlocks, v -> cfg.pathOffRouteBlocks = v)
-				.tip("Further than this from every square of the route and it is not that route "
-						+ "being walked any more, so it is replanned from where we actually are. "
-						+ "This is what a knockback, a teleport and a server putting you back all "
-						+ "come out as."));
-		add(new RangeSlider("Patience per step", 0.5, 30, 0.5, 1, "s",
-				() -> cfg.pathMoveSlackSec, v -> cfg.pathMoveSlackSec = v,
-				() -> cfg.pathMoveSlackMaxSec, v -> cfg.pathMoveSlackMaxSec = v)
-				.tip("On top of what the step should physically take, which is worked out from "
-						+ "the block and the tool. It is the only way to tell a slow block from "
-						+ "an impossible one — a client is never told which it is — so claimed "
-						+ "land and region protection end here rather than swinging forever."));
-
-		add(new Slider("Replan a stalled walk after", 0.4, 10, 0.05, 2, "s",
-				() -> cfg.pathStallSec, v -> cfg.pathStallSec = v)
-				.tip("No progress towards the next step triggers a new route. Mining, placing and airborne motion use their own deadlines."));
-		add(new Slider("Avoid a failed step for", 1, 60, 1, 0, "s",
-				() -> cfg.pathFailedEdgeRetrySec, v -> cfg.pathFailedEdgeRetrySec = v)
-				.tip("A replan tries another approach instead of repeating the same blocked transition."));
-
-		}
         add(new Section("Protect mined drops"));
         add(new Toggle("Prepare a safe drop area before mining", () -> cfg.protectMiningDrops, v -> cfg.protectMiningDrops = v)
                 .tip("Contains exposed lava and builds catch floors before breaking. Includes route digging. Requires solid, nonflammable building supplies; defers blocks whose protection cannot be completed."));
@@ -1153,8 +1272,7 @@ public final class ConfigScreen extends Screen {
 						+ "becomes one by being stared at for longer."));
 		add(new Slider("Then leave it alone for", 1, 600, 1, 0, "s",
 				() -> cfg.coverRestSec, v -> cfg.coverRestSec = v));
-		if (!cfg.baritoneNavigation) add(new Toggle("Sneak while placing", () -> cfg.bridgeSneak, v -> cfg.bridgeSneak = v)
-				.tip("Stops the bot walking off the edge it is building from."));
+
 		add(Slider.ints("Always keep back", 1, 64, () -> cfg.bridgeKeepBlocks,
 				v -> cfg.bridgeKeepBlocks = v)
 				.tip("Never spends a stack down to nothing, so there is always something left "
@@ -1770,6 +1888,7 @@ public final class ConfigScreen extends Screen {
 		add(new Section("Destination"));
 		add(new Toggle("Walk to these coordinates", () -> cfg.gotoEnabled, v -> {
 			cfg.gotoEnabled = v;
+            if (v) { cfg.explorerEnabled = false; ctl.explorer.stop(); }
 			if (v) cfg.areaEnabled = false;
 		}).tip("Steers toward the target. The area sweep takes priority over this."));
 		add(new Row(List.of(
@@ -1831,6 +1950,96 @@ public final class ConfigScreen extends Screen {
 		add(new KeyValue("Distance remaining",
 				() -> ctl.gotoDistance < 0 ? "—" : String.format(Locale.ROOT, "%.1f blocks", ctl.gotoDistance),
 				() -> accent()));
+	}
+
+	private void buildChunks() {
+		var finder = ChunkFinder.INSTANCE;
+		add(new Toggle("Enable chunk finder", () -> cfg.chunkFinderEnabled,
+				v -> { cfg.chunkFinderEnabled = v; finder.reset(); }));
+		add(new Cycle<>("Display chunks", Arrays.asList(Config.ChunkDisplay.values()), v -> v.label,
+				() -> cfg.chunkFinderDisplay, v -> cfg.chunkFinderDisplay = v)
+				.tip("New: likely newly generated. Old: likely previously loaded from disk. Uses server chunk palettes, not your own visit history."));
+		add(new Note("Green: likely new. Amber: likely old.", Ui.TEXT_MUTED));
+		add(new Note("Estimates only, not proof of player visits.", Ui.TEXT_MUTED)
+				.tip("Minecraft does not send other players' exploration history. Pre-generated terrain, server optimisations, "
+						+ "world upgrades and block changes can affect results."));
+		add(new Note("Uncertain chunks stay unmarked.", Ui.TEXT_FAINT));
+		add(new Section("World overlay"));
+		add(new Toggle("Show through terrain", () -> cfg.chunkFinderThroughWalls, v -> cfg.chunkFinderThroughWalls = v));
+		add(Slider.ints("Fill opacity", 0, 160, () -> cfg.chunkFinderOpacity, v -> cfg.chunkFinderOpacity = v));
+		add(Slider.ints("Overlay distance in blocks", 16, 512, () -> cfg.chunkFinderDistance, v -> cfg.chunkFinderDistance = v));
+		add(Slider.ints("Maximum visible chunk boxes", 1, 512, () -> cfg.chunkFinderMaxOverlays, v -> cfg.chunkFinderMaxOverlays = v));
+		add(new Section("Loaded chunk results"));
+		add(new KeyValue("New / old / uncertain", finder::summary, () -> Ui.TEXT));
+		add(new KeyValue("Current chunk", () -> minecraft.player == null ? "Join a world first"
+				: finder.finding(minecraft.player.blockPosition().getX() >> 4,
+						minecraft.player.blockPosition().getZ() >> 4).label, () -> Ui.TEXT));
+		add(new KeyValue("Visible chunk boxes", () -> Integer.toString(finder.rendered), () -> Ui.TEXT_MUTED));
+		add(new Note("Works with movement off. Only loaded chunks are checked; nothing is generated or requested. "
+				+ "Results reset on disconnect, dimension change or disabling.", Ui.TEXT_FAINT));
+	}
+
+	private void buildSusChunks() {
+		var finder = SusChunkFinder.INSTANCE;
+		add(new Toggle("Enable sus chunk finder", () -> cfg.susEnabled, v -> { cfg.susEnabled = v; finder.reset(); }));
+		add(new Note("Reads loaded chunks while you play, even with movement off. Flags are clues, not proof: "
+				+ "the client has no original world-generation snapshot. Villages, temples and custom terrain can trigger rules.", Ui.TEXT_MUTED));
+		add(new Section("Anomaly detection"));
+		add(new Toggle("Player-associated blocks", () -> cfg.susPlayerBlocks, v -> { cfg.susPlayerBlocks = v; finder.rescan(); })
+				.tip("12 points: beacons, concrete, conduits, enchanting tables, respawn anchors and tinted glass. All containers use the storage minimum below."));
+		add(new Toggle("Storage rooms and machinery", () -> cfg.susStorage, v -> { cfg.susStorage = v; finder.rescan(); }));
+		add(Slider.ints("Storage blocks per chunk", 1, 128, () -> cfg.susStorageMin, v -> { cfg.susStorageMin = v; finder.rescan(); }).tip("10 points only at this minimum, including ender chests and shulker boxes. A double chest counts twice. Other enabled rules have their own minimums."));
+		add(new Toggle("Artificial light sources", () -> cfg.susLights, v -> { cfg.susLights = v; finder.rescan(); }));
+		add(Slider.ints("Light sources per chunk", 1, 128, () -> cfg.susLightsMin, v -> { cfg.susLightsMin = v; finder.rescan(); }).tip("8 points. Torches, lanterns, redstone lamps and glowstone outside the Nether. Natural lava, sea lanterns and Nether glowstone are excluded."));
+		add(new Toggle("Farm-sized farmland patches", () -> cfg.susFarms, v -> { cfg.susFarms = v; finder.rescan(); }));
+		add(Slider.ints("Farmland blocks per chunk", 1, 256, () -> cfg.susFarmMin, v -> { cfg.susFarmMin = v; finder.rescan(); }).tip("8 points. Village farms can also qualify; machinery helps identify automated farms."));
+		add(new Toggle("Flat building-block patterns", () -> cfg.susPatterns, v -> { cfg.susPatterns = v; finder.rescan(); }));
+		add(Slider.ints("Building blocks in one layer", 8, 256, () -> cfg.susPatternMin, v -> { cfg.susPatternMin = v; finder.rescan(); }).tip("8 points. One connected horizontal patch with a row at least 8 blocks long. Glass must reach this minimum to qualify alone. Planks, cobblestone and bricks require another rule to meet its own minimum; generated floors alone are excluded."));
+		add(Slider.ints("Minimum suspicion score", 1, 46, () -> cfg.susScore, v -> { cfg.susScore = v; finder.rescan(); }).tip("Default 8 accepts any qualifying rule. Patterns of common generated materials also need another qualifying rule. Higher scores require combined evidence. Maximum total is 46."));
+		add(new Section("Red chunk overlay"));
+		add(new Toggle("Show red area in the world", () -> cfg.susOverlay, v -> cfg.susOverlay = v));
+		add(Slider.ints("Fill opacity", 0, 160, () -> cfg.susOpacity, v -> cfg.susOpacity = v));
+		add(new Toggle("Show through terrain", () -> cfg.susThroughWalls, v -> cfg.susThroughWalls = v));
+		add(new Toggle("Outline chunk borders", () -> cfg.susOutline, v -> cfg.susOutline = v));
+		add(new Toggle("Cover the full world height", () -> cfg.susFullHeight, v -> cfg.susFullHeight = v).tip("Off restricts the box to the detected blocks' height range."));
+		add(Slider.ints("Overlay distance in blocks", 16, 512, () -> cfg.susRenderDistance, v -> cfg.susRenderDistance = v));
+		add(Slider.ints("Maximum visible chunk boxes", 1, 512, () -> cfg.susMaxOverlays, v -> cfg.susMaxOverlays = v).tip("Nearest chunks first. Limits rendering cost in dense builds."));
+		add(new Toggle("Show counts on the HUD", () -> cfg.susHud, v -> cfg.susHud = v));
+		add(new Section("Performance and results"));
+		add(Slider.ints("Scan budget in microseconds per tick", 250, 5000, () -> cfg.susBudgetMicros, v -> cfg.susBudgetMicros = v).tip("Soft budget: finishes the current 16x16x16 section before yielding. Ordinary terrain sections are skipped by palette."));
+		add(Slider.ints("Rescan interval in ticks", 20, 2400, () -> cfg.susRescanTicks, v -> cfg.susRescanTicks = v).tip("20 ticks = 1 second. Queued work may extend the interval; catches new blocks and removes stale flags."));
+		add(new KeyValue("Loaded / pending / suspicious", () -> finder.tracked() + " / " + finder.pending() + " / " + finder.findings().size(), () -> Ui.TEXT));
+		add(new KeyValue("Scan time: last / peak", () -> "%.2f / %.2f ms".formatted(finder.lastTickMs, finder.maxTickMs), () -> Ui.TEXT_MUTED));
+		add(new KeyValue("Completed / skipped sections", () -> finder.scans + " scans / " + finder.skippedSections + " of " + finder.sections, () -> Ui.TEXT_MUTED));
+		add(new KeyValue("Current chunk", () -> {
+			if (minecraft.player == null) return "Join a world first";
+			var p = minecraft.player.blockPosition(); var f = finder.finding(p.getX() >> 4, p.getZ() >> 4);
+			return f == null ? "No completed suspicious result" : f.summary();
+		}, () -> Ui.TEXT_MUTED));
+		add(new Action("Rescan loaded chunks now", false, finder::rescan));
+		add(new Action("Ignore current chunk for this session", false, () -> {
+			if (minecraft.player != null) { var p = minecraft.player.blockPosition(); finder.ignore(p.getX() >> 4, p.getZ() >> 4); }
+		}));
+		add(new Action("Restore ignored chunks", false, finder::clearIgnored));
+		add(new KeyValue("Ignored this session", () -> String.valueOf(finder.ignoredCount()), () -> Ui.TEXT_MUTED));
+		add(new Section("Nearby findings"));
+		add(new Action("Refresh findings list", false, this::build));
+		var findings = finder.findings();
+		if (minecraft.player != null) {
+			var p = minecraft.player.blockPosition();
+			findings.sort(java.util.Comparator.comparingDouble(f -> Math.hypot(f.x() * 16.0 + 8 - p.getX(), f.z() * 16.0 + 8 - p.getZ())));
+		}
+		for (var f : findings.stream().limit(12).toList()) {
+			add(new Note(() -> {
+				var current = finder.finding(f.x(), f.z());
+				return current == null ? "Chunk " + f.x() + ", " + f.z() + ": no current suspicious result"
+						: current.summary() + " (score " + current.score() + ")";
+			}, Ui.WARN));
+			add(new Action("Ignore chunk " + f.x() + ", " + f.z(), false, () -> { finder.ignore(f.x(), f.z()); build(); }));
+		}
+		if (findings.isEmpty()) add(new Note("No suspicious chunks to show yet.", Ui.TEXT_FAINT));
+		add(new Note("Results and ignored chunks reset on disconnect, dimension change, profile change or disabling. "
+				+ "Unloaded chunks are removed. No movement or world edits are performed.", Ui.TEXT_FAINT));
 	}
 
 	private void buildContainers() {
@@ -2701,6 +2910,9 @@ public final class ConfigScreen extends Screen {
 		// the log grows while the menu is open, so keep the list in step with it
 		if ((activeTab == Tab.LOGS || activeTab == Tab.MAP)
 				&& ctl.journal.size() != journalSizeWhenBuilt) build();
+		if (activeTab == Tab.BUILDER && ctl.builder.phase != builderPhaseWhenBuilt
+				&& (ctl.builder.phase == com.damia.movrand.LitematicaBuilder.Phase.BLOCKED
+				|| ctl.builder.phase == com.damia.movrand.LitematicaBuilder.Phase.DONE)) build();
 
 		Ui.beginTextHover(g, mouseX, mouseY);
 		hoverTip = "";

@@ -1,0 +1,32 @@
+Movement & Randomisation — coordinate log
+====================================================================================================
+2026-09-13 00:43:05  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 00:43:05  Session           New World  (single player)  overworld     0, 1, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Movement started
+2026-09-13 00:44:23  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 00:44:23  Session           New World  (single player)  overworld     0, 1, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Movement started
+2026-09-13 00:44:49  Session           New World  (single player)  overworld     7, 1, 2                 chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: Builder test cleanup
+2026-09-13 00:45:54  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 00:45:54  Session           New World  (single player)  overworld     0, 1, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Movement started
+2026-09-13 00:46:25  Session           New World  (single player)  overworld     7, 1, 2                 chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: Builder test cleanup
+2026-09-13 00:50:01  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 00:50:01  Session           New World  (single player)  overworld     0, 1, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Movement started
+2026-09-13 00:50:46  Session           New World  (single player)  overworld     5, 1, 4                 chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: Builder test cleanup
+2026-09-13 10:43:50  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 10:46:11  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 10:48:55  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 10:52:09  Session           New World  (single player)  overworld     0, -60, 0               chunk 0,0           plains              hp 20.0  food 20   Idle          Stopped: terrain fixture
+2026-09-13 10:52:11  Session           New World  (single player)  overworld     0, 0, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Movement started
+2026-09-13 10:52:11  Terrain explorer  New World  (single player)  overworld     0, 0, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Started XYZ journey
+2026-09-13 10:52:11  Terrain explorer  New World  (single player)  overworld     0, 0, 0                 chunk 0,0           plains              hp 20.0  food 20   Running       Target 45, 1, 0 (exact feet block)
+2026-09-13 10:52:16  Terrain explorer  New World  (single player)  overworld     18, 0, 0                chunk 1,0           plains              hp 20.0  food 20   Working       Rowing across clear water | 19.0 m · 5.0 s · 3.80 m/s · 0 mined · 0 placed · 0 failures
+2026-09-13 10:52:21  Terrain explorer  New World  (single player)  overworld     36, 1, 0                chunk 2,0           plains              hp 20.0  food 20   Working       Recovering empty expedition boat | 38.3 m · 10.0 s · 3.83 m/s · 0 mined · 0 placed · 0 failures
+2026-09-13 10:52:26  Terrain explorer  New World  (single player)  overworld     36, 1, 0                chunk 2,0           plains              hp 20.0  food 20   Working       Recovering empty expedition boat | 38.3 m · 15.0 s · 2.55 m/s · 0 mined · 0 placed · 0 failures
+2026-09-13 10:52:31  Terrain explorer  New World  (single player)  overworld     37, 1, 0                chunk 2,0           plains              hp 20.0  food 20   Working       Explorer: Baritone: Descend | 42.3 m · 20.0 s · 2.11 m/s · 0 mined · 0 placed · 0 failures
+2026-09-13 10:52:34  Arrived           New World  (single player)  overworld     45, 1, 0                chunk 2,0           plains              hp 20.0  food 20   Working       Terrain explorer: Reached XYZ 45, 1, 0 | 52.2 m · 23.0 s · 2.27 m/s · 0 mined · 0 placed · 0 failures
+2026-09-13 10:52:34  Session           New World  (single player)  overworld     45, 1, 0                chunk 2,0           plains              hp 20.0  food 20   Idle          Stopped: Reached XYZ 45, 1, 0
+2026-09-13 10:52:34  Session           New World  (single player)  overworld     45, 1, 0                chunk 2,0           plains              hp 20.0  food 20   Idle          Stopped: Explorer test cleanup
+====================================================================================================
+25 entries
+  18  Session
+  6  Terrain explorer
+  1  Arrived

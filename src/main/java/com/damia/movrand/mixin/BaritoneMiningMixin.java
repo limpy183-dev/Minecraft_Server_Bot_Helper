@@ -13,6 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = MovementHelper.class, remap = false)
 public interface BaritoneMiningMixin {
+    @Inject(method = "avoidWalkingInto", at = @At("HEAD"), cancellable = true)
+    private static void movrand$explorerPortals(BlockState state, CallbackInfoReturnable<Boolean> cir) {
+        if (NativeNavigation.exploring() && (state.is(net.minecraft.world.level.block.Blocks.NETHER_PORTAL)
+                || state.is(net.minecraft.world.level.block.Blocks.END_PORTAL)
+                || state.is(net.minecraft.world.level.block.Blocks.END_GATEWAY))) cir.setReturnValue(true);
+    }
+
 	@Inject(method = "avoidBreaking", at = @At("HEAD"), cancellable = true)
 	private static void movrand$protect(BlockStateInterface world, int x, int y, int z, BlockState state, CallbackInfoReturnable<Boolean> cir) {
 		var cfg = NativeNavigation.activeConfig();

@@ -48,6 +48,7 @@ public final class Journal {
 		DEATH("Death", "Where you died — and what was left behind.", false),
 		SAFE_STOP("Safe stop", "Where the integrity watchdog pulled the handbrake.", false),
 		CHAT("Chat trigger", "Where a watched word appeared in chat.", false),
+		EXPLORER("Terrain explorer", "Expedition targets, progress, speed and failures.", false),
 		ARRIVED("Arrived", "A go-to destination was reached.", false),
 		AREA_DONE("Area covered", "An area sweep finished.", false),
 		DIMENSION("Dimension change", "You changed dimension.", false),

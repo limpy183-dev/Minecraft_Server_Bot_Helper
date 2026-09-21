@@ -1,0 +1,2001 @@
+
+> Configure project :
+Fabric Loom: 1.17.20
+
+> Task :compileJava
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+
+> Task :verifyBaritone
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :compileGametestJava
+> Task :generateLog4jConfig UP-TO-DATE
+> Task :generateDLIConfig UP-TO-DATE
+> Task :configureLaunch UP-TO-DATE
+> Task :downloadAssets UP-TO-DATE
+> Task :configureClientLaunch UP-TO-DATE
+> Task :deleteGameTestRunDir
+> Task :processGametestResources UP-TO-DATE
+> Task :gametestClasses
+
+> Task :runClientGameTest
+[12:14:35] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 26.2 with Fabric Loader 0.19.3
+[12:14:35] [main/INFO] (FabricLoader/Mappings) Mappings not present!
+[12:14:35] [main/INFO] (FabricLoader) Loading 54 mods:
+	- baritone 1.19.0
+	   \-- dev_babbaj_nether-pathfinder 1.6
+	- fabric-api 0.158.0+26.2
+	- fabric-api-base 2.0.4+ece063239e
+	- fabric-api-lookup-api-v1 2.0.17+11e1c9a39e
+	- fabric-biome-api-v1 18.0.6+c7bd5b8e9e
+	- fabric-block-api-v1 3.0.3+ec56b6019e
+	- fabric-block-getter-api-v2 2.0.7+ec56b6019e
+	- fabric-client-gametest-api-v1 6.0.0+515ac5339e
+	- fabric-command-api-v2 3.1.0+00cb03469e
+	- fabric-content-registries-v0 11.3.1+37b1aa249e
+	- fabric-convention-tags-v2 4.7.0+1f023a9e9e
+	- fabric-crash-report-info-v1 1.0.5+086d547a9e
+	- fabric-creative-tab-api-v1 5.0.14+d871b99e9e
+	- fabric-data-attachment-api-v1 2.2.18+515ac5339e
+	- fabric-data-generation-api-v1 25.5.0+aed122aa9e
+	- fabric-debug-api-v1 1.0.2+c792624d9e
+	- fabric-dimensions-v1 5.1.11+515ac5339e
+	- fabric-entity-events-v1 5.0.5+06488ac19e
+	- fabric-events-interaction-v0 5.2.7+515ac5339e
+	- fabric-game-rule-api-v1 4.0.8+46a6d00c9e
+	- fabric-gametest-api-v1 4.0.21+4a7fa0819e
+	- fabric-item-api-v1 14.5.0+c68f6cbe9e
+	- fabric-key-mapping-api-v1 2.0.5+e2bdee789e
+	- fabric-lifecycle-events-v1 4.1.3+4575b05f9e
+	- fabric-loot-api-v3 3.0.17+06488ac19e
+	- fabric-menu-api-v1 2.0.16+086d547a9e
+	- fabric-message-api-v1 7.0.8+bb2ed3f79e
+	- fabric-model-loading-api-v1 8.0.16+c80601bb9e
+	- fabric-networking-api-v1 6.3.3+72073ef09e
+	- fabric-object-builder-api-v1 24.1.0+6fcd5f039e
+	- fabric-particles-v1 5.0.18+d1756aa99e
+	- fabric-permission-api-v1 1.0.5+e442d8d09e
+	- fabric-recipe-api-v1 9.0.20+11e1c9a39e
+	- fabric-registry-sync-v0 7.1.0+c7bd5b8e9e
+	- fabric-renderer-api-v1 14.1.3+2b0d8a229e
+	- fabric-renderer-indigo 9.1.3+2b0d8a229e
+	- fabric-rendering-fluids-v1 6.0.4+06488ac19e
+	- fabric-rendering-v1 25.3.2+515ac5339e
+	- fabric-resource-conditions-api-v1 6.1.0+10e9a28b9e
+	- fabric-resource-loader-v0 3.3.20+4fc5413f9e
+	- fabric-resource-loader-v1 2.0.13+9edec1269e
+	- fabric-screen-api-v1 5.2.0+58e078ad9e
+	- fabric-serialization-api-v1 2.0.4+11a26f319e
+	- fabric-sound-api-v1 2.0.5+11a26f319e
+	- fabric-tag-api-v1 2.1.4+515ac5339e
+	- fabric-transfer-api-v1 8.0.12+11dbb7d79e
+	- fabric-transitive-access-wideners-v1 8.1.4+67c847259e
+	- fabricloader 0.19.3
+	- java 25
+	- minecraft 26.2
+	- mixinextras 0.5.4
+	- movrand 1.0.0
+	- movrand-terrain-tests 1.0.0
+[12:14:35] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/C:/Users/damia/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.3+mixin.0.8.7/41c4a3984a80f4679e759fb9f495587acc5cdac7/sponge-mixin-0.17.3+mixin.0.8.7.jar Service=Knot/Fabric Env=CLIENT
+[12:14:36] [main/INFO] (FabricLoader/Mixin) Compatibility level set to JAVA_25
+[12:14:37] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.4).
+[12:14:38] [Datafixer Bootstrap #0/INFO] (Minecraft) 295 Datafixer optimizations took 376 milliseconds
+[12:14:38] [main/ERROR] (HkeyPerformanceDataUtil) Unable to locate English counter names in registry Perflib 009. Counters may need to be rebuilt: 
+
+com.sun.jna.platform.win32.Win32Exception: The parameter is incorrect.
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:921)
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:898)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.mapCounterIndicesFromRegistry(HkeyPerformanceDataUtil.java:274)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.<clinit>(HkeyPerformanceDataUtil.java:51)
+	at knot//oshi.driver.windows.registry.ProcessPerformanceData.buildProcessMapFromRegistry(ProcessPerformanceData.java:45)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.queryProcessMapFromRegistry(WindowsOperatingSystem.java:328)
+	at knot//oshi.util.Memoizer$1.get(Memoizer.java:65)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.processMapToList(WindowsOperatingSystem.java:298)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.getProcess(WindowsOperatingSystem.java:292)
+	at knot//oshi.software.os.OperatingSystem.getCurrentProcess(OperatingSystem.java:246)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:14:38] [main/WARN] (PerfCounterQuery) Unable to locate English counter names in registry Perflib 009. Assuming English counters. Error 0x80070057. See https://support.microsoft.com/en-us/help/300956/how-to-manually-rebuild-performance-counter-library-values
+[12:14:38] [main/WARN] (Minecraft) Failed to get system info for Process Loads
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getUserTime()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$0(SystemReport.java:190)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:189)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:14:38] [main/WARN] (Minecraft) Failed to get system info for Process Virtual Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getVirtualSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$1(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:14:38] [main/WARN] (Minecraft) Failed to get system info for Process Resident Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getResidentSetSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$2(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:14:43] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[12:14:43] [Render thread/INFO] (Minecraft) Setting user: Player0
+[12:14:43] [Render thread/INFO] (Indigo) [Indigo] Registering Indigo renderer!
+[12:14:43] [Render thread/INFO] (movrand) [movrand] loaded — open the menu with the key bound to key.movrand.open
+[12:14:43] [Render thread/ERROR] (Minecraft) Illegal option value 0 for Anisotropic Filtering
+[12:14:43] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.4.1-snapshot
+[12:14:45] [Render thread/INFO] (Minecraft) Preferring discrete GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+[12:14:45] [Render thread/INFO] (Minecraft) Using graphics backend OpenGL, using drivers: 3.3.0 - Build 32.0.101.5972
+[12:14:45] [Render thread/INFO] (Minecraft) Using graphics device: Intel(R) Graphics (Intel)
+[12:14:45] [Render thread/INFO] (Minecraft) Using graphics device extensions: GL_ARB_multi_draw_indirect, GL_ARB_buffer_storage, GL_ARB_shader_draw_parameters, GL_ARB_base_instance, GL_KHR_debug, GL_ARB_draw_indirect, GL_ARB_clip_control, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access, GL_EXT_texture_filter_anisotropic
+[12:14:46] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, fabric-api, fabric-api-base, fabric-api-lookup-api-v1, fabric-biome-api-v1, fabric-block-api-v1, fabric-block-getter-api-v2, fabric-client-gametest-api-v1, fabric-command-api-v2, fabric-content-registries-v0, fabric-convention-tags-v2, fabric-crash-report-info-v1, fabric-creative-tab-api-v1, fabric-data-attachment-api-v1, fabric-data-generation-api-v1, fabric-debug-api-v1, fabric-dimensions-v1, fabric-entity-events-v1, fabric-events-interaction-v0, fabric-game-rule-api-v1, fabric-gametest-api-v1, fabric-item-api-v1, fabric-key-mapping-api-v1, fabric-lifecycle-events-v1, fabric-loot-api-v3, fabric-menu-api-v1, fabric-message-api-v1, fabric-model-loading-api-v1, fabric-networking-api-v1, fabric-object-builder-api-v1, fabric-particles-v1, fabric-permission-api-v1, fabric-recipe-api-v1, fabric-registry-sync-v0, fabric-renderer-api-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-rendering-v1, fabric-resource-conditions-api-v1, fabric-resource-loader-v0, fabric-resource-loader-v1, fabric-screen-api-v1, fabric-serialization-api-v1, fabric-sound-api-v1, fabric-tag-api-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabricloader, movrand
+[12:14:46] [Render thread/INFO] (Minecraft) [CHAT] [Baritone] Baritone settings file not found, resetting.
+[12:14:46] [Worker-Main-10/INFO] (Minecraft) Found unifont_all_no_pua-17.0.01.hex, loading
+[12:14:46] [Worker-Main-3/INFO] (Minecraft) Found unifont_pua-17.0.01.hex, loading
+[12:14:46] [Download-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+[12:14:46] [Render thread/INFO] (Minecraft) [STDOUT]: [nether-pathfinder] Created temp file at C:\Users\damia\AppData\Local\Temp\nether_pathfinder-x86_64145629386373393245.dll
+[12:14:46] [Render thread/INFO] (Minecraft) [STDERR]: [nether-pathfinder] Failed to delete temp file
+[12:14:46] [Render thread/INFO] (Minecraft) [STDOUT]: [nether-pathfinder] Loaded shared library
+[12:14:47] [Worker-Main-10/INFO] (Minecraft) Found unifont_jp_patch-17.0.01.hex, loading
+[12:14:48] [Render thread/INFO] (Minecraft) OpenAL initialized on device OpenAL Soft on Speakers (Realtek(R) Audio)
+[12:14:48] [Render thread/INFO] (Minecraft) Sound engine started
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[12:14:48] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[12:14:49] [Download-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+[12:14:51] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.GenericMessageScreen@390dfaa8
+[12:14:51] [Render thread/INFO] (Minecraft) Found new data pack fabric-gametest-api-v1, loading it automatically
+[12:14:52] [Render thread/INFO] (Minecraft) Loaded 1585 recipes
+[12:14:52] [Render thread/INFO] (Minecraft) Loaded 1688 advancements
+[12:14:52] [Render thread/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 66 new biomes in 949.3 μs
+[12:14:52] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 26.2
+[12:14:52] [Server thread/INFO] (Minecraft) Generating keypair
+[12:14:52] [Server thread/INFO] (Minecraft) Loading 0 persistent chunks...
+[12:14:52] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[12:14:52] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:overworld
+[12:14:53] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:the_nether
+[12:14:53] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:the_end
+[12:14:53] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (world): All chunks are saved
+[12:14:53] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[12:14:53] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[12:14:53] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:53] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Server thread/INFO] (Minecraft) Loading 49 chunks for player spawn...
+[12:14:54] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Server thread/INFO] (Minecraft) Preparing spawn area: 100%
+[12:14:54] [Server thread/INFO] (Minecraft) Time elapsed: 1536 ms
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Server thread/INFO] (Minecraft) Player0[local:E:1da11685] logged in with entity id 24 at (196.1193280962868, 69.0, -69.23592797046915)
+[12:14:54] [Server thread/INFO] (Minecraft) Player0 joined the game
+[12:14:54] [Server thread/INFO] (Minecraft) Player0 has made the advancement [Stone Age]
+[12:14:54] [Server thread/INFO] (Minecraft) Changing view distance to 5, from 10
+[12:14:54] [Server thread/INFO] (Minecraft) Changing simulation distance to 12, from 0
+[12:14:54] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:54] [Render thread/INFO] (Minecraft) [STDOUT]: Baritone world data dir: C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-5e1c6624-0948-4e21-83ee-2d3041eae65f\.\baritone\minecraft\overworld_384
+[12:14:54] [Render thread/INFO] (Minecraft) [STDOUT]: Cached world directory: C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-5e1c6624-0948-4e21-83ee-2d3041eae65f\.\baritone\minecraft\overworld_384\cache
+[12:14:54] [Render thread/INFO] (Minecraft) [STDOUT]: Would save waypoints to C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-5e1c6624-0948-4e21-83ee-2d3041eae65f\.\baritone\minecraft\overworld_384\waypoints
+[12:14:54] [Render thread/INFO] (Minecraft) [System] [CHAT] Player0 has made the advancement [Stone Age]
+[12:14:54] [Render thread/INFO] (Minecraft) Loaded 45 advancements
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Download-1/ERROR] (Minecraft) Failed to retrieve profile key pair
+
+MinecraftClientHttpException[type=HTTP_ERROR, status=401, response=ErrorResponse[path=/player/certificates, error=null, errorMessage=null, details=null]]
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.buildHttpException(MinecraftClient.java:170)
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.readServiceResponse(MinecraftClient.java:147)
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.post(MinecraftClient.java:89)
+	at knot//com.mojang.authlib.yggdrasil.YggdrasilUserApiService.getKeyPair(YggdrasilUserApiService.java:62)
+	at knot//net.minecraft.client.multiplayer.AccountProfileKeyPairManager.fetchProfileKeyPair(AccountProfileKeyPairManager.java:128)
+	at knot//net.minecraft.client.multiplayer.AccountProfileKeyPairManager.lambda$readOrFetchProfileKeyPair$0(AccountProfileKeyPairManager.java:77)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@4b4a4abe
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[12:14:55] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: null
+[12:14:55] [Render thread/INFO] (movrand) BUILDER PROFILE start save=C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-5e1c6624-0948-4e21-83ee-2d3041eae65f position=(196.1193280962868, 69.0, -69.23592797046915) inventory=net.minecraft.world.entity.player.Inventory@605b513 config=Other smp origin=195,69,-70 mirror=2
+[12:14:55] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[12:14:55] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[12:14:56] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[12:14:57] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[12:14:59] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 191, 70, -68 Block{minecraft:chest}[facing=west,type=right,waterlogged=false]
+[12:15:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=100 position=(190.49505877204203, 69.0, -66.80545296348657) target=191, 70, -67 Block{minecraft:chest}[facing=west,type=left,waterlogged=false] phase=BUILDING interactions=3 verified=0 status=Placing 191, 70, -67 wait=Waiting for server
+[12:15:03] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 189, 70, -66 Block{minecraft:chest}[facing=north,type=left,waterlogged=false]
+[12:15:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=200 position=(190.5001687857583, 68.0, -65.67929679433601) target=191, 70, -66 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=8 verified=0 status=Placing 191, 70, -66 wait=Waiting for server
+[12:15:08] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 192, 70, -66 Block{minecraft:chest}[facing=north,type=left,waterlogged=false]
+[12:15:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=300 position=(193.20795395566654, 69.0, -64.42502523639834) target=191, 70, -65 Block{minecraft:chest}[facing=west,type=right,waterlogged=false] phase=BUILDING interactions=10 verified=0 status=Approaching 191, 70, -65 · Baritone: Traverse wait=Waiting for server
+[12:15:12] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 191, 70, -65 Block{minecraft:chest}[facing=west,type=right,waterlogged=false]
+[12:15:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=400 position=(192.5136054185081, 70.0, -63.35657425678336) target=191, 71, -68 Block{minecraft:hopper}[enabled=true,facing=down] phase=BUILDING interactions=13 verified=0 status=Placing 191, 71, -68 wait=Waiting for server
+[12:15:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=500 position=(191.47166543114267, 70.875, -63.504102241943365) target=193, 71, -66 Block{minecraft:hopper}[enabled=true,facing=down] phase=BUILDING interactions=17 verified=0 status=Placing 193, 71, -66 wait=Settling aim 2
+[12:15:24] [ForkJoinPool.commonPool-worker-1/INFO] (Minecraft) [STDOUT]: Saving region 0,0 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-5e1c6624-0948-4e21-83ee-2d3041eae65f\.\baritone\minecraft\overworld_384\cache
+[12:15:24] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: Saving region 0,-1 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-5e1c6624-0948-4e21-83ee-2d3041eae65f\.\baritone\minecraft\overworld_384\cache
+[12:15:24] [ForkJoinPool.commonPool-worker-1/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[12:15:24] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[12:15:24] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: World save took 53ms
+[12:15:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=600 position=(190.17152573141348, 68.0, -63.05108834638686) target=190, 71, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=20 verified=0 status=Approaching 190, 71, -68 · Baritone: Traverse wait=Waiting for server
+[12:15:30] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 128 reached during a single frame. New capacity will be 256.
+[12:15:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=700 position=(191.53296086615865, 71.0, -68.50345544094131) target=190, 72, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=22 verified=0 status=Placing 190, 72, -69 wait=Settling aim 3
+[12:15:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=800 position=(191.3838050576269, 69.0, -69.54654496694197) target=191, 72, -68 Block{minecraft:powered_rail}[powered=false,shape=north_south,waterlogged=false] phase=BUILDING interactions=24 verified=0 status=Placing 191, 72, -68 wait=Crosshair missed
+[12:15:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=900 position=(191.30000001192093, 71.0, -68.697277379737) target=192, 72, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=27 verified=0 status=Placing 192, 72, -69 wait=Settling aim 3
+[12:15:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1000 position=(193.2717131535954, 69.0, -66.75981831242142) target=189, 72, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=30 verified=0 status=Approaching 189, 72, -68 · Baritone: Diagonal wait=Waiting for server
+[12:15:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1100 position=(188.28713053284116, 68.0, -66.57083173828605) target=190, 72, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=32 verified=0 status=Approaching 190, 72, -67 · Baritone: Traverse wait=Waiting for server
+[12:15:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1200 position=(192.49014080277828, 69.0, -67.09402389193981) target=192, 72, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=34 verified=0 status=Approaching 192, 72, -67 · Baritone: Traverse wait=Waiting for server
+[12:16:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1300 position=(191.30000001192093, 71.0, -68.45285546943576) target=189, 72, -66 Block{minecraft:powered_rail}[powered=false,shape=east_west,waterlogged=false] phase=BUILDING interactions=37 verified=0 status=Placing 189, 72, -66 wait=Waiting for server
+[12:16:00] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 189, 72, -66 Block{minecraft:powered_rail}[powered=false,shape=east_west,waterlogged=false]
+[12:16:04] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 72, -66 Block{minecraft:iron_trapdoor}[facing=east,half=top,open=false,powered=false,waterlogged=false]
+[12:16:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1400 position=(191.49954480022234, 71.0, -68.55913939329243) target=192, 72, -66 Block{minecraft:powered_rail}[powered=false,shape=east_west,waterlogged=false] phase=BUILDING interactions=39 verified=0 status=Placing 192, 72, -66 wait=Settling aim 3
+[12:16:06] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 192, 72, -66 Block{minecraft:powered_rail}[powered=false,shape=east_west,waterlogged=false]
+[12:16:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1500 position=(190.4985574472751, 68.0, -64.23065160993804) target=189, 71, -64 Block{minecraft:cobblestone} phase=BUILDING interactions=42 verified=0 status=Approaching 189, 71, -64 · Baritone: Traverse wait=Waiting for server
+[12:16:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1600 position=(192.5249956731303, 71.0, -64.22088684248807) target=189, 72, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=44 verified=0 status=Placing 189, 72, -65 wait=Crosshair missed
+[12:16:18] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 191, 72, -65 Block{minecraft:powered_rail}[powered=false,shape=north_south,waterlogged=false]
+[12:16:20] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 192, 72, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false]
+[12:16:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1700 position=(192.77215605572636, 71.0, -63.59877670443513) target=193, 71, -65 Block{minecraft:cobblestone} phase=BUILDING interactions=48 verified=0 status=Placing 193, 71, -65 wait=Crosshair on 192, 71, -65 up, needs 193, 71, -66 south
+[12:16:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1800 position=(192.30000001192093, 71.0, -63.30221937834651) target=193, 72, -64 Block{minecraft:cobblestone} phase=BUILDING interactions=51 verified=0 status=Placing 193, 72, -64 wait=Waiting for server
+[12:16:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1900 position=(192.48807938054227, 72.0, -64.42423516290495) target=192, 72, -64 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=55 verified=0 status=Placing 192, 72, -64 wait=Waiting for server
+[12:16:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2000 position=(192.48807938054227, 72.0, -64.42423516290495) target=190, 73, -68 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=60 verified=0 status=Placing 190, 73, -68 wait=Waiting for server
+[12:16:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2100 position=(193.5375251072014, 73.0, -64.50212457974163) target=193, 73, -68 Block{minecraft:white_stained_glass} phase=BUILDING interactions=65 verified=0 status=Placing 193, 73, -68 wait=Waiting for server
+[12:16:41] [Render thread/INFO] (Minecraft) Loaded 55 advancements
+[12:16:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2200 position=(188.69736502500143, 73.0, -63.36948963831911) target=189, 73, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=68 verified=0 status=Placing 189, 73, -67 wait=Waiting for server
+[12:16:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2300 position=(191.3889224474605, 73.41999998688698, -63.53381221704236) target=193, 73, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=72 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:16:51] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:16:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2400 position=(189.99548783607233, 73.0, -63.49806326663589) target=188, 73, -66 Block{minecraft:white_stained_glass} phase=BUILDING interactions=75 verified=0 status=Placing 188, 73, -66 wait=Waiting for server
+[12:16:57] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2500 position=(193.19666778825095, 73.0, -63.499833479211915) target=194, 73, -66 Block{minecraft:white_stained_glass} phase=BUILDING interactions=79 verified=0 status=Placing 194, 73, -66 wait=Crosshair missed
+[12:17:03] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2600 position=(192.76562626760585, 73.0, -63.500436910402584) target=192, 73, -65 Block{minecraft:tube_coral_block} phase=BUILDING interactions=84 verified=0 status=Placing 192, 73, -65 wait=Crosshair on 191, 73, -65 east, needs 192, 73, -66 south
+[12:17:07] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:10] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2700 position=(193.3205840383252, 73.0, -63.50049011631396) target=191, 73, -64 Block{minecraft:tube_coral_block} phase=BUILDING interactions=89 verified=0 status=Placing 191, 73, -64 wait=Settling aim 1
+[12:17:11] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2800 position=(194.48200689788086, 73.0, -62.793275911341624) target=191, 73, -63 Block{minecraft:white_stained_glass} phase=BUILDING interactions=94 verified=0 status=Placing 191, 73, -63 wait=Waiting for server
+[12:17:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2900 position=(193.59766928640676, 74.0, -66.00629586049622) target=189, 74, -68 Block{minecraft:white_stained_glass} phase=BUILDING interactions=99 verified=0 status=Placing 189, 74, -68 wait=Waiting for server
+[12:17:22] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:22] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:23] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3000 position=(192.58228693135823, 74.0, -65.53835920470823) target=189, 74, -67 Block{minecraft:chest}[facing=east,type=single,waterlogged=true] phase=BUILDING interactions=103 verified=0 status=Placing 189, 74, -67 wait=Settling aim 2
+[12:17:26] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:26] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:26] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:26] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:27] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:29] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:29] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:29] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 74, -66 Block{minecraft:tube_coral_block}
+[12:17:29] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:29] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3100 position=(192.58228693135823, 74.0, -65.53835920470823) target=194, 74, -66 Block{minecraft:white_stained_glass} phase=BUILDING interactions=108 verified=0 status=Placing 194, 74, -66 wait=Waiting for server
+[12:17:33] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:33] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:33] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:33] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:34] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3200 position=(192.5201539916248, 74.0, -66.0994269664212) target=194, 74, -65 Block{minecraft:white_stained_glass} phase=BUILDING interactions=112 verified=0 status=Placing 194, 74, -65 wait=Waiting for server
+[12:17:38] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:38] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:39] [Render thread/INFO] (movrand) [builder] Missing unprotected material: Water Bucket
+[12:17:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3300 position=(191.74036247558016, 74.0, -66.40564926426049) target=— phase=BUILDING interactions=116 verified=0 status=Placing 193, 74, -64 wait=Waiting for server
+[12:17:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3400 position=(192.09709270369783, 74.0, -65.98057007923758) target=— phase=BUILDING interactions=120 verified=0 status=Placing 191, 75, -69 wait=Waiting for server
+[12:17:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2561152 movements considered
+[12:17:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 14262
+[12:17:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 130678
+[12:17:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 58178 nodes per second
+[12:17:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2856832 movements considered
+[12:17:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 15465
+[12:17:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 145321
+[12:17:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 64928 nodes per second
+[12:17:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3500 position=(192.09709270369783, 74.0, -65.98057007923758) target=191, 75, -68 Block{minecraft:piston}[extended=false,facing=down] phase=BUILDING interactions=120 verified=0 status=Approaching 191, 75, -68 · Baritone: planning wait=Waiting for server
+[12:17:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2859648 movements considered
+[12:17:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 15681
+[12:17:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 145665
+[12:17:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 64992 nodes per second
+[12:17:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3600 position=(192.09709270369783, 74.0, -65.98057007923758) target=191, 75, -68 Block{minecraft:piston}[extended=false,facing=down] phase=BUILDING interactions=121 verified=0 status=Approaching 191, 75, -68 · Baritone: planning wait=Waiting for server
+[12:17:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2837120 movements considered
+[12:17:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 15569
+[12:17:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 144529
+[12:17:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 64480 nodes per second
+[12:18:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2873728 movements considered
+[12:18:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 15717
+[12:18:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 146341
+[12:18:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 65279 nodes per second
+[12:18:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3700 position=(192.09709270369783, 74.0, -65.98057007923758) target=191, 75, -68 Block{minecraft:piston}[extended=false,facing=down] phase=BUILDING interactions=122 verified=0 status=Approaching 191, 75, -68 · Baritone: planning wait=Waiting for server
+[12:18:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2852608 movements considered
+[12:18:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 15648
+[12:18:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 145312
+[12:18:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 64832 nodes per second
+[12:18:03] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 75, -68 Block{minecraft:piston}[extended=false,facing=down]
+[12:18:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3800 position=(191.55929419475999, 72.0, -65.4332569410949) target=191, 75, -67 Block{minecraft:piston}[extended=false,facing=down] phase=BUILDING interactions=123 verified=0 status=Placing 191, 75, -67 wait=Settling aim 1
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3900 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 73, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 189, 73, -69 · Baritone: planning wait=Waiting for server
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4000 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 68, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 189, 68, -68 · Baritone: planning wait=Waiting for server
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4100 position=(191.55929419475999, 72.0, -65.4332569410949) target=188, 68, -70 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 188, 68, -70 · Baritone: planning wait=Waiting for server
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:21] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -70 Block{minecraft:cobblestone}
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:21] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:23] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 68, -69 Block{minecraft:cobblestone}
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:24] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -69 Block{minecraft:cobblestone}
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:25] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -69 Block{minecraft:cobblestone}
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4200 position=(191.55929419475999, 72.0, -65.4332569410949) target=188, 68, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 188, 68, -68 · Baritone: planning wait=Waiting for server
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:28] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 68, -67 Block{minecraft:cobblestone}
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:29] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 69, -68 Block{minecraft:cobblestone}
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4300 position=(191.55929419475999, 72.0, -65.4332569410949) target=187, 68, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 187, 68, -68 · Baritone: planning wait=Waiting for server
+[12:18:30] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 68, -68 Block{minecraft:cobblestone}
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:31] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -67 Block{minecraft:cobblestone}
+[12:18:31] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 69, -68 Block{minecraft:cobblestone}
+[12:18:32] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -68 Block{minecraft:cobblestone}
+[12:18:32] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -68 Block{minecraft:cobblestone}
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 499 nodes per second
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:33] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -68 Block{minecraft:cobblestone}
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4400 position=(191.55929419475999, 72.0, -65.4332569410949) target=188, 68, -65 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 188, 68, -65 · Baritone: planning wait=Waiting for server
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:37] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -64 Block{minecraft:cobblestone}
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:39] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 68, -65 Block{minecraft:cobblestone}
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4500 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 68, -65 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 189, 68, -65 · Baritone: planning wait=Waiting for server
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:41] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 68, -65 Block{minecraft:cobblestone}
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:42] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -65 Block{minecraft:cobblestone}
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:43] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -65 Block{minecraft:cobblestone}
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4600 position=(191.55929419475999, 72.0, -65.4332569410949) target=187, 68, -66 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 187, 68, -66 · Baritone: planning wait=Waiting for server
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:46] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 186, 68, -66 Block{minecraft:cobblestone}
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 499 nodes per second
+[12:18:47] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 69, -66 Block{minecraft:cobblestone}
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:48] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 68, -66 Block{minecraft:cobblestone}
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4700 position=(191.55929419475999, 72.0, -65.4332569410949) target=188, 69, -66 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 188, 69, -66 · Baritone: planning wait=Waiting for server
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:52] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -66 Block{minecraft:cobblestone}
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:53] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -66 Block{minecraft:cobblestone}
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:54] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -66 Block{minecraft:cobblestone}
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -67 Block{minecraft:cobblestone}
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4800 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 68, -67 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 189, 68, -67 · Baritone: planning wait=Waiting for server
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:55] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:18:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 499 nodes per second
+[12:19:00] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 68, -64 Block{minecraft:cobblestone}
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4900 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 68, -65 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 190, 68, -65 · Baritone: planning wait=Waiting for server
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:02] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -65 Block{minecraft:cobblestone}
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:03] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 68, -65 Block{minecraft:cobblestone}
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5000 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 69, -66 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 190, 69, -66 · Baritone: planning wait=Waiting for server
+[12:19:05] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -67 Block{minecraft:cobblestone}
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:07] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 69, -66 Block{minecraft:cobblestone}
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:08] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -66 Block{minecraft:cobblestone}
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:10] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 68, -66 Block{minecraft:cobblestone}
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5100 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 68, -67 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 190, 68, -67 · Baritone: planning wait=Waiting for server
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:11] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 68, -67 Block{minecraft:cobblestone}
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:15] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 70, -68 Block{minecraft:cobblestone}
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5200 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 71, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 189, 71, -68 · Baritone: planning wait=Waiting for server
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:16] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 71, -68 Block{minecraft:cobblestone}
+[12:19:16] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -68 Block{minecraft:cobblestone}
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 70, -67 Block{minecraft:cobblestone}
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:17] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:18] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 71, -67 Block{minecraft:cobblestone}
+[12:19:18] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -67 Block{minecraft:cobblestone}
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5300 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 70, -67 Block{minecraft:cobblestone} phase=BUILDING interactions=125 verified=0 status=Approaching 190, 70, -67 · Baritone: planning wait=Waiting for server
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:22] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:23] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 70, -67 Block{minecraft:cobblestone}
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:23] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:24] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -67 Block{minecraft:cobblestone}
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:24] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:25] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 69, -67 Block{minecraft:cobblestone}
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5400 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 68, -67 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 189, 68, -67 · Baritone: planning wait=Waiting for server
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:25] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:26] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 68, -67 Block{minecraft:cobblestone}
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:26] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:27] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 68, -68 Block{minecraft:cobblestone}
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:27] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:28] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 68, -69 Block{minecraft:cobblestone}
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:28] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 499 nodes per second
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:29] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5500 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 189, 69, -72 · Baritone: planning wait=Waiting for server
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:30] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:31] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:32] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:33] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:34] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5600 position=(191.55929419475999, 72.0, -65.4332569410949) target=188, 69, -73 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 188, 69, -73 · Baritone: planning wait=Waiting for server
+[12:19:35] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -73 Block{minecraft:cobblestone}
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:35] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:36] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 69, -74 Block{minecraft:cobblestone}
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:36] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:37] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:37] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -74 Block{minecraft:cobblestone}
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:38] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:38] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -74 Block{minecraft:cobblestone}
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:39] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5700 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 69, -74 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 190, 69, -74 · Baritone: planning wait=Waiting for server
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:40] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:41] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:42] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -75 Block{minecraft:cobblestone}
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:42] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:43] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:44] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -73 Block{minecraft:cobblestone}
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:44] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:45] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 70, -74 Block{minecraft:cobblestone}
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5800 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 69, -74 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 190, 69, -74 · Baritone: planning wait=Waiting for server
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:45] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:46] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -74 Block{minecraft:cobblestone}
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:46] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:47] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -75 Block{minecraft:cobblestone}
+[12:19:47] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -73 Block{minecraft:cobblestone}
+[12:19:47] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 71, -74 Block{minecraft:cobblestone}
+[12:19:47] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -74 Block{minecraft:cobblestone}
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:47] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:48] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 69, -74 Block{minecraft:cobblestone}
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:48] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:49] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 69, -73 Block{minecraft:cobblestone}
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:49] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5900 position=(191.55929419475999, 72.0, -65.4332569410949) target=189, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 189, 69, -72 · Baritone: planning wait=Waiting for server
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:50] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:51] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:52] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:53] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:54] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 68, -71 Block{minecraft:cobblestone}
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:54] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 68, -71 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 69, -70 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -70 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -70 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6000 position=(191.55929419475999, 72.0, -65.4332569410949) target=187, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 187, 69, -71 · no safe working position in loaded terrain wait=Waiting for server
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 69, -72 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 186, 69, -71 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 70, -71 Block{minecraft:cobblestone}
+[12:19:55] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 69, -71 Block{minecraft:cobblestone}
+[12:19:56] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -72 Block{minecraft:cobblestone}
+[12:19:56] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -71 Block{minecraft:cobblestone}
+[12:19:56] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 71, -71 Block{minecraft:cobblestone}
+[12:19:56] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 70, -71 Block{minecraft:cobblestone}
+[12:19:56] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -71 Block{minecraft:cobblestone}
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:56] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:19:57] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 69, -72 Block{minecraft:cobblestone}
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:57] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:58] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:19:59] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6100 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 69, -70 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 190, 69, -70 · Baritone: planning wait=Waiting for server
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:00] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:01] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:02] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -69 Block{minecraft:cobblestone}
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:02] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:03] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 70, -70 Block{minecraft:cobblestone}
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:03] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:04] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -70 Block{minecraft:cobblestone}
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:04] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6200 position=(191.55929419475999, 72.0, -65.4332569410949) target=190, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 190, 69, -71 · Baritone: planning wait=Waiting for server
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:05] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:06] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 499 nodes per second
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:07] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 69, -72 Block{minecraft:cobblestone}
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:07] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:08] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:09] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:10] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 192, 69, -71 Block{minecraft:cobblestone}
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6300 position=(191.55929419475999, 72.0, -65.4332569410949) target=191, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=126 verified=0 status=Approaching 191, 69, -71 · Baritone: planning wait=Waiting for server
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:10] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:11] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 70, -71 Block{minecraft:cobblestone}
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:11] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:12] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 69, -71 Block{minecraft:cobblestone}
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:12] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:13] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 70, -72 Block{minecraft:cobblestone}
+[12:20:13] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 71, -71 Block{minecraft:cobblestone}
+[12:20:13] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 70, -71 Block{minecraft:cobblestone}
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:13] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:14] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -71 Block{minecraft:cobblestone}
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:14] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:15] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 69, -72 Block{minecraft:cobblestone}
+[12:20:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6400 position=(191.55929419475999, 72.0, -65.4332569410949) target=— phase=BUILDING interactions=126 verified=0 status=No accessible placement angle/support at 190, 69, -72 Block{minecraft:cobblestone} wait=Waiting for server
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:15] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:16] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:16] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 71, -73 Block{minecraft:cobblestone}
+[12:20:16] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 71, -73 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 72, -73 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 71, -73 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 71, -70 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 72, -71 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 71, -71 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 187, 71, -72 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 72, -72 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 188, 71, -72 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 71, -72 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 72, -72 Block{minecraft:cobblestone}
+[12:20:17] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 190, 71, -72 Block{minecraft:cobblestone}
+[12:20:18] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 73, -72 Block{minecraft:cobblestone}
+[12:20:18] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 72, -72 Block{minecraft:cobblestone}
+[12:20:18] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 71, -72 Block{minecraft:cobblestone}
+[12:20:18] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 70, -72 Block{minecraft:cobblestone}
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:18] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:19] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 69, -72 Block{minecraft:cobblestone}
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:19] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 2147483647 nodes per second
+[12:20:20] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 189, 69, -71 Block{minecraft:cobblestone}
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 22 movements considered
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: Open set size: 0
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: PathNode map size: 1
+[12:20:20] [pool-4-thread-4/INFO] (Minecraft) [STDOUT]: 999 nodes per second
+
+> Task :runClientGameTest FAILED
+
+[Incubating] Problems report is available at: file:///C:/Users/damia/Desktop/AI_Projects/Minecraft/Movement_And_Randomisation/build/reports/problems/problems-report.html
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':runClientGameTest' (registered by plugin 'fabric-loom').
+> Process 'command 'C:\Program Files\Eclipse Adoptium\jdk-25.0.4.7-hotspot\bin\java.exe'' finished with non-zero exit value -1 (NTSTATUS 0xFFFFFFFF)
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights from a Build Scan (powered by Develocity).
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 5m 52s
+10 actionable tasks: 5 executed, 5 up-to-date

@@ -260,6 +260,24 @@ public final class Config {
 	public boolean playerStopOnlyIfVisible = true;
 	public boolean hostileStopOnlyIfVisible = true;
 
+	// -------------------------------------------------- chunk finder
+	public enum ChunkDisplay {
+		NEW("Likely new"), OLD("Likely old");
+		public final String label;
+		ChunkDisplay(String label) { this.label = label; }
+	}
+	public boolean chunkFinderEnabled = false, chunkFinderThroughWalls = true;
+	public ChunkDisplay chunkFinderDisplay = ChunkDisplay.NEW;
+	public int chunkFinderOpacity = 24, chunkFinderDistance = 192, chunkFinderMaxOverlays = 128;
+
+	// -------------------------------------------------- sus chunk finder
+	public boolean susEnabled = false;
+	public boolean susPlayerBlocks = true, susStorage = true, susLights = true, susFarms = true, susPatterns = true;
+	public int susScore = 8, susStorageMin = 4, susLightsMin = 8, susFarmMin = 32, susPatternMin = 48;
+	public int susBudgetMicros = 1500, susRescanTicks = 200;
+	public boolean susOverlay = true, susThroughWalls = true, susOutline = true, susFullHeight = true, susHud = true;
+	public int susOpacity = 24, susRenderDistance = 192, susMaxOverlays = 128;
+
 	// -------------------------------------------------- container scanning
 
 	public boolean containerScanEnabled = true;
@@ -406,9 +424,29 @@ public final class Config {
 	// --------------------------------------------------- the base destroyer
 
 	public boolean destroyerEnabled = false;
+
+	// Litematica builder jobs are explicitly started; file and placement settings persist.
+	public transient boolean builderEnabled = false;
+	public String builderFile = "";
+	public int builderX, builderY, builderZ, builderRotation, builderMirror;
+	public boolean builderReplace = false, builderClearAir = false;
+	public boolean builderScaffold = true;
+	public boolean builderCreativeMaterials = true;
+	public double builderDelayMin = .2, builderDelayMax = .65;
 	/** Versioned migration applies the requested terrain capabilities to existing saved settings once. */
 	public int terrainSettingsVersion = 0;
-	public boolean baritoneNavigation = true;
+    // Terrain Explorer uses the shared area map and Baritone humanisation settings.
+    public boolean explorerEnabled = false;
+    public boolean explorerCoordinates = false;
+    public int explorerX = 0, explorerY = 64, explorerZ = 0;
+    public boolean explorerMine = true, explorerBridge = true, explorerWaterBucket = true;
+    public boolean explorerBoats = true, explorerRecoverBoat = true;
+    public boolean explorerPause = true, explorerRandomisePace = true;
+    public int explorerMaxFall = 3;
+    public int explorerTargetSec = 600;
+    public int explorerRetries = 2;
+    public int explorerLogSec = 15;
+
 	public boolean destroyLoadedChunks = true;
 	public boolean protectMiningDrops = true;
 	/** Optional close-range mining; independent of lava containment and catch floors. */
@@ -723,7 +761,6 @@ public final class Config {
 	}
 
 	public void terrainDefaults() {
-		baritoneNavigation = true;
 		destroyLoadedChunks = true;
 		destroyRequireLineOfSight = false;
 		pathMineOnlySelected = false;
@@ -1003,6 +1040,28 @@ public final class Config {
 	}
 
 	public void clampAll() {
+        explorerX = Math.clamp(explorerX, -29_999_984, 29_999_984);
+        explorerZ = Math.clamp(explorerZ, -29_999_984, 29_999_984);
+        explorerY = Math.clamp(explorerY, -2032, 2031);
+        explorerMaxFall = Math.clamp(explorerMaxFall, 1, 3);
+        explorerTargetSec = Math.clamp(explorerTargetSec, 30, 7200);
+        explorerRetries = Math.clamp(explorerRetries, 0, 5);
+        explorerLogSec = Math.clamp(explorerLogSec, 5, 300);
+
+		if (chunkFinderDisplay == null) chunkFinderDisplay = ChunkDisplay.NEW;
+		chunkFinderOpacity = Math.clamp(chunkFinderOpacity, 0, 160);
+		chunkFinderDistance = Math.clamp(chunkFinderDistance, 16, 512);
+		chunkFinderMaxOverlays = Math.clamp(chunkFinderMaxOverlays, 1, 512);
+		susScore = Math.clamp(susScore, 1, 46);
+		susStorageMin = Math.clamp(susStorageMin, 1, 128);
+		susLightsMin = Math.clamp(susLightsMin, 1, 128);
+		susFarmMin = Math.clamp(susFarmMin, 1, 256);
+		susPatternMin = Math.clamp(susPatternMin, 8, 256);
+		susBudgetMicros = Math.clamp(susBudgetMicros, 250, 5000);
+		susRescanTicks = Math.clamp(susRescanTicks, 20, 2400);
+		susOpacity = Math.clamp(susOpacity, 0, 160);
+		susRenderDistance = Math.clamp(susRenderDistance, 16, 512);
+		susMaxOverlays = Math.clamp(susMaxOverlays, 1, 512);
 		segmentMinSec = Math.max(0.1, segmentMinSec);
 		segmentMaxSec = Math.max(segmentMinSec, segmentMaxSec);
 		strafeMinSec = Math.max(0.05, strafeMinSec);

@@ -15,7 +15,8 @@ public abstract class BaritoneAscendSafetyMixin {
 	@Inject(method = "cost", at = @At("RETURN"), cancellable = true)
 	private static void movrand$landing(CalculationContext ctx, int x, int y, int z, int destX, int destZ, CallbackInfoReturnable<Double> cir) {
 		if (NativeNavigation.activeConfig() != null && cir.getReturnValue() < ActionCosts.COST_INF
-				&& !NativeNavigation.clearLanding((px, py, pz) -> MineSafety.classify(ctx.get(px, py, pz)), destX, y + 1, destZ))
+				&& (!NativeNavigation.normalJumpFrom(ctx, x, y, z)
+				|| !NativeNavigation.clearLanding((px, py, pz) -> MineSafety.classify(ctx.get(px, py, pz)), destX, y + 1, destZ)))
 			cir.setReturnValue(ActionCosts.COST_INF);
 	}
 }

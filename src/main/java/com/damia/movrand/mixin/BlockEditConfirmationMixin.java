@@ -15,10 +15,14 @@ public abstract class BlockEditConfirmationMixin {
 	@Inject(method = "setServerVerifiedBlockState", at = @At("HEAD"))
 	private void movrand$serverUpdate(BlockPos pos, BlockState state, int flags, CallbackInfo ci) {
 		if (MovRand.controller() != null) MovRand.controller().destroyer.confirmEdit((ClientLevel) (Object) this, pos, state);
+		if (MovRand.controller() != null) MovRand.controller().builder.confirmEdit((ClientLevel) (Object) this, pos, state);
+        if (MovRand.controller() != null) MovRand.controller().explorer.confirmEdit((ClientLevel) (Object) this, pos, state);
 	}
 
 	@Inject(method = "syncBlockState", at = @At("HEAD"))
 	private void movrand$acknowledged(BlockPos pos, BlockState state, Vec3 playerPos, CallbackInfo ci) {
 		if (MovRand.controller() != null) MovRand.controller().destroyer.confirmEdit((ClientLevel) (Object) this, pos, state);
+		if (MovRand.controller() != null) MovRand.controller().builder.confirmEdit((ClientLevel) (Object) this, pos, state);
+        if (MovRand.controller() != null) MovRand.controller().explorer.confirmEdit((ClientLevel) (Object) this, pos, state);
 	}
 }

@@ -42,8 +42,16 @@ public final class MovementController {
 	public final AutoEat autoEat;
 	/** The job. Null steer means it has nothing to say and the wandering takes over. */
 	public final BaseDestroyer destroyer;
+	public final LitematicaBuilder builder;
+	public final TerrainExplorer explorer;
 	/** The camera's hand: the wobble and the easing that keep rotation off a fixed curve. */
 	private final Human human = new Human();
+	private final Human sweepDrift = new Human();
+	private final Human.Turn sweepTurn = new Human.Turn();
+	private boolean sweepTurning;
+	private boolean sweepHolding;
+	private AreaCoverage.Target sweepTarget;
+	private double sweepTurnPace = 1;
 	private LocalPlayer cameraOwner;
 	private double renderYawSmoothing, renderPitchSmoothing;
 
@@ -68,6 +76,7 @@ public final class MovementController {
 	// scheduler
 	private int segmentTicksLeft;
 	private int eventTicksLeft;
+	private State eventState = State.RUNNING;
 	private int strafeDir;
 
 	// aiming
@@ -170,6 +179,8 @@ public final class MovementController {
 		this.safeStop = new SafeStop(cfg);
 		this.autoEat = new AutoEat(cfg);
 		this.destroyer = new BaseDestroyer(cfg, journal);
+		this.builder = new LitematicaBuilder(cfg);
+		this.explorer = new TerrainExplorer(cfg, area, journal);
 		this.route = new Pathing(cfg);
 		this.storage = new Storage(cfg);
 	}
@@ -179,6 +190,7 @@ public final class MovementController {
 	// -------------------------------------------------------- public control
 
 	public void start(Minecraft mc) {
+        if (cfg.explorerEnabled) cfg.areaEnabled = cfg.gotoEnabled = cfg.destroyerEnabled = cfg.builderEnabled = false;
 		if (cfg.reseedOnStart) Rng.reseed();
 		cfg.movementEnabled = true;
 		startedAtTick = tickCount;
@@ -187,6 +199,12 @@ public final class MovementController {
 		inputBlockedTicks = 0;
 		navProgress.reset();
 		turnTicksTotal = 0;
+		eventTicksLeft = 0;
+		targetPitch = 0;
+		sweepTurning = false;
+		sweepHolding = false;
+		sweepTarget = null;
+		lastKeys = null;
 		wanderOffset = 0;
 		pendingStopReason = null;
 		pendingStopTicks = 0;
@@ -209,6 +227,8 @@ public final class MovementController {
 		routeGaveUp = false;
 		gaveUpAt = null;
 		destroyer.reset();
+		if (cfg.builderEnabled) builder.restart();
+		if (cfg.explorerEnabled) explorer.restart();
 		newSegment();
 		state = State.RUNNING;
 		lastReason = "Started";
@@ -228,6 +248,8 @@ public final class MovementController {
 		route.reset();
 		routeGoal = null;
 		destroyer.stop();
+		builder.stop();
+		explorer.stop();
 		release(mc);
 		if (mc.player != null) {
 			journal.log(Journal.Kind.SESSION, mc.level, mc.player.blockPosition(), "Stopped: " + reason);
@@ -362,11 +384,16 @@ public final class MovementController {
 
 		scanThreats(level, player);
 		if (runGuards(mc, player, level)) return;
+        if (cfg.explorerEnabled) explorer.sample(mc);
 
 		// The job, when there is one. It answers with an intent rather than with keys and a
 		// rotation, so everything below this — the camera filter, the wobble, the key writer,
 		// the handbrake — is the same code a wandering bot runs.
 		Bot.Steer steer = job(mc, player, level);
+		if (steer != null) {
+			sweepTurning = false;
+			sweepHolding = false;
+		}
 		if (!cfg.movementEnabled) { release(mc); return; } // includes a failed storage transaction
 		if (NativeNavigation.yieldFor(steer)) {
 			steer = new Bot.Steer();
@@ -413,6 +440,7 @@ public final class MovementController {
 		if (eating) autoEat.useFood(mc, player);
 
 		handleObstacles(mc, player, level);
+		if (!cfg.movementEnabled) return;
 		applyKeys(mc, player);
 		runSafeStop(mc, player, level);
 		if (!cfg.movementEnabled) return;
@@ -434,6 +462,7 @@ public final class MovementController {
 			return;
 		}
 		if (eventTicksLeft > 0) {
+			state = eventState;
 			eventTicksLeft--;
 			if (eventTicksLeft == 0) {
 				state = State.RUNNING;
@@ -463,30 +492,30 @@ public final class MovementController {
 		if (cfg.strafeEnabled && (roll -= cfg.strafeWeight) < 0) {
 			strafeDir = Rng.coinFlip() ? -1 : 1;
 			eventTicksLeft = Rng.ticks(cfg.strafeMinSec, cfg.strafeMaxSec);
-			state = State.STRAFING;
+			state = eventState = State.STRAFING;
 			return;
 		}
 		if (cfg.pauseEnabled && (roll -= cfg.pauseWeight) < 0) {
 			eventTicksLeft = Rng.ticks(cfg.pauseMinSec, cfg.pauseMaxSec);
-			state = State.PAUSED;
+			state = eventState = State.PAUSED;
 			return;
 		}
 		if (cfg.turnEnabled && (roll -= cfg.turnWeight) < 0) {
 			beginTurn(Rng.range(cfg.turnMinDeg, cfg.turnMaxDeg) * (Rng.coinFlip() ? -1 : 1));
 			eventTicksLeft = turnTicksTotal;
-			state = State.TURNING;
+			state = eventState = State.TURNING;
 			return;
 		}
 		if (cfg.hopEnabled && (roll -= cfg.hopWeight) < 0) {
 			jumpTicks = 3;
 			eventTicksLeft = 6;
-			state = State.RUNNING;
+			state = eventState = State.RUNNING;
 			return;
 		}
 		if (cfg.lookAroundEnabled) {
 			targetPitch = Rng.range(cfg.lookPitchMinDeg, cfg.lookPitchMaxDeg);
 			eventTicksLeft = Rng.ticks(0.6, 2.0);
-			state = State.LOOKING;
+			state = eventState = State.LOOKING;
 			return;
 		}
 		state = State.RUNNING;
@@ -584,7 +613,8 @@ public final class MovementController {
 					return;
 				}
 			}
-			if (navProgress.update(navX, navZ, gotoDistance, cfg.gotoNoProgressSec)) {
+			if (state == State.PAUSED || sweepHolding) navProgress.reset();
+			else if (navProgress.update(navX, navZ, gotoDistance, cfg.gotoNoProgressSec)) {
 				react(mc, Config.Reaction.ALERT, "Not getting any closer to " + navLabel);
 			}
 			// yaw 0 faces +Z, 90 faces -X
@@ -595,29 +625,18 @@ public final class MovementController {
 
 		// spend the turn budget a few degrees per tick so it reads as a hand movement
 		double maxWander = navActive ? cfg.gotoMaxWanderDeg : Double.MAX_VALUE;
+		if (navActive && cfg.areaEnabled) maxWander = Math.max(maxWander, cfg.turnMaxDeg);
 		if (navActive && outsideArea(player)) maxWander = Math.min(maxWander, 8); // head straight back in
-
-		if (turning()) {
-			turnTick++;
-			double want = turnTotalDeg * Human.ease(turnTick / (double) turnTicksTotal);
-			double step = want - turnDone;
-			turnDone = want;
-			if (navActive) wanderOffset = Mth.clamp((float) (wanderOffset + step), (float) -maxWander, (float) maxWander);
-			else baseYaw += step;
-			if (turnTick >= turnTicksTotal) turnTicksTotal = 0;
-		}
-
-		// while navigating, always drift back onto the bearing
-		if (navActive && wanderOffset != 0 && !turning()) {
-			double pull = Math.min(Math.abs(wanderOffset), Math.max(0.05, cfg.gotoCorrectionDegPerTick));
-			wanderOffset -= Math.copySign(pull, wanderOffset);
-		}
+		advanceTurn(maxWander);
 
 		// Steering is deliberately not folded into baseYaw or the wander: those are where the
 		// bot means to go, and a dodge is only where it is pointed for the moment. Keeping
 		// them apart is what makes "carry on afterwards" free - the correction decays to zero
 		// and the original heading is still sitting there underneath it.
-		double intended = baseYaw + wanderOffset;
+		double heading = sweepHeading(baseYaw + wanderOffset, player.getYRot(), outsideArea(player));
+		// Compose the sidestep in world space before choosing keys or probing obstacles.
+		// OR-ing it onto route keys can press left and right together and cancel the event.
+		double intended = heading + strafeOffset();
 		double dodge = mc.level == null ? 0
 				: avoid.update(cfg, intended, Avoidance.worldProbe(mc.level, player, cfg));
 		walkYaw = intended + dodge;
@@ -625,13 +644,64 @@ public final class MovementController {
 		// The camera is filtered towards the heading rather than snapped onto it, so a turn
 		// arriving in eased steps, a dodge appearing the instant a wall does, and the leash
 		// correction snapping on at a boundary all come out as one continuous movement.
-		float finalYaw = (float) Mth.wrapDegrees(human.yawFor(cfg, intended + dodge));
+		float finalYaw = (float) Mth.wrapDegrees(walkingYaw(heading + dodge, player.getYRot()));
 		renderYawSmoothing = cfg.cameraSmoothYaw;
 		player.setYRot(finalYaw);
 		safeStop.expectYaw(finalYaw);
 
 		renderPitchSmoothing = cfg.cameraSmoothPitch;
 		player.setXRot((float) human.pitchFor(cfg, aimPitch(targetPitch)));
+	}
+
+	private double walkingYaw(double target, double current) {
+		double limit = navActive && cfg.areaEnabled ? cfg.turnSpeedDegPerTick : 180;
+		double want = human.yawFor(cfg, target, cfg.cameraSmoothYaw, 1, limit);
+		return Human.limitedSmooth(current, want, 0, limit);
+	}
+
+	private void advanceTurn(double maxWander) {
+		if (turning()) {
+			turnTick++;
+			double want = turnTotalDeg * Human.ease(turnTick / (double) turnTicksTotal);
+			double step = want - turnDone;
+			turnDone = want;
+			if (navActive) wanderOffset = Math.clamp(wanderOffset + step, -maxWander, maxWander);
+			else baseYaw += step;
+			if (turnTick >= turnTicksTotal) turnTicksTotal = 0;
+		} else if (navActive && wanderOffset != 0) {
+			double pull = Math.min(Math.abs(wanderOffset), Math.max(0.05, cfg.gotoCorrectionDegPerTick));
+			wanderOffset -= Math.copySign(pull, wanderOffset);
+		}
+	}
+
+	/** Organic legs ease the walking direction too; emergency steering is added afterwards. */
+	private double sweepHeading(double target, double facing, boolean outside) {
+		boolean wasHolding = sweepHolding;
+		sweepHolding = false;
+		if (!navActive || !cfg.areaEnabled || cfg.areaRoute != AreaCoverage.Route.ORGANIC || outside) {
+			sweepTurning = false;
+			return target;
+		}
+		if (!sweepTurning) {
+			sweepTurn.sync(facing);
+			sweepTurning = true;
+		}
+		AreaCoverage.Target next = area.currentTarget();
+		if (next != sweepTarget) {
+			sweepTarget = next;
+			sweepTurnPace = Rng.range(0.75, 1);
+		}
+		// Independent, correlated noise bends the walk without locking it to camera wobble.
+		double heading = sweepTurn.next(target + sweepDrift.yaw(cfg) * 3,
+				Math.max(0.35, cfg.cameraSmoothYaw), cfg.turnSpeedDegPerTick * sweepTurnPace);
+		// At slow turn speeds a full-speed walk can orbit a nearby target forever.
+		// Let the feet wait for a sharp turn, while the camera and heading keep easing.
+		sweepHolding = Math.abs(Human.wrap(target - heading)) > (wasHolding ? 30 : 60);
+		return heading;
+	}
+
+	private double strafeOffset() {
+		return state == State.STRAFING ? strafeDir * (cfg.strafeKeepsForward ? 45 : 90) : 0;
 	}
 
 	private void applyEatingLook(LocalPlayer player) {
@@ -678,12 +748,29 @@ public final class MovementController {
 		// Jobs select tools and blocks before AutoEat ticks. Let the meal finish before
 		// running them again, or the slot change makes AutoEat restart every other tick.
 		if (autoEat.isEating()) return new Bot.Steer();
+		if (cfg.builderEnabled) {
+			destroyer.combat.onDamage(player, lastDamage);
+			Bot.Steer defence = new Bot.Steer();
+			if (destroyer.combat.tick(mc, player, defence)) {
+				builder.pauseNavigation();
+				lastReason = destroyer.combat.status;
+				return defence;
+			}
+			Bot.Steer working = builder.tick(mc);
+			lastReason = builder.status;
+			return working;
+		}
 		Bot.Steer storing = storage.tick(mc);
 		if (storing != null) {
 			forgetRoute();
 			lastReason = storage.status;
 			return storing;
 		}
+		if (cfg.explorerEnabled) {
+            Bot.Steer working = explorer.tick(mc, lastDamage);
+            lastReason = explorer.status;
+            return working;
+        }
 		if (cfg.destroyerEnabled) {
 			Bot.Steer working = destroyer.tick(mc, player, level, lastDamage);
 			if (destroyer.takeBagFull()) {
@@ -952,18 +1039,20 @@ public final class MovementController {
 
 		// using an item cancels a sprint, so never ask for both at once
 		sprint = sprint && forward && !eating && !steer.use;
-		if (forward && !still && !precise && mc.level != null) autoJump(player, mc.level, steer.moveYaw);
+		if (forward && !still && !precise && !player.isPassenger() && mc.level != null) autoJump(player, mc.level, steer.moveYaw);
 		askedForward = forward && !still;
 		setKey(o.keyUp, askedForward);
 		setKey(o.keyDown, back && !still);
 		setKey(o.keyLeft, left && !still);
 		setKey(o.keyRight, right && !still);
 		setKey(o.keyJump, (steer.jump || jumpTicks > 0) && !still);
-		setKey(o.keyShift, steer.sneak || (cfg.holdSneak && !storage.busy()));
+		setKey(o.keyShift, steer.sneak || (cfg.holdSneak && !storage.busy() && !cfg.builderEnabled));
 		setKey(o.keySprint, sprint);
 		setKey(o.keyAttack, steer.attack && !eating);
 		if (eating) autoEat.useFood(mc, player);
 		else setKey(o.keyUse, steer.use);
+		if (steer.builderAction && !eating) builder.interact(mc);
+        if (cfg.explorerEnabled && !eating && !storage.busy()) explorer.interact(mc);
 		keysHeld = true;
 		return refused;
 	}
@@ -1004,36 +1093,29 @@ public final class MovementController {
 	private void applyKeys(Minecraft mc, LocalPlayer player) {
 		Options o = mc.options;
 		boolean holdingStillToEat = eating && cfg.autoEatHoldStill;
-		boolean forward = !holdingStillToEat
-				&& state != State.PAUSED
-				&& (state != State.STRAFING || cfg.strafeKeepsForward);
+		boolean moving = !holdingStillToEat && state != State.PAUSED && !sweepHolding;
+		boolean[] keys = walkingKeys(player.getYRot(), moving);
+		boolean forward = keys[0], back = keys[1], left = keys[2], right = keys[3];
 		// a retreat sprints whether or not the walk normally does
 		// using an item cancels a sprint, so never ask for both at once
-		boolean sprint = (cfg.holdSprint || fleeing()) && forward && !eating;
+		boolean sprint = (cfg.holdSprint || fleeing()) && forward && !back && !eating;
 		askedForward = forward;
 		updateJumpSprint(player, sprint);
 
-		// Free wandering walks where it is looking, which is both what it means and what looks
-		// right. Travelling somewhere does not: the camera takes the better part of half a
-		// second to come round, and a leash correction, a dodge round a tree or a run from a
-		// zombie that only takes effect after that is a correction that arrives too late.
-		boolean back = false, left = false, right = false;
-		if (forward && (navActive || fleeing() || avoid.steering())) {
-			boolean[] keys = Bot.keysFor(player.getYRot(), walkYaw, lastKeys);
-			lastKeys = keys;
-			forward = keys[0];
-			back = keys[1];
-			left = keys[2];
-			right = keys[3];
-		}
 		setKey(o.keyUp, forward);
 		setKey(o.keyDown, back);
-		setKey(o.keyLeft, left || (!holdingStillToEat && state == State.STRAFING && strafeDir < 0));
-		setKey(o.keyRight, right || (!holdingStillToEat && state == State.STRAFING && strafeDir > 0));
+		setKey(o.keyLeft, left);
+		setKey(o.keyRight, right);
 		setKey(o.keySprint, sprint);
 		setKey(o.keyShift, cfg.holdSneak);
-		setKey(o.keyJump, jumpTicks > 0);
+		setKey(o.keyJump, moving && jumpTicks > 0);
 		keysHeld = true;
+	}
+
+	private boolean[] walkingKeys(double facing, boolean moving) {
+		if (!moving) return lastKeys = new boolean[4];
+		double heading = navActive || fleeing() || avoid.steering() ? walkYaw : facing + strafeOffset();
+		return lastKeys = Bot.keysFor(facing, heading, lastKeys);
 	}
 
 	/**
@@ -1087,7 +1169,7 @@ public final class MovementController {
 	// ------------------------------------------------------------ obstacles
 
 	private void handleObstacles(Minecraft mc, LocalPlayer player, ClientLevel level) {
-		double yawRad = Math.toRadians(player.getYRot());
+		double yawRad = Math.toRadians(walkYaw);
 		double fx = -Math.sin(yawRad);
 		double fz = Math.cos(yawRad);
 		double probe = Math.max(0.1, cfg.autoJumpProbeDistance);
@@ -1172,6 +1254,7 @@ public final class MovementController {
 		// own work. Every hard fault below - a teleport, a dimension change, a hijacked camera -
 		// still applies, because none of those are things the job does.
 		boolean wantsForward = mc.options.keyUp.isDown() && state != State.PAUSED && !eating;
+		safeStop.expectVehicle(cfg.explorerEnabled ? explorer.expectedVehicle() : null);
 		String failure = safeStop.check(mc, player, wantsForward,
 				mc.options.keySprint.isDown(), mc.options.keyShift.isDown());
 		if (failure == null) return;
@@ -1191,7 +1274,7 @@ public final class MovementController {
 	private void updateStuck(Minecraft mc, LocalPlayer player) {
 		if (!cfg.stuckDetectEnabled) return;
 		// a deliberate pause, or a meal, is not being stuck
-		if (state == State.PAUSED || state == State.BLOCKED || state == State.EATING) {
+		if (state == State.PAUSED || state == State.BLOCKED || state == State.EATING || sweepHolding) {
 			resetProgress(player);
 			return;
 		}
@@ -1224,7 +1307,7 @@ public final class MovementController {
 		// undoing it.
 		if (cfg.stuckAutoUnstick && unstickTried < cfg.stuckUnstickAttempts) {
 			unstickTried++;
-			state = State.UNSTICKING;
+			state = eventState = State.UNSTICKING;
 			jumpTicks = 6;
 			beginTurn(Rng.range(55, 140) * (Rng.coinFlip() ? -1 : 1));
 			eventTicksLeft = Math.max(40, turnTicksTotal);
@@ -1293,6 +1376,8 @@ public final class MovementController {
 	 * that was working last tick is working now.
 	 */
 	private boolean working() {
+		if (cfg.builderEnabled && cfg.destroyerKeepWorking) return builder.phase == LitematicaBuilder.Phase.READY
+				|| builder.phase == LitematicaBuilder.Phase.BUILDING || builder.phase == LitematicaBuilder.Phase.VERIFYING;
 		return cfg.destroyerEnabled && cfg.destroyerKeepWorking
 				&& destroyer.phase != BaseDestroyer.Phase.OFF
 				&& destroyer.phase != BaseDestroyer.Phase.DONE;
@@ -1547,10 +1632,11 @@ public final class MovementController {
 	}
 
 	/**
-	 * Self-check on that one judgement - the rest of the retreat is lookups:
+	 * Self-checks for sweep randomisation, steering, and threat approach detection:
 	 * {@code ./gradlew selfCheck -Pcheck=com.damia.movrand.MovementController}
 	 */
 	public static void main(String[] args) {
+		checkSweepRandomisation();
 		// a zombie walking in at its actual 0.115 blocks a tick is noticed inside a second
 		double d = 14, furthest = 14;
 		int ticks = 0;
@@ -1597,6 +1683,131 @@ public final class MovementController {
 		assert !charging(1, -1) : "an unmeasured threat counted as charging";
 
 		System.out.println("MovementController self-check passed");
+	}
+
+	private static void checkSweepRandomisation() {
+		net.minecraft.SharedConstants.tryDetectVersion();
+		net.minecraft.server.Bootstrap.bootStrap();
+		Config config = new Config();
+		config.logRotation = Journal.Rotation.PER_SESSION;
+		config.areaEnabled = true;
+		config.cameraSmoothYaw = 0; // the setting that previously allowed a one-tick 90-degree turn
+		config.turnMinDeg = config.turnMaxDeg = 65;
+		config.lookPitchMinDeg = config.lookPitchMaxDeg = 18;
+		MovementController ctl = new MovementController(config);
+		ctl.navActive = true;
+		for (AreaCoverage.Route mode : AreaCoverage.Route.values()) {
+			config.areaRoute = mode;
+			for (int event = 0; event < 5; event++) {
+				config.strafeEnabled = event == 0;
+				config.pauseEnabled = event == 1;
+				config.turnEnabled = event == 2;
+				config.hopEnabled = event == 3;
+				config.lookAroundEnabled = event == 4;
+				ctl.fireEvent();
+				State expected = new State[]{State.STRAFING, State.PAUSED, State.TURNING, State.RUNNING, State.LOOKING}[event];
+				assert ctl.state == expected : mode + " lost random event " + event;
+				assert ctl.eventTicksLeft > 0;
+				if (event == 0) {
+					for (boolean keepForward : new boolean[]{false, true}) {
+						config.strafeKeepsForward = keepForward;
+						for (int dir : new int[]{-1, 1}) for (int facing = -180; facing < 180; facing += 15) {
+							ctl.strafeDir = dir;
+							ctl.walkYaw = 90 + ctl.strafeOffset();
+							boolean[] keys = ctl.walkingKeys(facing, true);
+							assert !(keys[0] && keys[1]) && !(keys[2] && keys[3]) : "sidestep cancelled by route keys";
+							double actual = facing + Math.toDegrees(Math.atan2((keys[3] ? 1 : 0) - (keys[2] ? 1 : 0),
+									(keys[0] ? 1 : 0) - (keys[1] ? 1 : 0)));
+							assert Math.abs(Human.wrap(actual - ctl.walkYaw)) < 30 : mode + " lost sidestep direction";
+						}
+					}
+				} else if (event == 1) {
+					assert java.util.Arrays.equals(ctl.walkingKeys(90, false), new boolean[4]) : "pause still moved";
+					ctl.state = State.EATING;
+					ctl.updateSchedule();
+					assert ctl.state == State.PAUSED : "meal erased the pending pause";
+				} else if (event == 2) {
+					ctl.wanderOffset = 0;
+					while (ctl.turning()) ctl.advanceTurn(Math.max(config.gotoMaxWanderDeg, config.turnMaxDeg));
+					assert Math.abs(Math.abs(ctl.wanderOffset) - 65) < 1e-8 : "sweep clipped configured turn";
+					for (int tick = 0; tick < 100; tick++) ctl.advanceTurn(65);
+					assert ctl.wanderOffset == 0 : "random turn did not return to route";
+				} else if (event == 3) assert ctl.jumpTicks > 0 : "hop lost";
+				else assert ctl.targetPitch == 18 : "look-around pitch lost";
+			}
+			ctl.human.syncCamera(179, 0);
+			double yaw = 179, minPitch = 90, maxPitch = -90;
+			for (int tick = 0; tick < 120; tick++) {
+				double next = ctl.walkingYaw(-91, yaw);
+				assert Math.abs(Human.wrap(next - yaw)) <= config.turnSpeedDegPerTick + 1e-8 : mode + " snapped camera";
+				yaw = next;
+				double pitch = ctl.human.pitchFor(config, 0);
+				minPitch = Math.min(minPitch, pitch);
+				maxPitch = Math.max(maxPitch, pitch);
+			}
+			assert Math.abs(Human.wrap(yaw + 91)) < 5 : mode + " camera never reached target";
+			assert maxPitch - minPitch > 0.01 : mode + " pitch wobble missing";
+		}
+		config.areaRoute = AreaCoverage.Route.ORGANIC;
+		config.yawJitterEnabled = false;
+		ctl.sweepTurning = false;
+		double heading = 0;
+		for (int tick = 0; tick < 100; tick++) {
+			double next = ctl.sweepHeading(90, 0, false);
+			assert Math.abs(Human.wrap(next - heading)) <= config.turnSpeedDegPerTick + 1e-8 : "organic movement snapped";
+			heading = next;
+		}
+		assert Math.abs(heading - 90) < 1e-8 : "organic turn never settled";
+		assert ctl.sweepHeading(-90, 0, true) == -90 : "organic easing delayed boundary recovery";
+		config.yawJitterEnabled = true;
+		double smallestPace = 1, largestPace = 0, minHeading = 180, maxHeading = -180;
+		ctl.area.setCorners(0, 0, 63, 63);
+		for (int leg = 0; leg < 16; leg++) {
+			AreaCoverage.Target target = ctl.area.nextTarget(0, 0, 0);
+			assert target != null;
+			for (int tick = 0; tick < 80; tick++) {
+				heading = ctl.sweepHeading(0, 0, false);
+				minHeading = Math.min(minHeading, heading);
+				maxHeading = Math.max(maxHeading, heading);
+			}
+			smallestPace = Math.min(smallestPace, ctl.sweepTurnPace);
+			largestPace = Math.max(largestPace, ctl.sweepTurnPace);
+			ctl.area.markCovered(target.chunkX(), target.chunkZ(), 0);
+		}
+		assert largestPace - smallestPace > 0.01 : "organic legs always turned at the same pace";
+		assert maxHeading - minHeading > 0.05 : "organic movement drift missing";
+		assert ctl.area.isComplete() : "variation lost sweep coverage";
+		// Follow real sweep targets on a flat plane, including very slow turns and tight corners.
+		for (double rate : new double[]{0.2, 2.5, 15}) for (AreaCoverage.Route mode : AreaCoverage.Route.values()) {
+			config.turnSpeedDegPerTick = rate;
+			config.areaRoute = mode;
+			ctl.area.setCorners(0, 0, 63, 63);
+			ctl.sweepTurning = false;
+			ctl.state = State.RUNNING;
+			ctl.human.syncCamera(0, 0);
+			double x = 8, z = 8, facing = 0;
+			for (int tick = 0; tick < 30_000 && !ctl.area.isComplete(); tick++) {
+				int cx = (int) Math.floor(x) >> 4, cz = (int) Math.floor(z) >> 4;
+				ctl.area.markCovered(cx, cz, 0);
+				AreaCoverage.Target target = ctl.area.nextTarget(cx, cz, 0);
+				if (target == null) break;
+				double dx = target.x() - x, dz = target.z() - z;
+				if (Math.hypot(dx, dz) <= config.gotoArriveRadius) {
+					ctl.area.markCovered(target.chunkX(), target.chunkZ(), 0);
+					continue;
+				}
+				double bearing = Math.toDegrees(Math.atan2(-dx, dz));
+				ctl.walkYaw = ctl.sweepHeading(bearing, facing, false);
+				facing = ctl.walkingYaw(ctl.walkYaw, facing);
+				if (ctl.sweepHolding) continue;
+				boolean[] keys = ctl.walkingKeys(facing, true);
+				double direction = facing + Math.toDegrees(Math.atan2((keys[3] ? 1 : 0) - (keys[2] ? 1 : 0),
+						(keys[0] ? 1 : 0) - (keys[1] ? 1 : 0)));
+				x -= Math.sin(Math.toRadians(direction)) * 0.28;
+				z += Math.cos(Math.toRadians(direction)) * 0.28;
+			}
+			assert ctl.area.isComplete() : mode + " circled targets at turn speed " + rate;
+		}
 	}
 
 	/**
@@ -1702,6 +1913,8 @@ public final class MovementController {
 		String suffix = "";
 		if (cfg.areaEnabled) suffix = " · %.0f%%".formatted(area.progress() * 100);
 		else if (gotoDistance >= 0) suffix = String.format(Locale.ROOT, " → %.0fm", gotoDistance);
+		if (cfg.explorerEnabled) return explorer.status + suffix;
+		if (cfg.builderEnabled) return builder.status + suffix;
 		if (cfg.destroyerEnabled && destroyer.phase != BaseDestroyer.Phase.OFF) {
 			return destroyer.phase.label + suffix;
 		}

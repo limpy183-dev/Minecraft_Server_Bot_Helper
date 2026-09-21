@@ -14,6 +14,8 @@ import net.minecraft.util.Mth;
  * in place all show up here long before the distance check notices.
  */
 public final class SafeStop {
+    private net.minecraft.world.entity.Entity expectedVehicle;
+    public void expectVehicle(net.minecraft.world.entity.Entity vehicle) { expectedVehicle = vehicle; }
 
 	/** Blocks per tick on flat ground, from the vanilla movement constants. */
 	private static final double SPRINT_SPEED = 0.2806;
@@ -61,6 +63,7 @@ public final class SafeStop {
 	}
 
 	public void reset(LocalPlayer player) {
+        expectedVehicle = null;
 		primed = false;
 		// a deliberate move must not be excused by where we were before it
 		trailAt = 0;
@@ -141,7 +144,7 @@ public final class SafeStop {
 			}
 			return "Position jumped %.1f blocks in one tick".formatted(Math.max(moved, dy));
 		}
-		if (cfg.safeStopOnVehicle && player.isPassenger()) {
+		if (cfg.safeStopOnVehicle && player.isPassenger() && player.getVehicle() != expectedVehicle) {
 			return "Ended up riding " + player.getVehicle().getName().getString();
 		}
 		if (cfg.safeStopOnFreeze && sinceLastTickMs > cfg.safeStopFreezeMs) {

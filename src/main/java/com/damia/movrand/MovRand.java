@@ -49,8 +49,8 @@ public final class MovRand implements ClientModInitializer {
 	}
 
 	public static void replaceConfig(Config fresh) {
-		if (controller != null && controller.storage.busy()) {
-			controller.stop(Minecraft.getInstance(), "Configuration changed during storage");
+		if (controller != null && (controller.storage.busy() || config.builderEnabled)) {
+			controller.stop(Minecraft.getInstance(), "Configuration changed during an active job");
 			fresh.movementEnabled = false;
 		}
 		config = fresh;
@@ -85,6 +85,8 @@ public final class MovRand implements ClientModInitializer {
 	public void onInitializeClient() {
 		config = Config.load();
 		controller = new MovementController(config);
+		SusChunkFinder.INSTANCE.register();
+		ChunkFinder.INSTANCE.register();
 
 		openKey = KeyMappingHelper.registerKeyMapping(new KeyMapping(
 				"key.movrand.open", GLFW.GLFW_KEY_APOSTROPHE, KeyMapping.Category.MOVEMENT));
@@ -209,7 +211,13 @@ public final class MovRand implements ClientModInitializer {
 			boolean on = config.movementEnabled;
 
 			List<String> lines = new ArrayList<>();
-			lines.add(controller.describeState());
+			lines.add(!on && config.susEnabled ? "Sus chunk finder active" : controller.describeState());
+			if (config.susEnabled && config.susHud) {
+				var finder = SusChunkFinder.INSTANCE;
+				lines.add("Sus chunks " + finder.findings().size() + " | " + finder.pending() + " pending");
+				var here = finder.finding(mc.player.blockPosition().getX() >> 4, mc.player.blockPosition().getZ() >> 4);
+				if (here != null) lines.add("Sus here: score " + here.score());
+			}
 			if (on) {
 				lines.add("Up " + Ui.seconds(controller.runtimeSeconds()));
 				if (config.hudShowNextEvent) lines.add("Next " + Ui.seconds(controller.nextEventSeconds()));
@@ -219,6 +227,7 @@ public final class MovRand implements ClientModInitializer {
 			} else if (config.hudShowGoto && config.gotoEnabled) {
 				lines.add(String.format(Locale.ROOT, "→ %.0f, %.0f", config.gotoX, config.gotoZ));
 			}
+			if (config.builderEnabled) lines.add("Build verified " + controller.builder.verified + " / " + controller.builder.total());
 			if (config.destroyerEnabled) {
 				lines.add("Mined " + controller.destroyer.mined
 						+ " · " + controller.destroyer.remaining() + " left");

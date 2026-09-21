@@ -127,7 +127,7 @@ public final class Widgets {
 	}
 
 	public static final class Note extends Element {
-		private final String body;
+		private final Supplier<String> body;
 		private final int colour;
 
 		public Note(String body) {
@@ -135,6 +135,10 @@ public final class Widgets {
 		}
 
 		public Note(String body, int colour) {
+			this(() -> body, colour);
+		}
+
+		public Note(Supplier<String> body, int colour) {
 			this.body = body;
 			this.colour = colour;
 			this.h = 12;
@@ -142,7 +146,7 @@ public final class Widgets {
 
 		@Override
 		public void render(GuiGraphicsExtractor g, Font f, int mx, int my, int accent) {
-			Ui.textElided(g, f, body, w, x, y + 2, colour);
+			Ui.textElided(g, f, body.get(), w, x, y + 2, colour);
 		}
 	}
 

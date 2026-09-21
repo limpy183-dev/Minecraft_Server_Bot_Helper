@@ -1,0 +1,448 @@
+
+> Configure project :
+Fabric Loom: 1.17.20
+
+> Task :compileJava
+
+> Task :verifyBaritone
+Note: Some input files use or override a deprecated API.
+Note: Recompile with -Xlint:deprecation for details.
+> Task :processResources UP-TO-DATE
+> Task :classes
+> Task :compileGametestJava
+> Task :generateLog4jConfig UP-TO-DATE
+> Task :generateDLIConfig UP-TO-DATE
+> Task :configureLaunch UP-TO-DATE
+> Task :downloadAssets UP-TO-DATE
+> Task :configureClientLaunch UP-TO-DATE
+> Task :deleteGameTestRunDir
+> Task :processGametestResources UP-TO-DATE
+> Task :gametestClasses
+
+> Task :runClientGameTest
+[12:20:25] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 26.2 with Fabric Loader 0.19.3
+[12:20:25] [main/INFO] (FabricLoader/Mappings) Mappings not present!
+[12:20:25] [main/INFO] (FabricLoader) Loading 54 mods:
+	- baritone 1.19.0
+	   \-- dev_babbaj_nether-pathfinder 1.6
+	- fabric-api 0.158.0+26.2
+	- fabric-api-base 2.0.4+ece063239e
+	- fabric-api-lookup-api-v1 2.0.17+11e1c9a39e
+	- fabric-biome-api-v1 18.0.6+c7bd5b8e9e
+	- fabric-block-api-v1 3.0.3+ec56b6019e
+	- fabric-block-getter-api-v2 2.0.7+ec56b6019e
+	- fabric-client-gametest-api-v1 6.0.0+515ac5339e
+	- fabric-command-api-v2 3.1.0+00cb03469e
+	- fabric-content-registries-v0 11.3.1+37b1aa249e
+	- fabric-convention-tags-v2 4.7.0+1f023a9e9e
+	- fabric-crash-report-info-v1 1.0.5+086d547a9e
+	- fabric-creative-tab-api-v1 5.0.14+d871b99e9e
+	- fabric-data-attachment-api-v1 2.2.18+515ac5339e
+	- fabric-data-generation-api-v1 25.5.0+aed122aa9e
+	- fabric-debug-api-v1 1.0.2+c792624d9e
+	- fabric-dimensions-v1 5.1.11+515ac5339e
+	- fabric-entity-events-v1 5.0.5+06488ac19e
+	- fabric-events-interaction-v0 5.2.7+515ac5339e
+	- fabric-game-rule-api-v1 4.0.8+46a6d00c9e
+	- fabric-gametest-api-v1 4.0.21+4a7fa0819e
+	- fabric-item-api-v1 14.5.0+c68f6cbe9e
+	- fabric-key-mapping-api-v1 2.0.5+e2bdee789e
+	- fabric-lifecycle-events-v1 4.1.3+4575b05f9e
+	- fabric-loot-api-v3 3.0.17+06488ac19e
+	- fabric-menu-api-v1 2.0.16+086d547a9e
+	- fabric-message-api-v1 7.0.8+bb2ed3f79e
+	- fabric-model-loading-api-v1 8.0.16+c80601bb9e
+	- fabric-networking-api-v1 6.3.3+72073ef09e
+	- fabric-object-builder-api-v1 24.1.0+6fcd5f039e
+	- fabric-particles-v1 5.0.18+d1756aa99e
+	- fabric-permission-api-v1 1.0.5+e442d8d09e
+	- fabric-recipe-api-v1 9.0.20+11e1c9a39e
+	- fabric-registry-sync-v0 7.1.0+c7bd5b8e9e
+	- fabric-renderer-api-v1 14.1.3+2b0d8a229e
+	- fabric-renderer-indigo 9.1.3+2b0d8a229e
+	- fabric-rendering-fluids-v1 6.0.4+06488ac19e
+	- fabric-rendering-v1 25.3.2+515ac5339e
+	- fabric-resource-conditions-api-v1 6.1.0+10e9a28b9e
+	- fabric-resource-loader-v0 3.3.20+4fc5413f9e
+	- fabric-resource-loader-v1 2.0.13+9edec1269e
+	- fabric-screen-api-v1 5.2.0+58e078ad9e
+	- fabric-serialization-api-v1 2.0.4+11a26f319e
+	- fabric-sound-api-v1 2.0.5+11a26f319e
+	- fabric-tag-api-v1 2.1.4+515ac5339e
+	- fabric-transfer-api-v1 8.0.12+11dbb7d79e
+	- fabric-transitive-access-wideners-v1 8.1.4+67c847259e
+	- fabricloader 0.19.3
+	- java 25
+	- minecraft 26.2
+	- mixinextras 0.5.4
+	- movrand 1.0.0
+	- movrand-terrain-tests 1.0.0
+[12:20:26] [main/INFO] (FabricLoader/Mixin) SpongePowered MIXIN Subsystem Version=0.8.7 Source=file:/C:/Users/damia/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.17.3+mixin.0.8.7/41c4a3984a80f4679e759fb9f495587acc5cdac7/sponge-mixin-0.17.3+mixin.0.8.7.jar Service=Knot/Fabric Env=CLIENT
+[12:20:26] [main/INFO] (FabricLoader/Mixin) Compatibility level set to JAVA_25
+[12:20:27] [main/INFO] (FabricLoader/MixinExtras|Service) Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.4).
+[12:20:28] [Datafixer Bootstrap #0/INFO] (Minecraft) 295 Datafixer optimizations took 353 milliseconds
+[12:20:28] [main/ERROR] (HkeyPerformanceDataUtil) Unable to locate English counter names in registry Perflib 009. Counters may need to be rebuilt: 
+
+com.sun.jna.platform.win32.Win32Exception: The parameter is incorrect.
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:921)
+	at knot//com.sun.jna.platform.win32.Advapi32Util.registryGetStringArray(Advapi32Util.java:898)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.mapCounterIndicesFromRegistry(HkeyPerformanceDataUtil.java:274)
+	at knot//oshi.driver.windows.registry.HkeyPerformanceDataUtil.<clinit>(HkeyPerformanceDataUtil.java:51)
+	at knot//oshi.driver.windows.registry.ProcessPerformanceData.buildProcessMapFromRegistry(ProcessPerformanceData.java:45)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.queryProcessMapFromRegistry(WindowsOperatingSystem.java:328)
+	at knot//oshi.util.Memoizer$1.get(Memoizer.java:65)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.processMapToList(WindowsOperatingSystem.java:298)
+	at knot//oshi.software.os.windows.WindowsOperatingSystem.getProcess(WindowsOperatingSystem.java:292)
+	at knot//oshi.software.os.OperatingSystem.getCurrentProcess(OperatingSystem.java:246)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:20:28] [main/WARN] (PerfCounterQuery) Unable to locate English counter names in registry Perflib 009. Assuming English counters. Error 0x80070057. See https://support.microsoft.com/en-us/help/300956/how-to-manually-rebuild-performance-counter-library-values
+[12:20:29] [main/WARN] (Minecraft) Failed to get system info for Process Loads
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getUserTime()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$0(SystemReport.java:190)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:189)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:20:29] [main/WARN] (Minecraft) Failed to get system info for Process Virtual Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getVirtualSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$1(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:202)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:20:29] [main/WARN] (Minecraft) Failed to get system info for Process Resident Size (MiB)
+
+java.lang.NullPointerException: Cannot invoke "oshi.software.os.OSProcess.getResidentSetSize()" because "process" is null
+	at knot//net.minecraft.SystemReport.lambda$putProcessDetails$2(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.setDetail(SystemReport.java:96)
+	at knot//net.minecraft.SystemReport.putProcessDetails(SystemReport.java:203)
+	at knot//net.minecraft.SystemReport.lambda$putSoftware$0(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.putSoftware(SystemReport.java:116)
+	at knot//net.minecraft.SystemReport.lambda$new$7(SystemReport.java:68)
+	at knot//net.minecraft.SystemReport.ignoreErrors(SystemReport.java:121)
+	at knot//net.minecraft.SystemReport.<init>(SystemReport.java:68)
+	at knot//net.minecraft.CrashReport.<init>(CrashReport.java:35)
+	at knot//net.minecraft.CrashReport.preload(CrashReport.java:252)
+	at knot//net.minecraft.client.main.Main.main(Main.java:172)
+	at net.fabricmc.loader.impl.game.minecraft.MinecraftGameProvider.launch(MinecraftGameProvider.java:514)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:72)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
+[12:20:33] [Render thread/INFO] (Minecraft) Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[12:20:33] [Render thread/INFO] (Minecraft) Setting user: Player0
+[12:20:33] [Render thread/INFO] (movrand) [movrand] loaded — open the menu with the key bound to key.movrand.open
+[12:20:33] [Render thread/INFO] (Indigo) [Indigo] Registering Indigo renderer!
+[12:20:34] [Render thread/ERROR] (Minecraft) Illegal option value 0 for Anisotropic Filtering
+[12:20:34] [Render thread/INFO] (Minecraft) Backend library: LWJGL version 3.4.1-snapshot
+[12:20:35] [Render thread/INFO] (Minecraft) Preferring discrete GPU: NVIDIA GeForce RTX 4050 Laptop GPU
+[12:20:36] [Render thread/INFO] (Minecraft) Using graphics backend OpenGL, using drivers: 3.3.0 - Build 32.0.101.5972
+[12:20:36] [Render thread/INFO] (Minecraft) Using graphics device: Intel(R) Graphics (Intel)
+[12:20:36] [Render thread/INFO] (Minecraft) Using graphics device extensions: GL_ARB_multi_draw_indirect, GL_ARB_buffer_storage, GL_ARB_shader_draw_parameters, GL_ARB_base_instance, GL_KHR_debug, GL_ARB_draw_indirect, GL_ARB_clip_control, GL_ARB_vertex_attrib_binding, GL_ARB_direct_state_access, GL_EXT_texture_filter_anisotropic
+[12:20:36] [Render thread/INFO] (Minecraft) Reloading ResourceManager: vanilla, fabric-api, fabric-api-base, fabric-api-lookup-api-v1, fabric-biome-api-v1, fabric-block-api-v1, fabric-block-getter-api-v2, fabric-client-gametest-api-v1, fabric-command-api-v2, fabric-content-registries-v0, fabric-convention-tags-v2, fabric-crash-report-info-v1, fabric-creative-tab-api-v1, fabric-data-attachment-api-v1, fabric-data-generation-api-v1, fabric-debug-api-v1, fabric-dimensions-v1, fabric-entity-events-v1, fabric-events-interaction-v0, fabric-game-rule-api-v1, fabric-gametest-api-v1, fabric-item-api-v1, fabric-key-mapping-api-v1, fabric-lifecycle-events-v1, fabric-loot-api-v3, fabric-menu-api-v1, fabric-message-api-v1, fabric-model-loading-api-v1, fabric-networking-api-v1, fabric-object-builder-api-v1, fabric-particles-v1, fabric-permission-api-v1, fabric-recipe-api-v1, fabric-registry-sync-v0, fabric-renderer-api-v1, fabric-renderer-indigo, fabric-rendering-fluids-v1, fabric-rendering-v1, fabric-resource-conditions-api-v1, fabric-resource-loader-v0, fabric-resource-loader-v1, fabric-screen-api-v1, fabric-serialization-api-v1, fabric-sound-api-v1, fabric-tag-api-v1, fabric-transfer-api-v1, fabric-transitive-access-wideners-v1, fabricloader, movrand
+[12:20:36] [Download-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+[12:20:36] [Render thread/INFO] (Minecraft) [CHAT] [Baritone] Baritone settings file not found, resetting.
+[12:20:36] [Worker-Main-2/INFO] (Minecraft) Found unifont_all_no_pua-17.0.01.hex, loading
+[12:20:36] [Worker-Main-11/INFO] (Minecraft) Found unifont_pua-17.0.01.hex, loading
+[12:20:37] [Worker-Main-8/INFO] (Minecraft) Found unifont_jp_patch-17.0.01.hex, loading
+[12:20:37] [Render thread/INFO] (Minecraft) [STDOUT]: [nether-pathfinder] Created temp file at C:\Users\damia\AppData\Local\Temp\nether_pathfinder-x86_6415643528987775108615.dll
+[12:20:37] [Render thread/INFO] (Minecraft) [STDERR]: [nether-pathfinder] Failed to delete temp file
+[12:20:37] [Render thread/INFO] (Minecraft) [STDOUT]: [nether-pathfinder] Loaded shared library
+[12:20:38] [Render thread/INFO] (Minecraft) OpenAL initialized on device OpenAL Soft on Speakers (Realtek(R) Audio)
+[12:20:38] [Render thread/INFO] (Minecraft) Sound engine started
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 128x128x0 minecraft:textures/atlas/decorated_pot.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 2048x1024x0 minecraft:textures/atlas/armor_trims.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/shield_patterns.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 2048x2048x4 minecraft:textures/atlas/blocks.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/chest.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 256x128x0 minecraft:textures/atlas/celestials.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/banner_patterns.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 1024x512x0 minecraft:textures/atlas/items.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 1024x1024x0 minecraft:textures/atlas/gui.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 128x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[12:20:38] [Render thread/INFO] (Minecraft) Created: 512x512x0 minecraft:textures/atlas/shulker_boxes.png-atlas
+[12:20:39] [Download-1/INFO] (Minecraft) Could not authorize you against Realms server: java.lang.RuntimeException: Failed to parse into SignedJWT: FabricMC
+[12:20:41] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.GenericMessageScreen@46940ae6
+[12:20:41] [Render thread/INFO] (Minecraft) Found new data pack fabric-gametest-api-v1, loading it automatically
+[12:20:42] [Render thread/INFO] (Minecraft) Loaded 1585 recipes
+[12:20:42] [Render thread/INFO] (Minecraft) Loaded 1688 advancements
+[12:20:42] [Render thread/INFO] (BiomeModificationImpl) Applied 0 biome modifications to 0 of 66 new biomes in 1.284 ms
+[12:20:42] [Server thread/INFO] (Minecraft) Starting integrated minecraft server version 26.2
+[12:20:42] [Server thread/INFO] (Minecraft) Generating keypair
+[12:20:43] [Server thread/INFO] (Minecraft) Loading 0 persistent chunks...
+[12:20:43] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[12:20:43] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:overworld
+[12:20:43] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:the_nether
+[12:20:43] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:the_end
+[12:20:43] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (world): All chunks are saved
+[12:20:43] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[12:20:43] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[12:20:43] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved
+[12:20:43] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:43] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:43] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:43] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:43] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Server thread/INFO] (Minecraft) Loading 49 chunks for player spawn...
+[12:20:44] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Server thread/INFO] (Minecraft) Preparing spawn area: 16%
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Server thread/INFO] (Minecraft) Time elapsed: 1364 ms
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:44] [Server thread/INFO] (Minecraft) Player0[local:E:8d75f2ce] logged in with entity id 24 at (196.1193280962868, 69.0, -69.23592797046915)
+[12:20:44] [Server thread/INFO] (Minecraft) Player0 joined the game
+[12:20:44] [Server thread/INFO] (Minecraft) Player0 has made the advancement [Stone Age]
+[12:20:44] [Server thread/INFO] (Minecraft) Changing view distance to 5, from 10
+[12:20:44] [Server thread/INFO] (Minecraft) Changing simulation distance to 12, from 0
+[12:20:44] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: null screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Render thread/INFO] (Minecraft) [STDOUT]: Baritone world data dir: C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-219191a2-ad88-4351-8730-d422932c8043\.\baritone\minecraft\overworld_384
+[12:20:45] [Render thread/INFO] (Minecraft) [STDOUT]: Cached world directory: C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-219191a2-ad88-4351-8730-d422932c8043\.\baritone\minecraft\overworld_384\cache
+[12:20:45] [Render thread/INFO] (Minecraft) [STDOUT]: Would save waypoints to C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-219191a2-ad88-4351-8730-d422932c8043\.\baritone\minecraft\overworld_384\waypoints
+[12:20:45] [Render thread/INFO] (Minecraft) [System] [CHAT] Player0 has made the advancement [Stone Age]
+[12:20:45] [Render thread/INFO] (Minecraft) Loaded 45 advancements
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Download-1/ERROR] (Minecraft) Failed to retrieve profile key pair
+
+MinecraftClientHttpException[type=HTTP_ERROR, status=401, response=ErrorResponse[path=/player/certificates, error=null, errorMessage=null, details=null]]
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.buildHttpException(MinecraftClient.java:170)
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.readServiceResponse(MinecraftClient.java:147)
+	at knot//com.mojang.authlib.minecraft.client.MinecraftClient.post(MinecraftClient.java:89)
+	at knot//com.mojang.authlib.yggdrasil.YggdrasilUserApiService.getKeyPair(YggdrasilUserApiService.java:62)
+	at knot//net.minecraft.client.multiplayer.AccountProfileKeyPairManager.fetchProfileKeyPair(AccountProfileKeyPairManager.java:128)
+	at knot//net.minecraft.client.multiplayer.AccountProfileKeyPairManager.lambda$readOrFetchProfileKeyPair$0(AccountProfileKeyPairManager.java:77)
+	at java.base/java.util.concurrent.CompletableFuture$AsyncSupply.run(CompletableFuture.java:1789)
+	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Dynamic Transforms UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: net.minecraft.client.gui.screens.LevelLoadingScreen@50352796
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 2 reached during a single frame. New capacity will be 4.
+[12:20:45] [Render thread/INFO] (fabric-client-gametest-api-v1) World loading finished: ClientLevel screen: null
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 4 reached during a single frame. New capacity will be 8.
+[12:20:45] [Render thread/INFO] (movrand) BUILDER PROFILE start save=C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-219191a2-ad88-4351-8730-d422932c8043 position=(196.1193280962868, 69.0, -69.23592797046915) inventory=net.minecraft.world.entity.player.Inventory@306015d4 config=Other smp origin=195,69,-70 mirror=2
+[12:20:45] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§aMovement on
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 8 reached during a single frame. New capacity will be 16.
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 16 reached during a single frame. New capacity will be 32.
+[12:20:45] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 32 reached during a single frame. New capacity will be 64.
+[12:20:46] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 64 reached during a single frame. New capacity will be 128.
+[12:20:49] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 191, 70, -68 Block{minecraft:chest}[facing=west,type=right,waterlogged=false]
+[12:20:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=100 position=(190.4956864640293, 69.0, -66.8054198877275) target=191, 70, -67 Block{minecraft:chest}[facing=west,type=left,waterlogged=false] phase=BUILDING interactions=3 verified=0 status=Placing 191, 70, -67 wait=Waiting for server
+[12:20:53] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 189, 70, -66 Block{minecraft:chest}[facing=north,type=left,waterlogged=false]
+[12:20:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=200 position=(190.50002319746065, 68.0, -65.6846163731292) target=191, 70, -66 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=7 verified=0 status=Placing 191, 70, -66 wait=Crosshair missed
+[12:20:58] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 192, 70, -66 Block{minecraft:chest}[facing=north,type=left,waterlogged=false]
+[12:21:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=300 position=(194.59065230513463, 69.0, -65.43318412774377) target=191, 70, -65 Block{minecraft:chest}[facing=west,type=right,waterlogged=false] phase=BUILDING interactions=10 verified=0 status=Approaching 191, 70, -65 · Baritone: Traverse wait=Waiting for server
+[12:21:02] [Render thread/INFO] (movrand) [builder] Waiting for neighbours, growth or redstone state at 191, 70, -65 Block{minecraft:chest}[facing=west,type=right,waterlogged=false]
+[12:21:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=400 position=(192.50933251490395, 70.0, -63.24769035272644) target=191, 71, -68 Block{minecraft:hopper}[enabled=true,facing=down] phase=BUILDING interactions=12 verified=0 status=Approaching 191, 71, -68 · arrived wait=Waiting for server
+[12:21:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=500 position=(191.47174668272004, 70.875, -63.50391294828247) target=193, 71, -66 Block{minecraft:hopper}[enabled=true,facing=down] phase=BUILDING interactions=18 verified=0 status=Placing 193, 71, -66 wait=Waiting for server
+[12:21:15] [ForkJoinPool.commonPool-worker-1/INFO] (Minecraft) [STDOUT]: Saving region 0,0 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-219191a2-ad88-4351-8730-d422932c8043\.\baritone\minecraft\overworld_384\cache
+[12:21:15] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: Saving region 0,-1 to disk C:\Users\damia\Desktop\AI_Projects\Minecraft\Movement_And_Randomisation\build\run\clientGameTest\saves\builder-profile-219191a2-ad88-4351-8730-d422932c8043\.\baritone\minecraft\overworld_384\cache
+[12:21:15] [ForkJoinPool.commonPool-worker-1/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[12:21:15] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: Saved region successfully
+[12:21:15] [pool-4-thread-2/INFO] (Minecraft) [STDOUT]: World save took 54ms
+[12:21:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=600 position=(190.20646312332877, 68.53584062504456, -62.45039329726856) target=190, 71, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=20 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:21:20] [Render thread/INFO] (Minecraft) Resizing Chunk Sections UBO, capacity limit of 128 reached during a single frame. New capacity will be 256.
+[12:21:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=700 position=(191.53309479917263, 71.0, -68.50353877276184) target=190, 72, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=22 verified=0 status=Placing 190, 72, -69 wait=Crosshair missed
+[12:21:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=800 position=(191.44873484311495, 69.0, -69.58874082416921) target=191, 72, -68 Block{minecraft:powered_rail}[powered=false,shape=north_south,waterlogged=false] phase=BUILDING interactions=24 verified=0 status=Placing 191, 72, -68 wait=Crosshair missed
+[12:21:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=900 position=(191.30000001192093, 71.0, -68.4832183320067) target=192, 72, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=27 verified=0 status=Placing 192, 72, -69 wait=Settling aim 2
+[12:21:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1000 position=(192.77963433312559, 69.0, -67.31911984048246) target=189, 72, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=30 verified=0 status=Approaching 189, 72, -68 · Baritone: Diagonal wait=Waiting for server
+[12:21:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1100 position=(189.2276555355719, 68.0, -66.5008975455946) target=190, 72, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=32 verified=0 status=Approaching 190, 72, -67 · arrived wait=Waiting for server
+[12:21:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1200 position=(192.82704938822746, 69.0, -68.96013533757367) target=192, 72, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=34 verified=0 status=Approaching 192, 72, -67 · Baritone: Traverse wait=Waiting for server
+[12:21:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1300 position=(192.56106664038475, 71.0, -64.49423054126729) target=189, 72, -66 Block{minecraft:powered_rail}[powered=false,shape=east_west,waterlogged=false] phase=BUILDING interactions=36 verified=0 status=Placing 189, 72, -66 wait=Crosshair on 191, 71, -65 east, needs 189, 71, -66 up
+[12:21:53] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 191, 72, -66 Block{minecraft:iron_trapdoor}[facing=east,half=top,open=false,powered=false,waterlogged=false]
+[12:21:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1400 position=(193.18087904818762, 73.0, -66.5101105052856) target=192, 72, -66 Block{minecraft:powered_rail}[powered=false,shape=east_west,waterlogged=false] phase=BUILDING interactions=39 verified=0 status=Placing 192, 72, -66 wait=Crosshair on 192, 72, -68 up, needs 192, 71, -66 up
+[12:22:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1500 position=(192.10720158153853, 72.0, -64.7035728171096) target=189, 71, -65 Block{minecraft:cobblestone} phase=BUILDING interactions=41 verified=0 status=Placing 189, 71, -65 wait=Crosshair missed
+[12:22:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1600 position=(192.30000001192093, 71.0, -63.4875581460539) target=— phase=BUILDING interactions=44 verified=0 status=Placing 189, 72, -64 wait=Waiting for server
+[12:22:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1700 position=(192.6943275576772, 73.0, -66.44517507271996) target=192, 72, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false] phase=BUILDING interactions=47 verified=0 status=Placing 191, 72, -65 wait=Waiting for server
+[12:22:10] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 192, 72, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=false]
+[12:22:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1800 position=(192.4333987708708, 72.0, -63.700242400945) target=193, 72, -64 Block{minecraft:cobblestone} phase=BUILDING interactions=50 verified=0 status=Placing 193, 72, -64 wait=Waiting for server
+[12:22:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=1900 position=(192.3085389094794, 72.0, -64.47050409286554) target=190, 73, -69 Block{minecraft:white_stained_glass} phase=BUILDING interactions=54 verified=0 status=Placing 190, 73, -69 wait=Crosshair on 193, 72, -64 up, needs 190, 72, -69 up
+[12:22:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2000 position=(192.3085389094794, 72.0, -64.47050409286554) target=191, 73, -68 Block{minecraft:tube_coral_block} phase=BUILDING interactions=61 verified=0 status=Placing 191, 73, -68 wait=Waiting for server
+[12:22:29] [Render thread/INFO] (Minecraft) Loaded 55 advancements
+[12:22:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2100 position=(190.26696297072345, 73.49520087700593, -63.49904451347371) target=188, 73, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=64 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:22:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2200 position=(188.7240952321272, 73.0, -63.51056476787947) target=190, 73, -67 Block{minecraft:tube_coral_block} phase=BUILDING interactions=69 verified=0 status=Placing 190, 73, -67 wait=Waiting for server
+[12:22:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2300 position=(194.20936717955576, 73.0, -63.50101452285194) target=203, 62, -56 Block{minecraft:water}[level=0] phase=BUILDING interactions=72 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:22:45] [Render thread/INFO] (Minecraft) [System] [CHAT] §8[§bMovRand§8] §r§6⚠ §fTook 1.0 damage
+[12:22:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2400 position=(193.00142610460767, 69.23152379758702, -69.48269753543431) target=203, 62, -56 Block{minecraft:water}[level=0] phase=BUILDING interactions=72 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:22:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2500 position=(203.69999998807907, 64.76636799395752, -53.49109617943811) target=203, 62, -56 Block{minecraft:water}[level=0] phase=BUILDING interactions=72 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:22:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2600 position=(194.8017345211432, 69.0, -61.198440634266156) target=193, 73, -67 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=73 verified=0 status=Approaching 193, 73, -67 · Baritone: Diagonal wait=Waiting for server
+[12:23:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2700 position=(190.6078822484573, 74.02442408821369, -63.55669474481919) target=188, 73, -66 Block{minecraft:white_stained_glass} phase=BUILDING interactions=75 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:23:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2800 position=(193.46419640804763, 69.89044745325997, -62.591743513743715) target=203, 62, -56 Block{minecraft:water}[level=0] phase=BUILDING interactions=78 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:23:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=2900 position=(203.28042033253604, 66.00133597911214, -53.53002873472625) target=191, 73, -66 Block{minecraft:water}[level=0] phase=BUILDING interactions=79 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:23:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3000 position=(193.72968137832277, 69.0, -66.50798672430653) target=191, 73, -66 Block{minecraft:water}[level=0] phase=BUILDING interactions=80 verified=0 status=Adding fluid at 191, 73, -66 wait=Waiting for server
+[12:23:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3100 position=(193.38623605214616, 69.0, -67.56493366400142) target=193, 73, -66 Block{minecraft:tube_coral_block} phase=BUILDING interactions=82 verified=0 status=Placing 193, 73, -66 wait=Waiting for server
+[12:23:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3200 position=(186.50179125995416, 68.75099998140335, -62.50043113112545) target=188, 73, -65 Block{minecraft:white_stained_glass} phase=BUILDING interactions=83 verified=0 status=Approaching 188, 73, -65 · Baritone: Pillar wait=Waiting for server
+[12:23:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3300 position=(189.70437679299206, 69.00133597911214, -61.616131945462215) target=189, 73, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=84 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:23:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3400 position=(198.009483391727, 69.0, -56.96659376548069) target=203, 62, -56 Block{minecraft:water}[level=0] phase=BUILDING interactions=85 verified=0 status=Approaching 203, 62, -56 · Baritone: Diagonal wait=Waiting for server
+[12:23:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3500 position=(202.52141072736515, 66.0, -53.74615059971118) target=189, 73, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=86 verified=0 status=Approaching 189, 73, -65 · Baritone: Ascend wait=Waiting for server
+[12:23:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3600 position=(190.60389629826196, 70.0, -60.52157675959799) target=190, 73, -65 Block{minecraft:tube_coral_block} phase=BUILDING interactions=87 verified=0 status=Approaching 190, 73, -65 · Baritone: planning wait=Waiting for server
+[12:23:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3700 position=(193.06794283817132, 72.0, -61.78741022822474) target=193, 73, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=91 verified=0 status=Placing 193, 73, -65 wait=Waiting for server
+[12:23:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3800 position=(203.58382482329583, 64.53584062504456, -54.45258341678147) target=203, 62, -56 Block{minecraft:water}[level=0] phase=BUILDING interactions=91 verified=0 status=Finishing scaffold approach wait=Waiting for server
+[12:24:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=3900 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 73, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true] phase=BUILDING interactions=91 verified=0 status=Approaching 193, 73, -65 · Baritone: Pillar wait=Waiting for server
+[12:24:04] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 193, 73, -65 Block{minecraft:deepslate_brick_slab}[type=top,waterlogged=true]
+[12:24:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4000 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 73, -65 Block{minecraft:white_stained_glass} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 73, -65 · Baritone: Pillar wait=Waiting for server
+[12:24:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4100 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 73, -65 Block{minecraft:white_stained_glass} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 73, -65 · Baritone: Pillar wait=Waiting for server
+[12:24:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4200 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 73, -64 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 73, -64 · Baritone: Pillar wait=Waiting for server
+[12:24:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4300 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 72, -63 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 72, -63 · Baritone: Pillar wait=Waiting for server
+[12:24:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4400 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 72, -63 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 72, -63 · Baritone: Pillar wait=Waiting for server
+[12:24:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4500 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -63 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -63 · Baritone: Pillar wait=Waiting for server
+[12:24:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4600 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -64 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -64 · Baritone: Pillar wait=Waiting for server
+[12:24:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4700 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -64 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -64 · Baritone: Pillar wait=Waiting for server
+[12:24:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4800 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -65 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -65 · Baritone: Pillar wait=Waiting for server
+[12:24:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=4900 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -66 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -66 · Baritone: Pillar wait=Waiting for server
+[12:24:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5000 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -66 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -66 · Baritone: Pillar wait=Waiting for server
+[12:25:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5100 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -67 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -67 · Baritone: Pillar wait=Waiting for server
+[12:25:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5200 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -68 · Baritone: Pillar wait=Waiting for server
+[12:25:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5300 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -68 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -68 · Baritone: Pillar wait=Waiting for server
+[12:25:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5400 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -69 · Baritone: planning wait=Waiting for server
+[12:25:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5500 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -69 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -69 · Baritone: Pillar wait=Waiting for server
+[12:25:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5600 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -70 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -70 · Baritone: Pillar wait=Waiting for server
+[12:25:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5700 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:25:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5800 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:25:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=5900 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:25:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6000 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -73 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -73 · Baritone: Pillar wait=Waiting for server
+[12:25:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6100 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -73 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -73 · Baritone: Pillar wait=Waiting for server
+[12:25:51] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 194, 69, -73 Block{minecraft:cobblestone}
+[12:25:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6200 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6300 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6400 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:06] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 193, 69, -72 Block{minecraft:cobblestone}
+[12:26:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6500 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6600 position=(203.62222716870318, 62.0, -54.443825172291056) target=195, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 195, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6700 position=(203.62222716870318, 62.0, -54.443825172291056) target=195, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 195, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:21] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 195, 69, -72 Block{minecraft:cobblestone}
+[12:26:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6800 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:29] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 194, 70, -72 Block{minecraft:cobblestone}
+[12:26:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=6900 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7000 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -72 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -72 · Baritone: Pillar wait=Waiting for server
+[12:26:37] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 194, 69, -72 Block{minecraft:cobblestone}
+[12:26:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7100 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:26:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7200 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:26:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7300 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:26:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7400 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -70 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -70 · Baritone: Pillar wait=Waiting for server
+[12:27:00] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 193, 69, -70 Block{minecraft:cobblestone}
+[12:27:00] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7500 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:05] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7600 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:10] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7700 position=(203.62222716870318, 62.0, -54.443825172291056) target=192, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 192, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:15] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 192, 69, -71 Block{minecraft:cobblestone}
+[12:27:15] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7800 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:20] [Render thread/INFO] (movrand) BUILDER PROFILE tick=7900 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: planning wait=Waiting for server
+[12:27:23] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 193, 70, -71 Block{minecraft:cobblestone}
+[12:27:25] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8000 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:30] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8100 position=(203.62222716870318, 62.0, -54.443825172291056) target=193, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 193, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:30] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 193, 69, -71 Block{minecraft:cobblestone}
+[12:27:35] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8200 position=(203.62222716870318, 62.0, -54.443825172291056) target=194, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 194, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:40] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8300 position=(203.62222716870318, 62.0, -54.443825172291056) target=195, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 195, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:45] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8400 position=(203.62222716870318, 62.0, -54.443825172291056) target=195, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 195, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:50] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8500 position=(203.62222716870318, 62.0, -54.443825172291056) target=195, 69, -70 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 195, 69, -70 · Baritone: Pillar wait=Waiting for server
+[12:27:53] [Render thread/INFO] (movrand) [builder] No accessible placement angle/support at 195, 69, -70 Block{minecraft:cobblestone}
+[12:27:55] [Render thread/INFO] (movrand) BUILDER PROFILE tick=8600 position=(203.62222716870318, 62.0, -54.443825172291056) target=195, 69, -71 Block{minecraft:cobblestone} phase=BUILDING interactions=91 verified=0 status=Approaching 195, 69, -71 · Baritone: Pillar wait=Waiting for server
+[12:27:56] [Render thread/INFO] (Minecraft) Stopping!
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: java.lang.InterruptedException
+[12:27:56] [Test thread/ERROR] (fabric-client-gametest-api-v1) Client gametests failed with an exception
+
+java.lang.RuntimeException: java.lang.IllegalStateException: runOnClient called when no client is running
+	at knot//com.damia.movrand.LitematicaProfileGameTest.run(LitematicaProfileGameTest.java:78)
+	at knot//com.damia.movrand.TerrainGameTest.runTest(TerrainGameTest.java:14)
+	at knot//net.fabricmc.fabric.impl.client.gametest.FabricClientGameTestRunner.lambda$start$0(FabricClientGameTestRunner.java:54)
+	at knot//net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl.lambda$runTestThread$0(ThreadingImpl.java:139)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: java.lang.IllegalStateException: runOnClient called when no client is running
+	at knot//com.google.common.base.Preconditions.checkState(Preconditions.java:534)
+	at knot//net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl.runOnClient(ThreadingImpl.java:197)
+	at knot//net.fabricmc.fabric.impl.client.gametest.context.ClientGameTestContextImpl.computeOnClient(ClientGameTestContextImpl.java:549)
+	at knot//com.damia.movrand.LitematicaProfileGameTest.run(LitematicaProfileGameTest.java:58)
+	... 4 more
+	Suppressed: java.lang.IllegalStateException: runOnClient called when no client is running
+		at knot//com.google.common.base.Preconditions.checkState(Preconditions.java:534)
+		at knot//net.fabricmc.fabric.impl.client.gametest.threading.ThreadingImpl.runOnClient(ThreadingImpl.java:197)
+		at knot//net.fabricmc.fabric.impl.client.gametest.context.ClientGameTestContextImpl.runOnClient(ClientGameTestContextImpl.java:536)
+		at knot//net.fabricmc.fabric.impl.client.gametest.context.TestSingleplayerContextImpl.close(TestSingleplayerContextImpl.java:64)
+		at knot//com.damia.movrand.LitematicaProfileGameTest.run(LitematicaProfileGameTest.java:31)
+		... 4 more
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.await(AbstractQueuedSynchronizer.java:1767)
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.LinkedBlockingQueue.take(LinkedBlockingQueue.java:435)
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at knot//baritone.cache.CachedWorld$PackerThread.run(CachedWorld.java:312)
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+[12:27:56] [pool-4-thread-1/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.run(Thread.java:1474)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: java.lang.InterruptedException: sleep interrupted
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.sleepNanos0(Native Method)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.sleepNanos(Thread.java:509)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.sleep(Thread.java:540)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at knot//baritone.cache.CachedWorld.lambda$new$0(CachedWorld.java:101)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1090)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:614)
+[12:27:56] [pool-4-thread-2/INFO] (Minecraft) [STDERR]: 	at java.base/java.lang.Thread.run(Thread.java:1474)
+[12:27:56] [Server thread/INFO] (Minecraft) Player0 lost connection: Disconnected
+[12:27:56] [Server thread/INFO] (Minecraft) Player0 left the game
+[12:27:56] [Server thread/INFO] (Minecraft) Stopping singleplayer server as player logged out
+[12:27:56] [Server thread/INFO] (Minecraft) Stopping server
+[12:27:56] [Server thread/INFO] (Minecraft) Saving players
+[12:27:56] [Server thread/INFO] (Minecraft) Saving worlds
+[12:27:56] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:overworld
+[12:27:56] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:the_nether
+[12:27:56] [Server thread/INFO] (Minecraft) Saving chunks for level 'ServerLevel[base maker test]'/minecraft:the_end
+[12:27:56] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (world): All chunks are saved
+[12:27:56] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[12:27:56] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[12:27:56] [Server thread/INFO] (Minecraft) ThreadedAnvilChunkStorage: All dimensions are saved
+
+[Incubating] Problems report is available at: file:///C:/Users/damia/Desktop/AI_Projects/Minecraft/Movement_And_Randomisation/build/reports/problems/problems-report.html
+
+BUILD SUCCESSFUL in 7m 36s
+10 actionable tasks: 5 executed, 5 up-to-date
